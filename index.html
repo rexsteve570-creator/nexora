@@ -1,0 +1,1615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Nexora — Digital Asset Management</title>
+<meta name="description" content="Nexora Digital Asset Management">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+:root{
+    --navy:#050b18;
+    --navy2:#091426;
+    --navy3:#0d1b31;
+    --gold:#d6ad55;
+    --gold2:#f0cf7a;
+    --text:#f5f7fb;
+    --muted:#9da8ba;
+    --border:rgba(214,173,85,.20);
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:var(--navy);
+    color:var(--text);
+    line-height:1.6;
+}
+
+a{
+    color:inherit;
+    text-decoration:none;
+}
+
+button{
+    font-family:inherit;
+}
+
+.container{
+    width:min(1160px,92%);
+    margin:auto;
+}
+
+/* ================= HEADER ================= */
+
+header{
+    position:sticky;
+    top:0;
+    z-index:1000;
+    background:rgba(5,11,24,.94);
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--border);
+}
+
+.nav{
+    height:76px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.logo{
+    font-size:25px;
+    font-weight:800;
+    letter-spacing:3px;
+}
+
+.logo span{
+    color:var(--gold);
+}
+
+.nav-links{
+    display:flex;
+    gap:30px;
+    align-items:center;
+}
+
+.nav-links a{
+    color:#c5ccd8;
+    font-size:14px;
+}
+
+.nav-links a:hover{
+    color:var(--gold2);
+}
+
+.nav-actions{
+    display:flex;
+    gap:10px;
+    align-items:center;
+}
+
+.btn{
+    display:inline-flex;
+    justify-content:center;
+    align-items:center;
+    min-height:46px;
+    padding:0 22px;
+    border-radius:7px;
+    font-weight:700;
+    font-size:14px;
+    transition:.25s;
+    cursor:pointer;
+}
+
+.btn-outline{
+    border:1px solid var(--border);
+    color:var(--gold2);
+    background:transparent;
+}
+
+.btn-outline:hover{
+    background:rgba(214,173,85,.08);
+}
+
+.btn-gold{
+    background:linear-gradient(135deg,var(--gold2),var(--gold));
+    color:#07101e;
+    border:none;
+    box-shadow:0 10px 30px rgba(214,173,85,.13);
+}
+
+.btn-gold:hover{
+    transform:translateY(-2px);
+    box-shadow:0 14px 35px rgba(214,173,85,.22);
+}
+
+.menu{
+    display:none;
+    background:none;
+    border:0;
+    color:white;
+    font-size:27px;
+}
+
+/* ================= HERO ================= */
+
+.hero{
+    min-height:650px;
+    display:flex;
+    align-items:center;
+    position:relative;
+    overflow:hidden;
+    background:
+        radial-gradient(circle at 85% 30%,rgba(214,173,85,.10),transparent 28%),
+        radial-gradient(circle at 15% 80%,rgba(28,58,105,.28),transparent 35%),
+        var(--navy);
+}
+
+.hero:before{
+    content:"";
+    position:absolute;
+    width:520px;
+    height:520px;
+    border:1px solid rgba(214,173,85,.08);
+    border-radius:50%;
+    right:-190px;
+    top:30px;
+}
+
+.hero-content{
+    max-width:790px;
+    position:relative;
+    z-index:2;
+}
+
+.eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    color:var(--gold2);
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:2.5px;
+    margin-bottom:22px;
+}
+
+.eyebrow:before{
+    content:"";
+    width:28px;
+    height:1px;
+    background:var(--gold);
+}
+
+.hero h1{
+    font-size:clamp(44px,7vw,76px);
+    line-height:1.04;
+    letter-spacing:-2.5px;
+    margin-bottom:25px;
+}
+
+.hero h1 span{
+    color:var(--gold2);
+}
+
+.hero p{
+    color:var(--muted);
+    font-size:18px;
+    max-width:650px;
+    margin-bottom:35px;
+}
+
+.hero-buttons{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+}
+
+/* ================= TRUST BAR ================= */
+
+.trust{
+    border-top:1px solid var(--border);
+    border-bottom:1px solid var(--border);
+    background:#07101f;
+}
+
+.trust-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+}
+
+.trust-item{
+    padding:25px 20px;
+    border-right:1px solid var(--border);
+}
+
+.trust-item:last-child{
+    border-right:0;
+}
+
+.trust strong{
+    display:block;
+    color:var(--gold2);
+    font-size:17px;
+    margin-bottom:4px;
+}
+
+.trust span{
+    color:#7f8b9f;
+    font-size:12px;
+}
+
+/* ================= SECTIONS ================= */
+
+section{
+    padding:90px 0;
+}
+
+.section-head{
+    max-width:680px;
+    margin-bottom:45px;
+}
+
+.section-head .small{
+    color:var(--gold2);
+    font-size:11px;
+    font-weight:800;
+    letter-spacing:2.5px;
+    margin-bottom:13px;
+}
+
+.section-head h2{
+    font-size:clamp(30px,5vw,45px);
+    line-height:1.1;
+    margin-bottom:15px;
+}
+
+.section-head p{
+    color:var(--muted);
+}
+
+/* ================= INVESTMENT ================= */
+
+.investment{
+    background:
+        linear-gradient(180deg,#07101f,#050b18);
+}
+
+.investment-box{
+    display:grid;
+    grid-template-columns:1.1fr .9fr;
+    gap:22px;
+}
+
+.panel{
+    background:linear-gradient(145deg,#0b172b,#081222);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:35px;
+}
+
+.panel h3{
+    font-size:25px;
+    margin-bottom:12px;
+}
+
+.panel p{
+    color:var(--muted);
+}
+
+.details{
+    margin-top:28px;
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+}
+
+.detail{
+    padding:18px;
+    border:1px solid rgba(255,255,255,.07);
+    border-radius:9px;
+    background:rgba(255,255,255,.025);
+}
+
+.detail small{
+    display:block;
+    color:#7d899c;
+    margin-bottom:5px;
+    font-size:11px;
+}
+
+.detail strong{
+    color:#eef1f6;
+}
+
+.gold-line{
+    width:50px;
+    height:2px;
+    background:var(--gold);
+    margin:20px 0;
+}
+
+.feature-list{
+    margin-top:25px;
+    display:grid;
+    gap:13px;
+}
+
+.feature-list div{
+    display:flex;
+    gap:12px;
+    color:#c5ccd7;
+    font-size:14px;
+}
+
+.check{
+    color:var(--gold2);
+}
+
+/* ================= CRYPTO ================= */
+
+.crypto-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:14px;
+}
+
+.crypto{
+    background:#081323;
+    border:1px solid rgba(214,173,85,.14);
+    border-radius:12px;
+    padding:24px;
+    transition:.25s;
+}
+
+.crypto:hover{
+    border-color:rgba(214,173,85,.45);
+    transform:translateY(-3px);
+}
+
+.coin{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border:1px solid var(--border);
+    color:var(--gold2);
+    font-size:12px;
+    font-weight:800;
+    margin-bottom:17px;
+}
+
+.crypto h4{
+    font-size:16px;
+    margin-bottom:5px;
+}
+
+.crypto p{
+    color:#758196;
+    font-size:12px;
+}
+
+/* ================= FEATURES ================= */
+
+.features{
+    background:#07101f;
+}
+
+.feature-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+}
+
+.feature-card{
+    padding:32px;
+    background:#091527;
+    border:1px solid rgba(214,173,85,.14);
+    border-radius:13px;
+}
+
+.feature-number{
+    color:var(--gold);
+    font-size:12px;
+    font-weight:800;
+    letter-spacing:2px;
+    margin-bottom:25px;
+}
+
+.feature-card h3{
+    font-size:21px;
+    margin-bottom:10px;
+}
+
+.feature-card p{
+    color:var(--muted);
+    font-size:14px;
+}
+
+/* ================= STEPS ================= */
+
+.steps{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+}
+
+.step{
+    position:relative;
+    padding:28px;
+    background:#081323;
+    border:1px solid rgba(214,173,85,.13);
+    border-radius:12px;
+}
+
+.step span{
+    display:block;
+    color:var(--gold);
+    font-weight:800;
+    font-size:12px;
+    margin-bottom:25px;
+}
+
+.step h3{
+    font-size:18px;
+    margin-bottom:8px;
+}
+
+.step p{
+    color:var(--muted);
+    font-size:13px;
+}
+
+/* ================= REFERRAL ================= */
+
+.referral{
+    background:
+        radial-gradient(circle at 80% 50%,rgba(214,173,85,.09),transparent 35%),
+        #07101f;
+}
+
+.referral-box{
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:50px;
+    background:linear-gradient(120deg,#0a172a,#07101e);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:30px;
+}
+
+.referral-box h2{
+    font-size:35px;
+    margin-bottom:10px;
+}
+
+.referral-box p{
+    color:var(--muted);
+    max-width:600px;
+}
+
+/* ================= TELEGRAM ================= */
+
+.telegram{
+    text-align:center;
+}
+
+.telegram-box{
+    max-width:760px;
+    margin:auto;
+    padding:55px 30px;
+    border:1px solid var(--border);
+    border-radius:16px;
+    background:#081323;
+}
+
+.telegram-box .tg{
+    color:var(--gold2);
+    font-size:12px;
+    letter-spacing:2px;
+    font-weight:800;
+    margin-bottom:15px;
+}
+
+.telegram-box h2{
+    font-size:35px;
+    margin-bottom:12px;
+}
+
+.telegram-box p{
+    color:var(--muted);
+    margin-bottom:25px;
+}
+
+/* ================= FAQ ================= */
+
+.faq{
+    background:#07101f;
+}
+
+.faq-list{
+    max-width:850px;
+    display:grid;
+    gap:10px;
+}
+
+details{
+    background:#091527;
+    border:1px solid rgba(214,173,85,.13);
+    border-radius:9px;
+    padding:20px;
+}
+
+summary{
+    cursor:pointer;
+    font-weight:700;
+}
+
+details p{
+    color:var(--muted);
+    margin-top:14px;
+    font-size:14px;
+}
+
+/* ================= FOOTER ================= */
+
+footer{
+    border-top:1px solid var(--border);
+    background:#040914;
+    padding:45px 0 25px;
+}
+
+.footer-top{
+    display:flex;
+    justify-content:space-between;
+    gap:30px;
+    padding-bottom:35px;
+}
+
+.footer-brand{
+    max-width:400px;
+}
+
+.footer-brand p{
+    color:#737f92;
+    margin-top:12px;
+    font-size:13px;
+}
+
+.footer-links{
+    display:flex;
+    gap:22px;
+    flex-wrap:wrap;
+    align-items:flex-start;
+}
+
+.footer-links button{
+    background:none;
+    border:0;
+    color:#8792a4;
+    cursor:pointer;
+    font-size:13px;
+}
+
+.footer-links button:hover{
+    color:var(--gold2);
+}
+
+.copyright{
+    padding-top:22px;
+    border-top:1px solid rgba(255,255,255,.06);
+    color:#586477;
+    font-size:11px;
+    text-align:center;
+}
+
+/* ================= MODAL ================= */
+
+.modal{
+    position:fixed;
+    inset:0;
+    z-index:3000;
+    background:rgba(0,0,0,.75);
+    backdrop-filter:blur(8px);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.modal.active{
+    display:flex;
+}
+
+.modal-box{
+    width:min(700px,100%);
+    max-height:85vh;
+    overflow:auto;
+    background:#091527;
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:32px;
+    position:relative;
+}
+
+.close{
+    position:absolute;
+    top:15px;
+    right:18px;
+    border:0;
+    background:none;
+    color:#9ba6b7;
+    font-size:25px;
+    cursor:pointer;
+}
+
+.modal-box h2{
+    color:var(--gold2);
+    margin-bottom:20px;
+}
+
+.modal-box h3{
+    margin-top:20px;
+    margin-bottom:7px;
+}
+
+.modal-box p{
+    color:#aab4c3;
+    font-size:14px;
+}
+
+/* ================= MOBILE ================= */
+
+@media(max-width:900px){
+
+    .nav-links,
+    .nav-actions{
+        display:none;
+    }
+
+    .menu{
+        display:block;
+    }
+
+    .nav.mobile-open{
+        flex-wrap:wrap;
+        height:auto;
+        padding:18px 0;
+    }
+
+    .nav.mobile-open .nav-links{
+        display:flex;
+        flex-direction:column;
+        width:100%;
+        padding:20px 0 5px;
+        gap:18px;
+    }
+
+    .nav.mobile-open .nav-actions{
+        display:flex;
+        width:100%;
+        padding-bottom:5px;
+    }
+
+    .trust-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .trust-item:nth-child(2){
+        border-right:0;
+    }
+
+    .trust-item:nth-child(-n+2){
+        border-bottom:1px solid var(--border);
+    }
+
+    .investment-box{
+        grid-template-columns:1fr;
+    }
+
+    .crypto-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .feature-grid{
+        grid-template-columns:1fr;
+    }
+
+    .steps{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .referral-box{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .footer-top{
+        flex-direction:column;
+    }
+}
+
+@media(max-width:520px){
+
+    section{
+        padding:70px 0;
+    }
+
+    .hero{
+        min-height:600px;
+    }
+
+    .hero h1{
+        font-size:43px;
+    }
+
+    .hero p{
+        font-size:16px;
+    }
+
+    .btn{
+        width:100%;
+    }
+
+    .hero-buttons{
+        width:100%;
+    }
+
+    .details{
+        grid-template-columns:1fr;
+    }
+
+    .crypto-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .steps{
+        grid-template-columns:1fr;
+    }
+
+    .panel{
+        padding:25px;
+    }
+
+    .referral-box{
+        padding:30px 22px;
+    }
+
+    .referral-box h2,
+    .telegram-box h2{
+        font-size:28px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="container nav" id="nav">
+
+        <a href="#" class="logo">
+            NEXORA<span>.</span>
+        </a>
+
+        <nav class="nav-links">
+            <a href="#investment">Investment</a>
+            <a href="#assets">Assets</a>
+            <a href="#features">Features</a>
+            <a href="#how">How It Works</a>
+        </nav>
+
+        <div class="nav-actions">
+            <a href="login.html" class="btn btn-outline">Sign In</a>
+            <a href="register.html" class="btn btn-gold">Create Account</a>
+        </div>
+
+        <button class="menu" onclick="toggleMenu()">☰</button>
+
+    </div>
+</header>
+
+
+<!-- HERO -->
+
+<section class="hero">
+
+    <div class="container hero-content">
+
+        <div class="eyebrow">
+            DIGITAL ASSET MANAGEMENT
+        </div>
+
+        <h1>
+            Digital Assets.<br>
+            <span>Managed With Purpose.</span>
+        </h1>
+
+        <p>
+            Nexora provides a structured digital asset environment
+            designed for clients seeking access to modern crypto-based
+            portfolio management.
+        </p>
+
+        <div class="hero-buttons">
+            <a href="register.html" class="btn btn-gold">
+                Get Started
+            </a>
+
+            <a href="#investment" class="btn btn-outline">
+                Explore Nexora
+            </a>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- TRUST -->
+
+<div class="trust">
+
+    <div class="container trust-grid">
+
+        <div class="trust-item">
+            <strong>$1</strong>
+            <span>Minimum Deposit</span>
+        </div>
+
+        <div class="trust-item">
+            <strong>24/7</strong>
+            <span>Account Access</span>
+        </div>
+
+        <div class="trust-item">
+            <strong>Multi-Crypto</strong>
+            <span>Digital Asset Support</span>
+        </div>
+
+        <div class="trust-item">
+            <strong>Global</strong>
+            <span>Digital Asset Access</span>
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- INVESTMENT -->
+
+<section class="investment" id="investment">
+
+    <div class="container">
+
+        <div class="section-head">
+            <div class="small">THE NEXORA MODEL</div>
+
+            <h2>
+                A structured approach to digital assets.
+            </h2>
+
+            <p>
+                Access a digital asset environment built around
+                transparency, account visibility and structured
+                portfolio management.
+            </p>
+        </div>
+
+
+        <div class="investment-box">
+
+            <div class="panel">
+
+                <h3>Digital Asset Management</h3>
+
+                <div class="gold-line"></div>
+
+                <p>
+                    Nexora is designed around a straightforward
+                    client experience for managing digital assets
+                    through a secure online account.
+                </p>
+
+                <div class="details">
+
+                    <div class="detail">
+                        <small>MINIMUM DEPOSIT</small>
+                        <strong>$1 USDT</strong>
+                    </div>
+
+                    <div class="detail">
+                        <small>MAXIMUM DEPOSIT</small>
+                        <strong>Unlimited</strong>
+                    </div>
+
+                    <div class="detail">
+                        <small>ACCESS</small>
+                        <strong>24/7 Online</strong>
+                    </div>
+
+                    <div class="detail">
+                        <small>WITHDRAWAL</small>
+                        <strong>Crypto Assets</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="panel">
+
+                <h3>Built Around Your Account</h3>
+
+                <p>
+                    Your Nexora account is designed to give you
+                    a clear view of your digital asset activity.
+                </p>
+
+                <div class="feature-list">
+
+                    <div>
+                        <span class="check">◆</span>
+                        <span>Digital asset account management</span>
+                    </div>
+
+                    <div>
+                        <span class="check">◆</span>
+                        <span>Transaction history</span>
+                    </div>
+
+                    <div>
+                        <span class="check">◆</span>
+                        <span>Crypto deposit support</span>
+                    </div>
+
+                    <div>
+                        <span class="check">◆</span>
+                        <span>Crypto withdrawal support</span>
+                    </div>
+
+                    <div>
+                        <span class="check">◆</span>
+                        <span>Referral programme</span>
+                    </div>
+
+                    <div>
+                        <span class="check">◆</span>
+                        <span>Client account security</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ASSETS -->
+
+<section id="assets">
+
+    <div class="container">
+
+        <div class="section-head">
+
+            <div class="small">SUPPORTED ASSETS</div>
+
+            <h2>
+                Access the digital asset economy.
+            </h2>
+
+            <p>
+                Nexora is designed to support a range of established
+                digital assets. Market data will only be displayed
+                when connected to a verified data source.
+            </p>
+
+        </div>
+
+
+        <div class="crypto-grid">
+
+            <div class="crypto">
+                <div class="coin">BTC</div>
+                <h4>Bitcoin</h4>
+                <p>Digital asset</p>
+            </div>
+
+            <div class="crypto">
+                <div class="coin">ETH</div>
+                <h4>Ethereum</h4>
+                <p>Digital asset</p>
+            </div>
+
+            <div class="crypto">
+                <div class="coin">USDT</div>
+                <h4>Tether</h4>
+                <p>Stablecoin</p>
+            </div>
+
+            <div class="crypto">
+                <div class="coin">BNB</div>
+                <h4>BNB</h4>
+                <p>Digital asset</p>
+            </div>
+
+            <div class="crypto">
+                <div class="coin">SOL</div>
+                <h4>Solana</h4>
+                <p>Digital asset</p>
+            </div>
+
+            <div class="crypto">
+                <div class="coin">XRP</div>
+                <h4>XRP</h4>
+                <p>Digital asset</p>
+            </div>
+
+            <div class="crypto">
+                <div class="coin">TON</div>
+                <h4>Toncoin</h4>
+                <p>Digital asset</p>
+            </div>
+
+            <div class="crypto">
+                <div class="coin">DOGE</div>
+                <h4>Dogecoin</h4>
+                <p>Digital asset</p>
+            </div>
+
+            <div class="crypto">
+                <div class="coin">ADA</div>
+                <h4>Cardano</h4>
+                <p>Digital asset</p>
+            </div>
+
+            <div class="crypto">
+                <div class="coin">TRX</div>
+                <h4>TRON</h4>
+                <p>Digital asset</p>
+            </div>
+
+            <div class="crypto">
+                <div class="coin">LTC</div>
+                <h4>Litecoin</h4>
+                <p>Digital asset</p>
+            </div>
+
+            <div class="crypto">
+                <div class="coin">AVAX</div>
+                <h4>Avalanche</h4>
+                <p>Digital asset</p>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- FEATURES -->
+
+<section class="features" id="features">
+
+    <div class="container">
+
+        <div class="section-head">
+
+            <div class="small">WHY NEXORA</div>
+
+            <h2>
+                Built for a modern digital asset experience.
+            </h2>
+
+        </div>
+
+
+        <div class="feature-grid">
+
+            <div class="feature-card">
+
+                <div class="feature-number">01</div>
+
+                <h3>Multi-Crypto</h3>
+
+                <p>
+                    A platform architecture designed around
+                    multiple digital assets and networks.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-number">02</div>
+
+                <h3>Account Control</h3>
+
+                <p>
+                    Keep your activity organized through a
+                    dedicated client account and transaction history.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-number">03</div>
+
+                <h3>Security Focus</h3>
+
+                <p>
+                    Account security and transaction controls
+                    are built into the Nexora experience.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- HOW IT WORKS -->
+
+<section id="how">
+
+    <div class="container">
+
+        <div class="section-head">
+
+            <div class="small">GET STARTED</div>
+
+            <h2>
+                From registration to digital asset management.
+            </h2>
+
+        </div>
+
+
+        <div class="steps">
+
+            <div class="step">
+                <span>01 — REGISTER</span>
+                <h3>Create Account</h3>
+                <p>
+                    Open your Nexora client account.
+                </p>
+            </div>
+
+            <div class="step">
+                <span>02 — VERIFY</span>
+                <h3>Complete Verification</h3>
+                <p>
+                    Complete the required account verification steps.
+                </p>
+            </div>
+
+            <div class="step">
+                <span>03 — DEPOSIT</span>
+                <h3>Fund Your Account</h3>
+                <p>
+                    Deposit an available supported digital asset.
+                </p>
+            </div>
+
+            <div class="step">
+                <span>04 — MANAGE</span>
+                <h3>Manage Assets</h3>
+                <p>
+                    Monitor your account and digital asset activity.
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- REFERRAL -->
+
+<section class="referral">
+
+    <div class="container">
+
+        <div class="referral-box">
+
+            <div>
+
+                <div class="small" style="color:var(--gold2);letter-spacing:2px;font-size:11px;font-weight:800;margin-bottom:12px;">
+                    NEXORA REFERRAL
+                </div>
+
+                <h2>Grow with your network.</h2>
+
+                <p>
+                    Invite eligible users to Nexora and participate
+                    in the referral programme available through your
+                    client account.
+                </p>
+
+            </div>
+
+            <a href="register.html" class="btn btn-gold">
+                Create Account
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- TELEGRAM -->
+
+<section class="telegram">
+
+    <div class="container">
+
+        <div class="telegram-box">
+
+            <div class="tg">NEXORA COMMUNITY</div>
+
+            <h2>Stay connected with Nexora.</h2>
+
+            <p>
+                Follow official Nexora updates, announcements and
+                platform information on Telegram.
+            </p>
+
+            <a
+                href="https://t.me/investwithNexora"
+                target="_blank"
+                class="btn btn-gold"
+            >
+                Follow Nexora on Telegram
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- FAQ -->
+
+<section class="faq">
+
+    <div class="container">
+
+        <div class="section-head">
+
+            <div class="small">FAQ</div>
+
+            <h2>Frequently asked questions.</h2>
+
+        </div>
+
+
+        <div class="faq-list">
+
+            <details>
+                <summary>What is Nexora?</summary>
+                <p>
+                    Nexora is a digital asset management platform
+                    designed to provide clients with an online
+                    environment for managing supported digital assets.
+                </p>
+            </details>
+
+            <details>
+                <summary>What is the minimum deposit?</summary>
+                <p>
+                    The planned minimum deposit is $1 USDT,
+                    subject to the applicable asset and network
+                    requirements.
+                </p>
+            </details>
+
+            <details>
+                <summary>Which digital assets are supported?</summary>
+                <p>
+                    Nexora is designed to support assets including
+                    BTC, ETH, USDT, BNB, SOL, XRP, TON, DOGE, ADA,
+                    TRX, LTC and AVAX, subject to availability.
+                </p>
+            </details>
+
+            <details>
+                <summary>Can I withdraw my assets?</summary>
+                <p>
+                    Available withdrawals will depend on supported
+                    assets, networks, account status, applicable
+                    checks and any disclosed network or processing fees.
+                </p>
+            </details>
+
+            <details>
+                <summary>Does Nexora guarantee investment returns?</summary>
+                <p>
+                    No investment outcome should be treated as
+                    guaranteed. Digital assets involve significant
+                    risks, including volatility and potential loss.
+                    Review the Risk Disclosure before using the platform.
+                </p>
+            </details>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- FOOTER -->
+
+<footer>
+
+    <div class="container">
+
+        <div class="footer-top">
+
+            <div class="footer-brand">
+
+                <div class="logo">
+                    NEXORA<span>.</span>
+                </div>
+
+                <p>
+                    Digital Assets. Managed With Purpose.
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <button onclick="openModal('terms')">
+                    Terms
+                </button>
+
+                <button onclick="openModal('privacy')">
+                    Privacy
+                </button>
+
+                <button onclick="openModal('risk')">
+                    Risk Disclosure
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+            © 2026 Nexora Digital Asset Management. All rights reserved.
+        </div>
+
+    </div>
+
+</footer>
+
+
+<!-- TERMS MODAL -->
+
+<div class="modal" id="terms">
+
+    <div class="modal-box">
+
+        <button class="close" onclick="closeModal('terms')">×</button>
+
+        <h2>Terms of Use</h2>
+
+        <p>
+            These terms govern access to the Nexora platform and
+            its digital asset services.
+        </p>
+
+        <h3>Platform Use</h3>
+
+        <p>
+            Users must provide accurate information and maintain
+            the security of their account credentials.
+        </p>
+
+        <h3>Eligibility</h3>
+
+        <p>
+            Access to products and services may depend on your
+            jurisdiction, eligibility and applicable laws.
+        </p>
+
+        <h3>Digital Asset Risk</h3>
+
+        <p>
+            Digital assets are subject to market volatility and
+            other risks. Users should understand these risks before
+            using any digital asset service.
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- PRIVACY MODAL -->
+
+<div class="modal" id="privacy">
+
+    <div class="modal-box">
+
+        <button class="close" onclick="closeModal('privacy')">×</button>
+
+        <h2>Privacy Policy</h2>
+
+        <p>
+            Nexora may collect information required to create,
+            secure and operate client accounts and provide platform
+            services.
+        </p>
+
+        <h3>Information</h3>
+
+        <p>
+            Information may include account details, identity
+            verification information, transaction information and
+            technical data.
+        </p>
+
+        <h3>Security</h3>
+
+        <p>
+            Reasonable technical and organizational measures are
+            used to protect information against unauthorized access.
+        </p>
+
+        <h3>Data Use</h3>
+
+        <p>
+            Information may be used for account administration,
+            security, compliance, support and service improvement.
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- RISK MODAL -->
+
+<div class="modal" id="risk">
+
+    <div class="modal-box">
+
+        <button class="close" onclick="closeModal('risk')">×</button>
+
+        <h2>Risk Disclosure</h2>
+
+        <p>
+            Digital asset activities involve substantial risks.
+            The value of digital assets can change significantly
+            and may result in partial or total loss.
+        </p>
+
+        <h3>Market Risk</h3>
+
+        <p>
+            Digital asset prices can be highly volatile and may
+            move rapidly without warning.
+        </p>
+
+        <h3>Technology Risk</h3>
+
+        <p>
+            Blockchain networks, wallets and digital platforms
+            may experience technical interruptions or failures.
+        </p>
+
+        <h3>No Guaranteed Outcome</h3>
+
+        <p>
+            Nothing on this website should be interpreted as a
+            guarantee of profit, capital protection or future
+            investment performance.
+        </p>
+
+    </div>
+
+</div>
+
+
+<script>
+
+function toggleMenu(){
+
+    const nav = document.getElementById("nav");
+
+    nav.classList.toggle("mobile-open");
+
+}
+
+
+function openModal(id){
+
+    document.getElementById(id).classList.add("active");
+
+    document.body.style.overflow="hidden";
+
+}
+
+
+function closeModal(id){
+
+    document.getElementById(id).classList.remove("active");
+
+    document.body.style.overflow="";
+
+}
+
+
+document.querySelectorAll(".modal").forEach(function(modal){
+
+    modal.addEventListener("click",function(e){
+
+        if(e.target === modal){
+
+            modal.classList.remove("active");
+
+            document.body.style.overflow="";
+
+        }
+
+    });
+
+});
+
+
+document.addEventListener("keydown",function(e){
+
+    if(e.key === "Escape"){
+
+        document.querySelectorAll(".modal").forEach(function(modal){
+
+            modal.classList.remove("active");
+
+        });
+
+        document.body.style.overflow="";
+
+    }
+
+});
+
+</script>
+
+</body>
+</html>
