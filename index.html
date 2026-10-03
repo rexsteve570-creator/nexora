@@ -801,7 +801,7 @@ footer{
 <header>
     <div class="container nav" id="nav">
 
-        <a href="#" class="logo">
+        <a href="index.html" class="logo">
             NEXORA<span>.</span>
         </a>
 
@@ -813,11 +813,22 @@ footer{
         </nav>
 
         <div class="nav-actions">
-            <a href="login.html" class="btn btn-outline">Sign In</a>
-            <a href="register.html" class="btn btn-gold">Create Account</a>
+
+            <!-- CORRECTED -->
+            <a href="signin.html" class="btn btn-outline">
+                Sign In
+            </a>
+
+            <!-- CORRECTED -->
+            <a href="signup.html" class="btn btn-gold">
+                Create Account
+            </a>
+
         </div>
 
-        <button class="menu" onclick="toggleMenu()">☰</button>
+        <button class="menu" onclick="toggleMenu()" aria-label="Open menu">
+            ☰
+        </button>
 
     </div>
 </header>
@@ -845,13 +856,16 @@ footer{
         </p>
 
         <div class="hero-buttons">
-            <a href="register.html" class="btn btn-gold">
+
+            <!-- CORRECTED -->
+            <a href="signup.html" class="btn btn-gold">
                 Get Started
             </a>
 
             <a href="#investment" class="btn btn-outline">
                 Explore Nexora
             </a>
+
         </div>
 
     </div>
@@ -1243,7 +1257,10 @@ footer{
 
             <div>
 
-                <div class="small" style="color:var(--gold2);letter-spacing:2px;font-size:11px;font-weight:800;margin-bottom:12px;">
+                <div
+                    class="small"
+                    style="color:var(--gold2);letter-spacing:2px;font-size:11px;font-weight:800;margin-bottom:12px;"
+                >
                     NEXORA REFERRAL
                 </div>
 
@@ -1257,7 +1274,8 @@ footer{
 
             </div>
 
-            <a href="register.html" class="btn btn-gold">
+            <!-- CORRECTED -->
+            <a href="signup.html" class="btn btn-gold">
                 Create Account
             </a>
 
@@ -1288,6 +1306,7 @@ footer{
             <a
                 href="https://t.me/investwithNexora"
                 target="_blank"
+                rel="noopener noreferrer"
                 class="btn btn-gold"
             >
                 Follow Nexora on Telegram
@@ -1560,7 +1579,11 @@ function toggleMenu(){
 
 function openModal(id){
 
-    document.getElementById(id).classList.add("active");
+    const modal = document.getElementById(id);
+
+    if(!modal) return;
+
+    modal.classList.add("active");
 
     document.body.style.overflow="hidden";
 
@@ -1569,7 +1592,11 @@ function openModal(id){
 
 function closeModal(id){
 
-    document.getElementById(id).classList.remove("active");
+    const modal = document.getElementById(id);
+
+    if(!modal) return;
+
+    modal.classList.remove("active");
 
     document.body.style.overflow="";
 
@@ -1608,6 +1635,26 @@ document.addEventListener("keydown",function(e){
     }
 
 });
+
+
+/*
+=========================================================
+NEXORA PAGE ROUTES
+=========================================================
+
+Sign In:
+signin.html
+
+Sign Up:
+signup.html
+
+The previous index.html was using:
+login.html
+register.html
+
+Those filenames have now been corrected.
+=========================================================
+*/
 
 </script>
 
