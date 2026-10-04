@@ -16,12 +16,16 @@
     --gold:#d6b15e;
     --gold2:#f0d58a;
     --gold3:#a98535;
-    --white:#fff;
+    --white:#ffffff;
     --text:#f4f6fa;
     --muted:#8c96a8;
+    --muted2:#626d80;
+    --bg:#050914;
+    --card:#0b1222;
+    --card2:#0e1729;
     --border:rgba(255,255,255,.08);
-    --success:#48c98b;
-    --danger:#ef6b73;
+    --danger:#ef4444;
+    --success:#22c55e;
 }
 
 *{
@@ -30,14 +34,20 @@
     padding:0;
 }
 
-body{
-    min-height:100vh;
-    background:var(--navy);
-    color:var(--text);
-    font-family:Arial,Helvetica,sans-serif;
+html{
+    scroll-behavior:smooth;
 }
 
-button,input{
+body{
+    font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    min-height:100vh;
+    padding-bottom:88px;
+}
+
+button,
+input{
     font:inherit;
 }
 
@@ -46,215 +56,326 @@ button{
 }
 
 a{
-    text-decoration:none;
     color:inherit;
+    text-decoration:none;
 }
 
-/* HEADER */
+/* =========================
+   HEADER
+========================= */
 
 .header{
-    height:68px;
+    position:sticky;
+    top:0;
+    z-index:50;
+    height:64px;
+    background:rgba(5,9,20,.94);
+    backdrop-filter:blur(18px);
+    border-bottom:1px solid var(--border);
+}
+
+.header-inner{
+    width:min(760px,100%);
+    height:100%;
+    margin:auto;
+    padding:0 18px;
     display:flex;
     align-items:center;
     gap:14px;
-    padding:0 18px;
-    background:rgba(5,9,20,.97);
-    border-bottom:1px solid var(--border);
-    position:sticky;
-    top:0;
-    z-index:20;
 }
 
-.back{
+.back-btn{
     width:40px;
     height:40px;
     border-radius:12px;
     border:1px solid var(--border);
     background:var(--navy3);
-    color:white;
-    font-size:24px;
-}
-
-.header-title{
-    font-size:18px;
-    font-weight:700;
-}
-
-.header-brand{
-    margin-left:auto;
-    color:var(--gold);
-    font-size:11px;
-    font-weight:700;
-    letter-spacing:.7px;
-}
-
-/* MAIN */
-
-.container{
-    width:100%;
-    max-width:760px;
-    margin:auto;
-    padding:20px 16px 100px;
-}
-
-.intro{
-    margin-bottom:20px;
-}
-
-.intro h1{
-    font-size:27px;
-    margin-bottom:8px;
-}
-
-.intro p{
-    color:var(--muted);
-    font-size:14px;
-    line-height:1.6;
-}
-
-/* CARDS */
-
-.card{
-    background:var(--navy2);
-    border:1px solid var(--border);
-    border-radius:18px;
-    padding:18px;
-    margin-bottom:15px;
-}
-
-.card-title{
-    font-size:15px;
-    font-weight:700;
-    margin-bottom:15px;
-}
-
-/* ASSET */
-
-.asset-select{
-    width:100%;
+    color:var(--white);
     display:flex;
     align-items:center;
-    gap:12px;
-    background:var(--navy3);
-    border:1px solid var(--border);
-    border-radius:14px;
-    padding:13px;
-    color:white;
-    text-align:left;
+    justify-content:center;
+    font-size:21px;
 }
 
-.asset-logo{
-    width:36px;
-    height:36px;
-    border-radius:50%;
-    background:white;
-    padding:3px;
-    object-fit:contain;
+.brand{
+    font-weight:800;
+    letter-spacing:1.8px;
+    color:var(--gold2);
+    font-size:18px;
 }
 
-.asset-info{
+.header-spacer{
     flex:1;
 }
 
-.asset-name{
+/* =========================
+   MAIN
+========================= */
+
+.container{
+    width:min(760px,100%);
+    margin:auto;
+    padding:22px 16px 30px;
+}
+
+.page-title{
+    font-size:25px;
+    font-weight:800;
+    margin-bottom:6px;
+}
+
+.page-subtitle{
+    color:var(--muted);
     font-size:14px;
-    font-weight:700;
+    line-height:1.55;
+    margin-bottom:22px;
 }
 
-.asset-description{
-    color:var(--muted);
-    font-size:11px;
-    margin-top:3px;
-}
+/* =========================
+   CARD
+========================= */
 
-.chevron{
-    color:var(--gold);
-    font-size:20px;
-}
-
-/* NETWORK */
-
-.network-grid{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:10px;
-}
-
-.network{
-    background:var(--navy3);
+.card{
+    background:linear-gradient(
+        145deg,
+        rgba(14,23,41,.98),
+        rgba(8,14,29,.98)
+    );
     border:1px solid var(--border);
-    border-radius:13px;
-    padding:13px 8px;
-    color:var(--muted);
-}
-
-.network strong{
-    display:block;
-    color:white;
-    font-size:13px;
-    margin-bottom:4px;
-}
-
-.network span{
-    font-size:10px;
-}
-
-.network.active{
-    border-color:var(--gold);
-    background:rgba(214,177,94,.08);
-}
-
-.network.active strong{
-    color:var(--gold2);
-}
-
-/* ADDRESS */
-
-.address-box{
-    background:var(--navy);
-    border:1px dashed rgba(214,177,94,.35);
-    border-radius:15px;
+    border-radius:20px;
     padding:18px;
+    margin-bottom:16px;
+    box-shadow:0 12px 35px rgba(0,0,0,.18);
 }
 
-.address-placeholder{
-    min-height:90px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    flex-direction:column;
-    text-align:center;
-    gap:7px;
+.card-title{
+    font-size:16px;
+    font-weight:750;
+    margin-bottom:5px;
 }
 
-.address-icon{
-    color:var(--gold);
-    font-size:26px;
-}
-
-.address-placeholder strong{
-    font-size:13px;
-}
-
-.address-placeholder span{
+.card-subtitle{
     color:var(--muted);
-    font-size:11px;
+    font-size:13px;
     line-height:1.5;
 }
 
-.address-ready{
+/* =========================
+   COIN SELECTOR
+========================= */
+
+.section-label{
+    font-size:12px;
+    color:var(--muted);
+    text-transform:uppercase;
+    letter-spacing:.9px;
+    font-weight:700;
+    margin-bottom:10px;
+}
+
+.coin-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px;
+    margin-top:15px;
+}
+
+.coin-btn{
+    width:100%;
+    min-height:68px;
+    background:var(--navy3);
+    border:1px solid var(--border);
+    border-radius:15px;
+    color:var(--text);
+    display:flex;
+    align-items:center;
+    gap:11px;
+    padding:12px;
+    text-align:left;
+    transition:.18s ease;
+}
+
+.coin-btn:hover{
+    border-color:rgba(214,177,94,.45);
+}
+
+.coin-btn.active{
+    border-color:var(--gold);
+    background:rgba(214,177,94,.09);
+    box-shadow:0 0 0 1px rgba(214,177,94,.12);
+}
+
+.coin-logo{
+    width:36px;
+    height:36px;
+    border-radius:50%;
+    flex:none;
+    object-fit:contain;
+}
+
+.coin-info{
+    min-width:0;
+}
+
+.coin-name{
+    font-size:13px;
+    font-weight:700;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.coin-symbol{
+    color:var(--muted);
+    font-size:11px;
+    margin-top:2px;
+}
+
+.coming-badge{
+    display:inline-flex;
+    margin-top:4px;
+    font-size:9px;
+    color:var(--gold2);
+    border:1px solid rgba(214,177,94,.3);
+    background:rgba(214,177,94,.08);
+    border-radius:999px;
+    padding:2px 6px;
+}
+
+/* =========================
+   NETWORKS
+========================= */
+
+.network-section{
     display:none;
 }
 
-.qr-box{
-    width:190px;
-    height:190px;
-    margin:0 auto 16px;
-    background:white;
-    border-radius:14px;
+.network-section.show{
+    display:block;
+}
+
+.network-list{
+    display:grid;
+    gap:10px;
+    margin-top:15px;
+}
+
+.network-btn{
+    width:100%;
+    min-height:64px;
+    border:1px solid var(--border);
+    border-radius:15px;
+    background:var(--navy3);
+    color:var(--text);
+    padding:13px 14px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    text-align:left;
+    transition:.18s ease;
+}
+
+.network-btn:hover{
+    border-color:rgba(214,177,94,.45);
+}
+
+.network-btn.active{
+    border-color:var(--gold);
+    background:rgba(214,177,94,.09);
+}
+
+.network-btn.coming{
+    cursor:not-allowed;
+    opacity:.72;
+}
+
+.network-left{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.network-icon{
+    width:34px;
+    height:34px;
+    border-radius:11px;
+    display:flex;
     align-items:center;
     justify-content:center;
-    overflow:hidden;
+    background:rgba(214,177,94,.1);
+    color:var(--gold2);
+    font-size:15px;
+    font-weight:800;
+}
+
+.network-name{
+    font-size:13px;
+    font-weight:700;
+}
+
+.network-note{
+    font-size:11px;
+    color:var(--muted);
+    margin-top:3px;
+}
+
+.network-status{
+    font-size:10px;
+    color:var(--gold2);
+    white-space:nowrap;
+}
+
+/* =========================
+   ADDRESS
+========================= */
+
+.address-section{
+    display:none;
+}
+
+.address-section.show{
+    display:block;
+}
+
+.selected-heading{
+    display:flex;
+    align-items:center;
+    gap:11px;
+    margin-bottom:16px;
+}
+
+.selected-logo{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+}
+
+.selected-name{
+    font-size:16px;
+    font-weight:800;
+}
+
+.selected-network{
+    color:var(--gold2);
+    font-size:12px;
+    margin-top:3px;
+}
+
+.qr-wrap{
+    display:flex;
+    justify-content:center;
+    margin:6px 0 20px;
+}
+
+.qr-box{
+    width:210px;
+    height:210px;
+    padding:10px;
+    background:#fff;
+    border-radius:18px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
 }
 
 .qr-box img{
@@ -263,241 +384,177 @@ a{
     object-fit:contain;
 }
 
-.address-text{
-    background:var(--navy3);
-    border:1px solid var(--border);
-    border-radius:11px;
-    padding:12px;
-    word-break:break-all;
-    color:var(--text);
+.address-label{
+    color:var(--muted);
     font-size:11px;
-    line-height:1.5;
+    margin-bottom:7px;
+}
+
+.address-box{
+    background:var(--navy);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:13px;
+    word-break:break-all;
+    color:var(--gold2);
+    font-size:12px;
+    line-height:1.6;
 }
 
 .copy-btn{
     width:100%;
     margin-top:10px;
-    height:44px;
-    border:1px solid var(--gold3);
-    border-radius:11px;
-    background:rgba(214,177,94,.1);
+    height:46px;
+    border:none;
+    border-radius:13px;
+    background:linear-gradient(
+        135deg,
+        var(--gold2),
+        var(--gold)
+    );
+    color:#111;
+    font-weight:800;
+}
+
+.copy-btn:active{
+    transform:scale(.99);
+}
+
+.memo-box{
+    margin-top:13px;
+    padding:12px 13px;
+    border-radius:13px;
+    border:1px solid rgba(214,177,94,.25);
+    background:rgba(214,177,94,.07);
     color:var(--gold2);
-    font-weight:700;
+    font-size:12px;
 }
 
-.address-meta{
-    margin-top:10px;
-    text-align:center;
-    color:var(--muted);
-    font-size:10px;
+.memo-box strong{
+    display:block;
+    margin-bottom:3px;
 }
 
-/* WARNING */
+/* =========================
+   WARNING
+========================= */
 
 .warning{
-    border:1px solid rgba(214,177,94,.22);
-    background:rgba(214,177,94,.06);
-    border-radius:14px;
-    padding:14px;
-    color:var(--muted);
-    font-size:12px;
-    line-height:1.6;
-}
-
-.warning strong{
-    color:var(--gold2);
-}
-
-/* INFO */
-
-.info-list{
     display:flex;
-    flex-direction:column;
-}
-
-.info-row{
-    display:flex;
-    justify-content:space-between;
-    gap:15px;
-    padding:12px 0;
-    border-bottom:1px solid var(--border);
-}
-
-.info-row:first-child{
-    padding-top:0;
-}
-
-.info-row:last-child{
-    border-bottom:0;
-    padding-bottom:0;
-}
-
-.info-row span:first-child{
-    color:var(--muted);
-    font-size:12px;
-}
-
-.info-row span:last-child{
-    color:var(--text);
-    font-size:12px;
-    text-align:right;
-}
-
-.gold{
-    color:var(--gold2)!important;
-}
-
-/* HISTORY */
-
-.deposit-item{
-    background:var(--navy3);
-    border:1px solid var(--border);
-    border-radius:14px;
-    padding:14px;
-    margin-bottom:10px;
-}
-
-.deposit-top{
-    display:flex;
-    justify-content:space-between;
     gap:10px;
+    padding:13px;
+    border-radius:14px;
+    background:rgba(239,68,68,.07);
+    border:1px solid rgba(239,68,68,.18);
+    color:#fca5a5;
+    font-size:12px;
+    line-height:1.55;
+    margin-top:15px;
 }
 
-.deposit-asset{
-    font-size:14px;
-    font-weight:700;
+.warning-icon{
+    flex:none;
+    font-weight:900;
 }
 
-.deposit-amount{
-    font-size:13px;
-    color:var(--gold2);
-}
-
-.deposit-details{
-    margin-top:8px;
-    display:flex;
-    justify-content:space-between;
-    gap:10px;
-    color:var(--muted);
-    font-size:10px;
-}
-
-.status{
-    display:inline-block;
-    margin-top:8px;
-    padding:4px 8px;
-    border-radius:20px;
-    background:rgba(140,150,168,.1);
-    color:var(--muted);
-    font-size:10px;
-}
-
-.status.confirmed{
-    color:var(--success);
-    background:rgba(72,201,139,.1);
-}
-
-.status.rejected{
-    color:var(--danger);
-    background:rgba(239,107,115,.1);
-}
+/* =========================
+   EMPTY / LOADING
+========================= */
 
 .empty{
     text-align:center;
-    padding:24px 10px;
+    padding:28px 15px;
     color:var(--muted);
-    font-size:12px;
+    font-size:13px;
 }
 
-/* MODAL */
-
-.modal{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.75);
-    display:none;
-    align-items:flex-end;
-    justify-content:center;
-    z-index:100;
+.loader{
+    width:25px;
+    height:25px;
+    border:3px solid rgba(255,255,255,.1);
+    border-top-color:var(--gold);
+    border-radius:50%;
+    animation:spin .8s linear infinite;
+    margin:0 auto 12px;
 }
 
-.modal.show{
-    display:flex;
+@keyframes spin{
+    to{transform:rotate(360deg)}
 }
 
-.modal-card{
-    width:100%;
-    max-width:760px;
-    max-height:85vh;
-    overflow:auto;
-    background:var(--navy2);
+/* =========================
+   HISTORY
+========================= */
+
+.history-list{
+    display:grid;
+    gap:10px;
+    margin-top:15px;
+}
+
+.history-item{
+    padding:13px;
     border:1px solid var(--border);
-    border-radius:22px 22px 0 0;
-    padding:20px;
+    border-radius:14px;
+    background:var(--navy3);
 }
 
-.modal-head{
+.history-top{
     display:flex;
     justify-content:space-between;
-    align-items:center;
-    margin-bottom:15px;
+    gap:10px;
 }
 
-.modal-head h3{
-    font-size:17px;
+.history-asset{
+    font-weight:750;
+    font-size:13px;
 }
 
-.close{
-    width:34px;
-    height:34px;
-    border-radius:10px;
-    border:1px solid var(--border);
-    background:var(--navy3);
-    color:white;
-    font-size:20px;
+.history-status{
+    font-size:10px;
+    padding:4px 7px;
+    border-radius:999px;
+    background:rgba(214,177,94,.09);
+    color:var(--gold2);
 }
 
-.search{
-    width:100%;
-    height:44px;
-    border-radius:12px;
-    border:1px solid var(--border);
-    background:var(--navy3);
-    color:white;
-    padding:0 13px;
-    outline:none;
-    margin-bottom:10px;
+.history-meta{
+    color:var(--muted);
+    font-size:11px;
+    margin-top:5px;
 }
 
-.asset-option{
-    width:100%;
-    display:flex;
-    align-items:center;
-    gap:12px;
-    padding:12px 4px;
-    border:0;
-    border-bottom:1px solid var(--border);
-    background:transparent;
-    color:white;
-    text-align:left;
+.history-amount{
+    margin-top:8px;
+    color:var(--text);
+    font-size:13px;
+    font-weight:700;
 }
 
-/* BOTTOM */
+.history-date{
+    margin-top:4px;
+    color:var(--muted2);
+    font-size:10px;
+}
+
+/* =========================
+   BOTTOM NAV
+========================= */
 
 .bottom-nav{
     position:fixed;
+    z-index:60;
+    bottom:0;
     left:0;
     right:0;
-    bottom:0;
-    height:66px;
-    background:rgba(5,9,20,.98);
+    height:72px;
+    background:rgba(5,9,20,.97);
+    backdrop-filter:blur(18px);
     border-top:1px solid var(--border);
-    z-index:30;
 }
 
 .bottom-inner{
-    width:100%;
-    max-width:760px;
+    width:min(760px,100%);
     height:100%;
     margin:auto;
     display:grid;
@@ -509,12 +566,12 @@ a{
     flex-direction:column;
     align-items:center;
     justify-content:center;
-    gap:4px;
+    gap:5px;
     color:var(--muted);
     font-size:10px;
 }
 
-.nav-item span:first-child{
+.nav-icon{
     font-size:18px;
 }
 
@@ -522,23 +579,25 @@ a{
     color:var(--gold2);
 }
 
-/* TOAST */
+/* =========================
+   TOAST
+========================= */
 
 .toast{
     position:fixed;
+    z-index:100;
     left:50%;
-    bottom:82px;
-    transform:translateX(-50%) translateY(15px);
-    background:var(--navy4);
+    bottom:88px;
+    transform:translateX(-50%) translateY(20px);
+    background:#111827;
     border:1px solid var(--border);
-    color:white;
+    color:var(--white);
     padding:11px 15px;
     border-radius:12px;
     font-size:12px;
     opacity:0;
     pointer-events:none;
-    transition:.25s;
-    z-index:200;
+    transition:.25s ease;
     max-width:90%;
     text-align:center;
 }
@@ -548,9 +607,34 @@ a{
     transform:translateX(-50%) translateY(0);
 }
 
-@media(max-width:420px){
-    .intro h1{
-        font-size:24px;
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:430px){
+
+    .container{
+        padding-left:13px;
+        padding-right:13px;
+    }
+
+    .coin-grid{
+        grid-template-columns:1fr 1fr;
+        gap:8px;
+    }
+
+    .coin-btn{
+        min-height:64px;
+        padding:10px;
+    }
+
+    .coin-logo{
+        width:32px;
+        height:32px;
+    }
+
+    .coin-name{
+        font-size:12px;
     }
 }
 </style>
@@ -558,192 +642,186 @@ a{
 
 <body>
 
+<!-- =========================
+     HEADER
+========================= -->
+
 <header class="header">
+    <div class="header-inner">
 
-    <button class="back" onclick="history.back()">‹</button>
+        <button
+            class="back-btn"
+            onclick="goBack()"
+            aria-label="Go back"
+        >
+            ←
+        </button>
 
-    <div class="header-title">
-        Deposit
+        <div class="brand">NEXORA</div>
+
+        <div class="header-spacer"></div>
+
     </div>
-
-    <div class="header-brand">
-        NEXORA
-    </div>
-
 </header>
 
 
 <main class="container">
 
-    <section class="intro">
+    <h1 class="page-title">Deposit</h1>
 
-        <h1>Deposit Assets</h1>
+    <p class="page-subtitle">
+        Select a cryptocurrency and then choose one of its supported networks.
+        Always make sure the network matches the network used when sending funds.
+    </p>
 
-        <p>
-            Select the digital asset and network you want to deposit.
-            Only verified deposit addresses assigned to your account
-            will be displayed.
-        </p>
+
+    <!-- =========================
+         COIN SELECTOR
+    ========================= -->
+
+    <section class="card">
+
+        <div class="section-label">
+            1. Select cryptocurrency
+        </div>
+
+        <div class="coin-grid" id="coinGrid"></div>
 
     </section>
 
 
-    <!-- ASSET -->
+    <!-- =========================
+         NETWORK SELECTOR
+    ========================= -->
 
-    <section class="card">
+    <section
+        class="card network-section"
+        id="networkSection"
+    >
 
-        <div class="card-title">
-            Select Asset
+        <div class="section-label">
+            2. Select network
         </div>
 
-        <button
-            class="asset-select"
-            onclick="openAssetModal()"
-        >
+        <div class="card-title" id="networkTitle">
+            Choose a network
+        </div>
+
+        <div class="card-subtitle" id="networkSubtitle">
+            Only networks available for the selected cryptocurrency are shown.
+        </div>
+
+        <div
+            class="network-list"
+            id="networkList"
+        ></div>
+
+    </section>
+
+
+    <!-- =========================
+         ADDRESS
+    ========================= -->
+
+    <section
+        class="card address-section"
+        id="addressSection"
+    >
+
+        <div class="section-label">
+            3. Deposit address
+        </div>
+
+        <div class="selected-heading">
 
             <img
-                id="assetLogo"
-                class="asset-logo"
-                src="https://cdn.jsdelivr.net/gh/madenix/Crypto-logo-cdn@main/Logos/USDT.svg"
-                alt="USDT"
+                id="selectedLogo"
+                class="selected-logo"
+                alt=""
             >
 
-            <div class="asset-info">
-
+            <div>
                 <div
-                    class="asset-name"
-                    id="assetName"
+                    id="selectedName"
+                    class="selected-name"
                 >
-                    USDT
+                    —
                 </div>
 
                 <div
-                    class="asset-description"
-                    id="assetDescription"
+                    id="selectedNetwork"
+                    class="selected-network"
                 >
-                    Tether USD
+                    —
                 </div>
-
             </div>
-
-            <div class="chevron">
-                ›
-            </div>
-
-        </button>
-
-    </section>
-
-
-    <!-- NETWORK -->
-
-    <section class="card">
-
-        <div class="card-title">
-            Select Network
-        </div>
-
-        <div class="network-grid">
-
-            <button
-                class="network active"
-                onclick="selectNetwork(this,'TRC20')"
-            >
-                <strong>TRC20</strong>
-                <span>TRON Network</span>
-            </button>
-
-            <button
-                class="network"
-                onclick="selectNetwork(this,'ERC20')"
-            >
-                <strong>ERC20</strong>
-                <span>Ethereum Network</span>
-            </button>
-
-            <button
-                class="network"
-                onclick="selectNetwork(this,'BEP20')"
-            >
-                <strong>BEP20</strong>
-                <span>BNB Smart Chain</span>
-            </button>
-
-            <button
-                class="network"
-                onclick="selectNetwork(this,'SOL')"
-            >
-                <strong>SOL</strong>
-                <span>Solana Network</span>
-            </button>
 
         </div>
 
-    </section>
 
-
-    <!-- ADDRESS -->
-
-    <section class="card">
-
-        <div class="card-title">
-            Deposit Address
+        <div
+            id="addressLoading"
+            class="empty"
+            style="display:none;"
+        >
+            <div class="loader"></div>
+            Loading deposit address...
         </div>
 
-        <div class="address-box">
 
-            <div
-                class="address-placeholder"
-                id="addressPlaceholder"
-            >
+        <div id="addressContent">
 
-                <div class="address-icon">
-                    ◇
-                </div>
-
-                <strong>
-                    Checking deposit address...
-                </strong>
-
-                <span>
-                    Please wait while we check for a
-                    verified address assigned to your account.
-                </span>
-
-            </div>
-
-
-            <div
-                class="address-ready"
-                id="addressReady"
-            >
-
-                <div
-                    class="qr-box"
-                    id="qrBox"
-                >
+            <div class="qr-wrap">
+                <div class="qr-box">
                     <img
                         id="qrImage"
                         alt="Deposit QR code"
                     >
                 </div>
+            </div>
 
-                <div
-                    class="address-text"
-                    id="addressText"
-                ></div>
 
-                <button
-                    class="copy-btn"
-                    onclick="copyAddress()"
-                >
-                    Copy Deposit Address
-                </button>
+            <div class="address-label">
+                Deposit address
+            </div>
 
-                <div
-                    class="address-meta"
-                    id="addressMeta"
-                ></div>
+            <div
+                id="addressBox"
+                class="address-box"
+            >
+                —
+            </div>
+
+            <button
+                id="copyButton"
+                class="copy-btn"
+                onclick="copyAddress()"
+            >
+                Copy Address
+            </button>
+
+
+            <div
+                id="memoBox"
+                class="memo-box"
+                style="display:none;"
+            >
+                <strong>Memo / Tag</strong>
+                <span id="memoText"></span>
+            </div>
+
+
+            <div class="warning">
+
+                <div class="warning-icon">
+                    !
+                </div>
+
+                <div>
+                    Only send the selected cryptocurrency using the selected
+                    network to this address. Sending another asset or using
+                    another network may result in permanent loss of funds.
+                </div>
 
             </div>
 
@@ -752,111 +830,36 @@ a{
     </section>
 
 
-    <!-- WARNING -->
-
-    <section class="card">
-
-        <div class="warning">
-
-            <strong>Important:</strong><br>
-
-            Only send
-            <span id="warningAsset">USDT</span>
-            using the
-            <span id="warningNetwork">TRC20</span>
-            network.
-
-            Sending an unsupported asset or using the wrong
-            network can result in permanent loss of funds.
-
-            Always verify the address and network before sending.
-
-        </div>
-
-    </section>
-
-
-    <!-- INFORMATION -->
-
-    <section class="card">
-
-        <div class="card-title">
-            Deposit Information
-        </div>
-
-        <div class="info-list">
-
-            <div class="info-row">
-                <span>Asset</span>
-                <span id="infoAsset">USDT</span>
-            </div>
-
-            <div class="info-row">
-                <span>Network</span>
-                <span
-                    class="gold"
-                    id="infoNetwork"
-                >
-                    TRC20
-                </span>
-            </div>
-
-            <div class="info-row">
-                <span>Minimum Deposit</span>
-                <span>—</span>
-            </div>
-
-            <div class="info-row">
-                <span>Network Fee</span>
-                <span>—</span>
-            </div>
-
-            <div class="info-row">
-                <span>Confirmation Requirement</span>
-                <span>—</span>
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- INSTRUCTIONS -->
+    <!-- =========================
+         DEPOSIT INFO
+    ========================= -->
 
     <section class="card">
 
         <div class="card-title">
-            How to Deposit
+            Before you deposit
         </div>
 
-        <div class="info-list">
+        <div
+            class="card-subtitle"
+            style="margin-top:8px;"
+        >
+            Make sure the asset and network selected on NEXORA exactly match
+            the asset and network selected in your external wallet.
+        </div>
 
-            <div class="info-row">
-                <span>01</span>
-                <span>Select your asset.</span>
+        <div
+            class="warning"
+            style="margin-top:13px;"
+        >
+
+            <div class="warning-icon">
+                !
             </div>
 
-            <div class="info-row">
-                <span>02</span>
-                <span>Select the correct network.</span>
-            </div>
-
-            <div class="info-row">
-                <span>03</span>
-                <span>Copy your verified deposit address.</span>
-            </div>
-
-            <div class="info-row">
-                <span>04</span>
-                <span>Send the asset from your external wallet.</span>
-            </div>
-
-            <div class="info-row">
-                <span>05</span>
-                <span>
-                    Wait for blockchain confirmations and
-                    verification.
-                </span>
+            <div>
+                Blockchain transfers are irreversible. Always verify the
+                receiving address and network before confirming your transfer.
             </div>
 
         </div>
@@ -864,20 +867,27 @@ a{
     </section>
 
 
-    <!-- HISTORY -->
+    <!-- =========================
+         DEPOSIT HISTORY
+    ========================= -->
 
     <section class="card">
 
         <div class="card-title">
-            Deposit History
+            Deposit history
         </div>
 
-        <div id="depositHistory">
+        <div class="card-subtitle">
+            Your deposit records will appear here after activity is detected.
+        </div>
 
+        <div
+            id="historyList"
+            class="history-list"
+        >
             <div class="empty">
                 Loading deposit history...
             </div>
-
         </div>
 
     </section>
@@ -885,77 +895,43 @@ a{
 </main>
 
 
-<!-- ASSET MODAL -->
-
-<div
-    class="modal"
-    id="assetModal"
->
-
-    <div class="modal-card">
-
-        <div class="modal-head">
-
-            <h3>Select Asset</h3>
-
-            <button
-                class="close"
-                onclick="closeAssetModal()"
-            >
-                ×
-            </button>
-
-        </div>
-
-        <input
-            class="search"
-            id="assetSearch"
-            placeholder="Search asset..."
-            oninput="filterAssets()"
-        >
-
-        <div id="assetList"></div>
-
-    </div>
-
-</div>
-
-
-<!-- BOTTOM NAV -->
+<!-- =========================
+     BOTTOM NAV
+========================= -->
 
 <nav class="bottom-nav">
 
     <div class="bottom-inner">
 
         <a
-            class="nav-item"
             href="dashboard.html"
+            class="nav-item"
         >
-            <span>⌂</span>
+            <div class="nav-icon">⌂</div>
             <span>Home</span>
         </a>
 
         <a
-            class="nav-item active"
             href="deposit.html"
+            class="nav-item active"
         >
-            <span>＋</span>
+            <div class="nav-icon">＋</div>
             <span>Deposit</span>
         </a>
 
         <a
-            class="nav-item"
             href="swap.html"
+            class="nav-item"
         >
-            <span>⇄</span>
+            <div class="nav-icon">⇄</div>
             <span>Exchange</span>
         </a>
 
         <a
-            class="nav-item"
             href="profile.html"
+            class="nav-item"
         >
-            <span>◯</span>
+            <div class="nav-icon">◯</div>
             <span>Profile</span>
         </a>
 
@@ -965,8 +941,8 @@ a{
 
 
 <div
-    class="toast"
     id="toast"
+    class="toast"
 ></div>
 
 
@@ -1003,145 +979,316 @@ const supabaseClient =
 const LOGO_BASE =
     "https://cdn.jsdelivr.net/gh/madenix/Crypto-logo-cdn@main/Logos/";
 
+const logoFiles = {
+
+    BTC:"BTC.svg",
+    ETH:"ETH.svg",
+    USDT:"USDT.svg",
+    BNB:"BNB.svg",
+    SOL:"SOL.svg",
+    XRP:"XRP.svg",
+    TON:"TON.svg",
+    DOGE:"DOGE.svg",
+    ADA:"ADA.svg",
+    TRX:"TRON.svg",
+    LTC:"LTC.svg",
+    AVAX:"AVAX.svg",
+    DOT:"DOT.svg",
+    LINK:"LINK.svg",
+    POL:"MATIC.svg",
+    SHIB:"SHIB.svg",
+    BCH:"BCH.svg",
+    XLM:"XLM.svg",
+    ATOM:"ATOM.svg",
+    NEAR:"NEAR.svg",
+    APT:"APT.svg",
+    ARB:"ARB.svg",
+    OP:"OP.svg",
+    USDC:"USDC.svg"
+
+};
+
+
+/* =========================================================
+   ASSET CONFIGURATION
+========================================================= */
 
 const assets = [
 
     {
         symbol:"BTC",
         name:"Bitcoin",
-        logo:"BTC.svg"
+        networks:[
+            {
+                name:"Bitcoin",
+                available:true
+            }
+        ]
     },
 
     {
         symbol:"ETH",
         name:"Ethereum",
-        logo:"ETH.svg"
+        networks:[
+            {
+                name:"Ethereum / ERC20",
+                available:true
+            }
+        ]
     },
 
     {
         symbol:"USDT",
-        name:"Tether USD",
-        logo:"USDT.svg"
+        name:"Tether",
+        networks:[
+            {
+                name:"TRC20",
+                available:true
+            },
+            {
+                name:"ERC20",
+                available:true
+            },
+            {
+                name:"BEP20",
+                available:true
+            }
+        ]
     },
 
     {
         symbol:"BNB",
         name:"BNB",
-        logo:"BNB.svg"
+        networks:[
+            {
+                name:"BNB Smart Chain",
+                available:true
+            }
+        ]
     },
 
     {
         symbol:"SOL",
         name:"Solana",
-        logo:"SOL.svg"
+        networks:[
+            {
+                name:"Solana",
+                available:true
+            }
+        ]
     },
 
     {
         symbol:"XRP",
         name:"XRP",
-        logo:"XRP.svg"
+        networks:[
+            {
+                name:"XRP Ledger",
+                available:true
+            }
+        ]
     },
 
     {
         symbol:"TON",
         name:"Toncoin",
-        logo:"TON.svg"
+        networks:[
+            {
+                name:"TON",
+                available:true
+            }
+        ]
     },
 
     {
         symbol:"DOGE",
         name:"Dogecoin",
-        logo:"DOGE.svg"
+        networks:[
+            {
+                name:"Dogecoin",
+                available:true
+            }
+        ]
     },
 
     {
         symbol:"ADA",
         name:"Cardano",
-        logo:"ADA.svg"
+        networks:[
+            {
+                name:"Cardano",
+                available:true
+            }
+        ]
     },
 
     {
         symbol:"TRX",
         name:"TRON",
-        logo:"TRON.svg"
+        networks:[
+            {
+                name:"TRON",
+                available:true
+            }
+        ]
     },
 
     {
         symbol:"LTC",
         name:"Litecoin",
-        logo:"LTC.svg"
+        networks:[
+            {
+                name:"Litecoin",
+                available:true
+            }
+        ]
     },
 
     {
         symbol:"AVAX",
         name:"Avalanche",
-        logo:"AVAX.svg"
+        networks:[
+            {
+                name:"Avalanche C-Chain",
+                available:true
+            }
+        ]
     },
 
     {
         symbol:"DOT",
         name:"Polkadot",
-        logo:"DOT.svg"
+        networks:[
+            {
+                name:"Polkadot",
+                available:true
+            }
+        ]
     },
 
     {
         symbol:"LINK",
         name:"Chainlink",
-        logo:"LINK.svg"
+        networks:[
+            {
+                name:"Ethereum / ERC20",
+                available:true
+            }
+        ]
     },
 
     {
         symbol:"POL",
         name:"Polygon",
-        logo:"MATIC.svg"
+        networks:[
+            {
+                name:"Polygon",
+                available:true
+            }
+        ]
     },
 
     {
         symbol:"SHIB",
         name:"Shiba Inu",
-        logo:"SHIB.svg"
+        networks:[
+            {
+                name:"Ethereum / ERC20",
+                available:true
+            }
+        ]
     },
 
     {
         symbol:"BCH",
         name:"Bitcoin Cash",
-        logo:"BCH.svg"
+        networks:[
+            {
+                name:"Bitcoin Cash",
+                available:true
+            }
+        ]
     },
 
     {
         symbol:"XLM",
         name:"Stellar",
-        logo:"XLM.svg"
+        networks:[
+            {
+                name:"Stellar",
+                available:true
+            }
+        ]
     },
 
     {
         symbol:"ATOM",
         name:"Cosmos",
-        logo:"ATOM.svg"
+        networks:[
+            {
+                name:"Cosmos",
+                available:true
+            }
+        ]
     },
 
     {
         symbol:"NEAR",
         name:"NEAR Protocol",
-        logo:"NEAR.svg"
+        networks:[
+            {
+                name:"NEAR",
+                available:true
+            }
+        ]
     },
 
     {
         symbol:"APT",
         name:"Aptos",
-        logo:"APT.svg"
+        networks:[
+            {
+                name:"Aptos",
+                available:true
+            }
+        ]
     },
 
     {
         symbol:"ARB",
         name:"Arbitrum",
-        logo:"ARB.svg"
+        networks:[
+            {
+                name:"Arbitrum One",
+                available:false
+            }
+        ]
     },
 
     {
         symbol:"OP",
         name:"Optimism",
-        logo:"OP.svg"
+        networks:[
+            {
+                name:"Optimism",
+                available:false
+            }
+        ]
+    },
+
+    {
+        symbol:"USDC",
+        name:"USD Coin",
+        networks:[
+            {
+                name:"ERC20",
+                available:true
+            },
+            {
+                name:"BEP20",
+                available:true
+            }
+        ]
     }
 
 ];
@@ -1152,41 +1299,331 @@ const assets = [
 ========================================================= */
 
 let currentUser = null;
-
-let selectedAsset = "USDT";
-
-let selectedNetwork = "TRC20";
-
-let currentDepositAddress = null;
+let selectedAsset = null;
+let selectedNetwork = null;
+let selectedAddress = null;
 
 
 /* =========================================================
-   AUTH
+   DOM HELPERS
 ========================================================= */
 
-async function checkAuth(){
+const $ = id =>
+    document.getElementById(id);
 
-    const {
-        data:{
-            session
-        },
-        error
-    } =
-        await supabaseClient.auth.getSession();
 
-    if(error){
+/* =========================================================
+   TOAST
+========================================================= */
 
-        console.error(error);
+let toastTimer = null;
 
-        showToast(
-            "Unable to verify your session."
-        );
+function showToast(message){
 
-        return;
+    const toast = $("toast");
+
+    toast.textContent = message;
+
+    toast.classList.add("show");
+
+    clearTimeout(toastTimer);
+
+    toastTimer = setTimeout(() => {
+
+        toast.classList.remove("show");
+
+    },2500);
+
+}
+
+
+/* =========================================================
+   BACK
+========================================================= */
+
+function goBack(){
+
+    if(document.referrer){
+
+        history.back();
+
+    }else{
+
+        window.location.href = "dashboard.html";
 
     }
 
-    if(!session){
+}
+
+
+/* =========================================================
+   RENDER COINS
+========================================================= */
+
+function renderCoins(){
+
+    const grid = $("coinGrid");
+
+    grid.innerHTML = "";
+
+    assets.forEach(asset => {
+
+        const button =
+            document.createElement("button");
+
+        button.type = "button";
+
+        button.className = "coin-btn";
+
+        button.dataset.symbol =
+            asset.symbol;
+
+        const hasAvailableNetwork =
+            asset.networks.some(
+                network => network.available
+            );
+
+        button.innerHTML = `
+
+            <img
+                class="coin-logo"
+                src="${LOGO_BASE + logoFiles[asset.symbol]}"
+                alt="${asset.symbol}"
+                onerror="this.style.visibility='hidden'"
+            >
+
+            <div class="coin-info">
+
+                <div class="coin-name">
+                    ${escapeHtml(asset.name)}
+                </div>
+
+                <div class="coin-symbol">
+                    ${escapeHtml(asset.symbol)}
+                </div>
+
+                ${
+                    !hasAvailableNetwork
+                    ?
+                    `<span class="coming-badge">
+                        Coming Soon
+                    </span>`
+                    :
+                    ""
+                }
+
+            </div>
+        `;
+
+        button.addEventListener(
+            "click",
+            () => selectAsset(asset)
+        );
+
+        grid.appendChild(button);
+
+    });
+
+}
+
+
+/* =========================================================
+   SELECT ASSET
+========================================================= */
+
+function selectAsset(asset){
+
+    selectedAsset = asset;
+    selectedNetwork = null;
+    selectedAddress = null;
+
+    document
+        .querySelectorAll(".coin-btn")
+        .forEach(button => {
+
+            button.classList.toggle(
+                "active",
+                button.dataset.symbol === asset.symbol
+            );
+
+        });
+
+    renderNetworks(asset);
+
+    hideAddress();
+
+    $("networkSection")
+        .classList.add("show");
+
+    $("networkTitle").textContent =
+        `${asset.name} (${asset.symbol})`;
+
+    $("networkSubtitle").textContent =
+        "Select one of the networks available for this cryptocurrency.";
+
+    $("networkSection")
+        .scrollIntoView({
+            behavior:"smooth",
+            block:"start"
+        });
+
+}
+
+
+/* =========================================================
+   RENDER NETWORKS
+========================================================= */
+
+function renderNetworks(asset){
+
+    const list = $("networkList");
+
+    list.innerHTML = "";
+
+    asset.networks.forEach(network => {
+
+        const button =
+            document.createElement("button");
+
+        button.type = "button";
+
+        button.className =
+            "network-btn" +
+            (!network.available ? " coming" : "");
+
+        button.dataset.network =
+            network.name;
+
+        button.innerHTML = `
+
+            <div class="network-left">
+
+                <div class="network-icon">
+                    ${network.available ? "✓" : "•"}
+                </div>
+
+                <div>
+
+                    <div class="network-name">
+                        ${escapeHtml(network.name)}
+                    </div>
+
+                    <div class="network-note">
+                        ${
+                            network.available
+                            ? "Available for deposit"
+                            : "Deposit currently unavailable"
+                        }
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="network-status">
+                ${
+                    network.available
+                    ? "Available"
+                    : "Coming Soon"
+                }
+            </div>
+
+        `;
+
+        if(network.available){
+
+            button.addEventListener(
+                "click",
+                () => selectNetwork(asset,network)
+            );
+
+        }else{
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    showToast(
+                        `${asset.symbol} on ${network.name} is coming soon.`
+                    );
+
+                }
+            );
+
+        }
+
+        list.appendChild(button);
+
+    });
+
+}
+
+
+/* =========================================================
+   SELECT NETWORK
+========================================================= */
+
+async function selectNetwork(asset,network){
+
+    selectedAsset = asset;
+    selectedNetwork = network;
+    selectedAddress = null;
+
+    document
+        .querySelectorAll(".network-btn")
+        .forEach(button => {
+
+            button.classList.toggle(
+                "active",
+                button.dataset.network === network.name
+            );
+
+        });
+
+    $("selectedLogo").src =
+        LOGO_BASE + logoFiles[asset.symbol];
+
+    $("selectedName").textContent =
+        `${asset.name} (${asset.symbol})`;
+
+    $("selectedNetwork").textContent =
+        network.name;
+
+    $("addressSection")
+        .classList.add("show");
+
+    $("addressContent")
+        .style.display = "none";
+
+    $("addressLoading")
+        .style.display = "block";
+
+    $("addressSection")
+        .scrollIntoView({
+            behavior:"smooth",
+            block:"start"
+        });
+
+    await loadDepositAddress(
+        asset.symbol,
+        network.name
+    );
+
+}
+
+
+/* =========================================================
+   LOAD ADDRESS FROM SUPABASE
+========================================================= */
+
+async function loadDepositAddress(
+    asset,
+    network
+){
+
+    if(!currentUser){
+
+        showToast("Please sign in again.");
 
         window.location.href =
             "signin.html";
@@ -1195,198 +1632,261 @@ async function checkAuth(){
 
     }
 
-    currentUser =
-        session.user;
+    try{
 
-    await loadDepositAddress();
-
-    await loadDepositHistory();
-
-}
-
-
-/* =========================================================
-   LOAD ADDRESS
-========================================================= */
-
-async function loadDepositAddress(){
-
-    const placeholder =
-        document.getElementById(
-            "addressPlaceholder"
-        );
-
-    const ready =
-        document.getElementById(
-            "addressReady"
-        );
-
-    placeholder.style.display =
-        "flex";
-
-    ready.style.display =
-        "none";
-
-    placeholder.innerHTML = `
-
-        <div class="address-icon">
-            ◇
-        </div>
-
-        <strong>
-            Checking deposit address...
-        </strong>
-
-        <span>
-            Please wait while we check for a
-            verified address assigned to your account.
-        </span>
-
-    `;
-
-
-    const {
-        data,
-        error
-    } =
+        const {
+            data,
+            error
+        } =
         await supabaseClient
+
             .from("deposit_addresses")
+
             .select(`
                 id,
-                user_id,
                 asset,
                 network,
                 address,
                 memo_tag,
                 is_active
             `)
+
             .eq("user_id",currentUser.id)
-            .eq("asset",selectedAsset)
-            .eq("network",selectedNetwork)
+
+            .eq("asset",asset)
+
+            .eq("network",network)
+
             .eq("is_active",true)
-            .maybeSingle();
+
+            .limit(1);
+
+        if(error){
+
+            console.error(
+                "Deposit address error:",
+                error
+            );
+
+            throw error;
+
+        }
+
+        $("addressLoading")
+            .style.display = "none";
+
+        $("addressContent")
+            .style.display = "block";
+
+        if(!data || data.length === 0){
+
+            showComingSoonAddress(
+                asset,
+                network
+            );
+
+            return;
+
+        }
+
+        const record = data[0];
+
+        if(!record.address){
+
+            showComingSoonAddress(
+                asset,
+                network
+            );
+
+            return;
+
+        }
+
+        selectedAddress =
+            record.address;
+
+        $("addressBox")
+            .textContent =
+            record.address;
 
 
-    if(error){
+        /* QR CODE */
 
-        console.error(
-            "Deposit address error:",
-            error
+        const qrData =
+            encodeURIComponent(
+                record.address
+            );
+
+        $("qrImage").src =
+            `https://api.qrserver.com/v1/create-qr-code/?size=190x190&data=${qrData}`;
+
+
+        /* MEMO / TAG */
+
+        if(record.memo_tag){
+
+            $("memoBox")
+                .style.display = "block";
+
+            $("memoText")
+                .textContent =
+                record.memo_tag;
+
+        }else{
+
+            $("memoBox")
+                .style.display = "none";
+
+        }
+
+
+        $("copyButton")
+            .style.display = "block";
+
+    }catch(error){
+
+        console.error(error);
+
+        $("addressLoading")
+            .style.display = "none";
+
+        $("addressContent")
+            .style.display = "block";
+
+        $("qrImage").removeAttribute("src");
+
+        $("addressBox")
+            .textContent =
+            "Unable to load deposit address.";
+
+        $("copyButton")
+            .style.display = "none";
+
+        $("memoBox")
+            .style.display = "none";
+
+        showToast(
+            "Unable to load the deposit address."
         );
 
-        placeholder.innerHTML = `
-
-            <div class="address-icon">
-                !
-            </div>
-
-            <strong>
-                Unable to load deposit address
-            </strong>
-
-            <span>
-                Please try again later.
-            </span>
-
-        `;
-
-        return;
-
     }
-
-
-    if(!data){
-
-        currentDepositAddress = null;
-
-        placeholder.innerHTML = `
-
-            <div class="address-icon">
-                ◇
-            </div>
-
-            <strong>
-                Deposit address unavailable
-            </strong>
-
-            <span>
-                No verified ${selectedAsset}
-                ${selectedNetwork}
-                deposit address has been assigned
-                to your account yet.
-            </span>
-
-        `;
-
-        return;
-
-    }
-
-
-    currentDepositAddress =
-        data;
-
-
-    document
-        .getElementById("addressText")
-        .textContent =
-        data.address;
-
-
-    let meta =
-        `${data.asset} • ${data.network}`;
-
-    if(data.memo_tag){
-
-        meta +=
-            ` • Memo/Tag: ${data.memo_tag}`;
-
-    }
-
-
-    document
-        .getElementById("addressMeta")
-        .textContent =
-        meta;
-
-
-    placeholder.style.display =
-        "none";
-
-    ready.style.display =
-        "block";
-
-
-    generateQR(data.address);
 
 }
 
 
 /* =========================================================
-   QR
+   COMING SOON
 ========================================================= */
 
-function generateQR(address){
+function showComingSoonAddress(
+    asset,
+    network
+){
 
-    const qrBox =
-        document.getElementById(
-            "qrBox"
+    selectedAddress = null;
+
+    $("qrImage")
+        .removeAttribute("src");
+
+    $("addressBox")
+        .textContent =
+        "Coming Soon";
+
+    $("copyButton")
+        .style.display = "none";
+
+    $("memoBox")
+        .style.display = "none";
+
+}
+
+
+/* =========================================================
+   HIDE ADDRESS
+========================================================= */
+
+function hideAddress(){
+
+    $("addressSection")
+        .classList.remove("show");
+
+    $("addressLoading")
+        .style.display = "none";
+
+    $("addressContent")
+        .style.display = "none";
+
+    $("qrImage")
+        .removeAttribute("src");
+
+    $("addressBox")
+        .textContent = "—";
+
+    $("copyButton")
+        .style.display = "block";
+
+    $("memoBox")
+        .style.display = "none";
+
+}
+
+
+/* =========================================================
+   COPY ADDRESS
+========================================================= */
+
+async function copyAddress(){
+
+    if(!selectedAddress){
+
+        showToast(
+            "No deposit address is available."
         );
 
-    const qrImage =
-        document.getElementById(
-            "qrImage"
+        return;
+
+    }
+
+    try{
+
+        await navigator.clipboard.writeText(
+            selectedAddress
         );
 
+        showToast(
+            "Deposit address copied."
+        );
 
-    qrImage.src =
-        "https://api.qrserver.com/v1/create-qr-code/?size=190x190&data="
-        +
-        encodeURIComponent(address);
+    }catch(error){
 
+        /* Fallback for older mobile browsers */
 
-    qrBox.style.display =
-        "flex";
+        const textarea =
+            document.createElement("textarea");
+
+        textarea.value =
+            selectedAddress;
+
+        textarea.style.position =
+            "fixed";
+
+        textarea.style.opacity = "0";
+
+        document.body.appendChild(
+            textarea
+        );
+
+        textarea.select();
+
+        document.execCommand("copy");
+
+        textarea.remove();
+
+        showToast(
+            "Deposit address copied."
+        );
+
+    }
 
 }
 
@@ -1397,24 +1897,26 @@ function generateQR(address){
 
 async function loadDepositHistory(){
 
-    const container =
-        document.getElementById(
-            "depositHistory"
-        );
+    const history =
+        $("historyList");
 
-
-    container.innerHTML =
-        `<div class="empty">
+    history.innerHTML = `
+        <div class="empty">
+            <div class="loader"></div>
             Loading deposit history...
-        </div>`;
+        </div>
+    `;
 
+    try{
 
-    const {
-        data,
-        error
-    } =
+        const {
+            data,
+            error
+        } =
         await supabaseClient
+
             .from("deposits")
+
             .select(`
                 id,
                 asset,
@@ -1422,429 +1924,187 @@ async function loadDepositHistory(){
                 amount,
                 credited_amount,
                 status,
-                created_at,
-                detected_at,
-                confirmed_at
+                created_at
             `)
-            .eq("user_id",currentUser.id)
-            .order("created_at",{
-                ascending:false
-            })
+
+            .eq(
+                "user_id",
+                currentUser.id
+            )
+
+            .order(
+                "created_at",
+                {
+                    ascending:false
+                }
+            )
+
             .limit(20);
 
-
-    if(error){
-
-        console.error(
-            "Deposit history error:",
-            error
-        );
-
-        container.innerHTML =
-            `<div class="empty">
-                Unable to load deposit history.
-            </div>`;
-
-        return;
-
-    }
-
-
-    if(!data || data.length === 0){
-
-        container.innerHTML =
-            `<div class="empty">
-                No deposit transactions yet.
-            </div>`;
-
-        return;
-
-    }
-
-
-    container.innerHTML = "";
-
-
-    data.forEach(deposit => {
-
-        const item =
-            document.createElement("div");
-
-        item.className =
-            "deposit-item";
-
-
-        const amount =
-            deposit.amount !== null
-                ? `${deposit.amount} ${deposit.asset}`
-                : `— ${deposit.asset}`;
-
-
-        let statusClass = "";
-
-        if(deposit.status === "CONFIRMED"){
-            statusClass = "confirmed";
-        }
-
-        if(
-            deposit.status === "REJECTED" ||
-            deposit.status === "REFUNDED"
-        ){
-            statusClass = "rejected";
-        }
-
-
-        const date =
-            new Date(
-                deposit.created_at
-            ).toLocaleString();
-
-
-        item.innerHTML = `
-
-            <div class="deposit-top">
-
-                <div class="deposit-asset">
-                    ${deposit.asset}
-                </div>
-
-                <div class="deposit-amount">
-                    ${amount}
-                </div>
-
-            </div>
-
-            <div class="deposit-details">
-
-                <span>
-                    ${deposit.network}
-                </span>
-
-                <span>
-                    ${date}
-                </span>
-
-            </div>
-
-            <span class="status ${statusClass}">
-                ${deposit.status}
-            </span>
-
-        `;
-
-
-        container.appendChild(item);
-
-    });
-
-}
-
-
-/* =========================================================
-   ASSET MODAL
-========================================================= */
-
-function openAssetModal(){
-
-    document
-        .getElementById("assetModal")
-        .classList.add("show");
-
-    document
-        .getElementById("assetSearch")
-        .value = "";
-
-    renderAssets(assets);
-
-}
-
-
-function closeAssetModal(){
-
-    document
-        .getElementById("assetModal")
-        .classList.remove("show");
-
-}
-
-
-function renderAssets(list){
-
-    const container =
-        document.getElementById(
-            "assetList"
-        );
-
-    container.innerHTML = "";
-
-
-    list.forEach(asset => {
-
-        const button =
-            document.createElement("button");
-
-        button.className =
-            "asset-option";
-
-
-        button.innerHTML = `
-
-            <img
-                class="asset-logo"
-                src="${LOGO_BASE + asset.logo}"
-                alt="${asset.symbol}"
-            >
-
-            <div>
-
-                <div class="asset-name">
-                    ${asset.symbol}
-                </div>
-
-                <div class="asset-description">
-                    ${asset.name}
-                </div>
-
-            </div>
-
-        `;
-
-
-        button.onclick =
-            () => chooseAsset(asset);
-
-
-        container.appendChild(button);
-
-    });
-
-}
-
-
-function filterAssets(){
-
-    const query =
-        document
-            .getElementById(
-                "assetSearch"
-            )
-            .value
-            .toLowerCase()
-            .trim();
-
-
-    const filtered =
-        assets.filter(asset =>
-
-            asset.symbol
-                .toLowerCase()
-                .includes(query)
-
-            ||
-
-            asset.name
-                .toLowerCase()
-                .includes(query)
-
-        );
-
-
-    renderAssets(filtered);
-
-}
-
-
-async function chooseAsset(asset){
-
-    selectedAsset =
-        asset.symbol;
-
-
-    document
-        .getElementById("assetLogo")
-        .src =
-        LOGO_BASE + asset.logo;
-
-
-    document
-        .getElementById("assetName")
-        .textContent =
-        asset.symbol;
-
-
-    document
-        .getElementById("assetDescription")
-        .textContent =
-        asset.name;
-
-
-    document
-        .getElementById("warningAsset")
-        .textContent =
-        asset.symbol;
-
-
-    document
-        .getElementById("infoAsset")
-        .textContent =
-        asset.symbol;
-
-
-    closeAssetModal();
-
-
-    await loadDepositAddress();
-
-}
-
-
-/* =========================================================
-   NETWORK
-========================================================= */
-
-async function selectNetwork(
-    button,
-    network
-){
-
-    document
-        .querySelectorAll(".network")
-        .forEach(item =>
-            item.classList.remove("active")
-        );
-
-
-    button.classList.add("active");
-
-
-    selectedNetwork =
-        network;
-
-
-    document
-        .getElementById("warningNetwork")
-        .textContent =
-        network;
-
-
-    document
-        .getElementById("infoNetwork")
-        .textContent =
-        network;
-
-
-    await loadDepositAddress();
-
-}
-
-
-/* =========================================================
-   COPY
-========================================================= */
-
-async function copyAddress(){
-
-    if(
-        !currentDepositAddress ||
-        !currentDepositAddress.address
-    ){
-
-        showToast(
-            "No verified deposit address is available."
-        );
-
-        return;
-
-    }
-
-
-    try{
-
-        await navigator.clipboard.writeText(
-            currentDepositAddress.address
-        );
-
-
-        showToast(
-            "Deposit address copied."
-        );
-
-
-    }catch(error){
-
-        console.error(error);
-
-        showToast(
-            "Unable to copy address."
-        );
-
-    }
-
-}
-
-
-/* =========================================================
-   TOAST
-========================================================= */
-
-let toastTimer;
-
-function showToast(message){
-
-    const toast =
-        document.getElementById(
-            "toast"
-        );
-
-
-    toast.textContent =
-        message;
-
-
-    toast.classList.add(
-        "show"
-    );
-
-
-    clearTimeout(
-        toastTimer
-    );
-
-
-    toastTimer =
-        setTimeout(() => {
-
-            toast.classList.remove(
-                "show"
+        if(error){
+
+            console.error(
+                "History error:",
+                error
             );
 
-        },3000);
+            throw error;
 
-}
+        }
 
+        if(!data || data.length === 0){
 
-/* =========================================================
-   AUTH STATE
-========================================================= */
-
-supabaseClient.auth.onAuthStateChange(
-    async (event,session) => {
-
-        if(
-            event === "SIGNED_OUT"
-        ){
-
-            window.location.href =
-                "signin.html";
+            history.innerHTML = `
+                <div class="empty">
+                    No deposit activity yet.
+                </div>
+            `;
 
             return;
 
         }
 
-        if(session){
+        history.innerHTML = "";
 
-            currentUser =
-                session.user;
+        data.forEach(deposit => {
+
+            const item =
+                document.createElement("div");
+
+            item.className =
+                "history-item";
+
+            const amount =
+                deposit.credited_amount ??
+                deposit.amount;
+
+            const date =
+                deposit.created_at
+                ?
+                new Date(
+                    deposit.created_at
+                ).toLocaleString()
+                :
+                "—";
+
+            item.innerHTML = `
+
+                <div class="history-top">
+
+                    <div class="history-asset">
+                        ${escapeHtml(
+                            deposit.asset || "—"
+                        )}
+                    </div>
+
+                    <div class="history-status">
+                        ${escapeHtml(
+                            deposit.status || "PENDING"
+                        )}
+                    </div>
+
+                </div>
+
+                <div class="history-meta">
+                    ${escapeHtml(
+                        deposit.network || "—"
+                    )}
+                </div>
+
+                <div class="history-amount">
+                    ${
+                        amount !== null &&
+                        amount !== undefined
+                        ?
+                        escapeHtml(
+                            String(amount)
+                        ) +
+                        " " +
+                        escapeHtml(
+                            deposit.asset || ""
+                        )
+                        :
+                        "Amount pending"
+                    }
+                </div>
+
+                <div class="history-date">
+                    ${escapeHtml(date)}
+                </div>
+
+            `;
+
+            history.appendChild(item);
+
+        });
+
+    }catch(error){
+
+        console.error(error);
+
+        history.innerHTML = `
+            <div class="empty">
+                Unable to load deposit history.
+            </div>
+        `;
+
+    }
+
+}
+
+
+/* =========================================================
+   AUTH CHECK
+========================================================= */
+
+async function checkAuth(){
+
+    const {
+        data,
+        error
+    } =
+    await supabaseClient.auth.getSession();
+
+    if(error){
+
+        console.error(
+            "Session error:",
+            error
+        );
+
+    }
+
+    const session =
+        data?.session;
+
+    if(!session){
+
+        window.location.href =
+            "signin.html";
+
+        return false;
+
+    }
+
+    currentUser =
+        session.user;
+
+    return true;
+
+}
+
+
+/* =========================================================
+   AUTH STATE CHANGE
+========================================================= */
+
+supabaseClient.auth.onAuthStateChange(
+    (event,session) => {
+
+        if(event === "SIGNED_OUT"){
+
+            window.location.href =
+                "signin.html";
 
         }
 
@@ -1853,10 +2113,46 @@ supabaseClient.auth.onAuthStateChange(
 
 
 /* =========================================================
+   HTML ESCAPE
+========================================================= */
+
+function escapeHtml(value){
+
+    return String(value)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+async function initialize(){
+
+    const authenticated =
+        await checkAuth();
+
+    if(!authenticated){
+        return;
+    }
+
+    renderCoins();
+
+    await loadDepositHistory();
+
+}
+
+
+/* =========================================================
    START
 ========================================================= */
 
-checkAuth();
+initialize();
 
 </script>
 
