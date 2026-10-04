@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXORA — Transactions</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+  --bg:#07111f;
+  --bg2:#0a1728;
+  --card:#0d1b2d;
+  --gold:#d6ad55;
+  --gold2:#f0cf79;
+  --text:#f5f7fa;
+  --muted:#8d9bad;
+  --border:rgba(214,173,85,.18);
+  --green:#55c98a;
+  --red:#ef6262;
+}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  min-height:100vh;
+  background:var(--bg);
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  padding-bottom:90px;
+}
+
+button{
+  font:inherit;
+  cursor:pointer;
+}
+
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+/* =========================
+   TOPBAR
+========================= */
+
+.topbar{
+  height:68px;
+  position:sticky;
+  top:0;
+  z-index:1000;
+  background:rgba(7,17,31,.96);
+  border-bottom:1px solid rgba(255,255,255,.06);
+  backdrop-filter:blur(16px);
+}
+
+.topbar-inner{
+  max-width:760px;
+  height:68px;
+  margin:auto;
+  padding:0 18px;
+  display:grid;
+  grid-template-columns:44px 1fr 44px;
+  align-items:center;
+}
+
+.menu-btn{
+  width:40px;
+  height:40px;
+  border:0;
+  border-radius:12px;
+  background:transparent;
+  color:var(--text);
+  font-size:23px;
+}
+
+.logo{
+  justify-self:center;
+  font-size:22px;
+  font-weight:800;
+  letter-spacing:1.8px;
+}
+
+.logo span{
+  color:var(--gold);
+}
+
+.profile-mini{
+  justify-self:end;
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  border:1px solid var(--border);
+  background:linear-gradient(145deg,#182a40,#0b1727);
+  color:var(--gold2);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:12px;
+  font-weight:800;
+}
+
+/* =========================
+   DRAWER
+========================= */
+
+.drawer-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.58);
+  z-index:1999;
+  display:none;
+}
+
+.drawer-overlay.show{
+  display:block;
+}
+
+.drawer{
+  position:fixed;
+  top:0;
+  left:-300px;
+  width:285px;
+  max-width:86vw;
+  height:100%;
+  background:#091625;
+  border-right:1px solid var(--border);
+  z-index:2000;
+  transition:left .25s ease;
+  padding:22px 16px;
+  overflow-y:auto;
+}
+
+.drawer.show{
+  left:0;
+}
+
+.drawer-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:4px 4px 22px;
+}
+
+.drawer-logo{
+  font-size:21px;
+  font-weight:800;
+  letter-spacing:1.5px;
+}
+
+.drawer-logo span{
+  color:var(--gold);
+}
+
+.drawer-close{
+  width:38px;
+  height:38px;
+  border:0;
+  border-radius:11px;
+  background:rgba(255,255,255,.05);
+  color:var(--text);
+  font-size:20px;
+}
+
+.drawer-nav{
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+}
+
+.drawer-link{
+  min-height:48px;
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  gap:13px;
+  padding:0 14px;
+  color:#c9d1dc;
+  font-size:14px;
+}
+
+.drawer-link.active,
+.drawer-link:hover{
+  background:rgba(214,173,85,.10);
+  color:var(--gold2);
+}
+
+.drawer-icon{
+  width:22px;
+  text-align:center;
+  font-size:17px;
+}
+
+.drawer-divider{
+  height:1px;
+  background:rgba(255,255,255,.06);
+  margin:10px 5px;
+}
+
+/* =========================
+   PAGE
+========================= */
+
+.page{
+  width:100%;
+  max-width:760px;
+  margin:auto;
+  padding:22px 18px 30px;
+}
+
+.page-title{
+  font-size:26px;
+  font-weight:800;
+  margin-bottom:7px;
+}
+
+.page-subtitle{
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.6;
+  margin-bottom:20px;
+}
+
+/* =========================
+   FILTER
+========================= */
+
+.filter-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-bottom:16px;
+}
+
+.filter-btn{
+  height:45px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,.08);
+  background:#0a1829;
+  color:var(--muted);
+  font-size:12px;
+  font-weight:700;
+}
+
+.filter-btn.active{
+  color:var(--gold2);
+  border-color:var(--gold);
+  background:rgba(214,173,85,.08);
+}
+
+/* =========================
+   CARD
+========================= */
+
+.card{
+  background:linear-gradient(145deg,var(--card),var(--bg2));
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:16px;
+  margin-bottom:15px;
+}
+
+/* =========================
+   TRANSACTIONS
+========================= */
+
+.transaction-list{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.transaction{
+  background:#091726;
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:14px;
+  padding:14px;
+}
+
+.transaction-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.transaction-left{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  min-width:0;
+}
+
+.coin{
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  object-fit:contain;
+  flex-shrink:0;
+}
+
+.transaction-name{
+  font-size:13px;
+  font-weight:750;
+}
+
+.transaction-network{
+  color:var(--muted);
+  font-size:10px;
+  margin-top:3px;
+}
+
+.transaction-right{
+  text-align:right;
+  flex-shrink:0;
+}
+
+.transaction-amount{
+  font-size:13px;
+  font-weight:750;
+}
+
+.transaction-date{
+  color:var(--muted);
+  font-size:10px;
+  margin-top:4px;
+}
+
+.transaction-bottom{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-top:12px;
+  padding-top:10px;
+  border-top:1px solid rgba(255,255,255,.06);
+}
+
+.transaction-id{
+  color:#627187;
+  font-size:9px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.status{
+  font-size:9px;
+  font-weight:800;
+  padding:5px 8px;
+  border-radius:999px;
+  background:rgba(214,173,85,.10);
+  color:var(--gold2);
+}
+
+.status.completed{
+  background:rgba(85,201,138,.09);
+  color:var(--green);
+}
+
+.status.rejected,
+.status.cancelled{
+  background:rgba(239,98,98,.09);
+  color:var(--red);
+}
+
+.status.processing,
+.status.approved,
+.status.under_review{
+  background:rgba(214,173,85,.10);
+  color:var(--gold2);
+}
+
+.empty{
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+  padding:30px 12px;
+}
+
+.loading{
+  text-align:center;
+  color:var(--muted);
+  padding:30px 10px;
+  font-size:13px;
+}
+
+/* =========================
+   BOTTOM NAV
+========================= */
+
+.bottom-nav{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  height:70px;
+  background:rgba(7,17,31,.97);
+  border-top:1px solid rgba(255,255,255,.07);
+  z-index:1000;
+  backdrop-filter:blur(18px);
+}
+
+.bottom-nav-inner{
+  max-width:760px;
+  height:70px;
+  margin:auto;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+}
+
+.bottom-link{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:5px;
+  color:#718094;
+  font-size:10px;
+  font-weight:650;
+}
+
+.nav-icon{
+  font-size:19px;
+  line-height:1;
+}
+
+.bottom-link.active{
+  color:var(--gold2);
+}
+
+@media(max-width:420px){
+
+  .page{
+    padding-left:14px;
+    padding-right:14px;
+  }
+
+}
+</style>
+</head>
+
+<body>
+
+<!-- TOPBAR -->
+
+<header class="topbar">
+
+  <div class="topbar-inner">
+
+    <button
+      class="menu-btn"
+      id="menuBtn"
+      aria-label="Open menu"
+    >
+      ☰
+    </button>
+
+    <a href="dashboard.html" class="logo">
+      NEX<span>ORA</span>
+    </a>
+
+    <div
+      class="profile-mini"
+      id="profileInitials"
+    >
+      —
+    </div>
+
+  </div>
+
+</header>
+
+
+<!-- DRAWER -->
+
+<div
+  class="drawer-overlay"
+  id="drawerOverlay"
+></div>
+
+<aside
+  class="drawer"
+  id="drawer"
+>
+
+  <div class="drawer-head">
+
+    <div class="drawer-logo">
+      NEX<span>ORA</span>
+    </div>
+
+    <button
+      class="drawer-close"
+      id="drawerClose"
+    >
+      ×
+    </button>
+
+  </div>
+
+
+  <nav class="drawer-nav">
+
+    <a class="drawer-link" href="dashboard.html">
+      <span class="drawer-icon">⌂</span>
+      <span>Portfolio</span>
+    </a>
+
+    <a class="drawer-link" href="deposit.html">
+      <span class="drawer-icon">＋</span>
+      <span>Deposit</span>
+    </a>
+
+    <a class="drawer-link" href="withdraw.html">
+      <span class="drawer-icon">↗</span>
+      <span>Withdraw</span>
+    </a>
+
+    <a class="drawer-link active" href="transactions.html">
+      <span class="drawer-icon">≡</span>
+      <span>Transactions</span>
+    </a>
+
+    <a class="drawer-link" href="investments.html">
+      <span class="drawer-icon">◈</span>
+      <span>My Investments</span>
+    </a>
+
+    <a class="drawer-link" href="referrals.html">
+      <span class="drawer-icon">♧</span>
+      <span>Referrals</span>
+    </a>
+
+    <a class="drawer-link" href="profile.html">
+      <span class="drawer-icon">○</span>
+      <span>Profile</span>
+    </a>
+
+    <a class="drawer-link" href="support.html">
+      <span class="drawer-icon">?</span>
+      <span>Support</span>
+    </a>
+
+    <a class="drawer-link" href="notifications.html">
+      <span class="drawer-icon">♢</span>
+      <span>Notifications</span>
+    </a>
+
+    <div class="drawer-divider"></div>
+
+    <a class="drawer-link" href="#" id="logoutBtn">
+      <span class="drawer-icon">↪</span>
+      <span>Logout</span>
+    </a>
+
+  </nav>
+
+</aside>
+
+
+<!-- MAIN -->
+
+<main class="page">
+
+  <h1 class="page-title">
+    Transactions
+  </h1>
+
+  <p class="page-subtitle">
+    View your account activity and transaction status.
+  </p>
+
+
+  <!-- FILTER -->
+
+  <div class="filter-row">
+
+    <button
+      class="filter-btn active"
+      id="allFilter"
+    >
+      All
+    </button>
+
+    <button
+      class="filter-btn"
+      id="withdrawalFilter"
+    >
+      Withdrawals
+    </button>
+
+  </div>
+
+
+  <!-- TRANSACTIONS -->
+
+  <section class="card">
+
+    <div
+      class="transaction-list"
+      id="transactionList"
+    >
+
+      <div class="loading">
+        Loading transactions...
+      </div>
+
+    </div>
+
+  </section>
+
+</main>
+
+
+<!-- BOTTOM NAV -->
+
+<nav class="bottom-nav">
+
+  <div class="bottom-nav-inner">
+
+    <a
+      href="dashboard.html"
+      class="bottom-link"
+    >
+      <span class="nav-icon">⌂</span>
+      <span>Portfolio</span>
+    </a>
+
+    <a
+      href="deposit.html"
+      class="bottom-link"
+    >
+      <span class="nav-icon">＋</span>
+      <span>Deposit</span>
+    </a>
+
+    <a
+      href="transactions.html"
+      class="bottom-link active"
+    >
+      <span class="nav-icon">≡</span>
+      <span>History</span>
+    </a>
+
+    <a
+      href="profile.html"
+      class="bottom-link"
+    >
+      <span class="nav-icon">○</span>
+      <span>Account</span>
+    </a>
+
+  </div>
+
+</nav>
+
+
+<script>
+
+/* =====================================================
+   SUPABASE
+===================================================== */
+
+const SUPABASE_URL =
+  "https://rihvvwktvgytbqzazage.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
+
+const db =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+
+/* =====================================================
+   LOGOS
+===================================================== */
+
+const LOGO_BASE =
+  "https://cdn.jsdelivr.net/gh/madenix/Crypto-logo-cdn@main/Logos/";
+
+const logoFiles = {
+
+  BTC:"BTC.svg",
+  ETH:"ETH.svg",
+  USDT:"USDT.svg",
+  USDC:"USDC.svg",
+  BNB:"BNB.svg",
+  SOL:"SOL.svg",
+  XRP:"XRP.svg",
+  TON:"TON.svg",
+  DOGE:"DOGE.svg",
+  ADA:"ADA.svg",
+  TRX:"TRON.svg",
+  LTC:"LTC.svg",
+  AVAX:"AVAX.svg",
+  DOT:"DOT.svg",
+  LINK:"LINK.svg",
+  POL:"MATIC.svg",
+  SHIB:"SHIB.svg",
+  BCH:"BCH.svg",
+  XLM:"XLM.svg",
+  ATOM:"ATOM.svg",
+  NEAR:"NEAR.svg",
+  APT:"APT.svg",
+  ARB:"ARB.svg",
+  OP:"OP.svg"
+
+};
+
+function coinLogo(symbol){
+
+  return LOGO_BASE +
+    (logoFiles[symbol] || "");
+
+}
+
+
+/* =====================================================
+   STATE
+===================================================== */
+
+let currentUser = null;
+let withdrawals = [];
+let currentFilter = "all";
+
+
+/* =====================================================
+   DOM
+===================================================== */
+
+const transactionList =
+  document.getElementById(
+    "transactionList"
+  );
+
+const profileInitials =
+  document.getElementById(
+    "profileInitials"
+  );
+
+const allFilter =
+  document.getElementById(
+    "allFilter"
+  );
+
+const withdrawalFilter =
+  document.getElementById(
+    "withdrawalFilter"
+  );
+
+
+/* =====================================================
+   INITIALS
+===================================================== */
+
+function makeInitials(name){
+
+  if(!name){
+    return "NX";
+  }
+
+  const parts =
+    name.trim().split(/\s+/);
+
+  if(parts.length === 1){
+
+    return parts[0]
+      .substring(0,2)
+      .toUpperCase();
+
+  }
+
+  return (
+    parts[0][0] +
+    parts[parts.length - 1][0]
+  ).toUpperCase();
+
+}
+
+
+/* =====================================================
+   LOAD USER
+===================================================== */
+
+async function loadUser(){
+
+  const {
+    data,
+    error
+  } =
+    await db.auth.getUser();
+
+
+  if(error || !data.user){
+
+    window.location.href =
+      "signin.html";
+
+    return false;
+
+  }
+
+
+  currentUser =
+    data.user;
+
+
+  const metadata =
+    currentUser.user_metadata || {};
+
+
+  profileInitials.textContent =
+    makeInitials(
+      metadata.full_name ||
+      currentUser.email ||
+      "NX"
+    );
+
+
+  return true;
+
+}
+
+
+/* =====================================================
+   LOAD WITHDRAWALS
+===================================================== */
+
+async function loadWithdrawals(){
+
+  const {
+    data,
+    error
+  } =
+    await db
+      .from("withdrawals")
+      .select(`
+        id,
+        asset,
+        network,
+        amount,
+        fee,
+        net_amount,
+        status,
+        created_at
+      `)
+      .eq(
+        "user_id",
+        currentUser.id
+      )
+      .order(
+        "created_at",
+        {
+          ascending:false
+        }
+      )
+      .limit(100);
+
+
+  if(error){
+
+    console.error(
+      error
+    );
+
+    transactionList.innerHTML = `
+      <div class="empty">
+        Unable to load transactions.
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  withdrawals =
+    data || [];
+
+
+  renderTransactions();
+
+}
+
+
+/* =====================================================
+   FORMAT DATE
+===================================================== */
+
+function formatDate(value){
+
+  if(!value){
+    return "—";
+  }
+
+  const date =
+    new Date(value);
+
+  return date.toLocaleString(
+    undefined,
+    {
+      day:"numeric",
+      month:"short",
+      year:"numeric",
+      hour:"2-digit",
+      minute:"2-digit"
+    }
+  );
+
+}
+
+
+/* =====================================================
+   FORMAT STATUS
+===================================================== */
+
+function statusClass(status){
+
+  return String(status || "")
+    .toLowerCase()
+    .replace(/\s+/g,"_");
+
+}
+
+
+/* =====================================================
+   RENDER
+===================================================== */
+
+function renderTransactions(){
+
+  let list =
+    withdrawals;
+
+
+  if(currentFilter === "withdrawal"){
+
+    list =
+      withdrawals;
+
+  }
+
+
+  if(!list.length){
+
+    transactionList.innerHTML = `
+      <div class="empty">
+        No transactions yet.
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  transactionList.innerHTML =
+    "";
+
+
+  list.forEach(item => {
+
+    const element =
+      document.createElement(
+        "div"
+      );
+
+
+    element.className =
+      "transaction";
+
+
+    element.innerHTML = `
+
+      <div class="transaction-top">
+
+        <div class="transaction-left">
+
+          <img
+            class="coin"
+            src="${coinLogo(item.asset)}"
+            alt="${item.asset}"
+          >
+
+          <div>
+
+            <div class="transaction-name">
+              Withdrawal · ${item.asset}
+            </div>
+
+            <div class="transaction-network">
+              ${item.network}
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="transaction-right">
+
+          <div class="transaction-amount">
+            ${item.amount} ${item.asset}
+          </div>
+
+          <div class="transaction-date">
+            ${formatDate(item.created_at)}
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="transaction-bottom">
+
+        <div class="transaction-id">
+          Transaction #${item.id}
+        </div>
+
+        <div class="status ${statusClass(item.status)}">
+          ${item.status}
+        </div>
+
+      </div>
+
+    `;
+
+
+    transactionList.appendChild(
+      element
+    );
+
+  });
+
+}
+
+
+/* =====================================================
+   FILTERS
+===================================================== */
+
+allFilter.addEventListener(
+  "click",
+  () => {
+
+    currentFilter =
+      "all";
+
+    allFilter.classList.add(
+      "active"
+    );
+
+    withdrawalFilter.classList.remove(
+      "active"
+    );
+
+    renderTransactions();
+
+  }
+);
+
+
+withdrawalFilter.addEventListener(
+  "click",
+  () => {
+
+    currentFilter =
+      "withdrawal";
+
+    withdrawalFilter.classList.add(
+      "active"
+    );
+
+    allFilter.classList.remove(
+      "active"
+    );
+
+    renderTransactions();
+
+  }
+);
+
+
+/* =====================================================
+   DRAWER
+===================================================== */
+
+const menuBtn =
+  document.getElementById(
+    "menuBtn"
+  );
+
+const drawer =
+  document.getElementById(
+    "drawer"
+  );
+
+const drawerOverlay =
+  document.getElementById(
+    "drawerOverlay"
+  );
+
+const drawerClose =
+  document.getElementById(
+    "drawerClose"
+  );
+
+
+function openDrawer(){
+
+  drawer.classList.add(
+    "show"
+  );
+
+  drawerOverlay.classList.add(
+    "show"
+  );
+
+  document.body.style.overflow =
+    "hidden";
+
+}
+
+
+function closeDrawer(){
+
+  drawer.classList.remove(
+    "show"
+  );
+
+  drawerOverlay.classList.remove(
+    "show"
+  );
+
+  document.body.style.overflow =
+    "";
+
+}
+
+
+menuBtn.addEventListener(
+  "click",
+  openDrawer
+);
+
+drawerClose.addEventListener(
+  "click",
+  closeDrawer
+);
+
+drawerOverlay.addEventListener(
+  "click",
+  closeDrawer
+);
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+document
+  .getElementById(
+    "logoutBtn"
+  )
+  .addEventListener(
+    "click",
+    async event => {
+
+      event.preventDefault();
+
+      await db.auth.signOut();
+
+      window.location.href =
+        "signin.html";
+
+    }
+  );
+
+
+/* =====================================================
+   INIT
+===================================================== */
+
+async function init(){
+
+  const authenticated =
+    await loadUser();
+
+
+  if(!authenticated){
+    return;
+  }
+
+
+  await loadWithdrawals();
+
+}
+
+
+init();
+
+</script>
+
+</body>
+</html>
