@@ -176,11 +176,6 @@ button.submit{
     font-size:15px;
     font-weight:800;
     cursor:pointer;
-    transition:.2s;
-}
-
-button.submit:hover{
-    filter:brightness(1.06);
 }
 
 button.submit:disabled{
@@ -256,16 +251,6 @@ button.submit:disabled{
         transform:rotate(360deg);
     }
 }
-
-@media(max-width:380px){
-    .card{
-        padding:23px 17px;
-    }
-
-    h1{
-        font-size:23px;
-    }
-}
 </style>
 </head>
 
@@ -290,10 +275,7 @@ button.submit:disabled{
         <form id="signinForm">
 
             <div class="field">
-
-                <label for="email">
-                    Email Address
-                </label>
+                <label for="email">Email Address</label>
 
                 <input
                     type="email"
@@ -302,15 +284,11 @@ button.submit:disabled{
                     autocomplete="email"
                     required
                 >
-
             </div>
-
 
             <div class="field">
 
-                <label for="password">
-                    Password
-                </label>
+                <label for="password">Password</label>
 
                 <div class="input-wrap">
 
@@ -335,21 +313,15 @@ button.submit:disabled{
 
             </div>
 
-
             <div class="forgot">
-
                 <a href="#" id="forgotPassword">
                     Forgot password?
                 </a>
-
             </div>
-
 
             <div class="field">
 
-                <label>
-                    Security Check
-                </label>
+                <label>Security Check</label>
 
                 <div class="captcha-box">
 
@@ -362,7 +334,6 @@ button.submit:disabled{
                         type="button"
                         id="refreshCaptcha"
                         class="refresh-btn"
-                        aria-label="Refresh CAPTCHA"
                     >
                         ↻
                     </button>
@@ -382,7 +353,6 @@ button.submit:disabled{
 
             </div>
 
-
             <button
                 type="submit"
                 class="submit"
@@ -393,35 +363,23 @@ button.submit:disabled{
 
         </form>
 
-
         <div class="bottom">
-
             Don't have an account?
-
-            <a href="signup.html">
-                Create Account
-            </a>
-
+            <a href="signup.html">Create Account</a>
         </div>
 
-
         <div class="back">
-
-            <a href="index.html">
-                ← Back to NEXORA
-            </a>
-
+            <a href="index.html">← Back to NEXORA</a>
         </div>
 
     </div>
 
 </div>
 
-
 <script>
 
 /* =========================================================
-   NEXORA SUPABASE CONFIGURATION
+   SUPABASE
 ========================================================= */
 
 const SUPABASE_URL =
@@ -429,11 +387,6 @@ const SUPABASE_URL =
 
 const SUPABASE_PUBLISHABLE_KEY =
     "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
-
-
-/* =========================================================
-   SUPABASE CLIENT
-========================================================= */
 
 const supabaseClient =
     window.supabase.createClient(
@@ -489,13 +442,7 @@ function showMessage(text,type){
 
     message.textContent =
         text;
-
-    message.scrollIntoView({
-        behavior:"smooth",
-        block:"nearest"
-    });
 }
-
 
 function clearMessage(){
 
@@ -513,13 +460,11 @@ function clearMessage(){
 
 let captchaValue = "";
 
-
 function generateCaptcha(){
 
     captchaValue =
         Math.floor(
-            100 +
-            Math.random() * 900
+            100 + Math.random() * 900
         ).toString();
 
     captchaCode.textContent =
@@ -528,7 +473,6 @@ function generateCaptcha(){
     captchaInput.value =
         "";
 }
-
 
 refreshCaptcha.addEventListener(
     "click",
@@ -539,7 +483,7 @@ generateCaptcha();
 
 
 /* =========================================================
-   PASSWORD SHOW / HIDE
+   PASSWORD SHOW/HIDE
 ========================================================= */
 
 document
@@ -567,7 +511,7 @@ document
 
 
 /* =========================================================
-   SIGN IN
+   NORMAL SIGN IN
 ========================================================= */
 
 form.addEventListener(
@@ -578,43 +522,16 @@ form.addEventListener(
 
         clearMessage();
 
-
         const email =
             emailInput.value
-                .trim()
-                .toLowerCase();
+            .trim()
+            .toLowerCase();
 
         const password =
             passwordInput.value;
 
         const captchaEntered =
             captchaInput.value.trim();
-
-
-        /* -----------------------------
-           VALIDATION
-        ----------------------------- */
-
-        if(!email){
-
-            showMessage(
-                "Please enter your email address.",
-                "error"
-            );
-
-            return;
-        }
-
-
-        if(!password){
-
-            showMessage(
-                "Please enter your password.",
-                "error"
-            );
-
-            return;
-        }
 
 
         if(captchaEntered !== captchaValue){
@@ -630,10 +547,6 @@ form.addEventListener(
         }
 
 
-        /* -----------------------------
-           LOADING
-        ----------------------------- */
-
         submitBtn.disabled =
             true;
 
@@ -646,55 +559,34 @@ form.addEventListener(
 
         try{
 
-            /* -----------------------------
-               SUPABASE LOGIN
-            ----------------------------- */
-
             const {
                 data,
                 error
             } =
             await supabaseClient.auth
-                .signInWithPassword({
-                    email:email,
-                    password:password
-                });
+            .signInWithPassword({
+                email:email,
+                password:password
+            });
 
 
             if(error){
-
-                console.error(
-                    "Supabase sign-in error:",
-                    error
-                );
-
                 throw error;
             }
 
 
-            if(!data || !data.session){
-
+            if(!data.session){
                 throw new Error(
                     "No active session was returned."
                 );
-
             }
 
-
-            /* -----------------------------
-               SUCCESS
-            ----------------------------- */
 
             showMessage(
                 "Login successful. Opening your dashboard...",
                 "success"
             );
 
-
-            /*
-             * Small delay so the user can
-             * see the success message.
-             */
 
             setTimeout(function(){
 
@@ -706,56 +598,33 @@ form.addEventListener(
 
         }catch(error){
 
-            console.error(
-                "Login error:",
-                error
-            );
-
-
             let errorMessage =
-                "Unable to sign in. Please check your details and try again.";
-
+                "Unable to sign in. Please check your details.";
 
             if(error && error.message){
 
                 const msg =
                     error.message.toLowerCase();
 
-
                 if(
-                    msg.includes("invalid api key")
-                ){
-
-                    errorMessage =
-                        "Supabase API authentication failed. Please verify the NEXORA project configuration.";
-
-                }
-
-                else if(
                     msg.includes("email not confirmed")
                 ){
 
                     errorMessage =
                         "Please confirm your email address before signing in.";
 
-                }
-
-                else if(
+                }else if(
                     msg.includes("invalid login credentials")
                 ){
 
                     errorMessage =
                         "Incorrect email or password.";
 
-                }
-
-                else{
+                }else{
 
                     errorMessage =
                         error.message;
-
                 }
-
             }
 
 
@@ -763,7 +632,6 @@ form.addEventListener(
                 errorMessage,
                 "error"
             );
-
 
             generateCaptcha();
 
@@ -774,7 +642,6 @@ form.addEventListener(
 
             submitBtn.textContent =
                 "Sign In";
-
         }
 
     }
@@ -782,41 +649,99 @@ form.addEventListener(
 
 
 /* =========================================================
-   FORGOT PASSWORD
+   REAL FORGOT PASSWORD
 ========================================================= */
 
 document
 .getElementById("forgotPassword")
-.addEventListener("click",function(event){
+.addEventListener(
+    "click",
+    async function(event){
 
-    event.preventDefault();
+        event.preventDefault();
 
+        clearMessage();
 
-    const email =
-        emailInput.value
+        const email =
+            emailInput.value
             .trim()
             .toLowerCase();
 
 
-    if(!email){
+        if(!email){
 
-        showMessage(
-            "Enter your email address first, then tap Forgot password again.",
-            "error"
-        );
+            showMessage(
+                "Enter your email address first.",
+                "error"
+            );
 
-        emailInput.focus();
+            emailInput.focus();
 
-        return;
+            return;
+        }
+
+
+        this.textContent =
+            "Sending...";
+
+        this.style.pointerEvents =
+            "none";
+
+
+        try{
+
+            const redirectUrl =
+                window.location.origin +
+                "/reset-password.html";
+
+
+            const {
+                error
+            } =
+            await supabaseClient.auth
+            .resetPasswordForEmail(
+                email,
+                {
+                    redirectTo:redirectUrl
+                }
+            );
+
+
+            if(error){
+                throw error;
+            }
+
+
+            showMessage(
+                "If an account exists with this email, a password reset link has been sent. Please check your inbox.",
+                "success"
+            );
+
+
+        }catch(error){
+
+            console.error(
+                "Password reset error:",
+                error
+            );
+
+            showMessage(
+                error.message ||
+                "Unable to send the password reset email.",
+                "error"
+            );
+
+        }finally{
+
+            this.textContent =
+                "Forgot password?";
+
+            this.style.pointerEvents =
+                "auto";
+        }
+
     }
-
-
-    showMessage(
-        "Password recovery will be connected next. Your login system is already connected to Supabase.",
-        "success"
-    );
-
-});
+);
 
 </script>
 
