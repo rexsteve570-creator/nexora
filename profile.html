@@ -1,0 +1,1711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>NEXORA — Profile</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+  --navy:#050914;
+  --navy2:#080e1d;
+  --navy3:#0d1629;
+  --navy4:#111d33;
+
+  --gold:#d6b15e;
+  --gold2:#f0d58a;
+  --gold3:#a98535;
+
+  --white:#ffffff;
+  --text:#f4f6fa;
+  --muted:#8c96a8;
+  --muted2:#626d80;
+
+  --bg:#050914;
+  --card:#0b1222;
+  --card2:#0e1729;
+
+  --border:rgba(255,255,255,.08);
+
+  --success:#35c98b;
+  --warning:#e6b85c;
+  --danger:#ef6b73;
+}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  min-height:100vh;
+  background:
+    radial-gradient(circle at top right, rgba(214,177,94,.07), transparent 30%),
+    var(--bg);
+  color:var(--text);
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Arial,
+    sans-serif;
+}
+
+button,
+input{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.header{
+  height:70px;
+  background:rgba(5,9,20,.94);
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 18px;
+  position:sticky;
+  top:0;
+  z-index:100;
+  backdrop-filter:blur(16px);
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-weight:800;
+  letter-spacing:2px;
+  font-size:17px;
+}
+
+.brand-mark{
+  width:32px;
+  height:32px;
+  border-radius:9px;
+  background:linear-gradient(
+    145deg,
+    var(--gold2),
+    var(--gold3)
+  );
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#111;
+  font-weight:900;
+  box-shadow:
+    0 8px 25px rgba(214,177,94,.18);
+}
+
+.header-right{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.profile-button{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  border:1px solid rgba(214,177,94,.35);
+  background:var(--navy3);
+  color:var(--gold2);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:800;
+}
+
+/* =========================================================
+   LAYOUT
+========================================================= */
+
+.page{
+  width:min(760px,100%);
+  margin:0 auto;
+  padding:26px 16px 100px;
+}
+
+.page-title{
+  margin-bottom:22px;
+}
+
+.page-title h1{
+  font-size:27px;
+  line-height:1.2;
+  margin-bottom:7px;
+}
+
+.page-title p{
+  color:var(--muted);
+  font-size:14px;
+}
+
+/* =========================================================
+   PROFILE HERO
+========================================================= */
+
+.profile-hero{
+  background:
+    linear-gradient(
+      145deg,
+      rgba(214,177,94,.10),
+      rgba(14,23,41,.98) 45%
+    );
+  border:1px solid rgba(214,177,94,.18);
+  border-radius:22px;
+  padding:24px;
+  margin-bottom:16px;
+  position:relative;
+  overflow:hidden;
+}
+
+.profile-hero::after{
+  content:"";
+  position:absolute;
+  width:180px;
+  height:180px;
+  right:-70px;
+  top:-80px;
+  border-radius:50%;
+  background:rgba(214,177,94,.07);
+}
+
+.profile-top{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  position:relative;
+  z-index:1;
+}
+
+.avatar{
+  width:72px;
+  height:72px;
+  min-width:72px;
+  border-radius:22px;
+  background:
+    linear-gradient(
+      145deg,
+      var(--gold2),
+      var(--gold3)
+    );
+  color:#111;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:24px;
+  font-weight:900;
+  box-shadow:
+    0 12px 35px rgba(214,177,94,.16);
+}
+
+.profile-main{
+  min-width:0;
+}
+
+.profile-main h2{
+  font-size:20px;
+  margin-bottom:5px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.profile-main p{
+  color:var(--muted);
+  font-size:13px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.status-row{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:16px;
+}
+
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:7px 10px;
+  border-radius:999px;
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.4px;
+}
+
+.badge-account{
+  color:var(--gold2);
+  background:rgba(214,177,94,.10);
+  border:1px solid rgba(214,177,94,.20);
+}
+
+.badge-kyc{
+  color:#9da8ba;
+  background:rgba(255,255,255,.05);
+  border:1px solid var(--border);
+}
+
+/* =========================================================
+   CARDS
+========================================================= */
+
+.card{
+  background:linear-gradient(
+    145deg,
+    var(--card),
+    var(--card2)
+  );
+  border:1px solid var(--border);
+  border-radius:18px;
+  margin-bottom:16px;
+  overflow:hidden;
+}
+
+.card-header{
+  padding:18px 18px 14px;
+  border-bottom:1px solid var(--border);
+}
+
+.card-header h3{
+  font-size:15px;
+}
+
+.card-header p{
+  margin-top:5px;
+  color:var(--muted);
+  font-size:12px;
+}
+
+.info-list{
+  padding:4px 18px;
+}
+
+.info-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  min-height:62px;
+  border-bottom:1px solid rgba(255,255,255,.055);
+}
+
+.info-row:last-child{
+  border-bottom:0;
+}
+
+.info-label{
+  color:var(--muted);
+  font-size:12px;
+}
+
+.info-value{
+  text-align:right;
+  font-size:13px;
+  font-weight:600;
+  max-width:58%;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.info-value.gold{
+  color:var(--gold2);
+}
+
+.info-value.success{
+  color:var(--success);
+}
+
+.info-value.warning{
+  color:var(--warning);
+}
+
+.info-value.danger{
+  color:var(--danger);
+}
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+.action-list{
+  padding:8px;
+}
+
+.action-button{
+  width:100%;
+  min-height:58px;
+  padding:12px 14px;
+  background:transparent;
+  border:0;
+  color:var(--text);
+  display:flex;
+  align-items:center;
+  gap:13px;
+  border-radius:13px;
+  text-align:left;
+}
+
+.action-button:hover{
+  background:rgba(255,255,255,.035);
+}
+
+.action-icon{
+  width:40px;
+  height:40px;
+  border-radius:12px;
+  background:var(--navy4);
+  border:1px solid var(--border);
+  color:var(--gold2);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:17px;
+  font-weight:800;
+}
+
+.action-content{
+  flex:1;
+}
+
+.action-title{
+  font-size:13px;
+  font-weight:700;
+}
+
+.action-description{
+  color:var(--muted);
+  font-size:11px;
+  margin-top:3px;
+}
+
+.action-arrow{
+  color:var(--muted2);
+  font-size:18px;
+}
+
+/* =========================================================
+   EDIT FORM
+========================================================= */
+
+.form-section{
+  display:none;
+  padding:18px;
+  border-top:1px solid var(--border);
+}
+
+.form-section.active{
+  display:block;
+}
+
+.form-group{
+  margin-bottom:15px;
+}
+
+.form-label{
+  display:block;
+  color:var(--muted);
+  font-size:12px;
+  margin-bottom:7px;
+}
+
+.form-input{
+  width:100%;
+  height:48px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  background:#070d1b;
+  color:var(--text);
+  padding:0 13px;
+  outline:none;
+}
+
+.form-input:focus{
+  border-color:rgba(214,177,94,.55);
+}
+
+.form-input:disabled{
+  opacity:.55;
+  cursor:not-allowed;
+}
+
+.form-actions{
+  display:flex;
+  gap:10px;
+}
+
+.primary-button,
+.secondary-button{
+  flex:1;
+  min-height:46px;
+  border-radius:12px;
+  font-weight:800;
+  border:1px solid var(--border);
+}
+
+.primary-button{
+  background:linear-gradient(
+    145deg,
+    var(--gold2),
+    var(--gold3)
+  );
+  color:#111;
+  border:0;
+}
+
+.secondary-button{
+  background:var(--navy4);
+  color:var(--text);
+}
+
+.message{
+  display:none;
+  padding:11px 12px;
+  border-radius:11px;
+  margin-bottom:14px;
+  font-size:12px;
+  line-height:1.5;
+}
+
+.message.show{
+  display:block;
+}
+
+.message.success{
+  color:#9df0c7;
+  background:rgba(53,201,139,.08);
+  border:1px solid rgba(53,201,139,.18);
+}
+
+.message.error{
+  color:#ffb0b5;
+  background:rgba(239,107,115,.08);
+  border:1px solid rgba(239,107,115,.18);
+}
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+.logout-button{
+  width:100%;
+  min-height:50px;
+  border-radius:14px;
+  background:rgba(239,107,115,.06);
+  border:1px solid rgba(239,107,115,.18);
+  color:#ef8d94;
+  font-weight:800;
+  margin-top:4px;
+}
+
+/* =========================================================
+   BOTTOM NAV
+========================================================= */
+
+.bottom-nav{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  height:70px;
+  background:rgba(5,9,20,.96);
+  border-top:1px solid var(--border);
+  display:flex;
+  justify-content:center;
+  z-index:90;
+  backdrop-filter:blur(18px);
+}
+
+.bottom-inner{
+  width:min(760px,100%);
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+}
+
+.nav-item{
+  min-width:65px;
+  text-align:center;
+  color:var(--muted);
+  font-size:10px;
+  padding:7px 5px;
+}
+
+.nav-item span{
+  display:block;
+  margin-top:4px;
+}
+
+.nav-item.active{
+  color:var(--gold2);
+}
+
+.nav-icon{
+  font-size:18px;
+}
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.loading{
+  padding:30px 10px;
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:480px){
+
+  .header{
+    padding:0 14px;
+  }
+
+  .page{
+    padding-left:13px;
+    padding-right:13px;
+  }
+
+  .profile-hero{
+    padding:20px;
+  }
+
+  .avatar{
+    width:64px;
+    height:64px;
+    min-width:64px;
+  }
+
+  .profile-main h2{
+    font-size:18px;
+  }
+
+  .info-row{
+    min-height:59px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- =========================================================
+     HEADER
+========================================================= -->
+
+<header class="header">
+
+  <a href="dashboard.html" class="brand">
+    <div class="brand-mark">N</div>
+    <span>NEXORA</span>
+  </a>
+
+  <div class="header-right">
+    <button
+      class="profile-button"
+      id="headerInitials"
+      aria-label="Profile"
+    >
+      —
+    </button>
+  </div>
+
+</header>
+
+
+<!-- =========================================================
+     PAGE
+========================================================= -->
+
+<main class="page">
+
+  <div class="page-title">
+    <h1>Profile</h1>
+    <p>Manage your NEXORA account information.</p>
+  </div>
+
+
+  <!-- =======================================================
+       PROFILE HERO
+  ======================================================== -->
+
+  <section class="profile-hero">
+
+    <div class="profile-top">
+
+      <div class="avatar" id="profileInitials">
+        —
+      </div>
+
+      <div class="profile-main">
+        <h2 id="profileName">Loading...</h2>
+        <p id="profileEmail">Loading...</p>
+      </div>
+
+    </div>
+
+    <div class="status-row">
+
+      <span class="badge badge-account">
+        <span>●</span>
+        <span id="accountStatus">—</span>
+      </span>
+
+      <span class="badge badge-kyc">
+        KYC:
+        <span id="kycStatus">—</span>
+      </span>
+
+    </div>
+
+  </section>
+
+
+  <!-- =======================================================
+       ACCOUNT INFORMATION
+  ======================================================== -->
+
+  <section class="card">
+
+    <div class="card-header">
+      <h3>Account Information</h3>
+      <p>Your account details stored securely with NEXORA.</p>
+    </div>
+
+    <div class="info-list">
+
+      <div class="info-row">
+        <span class="info-label">Full name</span>
+        <span
+          class="info-value"
+          id="fullName"
+        >
+          —
+        </span>
+      </div>
+
+      <div class="info-row">
+        <span class="info-label">Email address</span>
+        <span
+          class="info-value"
+          id="emailAddress"
+        >
+          —
+        </span>
+      </div>
+
+      <div class="info-row">
+        <span class="info-label">Account status</span>
+        <span
+          class="info-value gold"
+          id="accountStatusDetail"
+        >
+          —
+        </span>
+      </div>
+
+      <div class="info-row">
+        <span class="info-label">KYC status</span>
+        <span
+          class="info-value"
+          id="kycStatusDetail"
+        >
+          —
+        </span>
+      </div>
+
+      <div class="info-row">
+        <span class="info-label">Account created</span>
+        <span
+          class="info-value"
+          id="createdAt"
+        >
+          —
+        </span>
+      </div>
+
+      <div class="info-row">
+        <span class="info-label">User ID</span>
+        <span
+          class="info-value"
+          id="userId"
+        >
+          —
+        </span>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =======================================================
+       ACCOUNT ACTIONS
+  ======================================================== -->
+
+  <section class="card">
+
+    <div class="card-header">
+      <h3>Account Settings</h3>
+      <p>Update your account and security settings.</p>
+    </div>
+
+
+    <div class="action-list">
+
+      <button
+        class="action-button"
+        id="editProfileButton"
+      >
+
+        <div class="action-icon">
+          ✎
+        </div>
+
+        <div class="action-content">
+          <div class="action-title">
+            Edit profile
+          </div>
+
+          <div class="action-description">
+            Update your display name
+          </div>
+        </div>
+
+        <div class="action-arrow">
+          ›
+        </div>
+
+      </button>
+
+
+      <button
+        class="action-button"
+        id="changePasswordButton"
+      >
+
+        <div class="action-icon">
+          🔒
+        </div>
+
+        <div class="action-content">
+          <div class="action-title">
+            Change password
+          </div>
+
+          <div class="action-description">
+            Send a secure password reset link
+          </div>
+        </div>
+
+        <div class="action-arrow">
+          ›
+        </div>
+
+      </button>
+
+    </div>
+
+
+    <!-- =====================================================
+         EDIT PROFILE FORM
+    ====================================================== -->
+
+    <div
+      class="form-section"
+      id="editProfileSection"
+    >
+
+      <div
+        class="message"
+        id="editMessage"
+      ></div>
+
+      <div class="form-group">
+
+        <label
+          class="form-label"
+          for="editFullName"
+        >
+          Full name
+        </label>
+
+        <input
+          id="editFullName"
+          class="form-input"
+          type="text"
+          maxlength="100"
+          autocomplete="name"
+          placeholder="Enter your full name"
+        >
+
+      </div>
+
+      <div class="form-group">
+
+        <label
+          class="form-label"
+          for="editEmail"
+        >
+          Email address
+        </label>
+
+        <input
+          id="editEmail"
+          class="form-input"
+          type="email"
+          disabled
+        >
+
+      </div>
+
+      <div class="form-actions">
+
+        <button
+          class="secondary-button"
+          id="cancelEdit"
+        >
+          Cancel
+        </button>
+
+        <button
+          class="primary-button"
+          id="saveProfile"
+        >
+          Save Changes
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         PASSWORD SECTION
+    ====================================================== -->
+
+    <div
+      class="form-section"
+      id="passwordSection"
+    >
+
+      <div
+        class="message"
+        id="passwordMessage"
+      ></div>
+
+      <p
+        style="
+          color:var(--muted);
+          font-size:12px;
+          line-height:1.6;
+          margin-bottom:14px;
+        "
+      >
+        We will send a secure password reset link to your
+        registered email address.
+      </p>
+
+      <button
+        class="primary-button"
+        id="sendPasswordReset"
+        style="width:100%;"
+      >
+        Send Password Reset Link
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <!-- =======================================================
+       LOGOUT
+  ======================================================== -->
+
+  <button
+    class="logout-button"
+    id="logoutButton"
+  >
+    Sign Out
+  </button>
+
+</main>
+
+
+<!-- =========================================================
+     BOTTOM NAV
+========================================================= -->
+
+<nav class="bottom-nav">
+
+  <div class="bottom-inner">
+
+    <a
+      href="dashboard.html"
+      class="nav-item"
+    >
+      <div class="nav-icon">⌂</div>
+      <span>Home</span>
+    </a>
+
+    <a
+      href="dashboard.html"
+      class="nav-item"
+    >
+      <div class="nav-icon">◈</div>
+      <span>Assets</span>
+    </a>
+
+    <a
+      href="swap.html"
+      class="nav-item"
+    >
+      <div class="nav-icon">⇄</div>
+      <span>Exchange</span>
+    </a>
+
+    <a
+      href="profile.html"
+      class="nav-item active"
+    >
+      <div class="nav-icon">◉</div>
+      <span>Profile</span>
+    </a>
+
+  </div>
+
+</nav>
+
+
+<script>
+
+/* =========================================================
+   SUPABASE
+========================================================= */
+
+const SUPABASE_URL =
+  "https://rihvvwktvgytbqzazage.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY,
+    {
+      auth:{
+        autoRefreshToken:true,
+        persistSession:true,
+        detectSessionInUrl:true
+      }
+    }
+  );
+
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function $(id){
+  return document.getElementById(id);
+}
+
+
+function getInitials(name){
+
+  if(!name){
+    return "—";
+  }
+
+  const parts =
+    name
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean);
+
+  if(parts.length === 1){
+    return parts[0]
+      .substring(0,2)
+      .toUpperCase();
+  }
+
+  return (
+    parts[0][0] +
+    parts[parts.length - 1][0]
+  ).toUpperCase();
+}
+
+
+function formatDate(date){
+
+  if(!date){
+    return "—";
+  }
+
+  const d = new Date(date);
+
+  if(Number.isNaN(d.getTime())){
+    return "—";
+  }
+
+  return d.toLocaleDateString(
+    undefined,
+    {
+      day:"2-digit",
+      month:"short",
+      year:"numeric"
+    }
+  );
+}
+
+
+function cleanStatus(value){
+
+  if(!value){
+    return "—";
+  }
+
+  return String(value)
+    .replaceAll("_"," ")
+    .toLowerCase()
+    .replace(/\b\w/g,char => char.toUpperCase());
+}
+
+
+/* =========================================================
+   DISPLAY PROFILE
+========================================================= */
+
+function displayProfile(user, profile){
+
+  const metadata =
+    user?.user_metadata || {};
+
+  const name =
+    profile?.full_name ||
+    metadata.full_name ||
+    (
+      user?.email
+        ? user.email.split("@")[0]
+        : "—"
+    );
+
+  const email =
+    profile?.email ||
+    user?.email ||
+    "—";
+
+  const accountStatus =
+    profile?.account_status ||
+    "PENDING";
+
+  const kycStatus =
+    profile?.kyc_status ||
+    "NOT_STARTED";
+
+  const createdAt =
+    profile?.created_at ||
+    user?.created_at ||
+    null;
+
+
+  /* Hero */
+
+  $("profileName").textContent =
+    name;
+
+  $("profileEmail").textContent =
+    email;
+
+  $("profileInitials").textContent =
+    getInitials(name);
+
+  $("headerInitials").textContent =
+    getInitials(name);
+
+
+  /* Status */
+
+  $("accountStatus").textContent =
+    cleanStatus(accountStatus);
+
+  $("kycStatus").textContent =
+    cleanStatus(kycStatus);
+
+
+  /* Details */
+
+  $("fullName").textContent =
+    name;
+
+  $("emailAddress").textContent =
+    email;
+
+  $("accountStatusDetail").textContent =
+    cleanStatus(accountStatus);
+
+  $("kycStatusDetail").textContent =
+    cleanStatus(kycStatus);
+
+  $("createdAt").textContent =
+    formatDate(createdAt);
+
+  $("userId").textContent =
+    user?.id || "—";
+
+
+  /* Form */
+
+  $("editFullName").value =
+    name === "—" ? "" : name;
+
+  $("editEmail").value =
+    email === "—" ? "" : email;
+}
+
+
+/* =========================================================
+   LOAD PROFILE
+========================================================= */
+
+async function loadProfile(){
+
+  try{
+
+    const {
+      data:{
+        user
+      },
+      error:userError
+    } =
+      await supabaseClient.auth.getUser();
+
+
+    if(userError){
+      console.error(userError);
+      window.location.href =
+        "signin.html";
+      return;
+    }
+
+
+    if(!user){
+      window.location.href =
+        "signin.html";
+      return;
+    }
+
+
+    /* Immediately show Auth information */
+
+    displayProfile(
+      user,
+      null
+    );
+
+
+    /* Get database profile */
+
+    const {
+      data:profile,
+      error:profileError
+    } =
+      await supabaseClient
+        .from("profiles")
+        .select(`
+          id,
+          full_name,
+          email,
+          account_status,
+          kyc_status,
+          created_at,
+          updated_at
+        `)
+        .eq("id",user.id)
+        .maybeSingle();
+
+
+    if(profileError){
+
+      console.error(
+        "Profile loading error:",
+        profileError
+      );
+
+      /*
+       Auth data is already displayed,
+       so the page can continue safely.
+      */
+
+      return;
+    }
+
+
+    if(profile){
+
+      displayProfile(
+        user,
+        profile
+      );
+
+    }
+
+  }catch(error){
+
+    console.error(
+      "Unexpected profile error:",
+      error
+    );
+
+  }
+}
+
+
+/* =========================================================
+   EDIT PROFILE
+========================================================= */
+
+$("editProfileButton")
+  .addEventListener(
+    "click",
+    function(){
+
+      const section =
+        $("editProfileSection");
+
+      section.classList.toggle(
+        "active"
+      );
+
+      $("passwordSection")
+        .classList.remove("active");
+
+      if(section.classList.contains("active")){
+
+        setTimeout(
+          () => {
+            $("editFullName").focus();
+          },
+          100
+        );
+
+      }
+
+    }
+  );
+
+
+$("cancelEdit")
+  .addEventListener(
+    "click",
+    function(){
+
+      $("editProfileSection")
+        .classList.remove("active");
+
+      $("editMessage")
+        .className = "message";
+
+      $("editMessage")
+        .textContent = "";
+
+    }
+  );
+
+
+/* =========================================================
+   SAVE PROFILE
+========================================================= */
+
+$("saveProfile")
+  .addEventListener(
+    "click",
+    async function(){
+
+      const button =
+        $("saveProfile");
+
+      const message =
+        $("editMessage");
+
+      const fullName =
+        $("editFullName")
+          .value
+          .trim();
+
+
+      if(fullName.length < 2){
+
+        message.className =
+          "message error show";
+
+        message.textContent =
+          "Please enter a valid full name.";
+
+        return;
+      }
+
+
+      button.disabled = true;
+
+      button.textContent =
+        "Saving...";
+
+
+      try{
+
+        const {
+          data:{
+            user
+          },
+          error:userError
+        } =
+          await supabaseClient.auth.getUser();
+
+
+        if(userError || !user){
+
+          throw new Error(
+            "Your session has expired. Please sign in again."
+          );
+
+        }
+
+
+        /* Update profiles table */
+
+        const {
+          data:profile,
+          error:updateError
+        } =
+          await supabaseClient
+            .from("profiles")
+            .update({
+              full_name:fullName,
+              updated_at:new Date().toISOString()
+            })
+            .eq("id",user.id)
+            .select()
+            .single();
+
+
+        if(updateError){
+          throw updateError;
+        }
+
+
+        /* Also keep Auth metadata synchronized */
+
+        const {
+          error:metadataError
+        } =
+          await supabaseClient.auth.updateUser({
+            data:{
+              full_name:fullName
+            }
+          });
+
+
+        if(metadataError){
+
+          console.warn(
+            "Auth metadata update warning:",
+            metadataError
+          );
+
+        }
+
+
+        displayProfile(
+          user,
+          profile
+        );
+
+
+        message.className =
+          "message success show";
+
+        message.textContent =
+          "Your profile has been updated successfully.";
+
+
+        setTimeout(
+          () => {
+
+            $("editProfileSection")
+              .classList.remove("active");
+
+            message.className =
+              "message";
+
+            message.textContent = "";
+
+          },
+          1600
+        );
+
+
+      }catch(error){
+
+        console.error(error);
+
+        message.className =
+          "message error show";
+
+        message.textContent =
+          error.message ||
+          "Unable to update your profile.";
+
+      }finally{
+
+        button.disabled = false;
+
+        button.textContent =
+          "Save Changes";
+
+      }
+
+    }
+  );
+
+
+/* =========================================================
+   CHANGE PASSWORD
+========================================================= */
+
+$("changePasswordButton")
+  .addEventListener(
+    "click",
+    function(){
+
+      const section =
+        $("passwordSection");
+
+      section.classList.toggle(
+        "active"
+      );
+
+      $("editProfileSection")
+        .classList.remove("active");
+
+      $("passwordMessage")
+        .className = "message";
+
+      $("passwordMessage")
+        .textContent = "";
+
+    }
+  );
+
+
+$("sendPasswordReset")
+  .addEventListener(
+    "click",
+    async function(){
+
+      const button =
+        $("sendPasswordReset");
+
+      const message =
+        $("passwordMessage");
+
+
+      try{
+
+        const {
+          data:{
+            user
+          },
+          error:userError
+        } =
+          await supabaseClient.auth.getUser();
+
+
+        if(userError || !user){
+
+          throw new Error(
+            "Your session has expired."
+          );
+
+        }
+
+
+        if(!user.email){
+
+          throw new Error(
+            "No email address is associated with this account."
+          );
+
+        }
+
+
+        button.disabled = true;
+
+        button.textContent =
+          "Sending...";
+
+
+        const {
+          error
+        } =
+          await supabaseClient.auth
+            .resetPasswordForEmail(
+              user.email,
+              {
+                redirectTo:
+                  window.location.origin +
+                  "/reset-password.html"
+              }
+            );
+
+
+        if(error){
+          throw error;
+        }
+
+
+        message.className =
+          "message success show";
+
+        message.textContent =
+          "Password reset link sent to your email address.";
+
+
+      }catch(error){
+
+        console.error(error);
+
+        message.className =
+          "message error show";
+
+        message.textContent =
+          error.message ||
+          "Unable to send password reset link.";
+
+      }finally{
+
+        button.disabled = false;
+
+        button.textContent =
+          "Send Password Reset Link";
+
+      }
+
+    }
+  );
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+$("logoutButton")
+  .addEventListener(
+    "click",
+    async function(){
+
+      const button =
+        $("logoutButton");
+
+      button.disabled = true;
+
+      button.textContent =
+        "Signing Out...";
+
+
+      const {
+        error
+      } =
+        await supabaseClient.auth.signOut();
+
+
+      if(error){
+
+        console.error(error);
+
+        button.disabled = false;
+
+        button.textContent =
+          "Sign Out";
+
+        alert(
+          "Unable to sign out. Please try again."
+        );
+
+        return;
+      }
+
+
+      window.location.href =
+        "signin.html";
+
+    }
+  );
+
+
+/* =========================================================
+   AUTH STATE
+========================================================= */
+
+supabaseClient.auth
+  .onAuthStateChange(
+    (event,session) => {
+
+      if(
+        event === "SIGNED_OUT" ||
+        !session
+      ){
+
+        window.location.href =
+          "signin.html";
+
+      }
+
+    }
+  );
+
+
+/* =========================================================
+   START
+========================================================= */
+
+loadProfile();
+
+</script>
+
+</body>
+</html>
