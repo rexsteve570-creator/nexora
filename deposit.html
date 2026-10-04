@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deposit — NEXORA</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+    --navy:#050914;
+    --navy2:#080e1d;
+    --navy3:#0d1629;
+    --navy4:#111d33;
+    --gold:#d6b15e;
+    --gold2:#f0d58a;
+    --gold3:#a98535;
+    --white:#ffffff;
+    --text:#f4f6fa;
+    --muted:#8c96a8;
+    --muted2:#626d80;
+    --border:rgba(255,255,255,.08);
+    --danger:#ef6b73;
+    --success:#48c98b;
+}
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    min-height:100vh;
+    background:var(--navy);
+    color:var(--text);
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+button,
+select,
+input{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+a{
+    color:inherit;
+    text-decoration:none;
+}
+
+/* HEADER */
+
+.header{
+    height:68px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:0 18px;
+    border-bottom:1px solid var(--border);
+    background:rgba(5,9,20,.96);
+    position:sticky;
+    top:0;
+    z-index:20;
+}
+
+.back{
+    width:40px;
+    height:40px;
+    border-radius:12px;
+    border:1px solid var(--border);
+    background:var(--navy3);
+    color:var(--white);
+    font-size:22px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.header-title{
+    font-size:18px;
+    font-weight:700;
+}
+
+.header-sub{
+    margin-left:auto;
+    font-size:11px;
+    color:var(--gold);
+    letter-spacing:.7px;
+    font-weight:700;
+}
+
+/* MAIN */
+
+.container{
+    width:100%;
+    max-width:760px;
+    margin:auto;
+    padding:20px 16px 100px;
+}
+
+.intro{
+    margin-bottom:20px;
+}
+
+.intro h1{
+    font-size:27px;
+    margin-bottom:8px;
+}
+
+.intro p{
+    color:var(--muted);
+    font-size:14px;
+    line-height:1.6;
+}
+
+/* CARDS */
+
+.card{
+    background:var(--card,var(--navy2));
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:18px;
+    margin-bottom:15px;
+}
+
+.card-title{
+    font-size:15px;
+    font-weight:700;
+    margin-bottom:15px;
+}
+
+.label{
+    color:var(--muted);
+    font-size:12px;
+    margin-bottom:8px;
+    display:block;
+}
+
+/* ASSET */
+
+.asset-select{
+    width:100%;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    background:var(--navy3);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:13px;
+    color:var(--white);
+}
+
+.asset-logo{
+    width:36px;
+    height:36px;
+    border-radius:50%;
+    object-fit:contain;
+    background:#fff;
+    padding:3px;
+}
+
+.asset-info{
+    flex:1;
+    text-align:left;
+}
+
+.asset-name{
+    font-size:14px;
+    font-weight:700;
+}
+
+.asset-network{
+    font-size:11px;
+    color:var(--muted);
+    margin-top:3px;
+}
+
+.chevron{
+    color:var(--gold);
+    font-size:18px;
+}
+
+/* NETWORK */
+
+.network-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+}
+
+.network{
+    border:1px solid var(--border);
+    background:var(--navy3);
+    color:var(--muted);
+    border-radius:13px;
+    padding:13px 10px;
+    text-align:center;
+    transition:.2s;
+}
+
+.network strong{
+    display:block;
+    color:var(--text);
+    font-size:13px;
+    margin-bottom:4px;
+}
+
+.network span{
+    font-size:10px;
+}
+
+.network.active{
+    border-color:var(--gold);
+    background:rgba(214,177,94,.08);
+    color:var(--gold2);
+}
+
+.network.active strong{
+    color:var(--gold2);
+}
+
+/* ADDRESS */
+
+.address-box{
+    background:var(--navy);
+    border:1px dashed rgba(214,177,94,.35);
+    border-radius:15px;
+    padding:18px;
+    text-align:center;
+}
+
+.address-placeholder{
+    min-height:80px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    gap:7px;
+}
+
+.address-icon{
+    font-size:25px;
+    color:var(--gold);
+}
+
+.address-placeholder strong{
+    font-size:13px;
+}
+
+.address-placeholder span{
+    color:var(--muted);
+    font-size:11px;
+    line-height:1.5;
+}
+
+/* QR */
+
+.qr-box{
+    width:190px;
+    height:190px;
+    margin:0 auto 15px;
+    background:#fff;
+    border-radius:14px;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    color:#111;
+    font-size:12px;
+}
+
+/* COPY */
+
+.copy-row{
+    display:flex;
+    gap:8px;
+    margin-top:12px;
+}
+
+.address-input{
+    flex:1;
+    min-width:0;
+    background:var(--navy3);
+    border:1px solid var(--border);
+    border-radius:11px;
+    color:var(--muted);
+    padding:12px;
+    font-size:11px;
+}
+
+.copy-btn{
+    border:1px solid var(--gold3);
+    background:rgba(214,177,94,.1);
+    color:var(--gold2);
+    border-radius:11px;
+    padding:0 14px;
+    font-weight:700;
+    font-size:12px;
+}
+
+/* WARNING */
+
+.warning{
+    border:1px solid rgba(214,177,94,.22);
+    background:rgba(214,177,94,.06);
+    border-radius:14px;
+    padding:14px;
+    color:var(--muted);
+    font-size:12px;
+    line-height:1.6;
+}
+
+.warning strong{
+    color:var(--gold2);
+}
+
+/* INFO */
+
+.info-list{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.info-row{
+    display:flex;
+    justify-content:space-between;
+    gap:15px;
+    padding-bottom:12px;
+    border-bottom:1px solid var(--border);
+}
+
+.info-row:last-child{
+    border-bottom:0;
+    padding-bottom:0;
+}
+
+.info-row span:first-child{
+    color:var(--muted);
+    font-size:12px;
+}
+
+.info-row span:last-child{
+    color:var(--text);
+    font-size:12px;
+    text-align:right;
+}
+
+.gold-text{
+    color:var(--gold2)!important;
+}
+
+/* HISTORY */
+
+.empty{
+    text-align:center;
+    padding:25px 10px;
+    color:var(--muted);
+    font-size:12px;
+}
+
+.status{
+    display:inline-block;
+    margin-top:7px;
+    padding:4px 8px;
+    border-radius:20px;
+    background:rgba(140,150,168,.1);
+    color:var(--muted);
+    font-size:10px;
+}
+
+/* ASSET MODAL */
+
+.modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.72);
+    display:none;
+    align-items:flex-end;
+    justify-content:center;
+    z-index:100;
+}
+
+.modal.show{
+    display:flex;
+}
+
+.modal-card{
+    width:100%;
+    max-width:760px;
+    max-height:85vh;
+    overflow:auto;
+    background:var(--navy2);
+    border:1px solid var(--border);
+    border-radius:22px 22px 0 0;
+    padding:20px;
+}
+
+.modal-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:15px;
+}
+
+.modal-head h3{
+    font-size:17px;
+}
+
+.close{
+    width:34px;
+    height:34px;
+    border:1px solid var(--border);
+    background:var(--navy3);
+    color:var(--white);
+    border-radius:10px;
+}
+
+.search{
+    width:100%;
+    background:var(--navy3);
+    border:1px solid var(--border);
+    color:var(--white);
+    border-radius:12px;
+    padding:13px;
+    outline:none;
+    margin-bottom:12px;
+}
+
+.asset-option{
+    width:100%;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:12px;
+    background:transparent;
+    border:0;
+    border-bottom:1px solid var(--border);
+    color:var(--white);
+    text-align:left;
+}
+
+.asset-option:hover{
+    background:var(--navy3);
+}
+
+/* BOTTOM NAV */
+
+.bottom-nav{
+    position:fixed;
+    left:0;
+    right:0;
+    bottom:0;
+    height:66px;
+    background:rgba(5,9,20,.97);
+    border-top:1px solid var(--border);
+    display:flex;
+    justify-content:center;
+    z-index:30;
+}
+
+.bottom-inner{
+    width:100%;
+    max-width:760px;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+}
+
+.nav-item{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:4px;
+    color:var(--muted);
+    font-size:10px;
+}
+
+.nav-item span:first-child{
+    font-size:18px;
+}
+
+.nav-item.active{
+    color:var(--gold2);
+}
+
+/* TOAST */
+
+.toast{
+    position:fixed;
+    left:50%;
+    bottom:82px;
+    transform:translateX(-50%) translateY(15px);
+    background:var(--navy4);
+    border:1px solid var(--border);
+    color:var(--white);
+    padding:11px 15px;
+    border-radius:12px;
+    font-size:12px;
+    opacity:0;
+    pointer-events:none;
+    transition:.25s;
+    z-index:200;
+    max-width:90%;
+    text-align:center;
+}
+
+.toast.show{
+    opacity:1;
+    transform:translateX(-50%) translateY(0);
+}
+
+@media(max-width:420px){
+    .network-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .intro h1{
+        font-size:24px;
+    }
+
+    .copy-row{
+        flex-direction:column;
+    }
+
+    .copy-btn{
+        height:42px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+
+    <button class="back" onclick="history.back()">‹</button>
+
+    <div class="header-title">
+        Deposit
+    </div>
+
+    <div class="header-sub">
+        NEXORA
+    </div>
+
+</header>
+
+
+<main class="container">
+
+    <section class="intro">
+        <h1>Deposit Assets</h1>
+
+        <p>
+            Select the digital asset and network you intend to use.
+            Deposit instructions will appear when a verified deposit
+            address is available.
+        </p>
+    </section>
+
+
+    <!-- ASSET -->
+
+    <section class="card">
+
+        <div class="card-title">
+            Select Asset
+        </div>
+
+        <button class="asset-select" onclick="openAssetModal()">
+
+            <img
+                id="assetLogo"
+                class="asset-logo"
+                src="https://cdn.jsdelivr.net/gh/madenix/Crypto-logo-cdn@main/Logos/USDT.svg"
+                alt="USDT"
+            >
+
+            <div class="asset-info">
+
+                <div class="asset-name" id="assetName">
+                    USDT
+                </div>
+
+                <div class="asset-network" id="assetDescription">
+                    Tether USD
+                </div>
+
+            </div>
+
+            <div class="chevron">
+                ›
+            </div>
+
+        </button>
+
+    </section>
+
+
+    <!-- NETWORK -->
+
+    <section class="card">
+
+        <div class="card-title">
+            Select Network
+        </div>
+
+        <div class="network-grid">
+
+            <button
+                class="network active"
+                onclick="selectNetwork(this,'TRC20')"
+            >
+                <strong>TRC20</strong>
+                <span>TRON Network</span>
+            </button>
+
+            <button
+                class="network"
+                onclick="selectNetwork(this,'ERC20')"
+            >
+                <strong>ERC20</strong>
+                <span>Ethereum Network</span>
+            </button>
+
+            <button
+                class="network"
+                onclick="selectNetwork(this,'BEP20')"
+            >
+                <strong>BEP20</strong>
+                <span>BNB Smart Chain</span>
+            </button>
+
+            <button
+                class="network"
+                onclick="selectNetwork(this,'SOL')"
+            >
+                <strong>Solana</strong>
+                <span>Solana Network</span>
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- DEPOSIT ADDRESS -->
+
+    <section class="card">
+
+        <div class="card-title">
+            Deposit Address
+        </div>
+
+        <div class="address-box">
+
+            <div class="qr-box" id="qrBox">
+                QR
+            </div>
+
+            <div class="address-placeholder" id="addressPlaceholder">
+
+                <div class="address-icon">
+                    ◇
+                </div>
+
+                <strong>
+                    Deposit address unavailable
+                </strong>
+
+                <span>
+                    A verified wallet address will appear here
+                    once the deposit wallet system is connected.
+                </span>
+
+            </div>
+
+            <div class="copy-row" id="copyRow" style="display:none;">
+
+                <input
+                    class="address-input"
+                    id="depositAddress"
+                    readonly
+                >
+
+                <button
+                    class="copy-btn"
+                    onclick="copyAddress()"
+                >
+                    Copy
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- WARNING -->
+
+    <section class="card">
+
+        <div class="warning">
+
+            <strong>Important:</strong><br>
+
+            Only send <span id="warningAsset">USDT</span>
+            through the selected
+            <span id="warningNetwork">TRC20</span>
+            network.
+
+            Sending an unsupported asset or using the wrong
+            network may result in permanent loss of funds.
+
+            Always verify the deposit address and network
+            before sending any transaction.
+
+        </div>
+
+    </section>
+
+
+    <!-- DEPOSIT INFORMATION -->
+
+    <section class="card">
+
+        <div class="card-title">
+            Deposit Information
+        </div>
+
+        <div class="info-list">
+
+            <div class="info-row">
+
+                <span>Asset</span>
+
+                <span id="infoAsset">
+                    USDT
+                </span>
+
+            </div>
+
+            <div class="info-row">
+
+                <span>Network</span>
+
+                <span id="infoNetwork" class="gold-text">
+                    TRC20
+                </span>
+
+            </div>
+
+            <div class="info-row">
+
+                <span>Minimum Deposit</span>
+
+                <span>—</span>
+
+            </div>
+
+            <div class="info-row">
+
+                <span>Network Fee</span>
+
+                <span>—</span>
+
+            </div>
+
+            <div class="info-row">
+
+                <span>Confirmation Requirement</span>
+
+                <span>—</span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- INSTRUCTIONS -->
+
+    <section class="card">
+
+        <div class="card-title">
+            How to Deposit
+        </div>
+
+        <div class="info-list">
+
+            <div class="info-row">
+
+                <span>01</span>
+
+                <span>
+                    Select the asset you want to deposit.
+                </span>
+
+            </div>
+
+            <div class="info-row">
+
+                <span>02</span>
+
+                <span>
+                    Select the correct blockchain network.
+                </span>
+
+            </div>
+
+            <div class="info-row">
+
+                <span>03</span>
+
+                <span>
+                    Copy the verified deposit address.
+                </span>
+
+            </div>
+
+            <div class="info-row">
+
+                <span>04</span>
+
+                <span>
+                    Send the asset from your external wallet.
+                </span>
+
+            </div>
+
+            <div class="info-row">
+
+                <span>05</span>
+
+                <span>
+                    Wait for blockchain confirmations and
+                    compliance verification.
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- DEPOSIT HISTORY -->
+
+    <section class="card">
+
+        <div class="card-title">
+            Deposit History
+        </div>
+
+        <div class="empty">
+
+            No deposit transactions yet.
+
+            <div class="status">
+                Waiting for verified deposit records
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- ASSET MODAL -->
+
+<div class="modal" id="assetModal">
+
+    <div class="modal-card">
+
+        <div class="modal-head">
+
+            <h3>Select Asset</h3>
+
+            <button
+                class="close"
+                onclick="closeAssetModal()"
+            >
+                ×
+            </button>
+
+        </div>
+
+        <input
+            class="search"
+            id="assetSearch"
+            placeholder="Search asset..."
+            oninput="filterAssets()"
+        >
+
+        <div id="assetList"></div>
+
+    </div>
+
+</div>
+
+
+<!-- BOTTOM NAV -->
+
+<nav class="bottom-nav">
+
+    <div class="bottom-inner">
+
+        <a class="nav-item" href="dashboard.html">
+            <span>⌂</span>
+            <span>Home</span>
+        </a>
+
+        <a class="nav-item active" href="deposit.html">
+            <span>＋</span>
+            <span>Deposit</span>
+        </a>
+
+        <a class="nav-item" href="swap.html">
+            <span>⇄</span>
+            <span>Exchange</span>
+        </a>
+
+        <a class="nav-item" href="profile.html">
+            <span>◯</span>
+            <span>Profile</span>
+        </a>
+
+    </div>
+
+</nav>
+
+
+<div class="toast" id="toast"></div>
+
+
+<script>
+
+const SUPABASE_URL =
+    "https://rihvvwktvgytbqzazage.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY,
+        {
+            auth:{
+                autoRefreshToken:true,
+                persistSession:true,
+                detectSessionInUrl:true
+            }
+        }
+    );
+
+
+const LOGO_BASE =
+    "https://cdn.jsdelivr.net/gh/madenix/Crypto-logo-cdn@main/Logos/";
+
+
+const assets = [
+
+    {
+        symbol:"BTC",
+        name:"Bitcoin",
+        logo:"BTC.svg"
+    },
+
+    {
+        symbol:"ETH",
+        name:"Ethereum",
+        logo:"ETH.svg"
+    },
+
+    {
+        symbol:"USDT",
+        name:"Tether USD",
+        logo:"USDT.svg"
+    },
+
+    {
+        symbol:"BNB",
+        name:"BNB",
+        logo:"BNB.svg"
+    },
+
+    {
+        symbol:"SOL",
+        name:"Solana",
+        logo:"SOL.svg"
+    },
+
+    {
+        symbol:"XRP",
+        name:"XRP",
+        logo:"XRP.svg"
+    },
+
+    {
+        symbol:"TON",
+        name:"Toncoin",
+        logo:"TON.svg"
+    },
+
+    {
+        symbol:"DOGE",
+        name:"Dogecoin",
+        logo:"DOGE.svg"
+    },
+
+    {
+        symbol:"ADA",
+        name:"Cardano",
+        logo:"ADA.svg"
+    },
+
+    {
+        symbol:"TRX",
+        name:"TRON",
+        logo:"TRON.svg"
+    },
+
+    {
+        symbol:"LTC",
+        name:"Litecoin",
+        logo:"LTC.svg"
+    },
+
+    {
+        symbol:"AVAX",
+        name:"Avalanche",
+        logo:"AVAX.svg"
+    },
+
+    {
+        symbol:"DOT",
+        name:"Polkadot",
+        logo:"DOT.svg"
+    },
+
+    {
+        symbol:"LINK",
+        name:"Chainlink",
+        logo:"LINK.svg"
+    },
+
+    {
+        symbol:"POL",
+        name:"Polygon",
+        logo:"MATIC.svg"
+    },
+
+    {
+        symbol:"SHIB",
+        name:"Shiba Inu",
+        logo:"SHIB.svg"
+    },
+
+    {
+        symbol:"BCH",
+        name:"Bitcoin Cash",
+        logo:"BCH.svg"
+    },
+
+    {
+        symbol:"XLM",
+        name:"Stellar",
+        logo:"XLM.svg"
+    },
+
+    {
+        symbol:"ATOM",
+        name:"Cosmos",
+        logo:"ATOM.svg"
+    },
+
+    {
+        symbol:"NEAR",
+        name:"NEAR Protocol",
+        logo:"NEAR.svg"
+    },
+
+    {
+        symbol:"APT",
+        name:"Aptos",
+        logo:"APT.svg"
+    },
+
+    {
+        symbol:"ARB",
+        name:"Arbitrum",
+        logo:"ARB.svg"
+    },
+
+    {
+        symbol:"OP",
+        name:"Optimism",
+        logo:"OP.svg"
+    }
+
+];
+
+
+let selectedAsset = "USDT";
+let selectedNetwork = "TRC20";
+
+
+/* AUTH */
+
+async function checkAuth(){
+
+    const {
+        data:{
+            session
+        }
+    } = await supabaseClient.auth.getSession();
+
+    if(!session){
+
+        window.location.href = "signin.html";
+
+        return;
+    }
+
+}
+
+
+/* ASSET MODAL */
+
+function openAssetModal(){
+
+    document
+        .getElementById("assetModal")
+        .classList.add("show");
+
+    renderAssets(assets);
+
+    document
+        .getElementById("assetSearch")
+        .focus();
+
+}
+
+
+function closeAssetModal(){
+
+    document
+        .getElementById("assetModal")
+        .classList.remove("show");
+
+}
+
+
+function renderAssets(list){
+
+    const container =
+        document.getElementById("assetList");
+
+    container.innerHTML = "";
+
+    list.forEach(asset => {
+
+        const button =
+            document.createElement("button");
+
+        button.className = "asset-option";
+
+        button.innerHTML = `
+
+            <img
+                class="asset-logo"
+                src="${LOGO_BASE + asset.logo}"
+                alt="${asset.symbol}"
+            >
+
+            <div>
+
+                <div class="asset-name">
+                    ${asset.symbol}
+                </div>
+
+                <div class="asset-network">
+                    ${asset.name}
+                </div>
+
+            </div>
+        `;
+
+        button.onclick = () =>
+            chooseAsset(asset);
+
+        container.appendChild(button);
+
+    });
+
+}
+
+
+function filterAssets(){
+
+    const query =
+        document
+            .getElementById("assetSearch")
+            .value
+            .toLowerCase()
+            .trim();
+
+    const filtered =
+        assets.filter(asset =>
+            asset.symbol.toLowerCase().includes(query) ||
+            asset.name.toLowerCase().includes(query)
+        );
+
+    renderAssets(filtered);
+
+}
+
+
+function chooseAsset(asset){
+
+    selectedAsset =
+        asset.symbol;
+
+    document
+        .getElementById("assetLogo")
+        .src =
+        LOGO_BASE + asset.logo;
+
+    document
+        .getElementById("assetName")
+        .textContent =
+        asset.symbol;
+
+    document
+        .getElementById("assetDescription")
+        .textContent =
+        asset.name;
+
+    document
+        .getElementById("warningAsset")
+        .textContent =
+        asset.symbol;
+
+    document
+        .getElementById("infoAsset")
+        .textContent =
+        asset.symbol;
+
+    closeAssetModal();
+
+}
+
+
+/* NETWORK */
+
+function selectNetwork(button,network){
+
+    document
+        .querySelectorAll(".network")
+        .forEach(item =>
+            item.classList.remove("active")
+        );
+
+    button.classList.add("active");
+
+    selectedNetwork =
+        network;
+
+    document
+        .getElementById("warningNetwork")
+        .textContent =
+        network;
+
+    document
+        .getElementById("infoNetwork")
+        .textContent =
+        network;
+
+}
+
+
+/* COPY */
+
+async function copyAddress(){
+
+    const input =
+        document.getElementById("depositAddress");
+
+    if(!input.value){
+
+        showToast(
+            "No verified deposit address is available yet."
+        );
+
+        return;
+    }
+
+    try{
+
+        await navigator.clipboard.writeText(
+            input.value
+        );
+
+        showToast(
+            "Deposit address copied."
+        );
+
+    }catch(error){
+
+        showToast(
+            "Unable to copy address."
+        );
+
+    }
+
+}
+
+
+/* TOAST */
+
+let toastTimer;
+
+function showToast(message){
+
+    const toast =
+        document.getElementById("toast");
+
+    toast.textContent =
+        message;
+
+    toast.classList.add("show");
+
+    clearTimeout(toastTimer);
+
+    toastTimer =
+        setTimeout(() => {
+
+            toast.classList.remove("show");
+
+        },3000);
+
+}
+
+
+/* INITIALIZE */
+
+checkAuth();
+
+</script>
+
+</body>
+</html>
