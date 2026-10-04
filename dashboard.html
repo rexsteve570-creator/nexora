@@ -746,7 +746,9 @@ a{
 }
 
 @keyframes spin{
-  to{transform:rotate(360deg)}
+  to{
+    transform:rotate(360deg);
+  }
 }
 
 .empty{
@@ -784,6 +786,7 @@ a{
   .action{
     min-height:94px;
   }
+
 }
 </style>
 </head>
@@ -793,6 +796,7 @@ a{
 <div class="loading" id="loading">
   <div class="loader"></div>
 </div>
+
 
 <!-- =========================
      DRAWER
@@ -809,6 +813,7 @@ a{
     </div>
 
     <div class="drawer-user">
+
       <div class="drawer-user-name" id="drawerName">
         Loading...
       </div>
@@ -816,9 +821,11 @@ a{
       <div class="drawer-user-email" id="drawerEmail">
         Loading...
       </div>
+
     </div>
 
   </div>
+
 
   <nav class="drawer-nav">
 
@@ -888,18 +895,26 @@ a{
   <div class="topbar-inner">
 
     <button class="icon-btn" id="menuBtn" aria-label="Open menu">
+
       <div class="hamburger">
         <span></span>
         <span></span>
         <span></span>
       </div>
+
     </button>
+
 
     <a href="dashboard.html" class="logo">
       NEX<span>ORA</span>
     </a>
 
-    <a href="profile.html" class="account-circle" id="accountInitials">
+
+    <a
+      href="profile.html"
+      class="account-circle"
+      id="accountInitials"
+    >
       —
     </a>
 
@@ -914,6 +929,7 @@ a{
 
 <main class="main">
 
+
   <section class="welcome">
 
     <div class="welcome-small">
@@ -927,7 +943,9 @@ a{
   </section>
 
 
-  <!-- PORTFOLIO -->
+  <!-- =========================
+       PORTFOLIO
+  ========================= -->
 
   <section class="portfolio-card">
 
@@ -937,12 +955,16 @@ a{
 
     <div class="portfolio-value">
       —
-      <span class="portfolio-currency">USD</span>
+      <span class="portfolio-currency">
+        USD
+      </span>
     </div>
+
 
     <div class="portfolio-grid">
 
       <div class="portfolio-stat">
+
         <div class="portfolio-stat-label">
           Available
         </div>
@@ -950,9 +972,12 @@ a{
         <div class="portfolio-stat-value">
           —
         </div>
+
       </div>
 
+
       <div class="portfolio-stat">
+
         <div class="portfolio-stat-label">
           Invested
         </div>
@@ -960,9 +985,12 @@ a{
         <div class="portfolio-stat-value">
           —
         </div>
+
       </div>
 
+
       <div class="portfolio-stat">
+
         <div class="portfolio-stat-label">
           Partners
         </div>
@@ -970,6 +998,7 @@ a{
         <div class="portfolio-stat-value">
           —
         </div>
+
       </div>
 
     </div>
@@ -977,7 +1006,9 @@ a{
   </section>
 
 
-  <!-- CRYPTO ASSETS -->
+  <!-- =========================
+       CRYPTO ASSETS
+  ========================= -->
 
   <section class="card">
 
@@ -993,6 +1024,7 @@ a{
 
     </div>
 
+
     <div class="search-wrap">
 
       <input
@@ -1005,7 +1037,12 @@ a{
 
     </div>
 
-    <div class="asset-list" id="assetList"></div>
+
+    <div
+      class="asset-list"
+      id="assetList"
+    ></div>
+
 
     <div class="selected-asset">
 
@@ -1017,6 +1054,7 @@ a{
           src=""
           alt=""
         >
+
 
         <div class="selected-name">
 
@@ -1032,13 +1070,16 @@ a{
 
       </div>
 
+
       <div class="selected-value">
         —
       </div>
 
+
       <div class="selected-stats">
 
         <div class="selected-stat">
+
           <label>
             Available
           </label>
@@ -1046,9 +1087,12 @@ a{
           <strong>
             —
           </strong>
+
         </div>
 
+
         <div class="selected-stat">
+
           <label>
             Invested
           </label>
@@ -1056,9 +1100,12 @@ a{
           <strong>
             —
           </strong>
+
         </div>
 
+
         <div class="selected-stat">
+
           <label>
             Asset value
           </label>
@@ -1066,9 +1113,12 @@ a{
           <strong>
             —
           </strong>
+
         </div>
 
+
         <div class="selected-stat">
+
           <label>
             Current price
           </label>
@@ -1076,6 +1126,7 @@ a{
           <strong>
             —
           </strong>
+
         </div>
 
       </div>
@@ -1085,13 +1136,16 @@ a{
   </section>
 
 
-  <!-- PROFIT -->
+  <!-- =========================
+       PROFIT
+  ========================= -->
 
   <section class="card">
 
     <div class="card-head">
 
       <div>
+
         <div class="card-title">
           Profit Calculation
         </div>
@@ -1099,9 +1153,11 @@ a{
         <div class="card-subtitle">
           Portfolio performance timer
         </div>
+
       </div>
 
     </div>
+
 
     <div class="profit-box">
 
@@ -1111,11 +1167,17 @@ a{
           Next calculation
         </div>
 
-        <div class="timer-value" id="profitTimer">
+        <div
+          class="timer-value"
+          id="profitTimer"
+        >
           —
         </div>
 
-        <div class="timer-status" id="profitStatus">
+        <div
+          class="timer-status"
+          id="profitStatus"
+        >
           Awaiting confirmed deposit
         </div>
 
@@ -1126,7 +1188,9 @@ a{
   </section>
 
 
-  <!-- ACCOUNT STATISTICS -->
+  <!-- =========================
+       ACCOUNT STATISTICS
+  ========================= -->
 
   <section class="card">
 
@@ -1138,9 +1202,11 @@ a{
 
     </div>
 
+
     <div class="stats-grid">
 
       <div class="stat-box">
+
         <div class="stat-label">
           Total Deposits
         </div>
@@ -1148,9 +1214,12 @@ a{
         <div class="stat-value">
           —
         </div>
+
       </div>
 
+
       <div class="stat-box">
+
         <div class="stat-label">
           Total Withdrawals
         </div>
@@ -1158,9 +1227,12 @@ a{
         <div class="stat-value">
           —
         </div>
+
       </div>
 
+
       <div class="stat-box">
+
         <div class="stat-label">
           Total Profit
         </div>
@@ -1168,9 +1240,12 @@ a{
         <div class="stat-value">
           —
         </div>
+
       </div>
 
+
       <div class="stat-box">
+
         <div class="stat-label">
           Referral Earnings
         </div>
@@ -1178,9 +1253,12 @@ a{
         <div class="stat-value">
           —
         </div>
+
       </div>
 
+
       <div class="stat-box">
+
         <div class="stat-label">
           Investments
         </div>
@@ -1188,16 +1266,23 @@ a{
         <div class="stat-value">
           —
         </div>
+
       </div>
 
+
       <div class="stat-box">
+
         <div class="stat-label">
           Account Status
         </div>
 
-        <div class="stat-value" id="accountStatus">
+        <div
+          class="stat-value"
+          id="accountStatus"
+        >
           —
         </div>
+
       </div>
 
     </div>
@@ -1205,7 +1290,9 @@ a{
   </section>
 
 
-  <!-- QUICK ACTIONS -->
+  <!-- =========================
+       QUICK ACTIONS
+  ========================= -->
 
   <section class="card">
 
@@ -1217,11 +1304,16 @@ a{
 
     </div>
 
+
     <div class="actions">
 
-      <!-- KEEP NAME AS CURRENCY EXCHANGE -->
 
-      <a href="swap.html" class="action">
+      <!-- CURRENCY EXCHANGE -->
+
+      <a
+        href="swap.html"
+        class="action"
+      >
 
         <div class="action-icon">
           ⇄
@@ -1234,7 +1326,12 @@ a{
       </a>
 
 
-      <a href="deposit.html" class="action">
+      <!-- ADD FUNDS -->
+
+      <a
+        href="deposit.html"
+        class="action"
+      >
 
         <div class="action-icon">
           ＋
@@ -1247,7 +1344,12 @@ a{
       </a>
 
 
-      <a href="withdraw.html" class="action">
+      <!-- WITHDRAW -->
+
+      <a
+        href="withdraw.html"
+        class="action"
+      >
 
         <div class="action-icon">
           ↗
@@ -1274,24 +1376,59 @@ a{
 
   <div class="bottom-inner">
 
-    <a href="dashboard.html" class="bottom-link active">
-      <strong>⌂</strong>
+    <a
+      href="dashboard.html"
+      class="bottom-link active"
+    >
+
+      <strong>
+        ⌂
+      </strong>
+
       Portfolio
+
     </a>
 
-    <a href="deposit.html" class="bottom-link">
-      <strong>＋</strong>
+
+    <a
+      href="deposit.html"
+      class="bottom-link"
+    >
+
+      <strong>
+        ＋
+      </strong>
+
       Deposit
+
     </a>
 
-    <a href="transactions.html" class="bottom-link">
-      <strong>≡</strong>
+
+    <a
+      href="transactions.html"
+      class="bottom-link"
+    >
+
+      <strong>
+        ≡
+      </strong>
+
       History
+
     </a>
 
-    <a href="profile.html" class="bottom-link">
-      <strong>○</strong>
+
+    <a
+      href="profile.html"
+      class="bottom-link"
+    >
+
+      <strong>
+        ○
+      </strong>
+
       Account
+
     </a>
 
   </div>
@@ -1326,8 +1463,15 @@ const supabaseClient =
 
 
 /* =========================================================
+   ELEMENT HELPER
+========================================================= */
+
+const $ = id =>
+  document.getElementById(id);
+
+
+/* =========================================================
    CRYPTO LOGOS
-   SAME CDN STYLE AS YOUR HTML
 ========================================================= */
 
 const LOGO_BASE =
@@ -1363,7 +1507,7 @@ const logoFiles = {
 
 
 /* =========================================================
-   ASSET DATA
+   ASSETS
 ========================================================= */
 
 const assets = [
@@ -1399,25 +1543,20 @@ let selectedAsset = "BTC";
 
 
 /* =========================================================
-   ELEMENTS
-========================================================= */
-
-const $ = id => document.getElementById(id);
-
-
-/* =========================================================
-   ASSET LOGO
+   LOGO URL
 ========================================================= */
 
 function logoFor(symbol){
 
-  const file = logoFiles[symbol];
+  const file =
+    logoFiles[symbol];
 
   if(!file){
     return "";
   }
 
   return LOGO_BASE + file;
+
 }
 
 
@@ -1427,22 +1566,35 @@ function logoFor(symbol){
 
 function renderAssets(filter = ""){
 
-  const list = $("assetList");
+  const list =
+    $("assetList");
 
-  const query = filter.trim().toLowerCase();
+  if(!list){
+    return;
+  }
 
-  const filtered = assets.filter(asset => {
+  const query =
+    String(filter)
+      .trim()
+      .toLowerCase();
 
-    const symbol = asset[0].toLowerCase();
-    const name = asset[1].toLowerCase();
 
-    return (
-      !query ||
-      symbol.includes(query) ||
-      name.includes(query)
-    );
+  const filtered =
+    assets.filter(asset => {
 
-  });
+      const symbol =
+        asset[0].toLowerCase();
+
+      const name =
+        asset[1].toLowerCase();
+
+      return (
+        !query ||
+        symbol.includes(query) ||
+        name.includes(query)
+      );
+
+    });
 
 
   if(!filtered.length){
@@ -1454,77 +1606,95 @@ function renderAssets(filter = ""){
     `;
 
     return;
+
   }
 
 
-  list.innerHTML = filtered.map(asset => {
+  list.innerHTML =
+    filtered.map(asset => {
 
-    const symbol = asset[0];
-    const name = asset[1];
+      const symbol =
+        asset[0];
 
-    return `
+      const name =
+        asset[1];
 
-      <div
-        class="asset-row ${symbol === selectedAsset ? "selected" : ""}"
-        data-symbol="${symbol}"
-      >
 
-        <div class="asset-left">
+      return `
 
-          <img
-            class="coin-logo"
-            src="${logoFor(symbol)}"
-            alt="${name}"
-            loading="lazy"
-          >
+        <div
+          class="asset-row ${
+            symbol === selectedAsset
+              ? "selected"
+              : ""
+          }"
+          data-symbol="${symbol}"
+        >
 
-          <div class="asset-name">
+          <div class="asset-left">
 
-            <strong>
-              ${name}
-            </strong>
+            <img
+              class="coin-logo"
+              src="${logoFor(symbol)}"
+              alt="${name}"
+              loading="lazy"
+            >
 
-            <span>
-              ${symbol}
-            </span>
+            <div class="asset-name">
+
+              <strong>
+                ${name}
+              </strong>
+
+              <span>
+                ${symbol}
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <div class="asset-right">
+
+            <div class="asset-price">
+              —
+            </div>
+
+            <div class="asset-balance">
+              —
+            </div>
 
           </div>
 
         </div>
 
+      `;
 
-        <div class="asset-right">
-
-          <div class="asset-price">
-            —
-          </div>
-
-          <div class="asset-balance">
-            —
-          </div>
-
-        </div>
-
-      </div>
-
-    `;
-
-  }).join("");
+    }).join("");
 
 
-  list.querySelectorAll(".asset-row").forEach(row => {
+  list
+    .querySelectorAll(".asset-row")
+    .forEach(row => {
 
-    row.addEventListener("click", () => {
+      row.addEventListener(
+        "click",
+        () => {
 
-      selectedAsset = row.dataset.symbol;
+          selectedAsset =
+            row.dataset.symbol;
 
-      updateSelectedAsset();
+          updateSelectedAsset();
 
-      renderAssets($("assetSearch").value);
+          renderAssets(
+            $("assetSearch").value
+          );
+
+        }
+      );
 
     });
-
-  });
 
 }
 
@@ -1535,104 +1705,372 @@ function renderAssets(filter = ""){
 
 function updateSelectedAsset(){
 
-  const asset = assets.find(
-    item => item[0] === selectedAsset
-  );
+  const asset =
+    assets.find(
+      item =>
+        item[0] === selectedAsset
+    );
 
-  if(!asset) return;
 
-  $("selectedLogo").src = logoFor(asset[0]);
-  $("selectedLogo").alt = asset[1];
+  if(!asset){
+    return;
+  }
 
-  $("selectedName").textContent = asset[1];
-  $("selectedSymbol").textContent = asset[0];
+
+  $("selectedLogo").src =
+    logoFor(asset[0]);
+
+  $("selectedLogo").alt =
+    asset[1];
+
+  $("selectedName").textContent =
+    asset[1];
+
+  $("selectedSymbol").textContent =
+    asset[0];
 
 }
 
 
 /* =========================================================
-   PROFILE
+   GET INITIALS
+========================================================= */
+
+function getInitials(name){
+
+  if(!name){
+    return "—";
+  }
+
+
+  const parts =
+    String(name)
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean);
+
+
+  if(!parts.length){
+    return "—";
+  }
+
+
+  return parts
+    .slice(0,2)
+    .map(part =>
+      part.charAt(0)
+    )
+    .join("")
+    .toUpperCase();
+
+}
+
+
+/* =========================================================
+   DISPLAY PROFILE IMMEDIATELY
+========================================================= */
+
+function displayUserProfile(
+  user,
+  profile = null
+){
+
+  if(!user){
+    return;
+  }
+
+
+  /*
+     First use the information Supabase Auth
+     already gives us.
+
+     This prevents the dashboard from staying
+     blank while the profiles table is loading.
+  */
+
+  const metadataName =
+    user.user_metadata?.full_name ||
+    user.user_metadata?.name ||
+    "";
+
+
+  const authEmail =
+    user.email ||
+    "";
+
+
+  let fullName =
+    metadataName ||
+    "";
+
+
+  let email =
+    authEmail ||
+    "";
+
+
+  let accountStatus =
+    "PENDING";
+
+
+  /*
+     If the profiles table returned data,
+     use the database values.
+  */
+
+  if(profile){
+
+    if(
+      profile.full_name &&
+      String(profile.full_name).trim()
+    ){
+
+      fullName =
+        String(profile.full_name).trim();
+
+    }
+
+
+    if(
+      profile.email &&
+      String(profile.email).trim()
+    ){
+
+      email =
+        String(profile.email).trim();
+
+    }
+
+
+    if(
+      profile.account_status &&
+      String(profile.account_status).trim()
+    ){
+
+      accountStatus =
+        String(profile.account_status).trim();
+
+    }
+
+  }
+
+
+  /*
+     Final fallback if full name somehow
+     does not exist.
+  */
+
+  if(!fullName){
+
+    if(email){
+
+      const emailName =
+        email
+          .split("@")[0]
+          .replace(/[._-]+/g," ")
+          .trim();
+
+
+      fullName =
+        emailName
+          ? emailName
+              .split(/\s+/)
+              .map(word =>
+                word.charAt(0).toUpperCase() +
+                word.slice(1)
+              )
+              .join(" ")
+          : "NEXORA User";
+
+    }else{
+
+      fullName =
+        "NEXORA User";
+
+    }
+
+  }
+
+
+  /*
+     Update welcome name.
+  */
+
+  const welcomeName =
+    $("welcomeName");
+
+  if(welcomeName){
+
+    welcomeName.textContent =
+      fullName;
+
+  }
+
+
+  /*
+     Update drawer name.
+  */
+
+  const drawerName =
+    $("drawerName");
+
+  if(drawerName){
+
+    drawerName.textContent =
+      fullName;
+
+  }
+
+
+  /*
+     Update drawer email.
+  */
+
+  const drawerEmail =
+    $("drawerEmail");
+
+  if(drawerEmail){
+
+    drawerEmail.textContent =
+      email || "—";
+
+  }
+
+
+  /*
+     Update account initials.
+  */
+
+  const accountInitials =
+    $("accountInitials");
+
+  if(accountInitials){
+
+    accountInitials.textContent =
+      getInitials(fullName);
+
+  }
+
+
+  /*
+     Update account status.
+  */
+
+  const status =
+    $("accountStatus");
+
+  if(status){
+
+    status.textContent =
+      accountStatus || "PENDING";
+
+  }
+
+}
+
+
+/* =========================================================
+   LOAD PROFILE
 ========================================================= */
 
 async function loadProfile(user){
 
-  const { data, error } =
-    await supabaseClient
-      .from("profiles")
-      .select(`
-        id,
-        full_name,
-        email,
-        account_status,
-        kyc_status,
-        created_at,
-        updated_at
-      `)
-      .eq("id", user.id)
-      .maybeSingle();
-
-
-  if(error){
-
-    console.error("Profile error:",error);
-
+  if(!user){
     return;
-
   }
 
 
-  if(!data){
+  /*
+     STEP 1:
+     Immediately display Supabase Auth data.
+  */
 
-    $("welcomeName").textContent =
-      user.user_metadata?.full_name ||
-      "NEXORA User";
+  displayUserProfile(user);
 
-    $("drawerName").textContent =
-      user.user_metadata?.full_name ||
-      "NEXORA User";
 
-    $("drawerEmail").textContent =
-      user.email || "—";
+  /*
+     STEP 2:
+     Load the user's real profile row.
+  */
 
-    return;
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("profiles")
+        .select(`
+          id,
+          full_name,
+          email,
+          account_status,
+          kyc_status,
+          created_at,
+          updated_at
+        `)
+        .eq("id",user.id)
+        .maybeSingle();
+
+
+    if(error){
+
+      console.error(
+        "NEXORA profile query error:",
+        error
+      );
+
+      /*
+         Auth fallback remains visible.
+      */
+
+      return;
+
+    }
+
+
+    /*
+       STEP 3:
+       Replace fallback data with database data.
+    */
+
+    if(data){
+
+      displayUserProfile(
+        user,
+        data
+      );
+
+      console.log(
+        "NEXORA profile loaded:",
+        data
+      );
+
+      return;
+
+    }
+
+
+    /*
+       If no profile row exists, keep Auth data
+       visible rather than showing blank fields.
+    */
+
+    console.warn(
+      "No profile row found for user:",
+      user.id
+    );
+
+
+  }catch(error){
+
+    console.error(
+      "Unexpected profile loading error:",
+      error
+    );
 
   }
-
-
-  const fullName =
-    data.full_name ||
-    user.user_metadata?.full_name ||
-    "NEXORA User";
-
-
-  $("welcomeName").textContent =
-    fullName;
-
-  $("drawerName").textContent =
-    fullName;
-
-  $("drawerEmail").textContent =
-    data.email ||
-    user.email ||
-    "—";
-
-
-  $("accountStatus").textContent =
-    data.account_status || "—";
-
-
-  const initials =
-    fullName
-      .split(/\s+/)
-      .filter(Boolean)
-      .slice(0,2)
-      .map(name => name[0])
-      .join("")
-      .toUpperCase();
-
-
-  $("accountInitials").textContent =
-    initials || "—";
 
 }
 
@@ -1643,11 +2081,15 @@ async function loadProfile(user){
 
 let profitInterval = null;
 
-function startProfitTimer(confirmedAt){
+
+function startProfitTimer(
+  confirmedAt
+){
 
   if(!confirmedAt){
 
-    $("profitTimer").textContent = "—";
+    $("profitTimer").textContent =
+      "—";
 
     $("profitStatus").textContent =
       "Awaiting confirmed deposit";
@@ -1660,35 +2102,54 @@ function startProfitTimer(confirmedAt){
   function update(){
 
     const start =
-      new Date(confirmedAt).getTime();
+      new Date(
+        confirmedAt
+      ).getTime();
+
 
     const now =
       Date.now();
 
+
     const elapsed =
       now - start;
 
+
     const day =
-      24 * 60 * 60 * 1000;
+      24 *
+      60 *
+      60 *
+      1000;
+
 
     const remaining =
-      day - (elapsed % day);
+      day -
+      (elapsed % day);
 
 
     const hours =
       Math.floor(
-        remaining / (60 * 60 * 1000)
+        remaining /
+        (60 * 60 * 1000)
       );
+
 
     const minutes =
       Math.floor(
-        (remaining % (60 * 60 * 1000)) /
+        (
+          remaining %
+          (60 * 60 * 1000)
+        ) /
         (60 * 1000)
       );
 
+
     const seconds =
       Math.floor(
-        (remaining % (60 * 1000)) /
+        (
+          remaining %
+          (60 * 1000)
+        ) /
         1000
       );
 
@@ -1698,6 +2159,7 @@ function startProfitTimer(confirmedAt){
       `${String(minutes).padStart(2,"0")}:` +
       `${String(seconds).padStart(2,"0")}`;
 
+
     $("profitStatus").textContent =
       "Profit calculation cycle";
 
@@ -1705,14 +2167,22 @@ function startProfitTimer(confirmedAt){
 
 
   if(profitInterval){
-    clearInterval(profitInterval);
+
+    clearInterval(
+      profitInterval
+    );
+
   }
 
 
   update();
 
+
   profitInterval =
-    setInterval(update,1000);
+    setInterval(
+      update,
+      1000
+    );
 
 }
 
@@ -1723,81 +2193,190 @@ function startProfitTimer(confirmedAt){
 
 function openDrawer(){
 
-  $("drawer").classList.add("open");
-  $("drawerOverlay").classList.add("open");
+  $("drawer")
+    .classList.add("open");
+
+  $("drawerOverlay")
+    .classList.add("open");
 
 }
+
 
 function closeDrawer(){
 
-  $("drawer").classList.remove("open");
-  $("drawerOverlay").classList.remove("open");
+  $("drawer")
+    .classList.remove("open");
+
+  $("drawerOverlay")
+    .classList.remove("open");
 
 }
 
 
-$("menuBtn").addEventListener(
-  "click",
-  openDrawer
-);
+$("menuBtn")
+  .addEventListener(
+    "click",
+    openDrawer
+  );
 
 
-$("drawerOverlay").addEventListener(
-  "click",
-  closeDrawer
-);
+$("drawerOverlay")
+  .addEventListener(
+    "click",
+    closeDrawer
+  );
+
+
+/*
+   Close drawer when a navigation link
+   is selected on mobile.
+*/
+
+document
+  .querySelectorAll(
+    ".drawer-link:not(.logout)"
+  )
+  .forEach(link => {
+
+    link.addEventListener(
+      "click",
+      closeDrawer
+    );
+
+  });
 
 
 /* =========================================================
    LOGOUT
 ========================================================= */
 
-$("logoutBtn").addEventListener(
-  "click",
-  async event => {
+$("logoutBtn")
+  .addEventListener(
+    "click",
+    async event => {
 
-    event.preventDefault();
+      event.preventDefault();
 
-    await supabaseClient.auth.signOut();
+      try{
 
-    window.location.href =
-      "signin.html";
+        await supabaseClient
+          .auth
+          .signOut();
 
-  }
-);
+      }catch(error){
+
+        console.error(
+          "Logout error:",
+          error
+        );
+
+      }
+
+
+      window.location.href =
+        "signin.html";
+
+    }
+  );
 
 
 /* =========================================================
    SEARCH
 ========================================================= */
 
-$("assetSearch").addEventListener(
-  "input",
-  event => {
+$("assetSearch")
+  .addEventListener(
+    "input",
+    event => {
 
-    renderAssets(
-      event.target.value
-    );
+      renderAssets(
+        event.target.value
+      );
 
-  }
-);
+    }
+  );
 
 
 /* =========================================================
-   AUTH + INITIALIZATION
+   AUTH STATE LISTENER
+========================================================= */
+
+supabaseClient.auth
+  .onAuthStateChange(
+    async (event,session) => {
+
+      /*
+         If the user logs in, refresh the
+         displayed profile information.
+      */
+
+      if(
+        session &&
+        session.user
+      ){
+
+        displayUserProfile(
+          session.user
+        );
+
+      }
+
+
+      /*
+         If the session is gone, return to login.
+      */
+
+      if(
+        event === "SIGNED_OUT"
+      ){
+
+        window.location.href =
+          "signin.html";
+
+      }
+
+    }
+  );
+
+
+/* =========================================================
+   INITIALIZATION
 ========================================================= */
 
 async function init(){
 
   try{
 
-    const {
-      data: {
-        user
-      }
-    } =
-      await supabaseClient.auth.getUser();
+    /*
+       Get the currently authenticated user.
+    */
 
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .auth
+        .getUser();
+
+
+    if(error){
+
+      console.error(
+        "Auth error:",
+        error
+      );
+
+    }
+
+
+    const user =
+      data?.user;
+
+
+    /*
+       No logged-in user.
+    */
 
     if(!user){
 
@@ -1809,22 +2388,42 @@ async function init(){
     }
 
 
-    await loadProfile(user);
+    /*
+       Display Auth information immediately.
+    */
 
+    displayUserProfile(
+      user
+    );
+
+
+    /*
+       Then load the real profile.
+    */
+
+    await loadProfile(
+      user
+    );
+
+
+    /*
+       Render crypto assets.
+    */
 
     renderAssets();
+
 
     updateSelectedAsset();
 
 
     /*
-      Profit timer remains inactive until
-      a legitimate confirmed deposit timestamp
-      is supplied by the backend.
+       Profit timer deliberately remains inactive
+       until a legitimate confirmed deposit timestamp
+       comes from the backend.
 
-      Example later:
+       Later:
 
-      startProfitTimer(confirmedAt);
+       startProfitTimer(confirmedAt);
     */
 
   }catch(error){
@@ -1836,12 +2435,22 @@ async function init(){
 
   }finally{
 
-    setTimeout(() => {
+    /*
+       Always remove the loading screen,
+       even if the profile query has an error.
+    */
 
-      $("loading")
-        .classList.add("hidden");
+    setTimeout(
+      () => {
 
-    },300);
+        $("loading")
+          .classList.add(
+            "hidden"
+          );
+
+      },
+      300
+    );
 
   }
 
@@ -1849,7 +2458,7 @@ async function init(){
 
 
 /* =========================================================
-   START
+   START DASHBOARD
 ========================================================= */
 
 init();
