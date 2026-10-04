@@ -3,24 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>NEXORA — Portfolio</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
+
 :root{
     --navy:#071426;
     --navy2:#0d1d33;
     --gold:#d8ad55;
     --gold2:#f0cf7a;
+
     --white:#ffffff;
     --text:#172033;
     --muted:#7b8495;
     --bg:#f5f6f8;
     --card:#ffffff;
     --border:#e8ebef;
-    --danger:#d94b4b;
+
     --success:#16845b;
+    --danger:#d94b4b;
+
     --shadow:0 10px 30px rgba(7,20,38,.07);
 }
 
@@ -35,15 +40,22 @@ html{
 }
 
 body{
-    font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+
     background:var(--bg);
     color:var(--text);
     min-height:100vh;
 }
 
 button,
-input,
-select{
+input{
     font:inherit;
 }
 
@@ -56,724 +68,1309 @@ a{
     text-decoration:none;
 }
 
-/* =========================
+
+/* =========================================================
    HEADER
-========================= */
+========================================================= */
 
 .topbar{
+
     height:68px;
+
     background:var(--navy);
+
     color:#fff;
+
     display:flex;
+
     align-items:center;
+
     justify-content:space-between;
+
     padding:0 18px;
+
     position:sticky;
+
     top:0;
+
     z-index:100;
-    box-shadow:0 4px 20px rgba(0,0,0,.12);
+
+    box-shadow:
+        0 4px 20px rgba(0,0,0,.12);
 }
 
+
 .left-head{
+
     display:flex;
+
     align-items:center;
+
     gap:13px;
 }
 
+
 .menu-btn{
+
     width:42px;
+
     height:42px;
-    border:1px solid rgba(255,255,255,.14);
+
+    border:
+        1px solid
+        rgba(255,255,255,.14);
+
     border-radius:12px;
-    background:rgba(255,255,255,.06);
+
+    background:
+        rgba(255,255,255,.06);
+
     display:flex;
+
     flex-direction:column;
+
     align-items:center;
+
     justify-content:center;
+
     gap:5px;
 }
 
+
 .menu-btn span{
+
     width:18px;
+
     height:2px;
+
     background:#fff;
+
     border-radius:3px;
 }
 
+
 .logo{
+
     font-size:20px;
+
     font-weight:800;
+
     letter-spacing:1.8px;
 }
 
+
 .logo span{
+
     color:var(--gold);
 }
 
+
 .account-btn{
+
     width:42px;
+
     height:42px;
+
     border-radius:50%;
-    border:1px solid rgba(216,173,85,.55);
-    background:rgba(216,173,85,.12);
+
+    border:
+        1px solid
+        rgba(216,173,85,.55);
+
+    background:
+        rgba(216,173,85,.12);
+
     color:var(--gold2);
+
     font-weight:800;
+
     display:flex;
+
     align-items:center;
+
     justify-content:center;
 }
 
-/* =========================
+
+/* =========================================================
    DRAWER
-========================= */
+========================================================= */
 
 .overlay{
+
     position:fixed;
+
     inset:0;
+
     background:rgba(0,0,0,.48);
+
     opacity:0;
+
     visibility:hidden;
+
     transition:.25s ease;
+
     z-index:150;
 }
 
+
 .overlay.show{
+
     opacity:1;
+
     visibility:visible;
 }
 
+
 .drawer{
+
     position:fixed;
+
     top:0;
+
     left:0;
+
     bottom:0;
+
     width:285px;
+
     max-width:85%;
+
     background:var(--white);
+
     z-index:200;
+
     transform:translateX(-100%);
+
     transition:.28s ease;
-    box-shadow:15px 0 45px rgba(0,0,0,.15);
+
+    box-shadow:
+        15px 0 45px rgba(0,0,0,.15);
+
     display:flex;
+
     flex-direction:column;
 }
 
+
 .drawer.open{
+
     transform:translateX(0);
 }
 
+
 .drawer-head{
+
     height:75px;
+
     background:var(--navy);
+
     color:#fff;
+
     display:flex;
+
     align-items:center;
+
     justify-content:space-between;
+
     padding:0 18px;
 }
 
+
 .drawer-brand{
+
     font-size:19px;
+
     font-weight:800;
+
     letter-spacing:1.5px;
 }
 
+
 .drawer-brand span{
+
     color:var(--gold);
 }
 
+
 .close-drawer{
+
     width:38px;
+
     height:38px;
+
     border:0;
+
     border-radius:10px;
-    background:rgba(255,255,255,.08);
+
+    background:
+        rgba(255,255,255,.08);
+
     color:#fff;
+
     font-size:25px;
 }
 
+
 .drawer-profile{
+
     padding:20px 18px;
-    border-bottom:1px solid var(--border);
+
+    border-bottom:
+        1px solid
+        var(--border);
 }
 
+
 .drawer-avatar{
+
     width:46px;
+
     height:46px;
+
     border-radius:50%;
+
     background:var(--navy);
+
     color:var(--gold2);
+
     display:flex;
+
     align-items:center;
+
     justify-content:center;
+
     font-weight:800;
+
     margin-bottom:10px;
 }
 
+
 .drawer-name{
+
     font-weight:800;
+
     font-size:15px;
+
     margin-bottom:3px;
 }
 
+
 .drawer-email{
+
     font-size:12px;
+
     color:var(--muted);
+
     word-break:break-word;
 }
 
+
 .drawer-nav{
+
     padding:12px;
+
     overflow-y:auto;
 }
 
+
 .drawer-link{
+
     display:flex;
+
     align-items:center;
+
     gap:13px;
+
     padding:13px 14px;
+
     border-radius:11px;
+
     margin-bottom:4px;
+
     font-size:14px;
+
     font-weight:600;
+
     color:#344054;
+
     transition:.18s;
 }
 
+
 .drawer-link:hover,
 .drawer-link.active{
+
     background:#f4efe4;
+
     color:#8d6a22;
 }
 
+
 .drawer-icon{
+
     width:24px;
+
     text-align:center;
+
     font-size:17px;
 }
 
+
 .drawer-bottom{
+
     margin-top:auto;
+
     padding:14px 12px;
-    border-top:1px solid var(--border);
+
+    border-top:
+        1px solid
+        var(--border);
 }
 
+
 .logout{
+
     color:var(--danger);
 }
 
-/* =========================
+
+/* =========================================================
    MAIN
-========================= */
+========================================================= */
 
 .container{
+
     width:min(760px,100%);
+
     margin:0 auto;
-    padding:18px 15px 100px;
+
+    padding:
+        18px
+        15px
+        100px;
 }
+
 
 .welcome{
-    margin:3px 2px 18px;
+
+    margin:
+        3px
+        2px
+        18px;
 }
 
+
 .welcome small{
+
     color:var(--muted);
+
     font-size:13px;
 }
 
+
 .welcome h1{
+
     margin-top:4px;
+
     font-size:23px;
+
     line-height:1.2;
 }
 
-/* =========================
-   PORTFOLIO CARD
-========================= */
+
+/* =========================================================
+   PORTFOLIO
+========================================================= */
 
 .portfolio-card{
-    background:linear-gradient(135deg,var(--navy),#102744);
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--navy),
+            #102744
+        );
+
     border-radius:20px;
+
     padding:22px;
+
     color:#fff;
+
     box-shadow:var(--shadow);
+
     position:relative;
+
     overflow:hidden;
 }
 
+
 .portfolio-card:after{
+
     content:"";
+
     position:absolute;
+
     width:190px;
+
     height:190px;
+
     right:-75px;
+
     top:-90px;
+
     border-radius:50%;
-    border:1px solid rgba(216,173,85,.25);
+
+    border:
+        1px solid
+        rgba(216,173,85,.25);
 }
+
 
 .portfolio-label{
+
     font-size:12px;
-    color:rgba(255,255,255,.67);
+
+    color:
+        rgba(255,255,255,.67);
 }
 
+
 .portfolio-value{
+
     font-size:31px;
+
     font-weight:800;
+
     margin-top:7px;
+
     letter-spacing:.2px;
 }
 
+
 .portfolio-sub{
+
     margin-top:5px;
+
     font-size:12px;
-    color:rgba(255,255,255,.58);
+
+    color:
+        rgba(255,255,255,.58);
 }
+
 
 .portfolio-row{
+
     display:flex;
+
     justify-content:space-between;
+
     align-items:center;
+
     margin-top:22px;
+
     padding-top:17px;
-    border-top:1px solid rgba(255,255,255,.12);
+
+    border-top:
+        1px solid
+        rgba(255,255,255,.12);
 }
 
+
 .port-mini{
+
     display:flex;
+
     flex-direction:column;
+
     gap:4px;
 }
 
+
 .port-mini span:first-child{
-    color:rgba(255,255,255,.58);
+
+    color:
+        rgba(255,255,255,.58);
+
     font-size:11px;
 }
 
+
 .port-mini strong{
+
     color:var(--gold2);
+
     font-size:14px;
 }
 
-/* =========================
+
+/* =========================================================
    CARDS
-========================= */
+========================================================= */
 
 .card{
+
     background:var(--card);
-    border:1px solid var(--border);
+
+    border:
+        1px solid
+        var(--border);
+
     border-radius:17px;
+
     box-shadow:var(--shadow);
+
     margin-top:15px;
 }
 
+
 .card-head{
-    padding:17px 17px 12px;
+
+    padding:
+        17px
+        17px
+        12px;
+
     display:flex;
+
     align-items:center;
+
     justify-content:space-between;
 }
 
+
 .card-title{
+
     font-weight:800;
+
     font-size:15px;
 }
 
+
 .card-sub{
+
     font-size:11px;
+
     color:var(--muted);
+
     margin-top:3px;
 }
 
-/* =========================
-   ASSET SELECTOR
-========================= */
+
+/* =========================================================
+   SEARCH
+========================================================= */
 
 .asset-selector{
-    padding:0 15px 15px;
+
+    padding:
+        0
+        15px
+        15px;
 }
 
+
 .search-box{
+
     width:100%;
+
     height:43px;
-    border:1px solid var(--border);
+
+    border:
+        1px solid
+        var(--border);
+
     border-radius:11px;
-    padding:0 13px;
+
+    padding:
+        0
+        13px;
+
     outline:none;
+
     color:var(--text);
+
     background:#fafbfc;
 }
 
+
 .search-box:focus{
+
     border-color:var(--gold);
+
+    background:#fff;
 }
 
+
+/* =========================================================
+   ASSET LIST
+========================================================= */
+
 .asset-list{
-    max-height:280px;
+
+    max-height:315px;
+
     overflow-y:auto;
+
     margin-top:9px;
 }
 
+
 .asset{
+
     display:flex;
+
     align-items:center;
+
     justify-content:space-between;
+
     gap:10px;
-    padding:12px 8px;
-    border-bottom:1px solid #f0f1f3;
+
+    padding:
+        12px
+        8px;
+
+    border-bottom:
+        1px solid
+        #f0f1f3;
+
     cursor:pointer;
+
+    transition:.18s;
 }
 
+
 .asset:last-child{
+
     border-bottom:0;
 }
 
+
 .asset:hover{
+
     background:#faf8f3;
+
+    border-radius:10px;
 }
+
 
 .asset-left{
+
     display:flex;
+
     align-items:center;
-    gap:10px;
+
+    gap:11px;
+
     min-width:0;
 }
+
+
+/* REAL CRYPTO LOGO */
 
 .coin-icon{
-    width:37px;
-    height:37px;
+
+    width:39px;
+
+    height:39px;
+
     border-radius:50%;
-    background:#f1f3f6;
+
+    background:#f5f6f8;
+
     display:flex;
+
     align-items:center;
+
     justify-content:center;
-    font-size:11px;
-    font-weight:800;
-    color:#4d5666;
+
     flex-shrink:0;
+
+    overflow:hidden;
+
+    box-shadow:
+        0 1px 4px
+        rgba(0,0,0,.07);
 }
 
+
+.coin-icon img{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:contain;
+
+    display:block;
+}
+
+
+.coin-icon.fallback{
+
+    font-size:10px;
+
+    font-weight:800;
+
+    color:#596273;
+}
+
+
 .coin-name{
+
     min-width:0;
 }
 
+
 .coin-name strong{
+
     display:block;
+
     font-size:13px;
+
+    white-space:nowrap;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
 }
 
+
 .coin-name span{
+
     display:block;
+
     color:var(--muted);
+
     font-size:11px;
+
     margin-top:2px;
 }
 
+
 .asset-right{
+
     text-align:right;
+
     flex-shrink:0;
 }
 
+
 .asset-right strong{
+
     display:block;
+
     font-size:13px;
 }
 
+
 .asset-right span{
+
     display:block;
+
     font-size:10px;
+
     color:var(--muted);
+
     margin-top:2px;
 }
 
-/* =========================
+
+/* =========================================================
    SELECTED ASSET
-========================= */
+========================================================= */
 
 .selected-asset{
-    padding:4px 17px 18px;
+
+    padding:
+        4px
+        17px
+        18px;
 }
 
+
 .selected-top{
+
     display:flex;
+
     justify-content:space-between;
+
     align-items:center;
+
     padding-bottom:14px;
 }
 
+
 .selected-name{
+
     display:flex;
+
     align-items:center;
-    gap:10px;
+
+    gap:11px;
 }
+
 
 .selected-name .coin-icon{
-    width:43px;
-    height:43px;
+
+    width:47px;
+
+    height:47px;
 }
 
+
 .selected-name strong{
+
     font-size:15px;
 }
 
+
 .selected-name span{
+
     display:block;
+
     color:var(--muted);
+
     font-size:11px;
+
     margin-top:2px;
 }
 
+
 .selected-value{
+
     text-align:right;
 }
 
+
 .selected-value strong{
+
     font-size:18px;
 }
 
+
 .selected-value span{
+
     display:block;
+
     color:var(--muted);
+
     font-size:10px;
+
     margin-top:2px;
 }
 
+
 .asset-stats{
+
     display:grid;
-    grid-template-columns:repeat(3,1fr);
+
+    grid-template-columns:
+        repeat(3,1fr);
+
     gap:8px;
 }
 
+
 .asset-stat{
+
     background:#f8f9fb;
+
     border-radius:11px;
+
     padding:11px;
 }
 
+
 .asset-stat span{
+
     display:block;
+
     color:var(--muted);
+
     font-size:10px;
+
     margin-bottom:5px;
 }
 
+
 .asset-stat strong{
+
     font-size:12px;
 }
 
-/* =========================
+
+/* =========================================================
    TIMER
-========================= */
+========================================================= */
 
 .timer-card{
+
     padding:17px;
 }
 
+
 .timer-head{
+
     display:flex;
+
     align-items:center;
+
     justify-content:space-between;
 }
 
+
 .timer-title{
+
     font-weight:800;
+
     font-size:14px;
 }
 
+
 .timer-badge{
+
     font-size:10px;
-    padding:5px 9px;
+
+    padding:
+        5px
+        9px;
+
     border-radius:20px;
+
     background:#f1f2f4;
+
     color:#7b8495;
 }
 
+
 .timer-badge.active{
+
     background:#e8f6f0;
+
     color:var(--success);
 }
 
+
 .timer{
+
     margin-top:15px;
+
     font-size:27px;
+
     font-weight:800;
+
     letter-spacing:2px;
 }
 
+
 .timer.inactive{
+
     font-size:14px;
+
     letter-spacing:0;
+
     color:var(--muted);
 }
 
-/* =========================
+
+/* =========================================================
    STATS
-========================= */
+========================================================= */
 
 .stats-grid{
+
     display:grid;
-    grid-template-columns:repeat(2,1fr);
+
+    grid-template-columns:
+        repeat(2,1fr);
+
     gap:10px;
-    padding:0 15px 15px;
+
+    padding:
+        0
+        15px
+        15px;
 }
 
+
 .stat-card{
+
     padding:14px;
+
     background:#fafbfc;
+
     border-radius:12px;
 }
 
+
 .stat-card span{
+
     display:block;
+
     color:var(--muted);
+
     font-size:10px;
+
     margin-bottom:6px;
 }
 
+
 .stat-card strong{
+
     font-size:14px;
 }
 
-/* =========================
+
+/* =========================================================
    NOTE
-========================= */
+========================================================= */
 
 .note{
-    padding:14px 17px;
+
+    padding:
+        14px
+        17px;
+
     color:#727b8b;
+
     font-size:11px;
+
     line-height:1.6;
 }
 
-/* =========================
+
+/* =========================================================
    ACTIONS
-========================= */
+========================================================= */
 
 .actions{
+
     display:grid;
-    grid-template-columns:repeat(3,1fr);
+
+    grid-template-columns:
+        repeat(3,1fr);
+
     gap:9px;
-    padding:0 15px 15px;
+
+    padding:
+        0
+        15px
+        15px;
 }
+
 
 .action-btn{
+
     min-height:72px;
-    border:1px solid var(--border);
+
+    border:
+        1px solid
+        var(--border);
+
     border-radius:13px;
+
     background:#fff;
+
     display:flex;
+
     flex-direction:column;
+
     align-items:center;
+
     justify-content:center;
+
     gap:7px;
+
     color:#263044;
+
     font-weight:700;
+
     font-size:11px;
+
+    text-align:center;
 }
 
+
 .action-btn span{
+
     font-size:20px;
 }
 
+
 .action-btn.primary{
+
     background:var(--navy);
+
     border-color:var(--navy);
+
     color:#fff;
 }
 
+
 .action-btn.gold{
+
     background:#fbf6ea;
+
     border-color:#ead8aa;
+
     color:#8a681f;
 }
 
-/* =========================
+
+/* =========================================================
    BOTTOM NAV
-========================= */
+========================================================= */
 
 .bottom-nav{
+
     position:fixed;
+
     left:50%;
+
     bottom:0;
+
     transform:translateX(-50%);
+
     width:min(760px,100%);
+
     height:68px;
-    background:rgba(255,255,255,.97);
-    border-top:1px solid var(--border);
+
+    background:
+        rgba(255,255,255,.97);
+
+    border-top:
+        1px solid
+        var(--border);
+
     display:grid;
-    grid-template-columns:repeat(4,1fr);
+
+    grid-template-columns:
+        repeat(4,1fr);
+
     z-index:90;
+
     backdrop-filter:blur(12px);
 }
 
+
 .bottom-link{
+
     display:flex;
+
     flex-direction:column;
+
     align-items:center;
+
     justify-content:center;
+
     gap:4px;
+
     color:#858d9b;
+
     font-size:10px;
+
     font-weight:600;
 }
 
+
 .bottom-link span{
+
     font-size:18px;
 }
 
+
 .bottom-link.active{
+
     color:#8c6a24;
 }
 
-/* =========================
+
+/* =========================================================
    LOADING
-========================= */
+========================================================= */
 
 .loading{
+
     position:fixed;
+
     inset:0;
+
     background:#fff;
+
     z-index:500;
+
     display:flex;
+
     align-items:center;
+
     justify-content:center;
+
     flex-direction:column;
+
     gap:12px;
 }
 
+
 .loading-logo{
+
     font-size:25px;
+
     font-weight:900;
+
     letter-spacing:2px;
+
     color:var(--navy);
 }
 
+
 .loading-logo span{
+
     color:var(--gold);
 }
 
+
 .loader{
+
     width:26px;
+
     height:26px;
-    border:3px solid #e8ebef;
+
+    border:
+        3px solid
+        #e8ebef;
+
     border-top-color:var(--gold);
+
     border-radius:50%;
-    animation:spin .8s linear infinite;
+
+    animation:
+        spin .8s linear infinite;
 }
+
 
 @keyframes spin{
-    to{transform:rotate(360deg);}
+
+    to{
+        transform:rotate(360deg);
+    }
+
 }
 
+
 .hidden{
+
     display:none!important;
 }
 
-/* =========================
-   RESPONSIVE
-========================= */
+
+/* =========================================================
+   DESKTOP
+========================================================= */
 
 @media(min-width:800px){
+
     .bottom-nav{
         display:none;
     }
@@ -781,124 +1378,235 @@ a{
     .container{
         padding-bottom:35px;
     }
+
 }
 
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
 @media(max-width:430px){
+
     .container{
+
         padding-left:12px;
+
         padding-right:12px;
     }
 
+
     .portfolio-value{
+
         font-size:28px;
     }
 
+
     .actions{
-        grid-template-columns:1fr 1fr 1fr;
+
         padding-left:0;
+
         padding-right:0;
     }
 
+
     .stats-grid{
+
         padding-left:12px;
+
         padding-right:12px;
     }
+
 }
+
 </style>
 </head>
 
+
 <body>
 
-<!-- LOADING -->
-<div class="loading" id="loadingScreen">
-    <div class="loading-logo">NEX<span>ORA</span></div>
+
+<!-- ======================================================
+     LOADING
+======================================================= -->
+
+<div
+    class="loading"
+    id="loadingScreen"
+>
+
+    <div class="loading-logo">
+        NEX<span>ORA</span>
+    </div>
+
     <div class="loader"></div>
+
 </div>
 
-<!-- OVERLAY -->
-<div class="overlay" id="overlay"></div>
 
-<!-- SIDE DRAWER -->
-<aside class="drawer" id="drawer">
+<!-- ======================================================
+     OVERLAY
+======================================================= -->
+
+<div
+    class="overlay"
+    id="overlay"
+></div>
+
+
+<!-- ======================================================
+     SIDE DRAWER
+======================================================= -->
+
+<aside
+    class="drawer"
+    id="drawer"
+>
 
     <div class="drawer-head">
-        <div class="drawer-brand">NEX<span>ORA</span></div>
 
-        <button class="close-drawer" id="closeDrawer">
+        <div class="drawer-brand">
+            NEX<span>ORA</span>
+        </div>
+
+        <button
+            class="close-drawer"
+            id="closeDrawer"
+        >
             ×
         </button>
+
     </div>
+
 
     <div class="drawer-profile">
 
-        <div class="drawer-avatar" id="drawerAvatar">
+        <div
+            class="drawer-avatar"
+            id="drawerAvatar"
+        >
             N
         </div>
 
-        <div class="drawer-name" id="drawerName">
+        <div
+            class="drawer-name"
+            id="drawerName"
+        >
             Loading...
         </div>
 
-        <div class="drawer-email" id="drawerEmail">
+        <div
+            class="drawer-email"
+            id="drawerEmail"
+        >
             Loading...
         </div>
 
     </div>
 
+
     <nav class="drawer-nav">
 
-        <a href="dashboard.html" class="drawer-link active">
+        <a
+            href="dashboard.html"
+            class="drawer-link active"
+        >
             <span class="drawer-icon">◈</span>
             Portfolio
         </a>
 
-        <a href="deposit.html" class="drawer-link">
+
+        <a
+            href="deposit.html"
+            class="drawer-link"
+        >
             <span class="drawer-icon">＋</span>
             Deposit
         </a>
 
-        <a href="withdraw.html" class="drawer-link">
+
+        <a
+            href="withdraw.html"
+            class="drawer-link"
+        >
             <span class="drawer-icon">↗</span>
             Withdraw
         </a>
 
-        <a href="transactions.html" class="drawer-link">
+
+        <a
+            href="transactions.html"
+            class="drawer-link"
+        >
             <span class="drawer-icon">▤</span>
             Transactions
         </a>
 
-        <a href="investments.html" class="drawer-link">
+
+        <a
+            href="investments.html"
+            class="drawer-link"
+        >
             <span class="drawer-icon">◫</span>
             My Investments
         </a>
 
-        <a href="referrals.html" class="drawer-link">
+
+        <a
+            href="referrals.html"
+            class="drawer-link"
+        >
             <span class="drawer-icon">♧</span>
             Referrals
         </a>
 
-        <a href="profile.html" class="drawer-link">
+
+        <a
+            href="profile.html"
+            class="drawer-link"
+        >
             <span class="drawer-icon">◎</span>
             Profile
         </a>
 
-        <a href="support.html" class="drawer-link">
+
+        <a
+            href="support.html"
+            class="drawer-link"
+        >
             <span class="drawer-icon">?</span>
             Support
         </a>
 
-        <a href="notifications.html" class="drawer-link">
+
+        <a
+            href="notifications.html"
+            class="drawer-link"
+        >
             <span class="drawer-icon">♢</span>
             Notifications
         </a>
 
     </nav>
 
+
     <div class="drawer-bottom">
 
-        <button class="drawer-link logout" id="logoutBtn" style="width:100%;border:0;background:transparent;text-align:left;">
+        <button
+            class="drawer-link logout"
+            id="logoutBtn"
+            style="
+                width:100%;
+                border:0;
+                background:transparent;
+                text-align:left;
+            "
+        >
+
             <span class="drawer-icon">↪</span>
+
             Logout
+
         </button>
 
     </div>
@@ -906,36 +1614,59 @@ a{
 </aside>
 
 
-<!-- HEADER -->
+<!-- ======================================================
+     HEADER
+======================================================= -->
+
 <header class="topbar">
 
     <div class="left-head">
 
-        <button class="menu-btn" id="menuBtn" aria-label="Open menu">
+        <button
+            class="menu-btn"
+            id="menuBtn"
+            aria-label="Open menu"
+        >
+
             <span></span>
             <span></span>
             <span></span>
+
         </button>
 
-        <a href="dashboard.html" class="logo">
+
+        <a
+            href="dashboard.html"
+            class="logo"
+        >
             NEX<span>ORA</span>
         </a>
 
     </div>
 
-    <button class="account-btn" id="accountBtn">
+
+    <button
+        class="account-btn"
+        id="accountBtn"
+    >
         N
     </button>
 
 </header>
 
 
-<!-- MAIN -->
+<!-- ======================================================
+     MAIN
+======================================================= -->
+
 <main class="container">
+
 
     <section class="welcome">
 
-        <small>Welcome back</small>
+        <small>
+            Welcome back
+        </small>
 
         <h1 id="welcomeName">
             Loading...
@@ -944,7 +1675,10 @@ a{
     </section>
 
 
-    <!-- PORTFOLIO -->
+    <!-- ==================================================
+         PORTFOLIO
+    =================================================== -->
+
     <section class="portfolio-card">
 
         <div class="portfolio-label">
@@ -959,21 +1693,45 @@ a{
             Total value across your NEXORA assets
         </div>
 
+
         <div class="portfolio-row">
 
             <div class="port-mini">
-                <span>Available</span>
-                <strong>—</strong>
+
+                <span>
+                    Available
+                </span>
+
+                <strong>
+                    —
+                </strong>
+
             </div>
 
-            <div class="port-mini">
-                <span>Invested</span>
-                <strong>—</strong>
-            </div>
 
             <div class="port-mini">
-                <span>Partners</span>
-                <strong id="partnersCount">—</strong>
+
+                <span>
+                    Invested
+                </span>
+
+                <strong>
+                    —
+                </strong>
+
+            </div>
+
+
+            <div class="port-mini">
+
+                <span>
+                    Partners
+                </span>
+
+                <strong id="partnersCount">
+                    —
+                </strong>
+
             </div>
 
         </div>
@@ -981,12 +1739,16 @@ a{
     </section>
 
 
-    <!-- ASSETS -->
+    <!-- ==================================================
+         CRYPTO ASSETS
+    =================================================== -->
+
     <section class="card">
 
         <div class="card-head">
 
             <div>
+
                 <div class="card-title">
                     Crypto assets
                 </div>
@@ -994,9 +1756,11 @@ a{
                 <div class="card-sub">
                     Select an asset to view your position
                 </div>
+
             </div>
 
         </div>
+
 
         <div class="asset-selector">
 
@@ -1005,24 +1769,35 @@ a{
                 id="assetSearch"
                 class="search-box"
                 placeholder="Search cryptocurrency..."
+                autocomplete="off"
             >
 
-            <div class="asset-list" id="assetList"></div>
+
+            <div
+                class="asset-list"
+                id="assetList"
+            ></div>
 
         </div>
 
+
+        <!-- SELECTED ASSET -->
 
         <div class="selected-asset">
 
             <div class="selected-top">
 
+
                 <div class="selected-name">
 
-                    <div class="coin-icon" id="selectedIcon">
-                        USDT
-                    </div>
+                    <div
+                        class="coin-icon"
+                        id="selectedIcon"
+                    ></div>
+
 
                     <div>
+
                         <strong id="selectedName">
                             Tether
                         </strong>
@@ -1030,9 +1805,11 @@ a{
                         <span id="selectedSymbol">
                             USDT
                         </span>
+
                     </div>
 
                 </div>
+
 
                 <div class="selected-value">
 
@@ -1052,18 +1829,41 @@ a{
             <div class="asset-stats">
 
                 <div class="asset-stat">
-                    <span>Available</span>
-                    <strong id="selectedBalance">—</strong>
+
+                    <span>
+                        Available
+                    </span>
+
+                    <strong id="selectedBalance">
+                        —
+                    </strong>
+
                 </div>
 
-                <div class="asset-stat">
-                    <span>Invested</span>
-                    <strong id="selectedInvested">—</strong>
-                </div>
 
                 <div class="asset-stat">
-                    <span>Value</span>
-                    <strong id="selectedAssetValue">—</strong>
+
+                    <span>
+                        Invested
+                    </span>
+
+                    <strong id="selectedInvested">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="asset-stat">
+
+                    <span>
+                        Value
+                    </span>
+
+                    <strong id="selectedAssetValue">
+                        —
+                    </strong>
+
                 </div>
 
             </div>
@@ -1073,36 +1873,53 @@ a{
     </section>
 
 
-    <!-- PROFIT TIMER -->
+    <!-- ==================================================
+         PROFIT TIMER
+    =================================================== -->
+
     <section class="card timer-card">
 
         <div class="timer-head">
 
             <div>
+
                 <div class="timer-title">
                     Profit calculation
                 </div>
+
             </div>
 
-            <div class="timer-badge" id="timerState">
+
+            <div
+                class="timer-badge"
+                id="timerState"
+            >
                 Awaiting confirmation
             </div>
 
         </div>
 
-        <div class="timer inactive" id="profitTimer">
+
+        <div
+            class="timer inactive"
+            id="profitTimer"
+        >
             Awaiting confirmed deposit
         </div>
 
     </section>
 
 
-    <!-- STATS -->
+    <!-- ==================================================
+         ACCOUNT STATS
+    =================================================== -->
+
     <section class="card">
 
         <div class="card-head">
 
             <div>
+
                 <div class="card-title">
                     Account statistics
                 </div>
@@ -1110,40 +1927,90 @@ a{
                 <div class="card-sub">
                     Your recorded account activity
                 </div>
+
             </div>
 
         </div>
 
+
         <div class="stats-grid">
 
-            <div class="stat-card">
-                <span>Incoming payments</span>
-                <strong>—</strong>
-            </div>
 
             <div class="stat-card">
-                <span>Outgoing payments</span>
-                <strong>—</strong>
+
+                <span>
+                    Incoming payments
+                </span>
+
+                <strong>
+                    —
+                </strong>
+
             </div>
 
-            <div class="stat-card">
-                <span>All accruals</span>
-                <strong>—</strong>
-            </div>
 
             <div class="stat-card">
-                <span>Partners</span>
-                <strong>—</strong>
+
+                <span>
+                    Outgoing payments
+                </span>
+
+                <strong>
+                    —
+                </strong>
+
             </div>
 
-            <div class="stat-card">
-                <span>Main profit</span>
-                <strong>—</strong>
-            </div>
 
             <div class="stat-card">
-                <span>Partners profit</span>
-                <strong>—</strong>
+
+                <span>
+                    All accruals
+                </span>
+
+                <strong>
+                    —
+                </strong>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <span>
+                    Partners
+                </span>
+
+                <strong>
+                    —
+                </strong>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <span>
+                    Main profit
+                </span>
+
+                <strong>
+                    —
+                </strong>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <span>
+                    Partners profit
+                </span>
+
+                <strong>
+                    —
+                </strong>
+
             </div>
 
         </div>
@@ -1151,7 +2018,10 @@ a{
     </section>
 
 
-    <!-- NOTE -->
+    <!-- ==================================================
+         NOTE
+    =================================================== -->
+
     <section class="card note">
 
         Portfolio values and transaction amounts will be displayed from confirmed account records. Cryptocurrency exchange values may depend on the applicable rate at the time of a transaction or accrual.
@@ -1159,12 +2029,16 @@ a{
     </section>
 
 
-    <!-- ACTIONS -->
+    <!-- ==================================================
+         QUICK ACTIONS
+    =================================================== -->
+
     <section class="card">
 
         <div class="card-head">
 
             <div>
+
                 <div class="card-title">
                     Quick actions
                 </div>
@@ -1172,25 +2046,54 @@ a{
                 <div class="card-sub">
                     Manage your account
                 </div>
+
             </div>
 
         </div>
 
+
         <div class="actions">
 
-            <a href="#" class="action-btn gold">
-                <span>⇄</span>
+
+            <a
+                href="#"
+                class="action-btn gold"
+            >
+
+                <span>
+                    ⇄
+                </span>
+
                 Currency exchange
+
             </a>
 
-            <a href="deposit.html" class="action-btn primary">
-                <span>＋</span>
+
+            <a
+                href="deposit.html"
+                class="action-btn primary"
+            >
+
+                <span>
+                    ＋
+                </span>
+
                 Add funds
+
             </a>
 
-            <a href="withdraw.html" class="action-btn">
-                <span>↗</span>
+
+            <a
+                href="withdraw.html"
+                class="action-btn"
+            >
+
+                <span>
+                    ↗
+                </span>
+
                 Withdraw payment
+
             </a>
 
         </div>
@@ -1200,33 +2103,73 @@ a{
 </main>
 
 
-<!-- BOTTOM NAV -->
+<!-- ======================================================
+     MOBILE BOTTOM NAV
+======================================================= -->
+
 <nav class="bottom-nav">
 
-    <a href="dashboard.html" class="bottom-link active">
-        <span>◈</span>
+
+    <a
+        href="dashboard.html"
+        class="bottom-link active"
+    >
+
+        <span>
+            ◈
+        </span>
+
         Portfolio
+
     </a>
 
-    <a href="deposit.html" class="bottom-link">
-        <span>＋</span>
+
+    <a
+        href="deposit.html"
+        class="bottom-link"
+    >
+
+        <span>
+            ＋
+        </span>
+
         Deposit
+
     </a>
 
-    <a href="transactions.html" class="bottom-link">
-        <span>▤</span>
+
+    <a
+        href="transactions.html"
+        class="bottom-link"
+    >
+
+        <span>
+            ▤
+        </span>
+
         History
+
     </a>
 
-    <a href="profile.html" class="bottom-link">
-        <span>◎</span>
+
+    <a
+        href="profile.html"
+        class="bottom-link"
+    >
+
+        <span>
+            ◎
+        </span>
+
         Account
+
     </a>
 
 </nav>
 
 
 <script>
+
 /* =========================================================
    SUPABASE
 ========================================================= */
@@ -1234,8 +2177,10 @@ a{
 const SUPABASE_URL =
     "https://rihvvwktvgytbqzazage.supabase.co";
 
+
 const SUPABASE_PUBLISHABLE_KEY =
     "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
+
 
 const supabaseClient =
     window.supabase.createClient(
@@ -1252,21 +2197,25 @@ const supabaseClient =
 
 
 /* =========================================================
-   HELPERS
+   HELPER
 ========================================================= */
 
 function $(id){
     return document.getElementById(id);
 }
 
+
 function escapeHtml(value){
+
     return String(value ?? "")
         .replace(/&/g,"&amp;")
         .replace(/</g,"&lt;")
         .replace(/>/g,"&gt;")
         .replace(/"/g,"&quot;")
         .replace(/'/g,"&#039;");
+
 }
+
 
 function getInitials(name){
 
@@ -1274,19 +2223,110 @@ function getInitials(name){
         return "N";
     }
 
-    const parts = name
-        .trim()
-        .split(/\s+/)
-        .filter(Boolean);
+    const parts =
+        name
+            .trim()
+            .split(/\s+/)
+            .filter(Boolean);
 
     if(parts.length === 1){
-        return parts[0].substring(0,2).toUpperCase();
+
+        return parts[0]
+            .substring(0,2)
+            .toUpperCase();
+
     }
 
     return (
         parts[0][0] +
         parts[parts.length - 1][0]
     ).toUpperCase();
+
+}
+
+
+/* =========================================================
+   CRYPTO LOGO CDN
+========================================================= */
+
+/*
+   Real branded crypto SVG logos.
+
+   Source:
+   madenix/Crypto-logo-cdn
+
+   Example:
+   BTC.svg
+   ETH.svg
+   USDT.svg
+*/
+
+const LOGO_BASE =
+    "https://cdn.jsdelivr.net/gh/madenix/Crypto-logo-cdn@main/Logos/";
+
+
+const logoFiles = {
+
+    BTC:"BTC.svg",
+
+    ETH:"ETH.svg",
+
+    USDT:"USDT.svg",
+
+    BNB:"BNB.svg",
+
+    SOL:"SOL.svg",
+
+    XRP:"XRP.svg",
+
+    TON:"TON.svg",
+
+    DOGE:"DOGE.svg",
+
+    ADA:"ADA.svg",
+
+    TRX:"TRON.svg",
+
+    LTC:"LTC.svg",
+
+    AVAX:"AVAX.svg",
+
+    DOT:"DOT.svg",
+
+    LINK:"LINK.svg",
+
+    POL:"MATIC.svg",
+
+    SHIB:"SHIB.svg",
+
+    BCH:"BCH.svg",
+
+    XLM:"XLM.svg",
+
+    ATOM:"ATOM.svg",
+
+    NEAR:"NEAR.svg",
+
+    APT:"APT.svg",
+
+    ARB:"ARB.svg",
+
+    OP:"OP.svg"
+
+};
+
+
+function getLogoUrl(symbol){
+
+    const file =
+        logoFiles[symbol];
+
+    if(!file){
+        return "";
+    }
+
+    return LOGO_BASE + file;
+
 }
 
 
@@ -1295,173 +2335,325 @@ function getInitials(name){
 ========================================================= */
 
 const assets = [
+
     ["BTC","Bitcoin"],
+
     ["ETH","Ethereum"],
+
     ["USDT","Tether"],
+
     ["BNB","BNB"],
+
     ["SOL","Solana"],
+
     ["XRP","XRP"],
+
     ["TON","Toncoin"],
+
     ["DOGE","Dogecoin"],
+
     ["ADA","Cardano"],
+
     ["TRX","TRON"],
+
     ["LTC","Litecoin"],
+
     ["AVAX","Avalanche"],
+
     ["DOT","Polkadot"],
+
     ["LINK","Chainlink"],
+
     ["POL","Polygon"],
+
     ["SHIB","Shiba Inu"],
+
     ["BCH","Bitcoin Cash"],
+
     ["XLM","Stellar"],
+
     ["ATOM","Cosmos"],
+
     ["NEAR","NEAR Protocol"],
+
     ["APT","Aptos"],
+
     ["ARB","Arbitrum"],
+
     ["OP","Optimism"]
+
 ];
+
 
 const holdings = {};
 
+
 let selectedSymbol = "USDT";
+
+
 let timerInterval = null;
+
+
 let confirmedDepositTime = null;
 
 
 /* =========================================================
-   HOLDINGS
+   HOLDING
 ========================================================= */
 
 function getHolding(symbol){
 
     return holdings[symbol] || {
+
         balance:"—",
+
         invested:"—",
+
         value:"—"
+
     };
 
 }
 
 
 /* =========================================================
-   ASSET LIST
+   CREATE LOGO
 ========================================================= */
 
-function renderAssets(filter = ""){
+function createLogo(symbol,sizeClass=""){
 
-    const list = $("assetList");
+    const url =
+        getLogoUrl(symbol);
 
-    const search = filter
-        .trim()
-        .toLowerCase();
 
-    const filtered = assets.filter(asset => {
+    if(!url){
 
-        const symbol = asset[0].toLowerCase();
-        const name = asset[1].toLowerCase();
+        return `
+            <div class="coin-icon fallback">
+                ${escapeHtml(symbol)}
+            </div>
+        `;
 
-        return (
-            !search ||
-            symbol.includes(search) ||
-            name.includes(search)
-        );
+    }
 
-    });
+
+    return `
+        <div class="coin-icon ${sizeClass}">
+            <img
+                src="${url}"
+                alt="${escapeHtml(symbol)} logo"
+                loading="lazy"
+                onerror="this.style.display='none';this.parentElement.classList.add('fallback');this.parentElement.textContent='${escapeHtml(symbol)}';"
+            >
+        </div>
+    `;
+
+}
+
+
+/* =========================================================
+   RENDER ASSETS
+========================================================= */
+
+function renderAssets(filter=""){
+
+    const list =
+        $("assetList");
+
+
+    const search =
+        filter
+            .trim()
+            .toLowerCase();
+
+
+    const filtered =
+        assets.filter(asset => {
+
+            const symbol =
+                asset[0].toLowerCase();
+
+            const name =
+                asset[1].toLowerCase();
+
+            return (
+                !search ||
+                symbol.includes(search) ||
+                name.includes(search)
+            );
+
+        });
+
 
     if(!filtered.length){
 
         list.innerHTML = `
+
             <div style="
                 padding:20px;
                 text-align:center;
                 color:#7b8495;
                 font-size:12px;
             ">
-                No asset found
+
+                No cryptocurrency found
+
             </div>
+
         `;
 
         return;
+
     }
 
-    list.innerHTML = filtered.map(asset => {
 
-        const symbol = asset[0];
-        const name = asset[1];
-        const holding = getHolding(symbol);
+    list.innerHTML =
+        filtered.map(asset => {
 
-        return `
-            <div class="asset" data-symbol="${escapeHtml(symbol)}">
+            const symbol =
+                asset[0];
 
-                <div class="asset-left">
+            const name =
+                asset[1];
 
-                    <div class="coin-icon">
-                        ${escapeHtml(symbol)}
+            const holding =
+                getHolding(symbol);
+
+
+            return `
+
+                <div
+                    class="asset"
+                    data-symbol="${escapeHtml(symbol)}"
+                >
+
+                    <div class="asset-left">
+
+                        ${createLogo(symbol)}
+
+                        <div class="coin-name">
+
+                            <strong>
+                                ${escapeHtml(name)}
+                            </strong>
+
+                            <span>
+                                ${escapeHtml(symbol)}
+                            </span>
+
+                        </div>
+
                     </div>
 
-                    <div class="coin-name">
-                        <strong>${escapeHtml(name)}</strong>
-                        <span>${escapeHtml(symbol)}</span>
+
+                    <div class="asset-right">
+
+                        <strong>
+                            ${escapeHtml(holding.balance)}
+                        </strong>
+
+                        <span>
+                            Invested:
+                            ${escapeHtml(holding.invested)}
+                        </span>
+
                     </div>
 
                 </div>
 
-                <div class="asset-right">
+            `;
 
-                    <strong>${escapeHtml(holding.balance)}</strong>
-                    <span>${escapeHtml(holding.invested)}</span>
+        }).join("");
 
-                </div>
 
-            </div>
-        `;
+    list
+        .querySelectorAll(".asset")
+        .forEach(item => {
 
-    }).join("");
+            item.addEventListener(
+                "click",
+                () => {
 
-    list.querySelectorAll(".asset").forEach(item => {
+                    selectedSymbol =
+                        item.dataset.symbol;
 
-        item.addEventListener("click", () => {
+                    updateSelectedAsset();
 
-            selectedSymbol =
-                item.dataset.symbol;
-
-            updateSelectedAsset();
+                }
+            );
 
         });
-
-    });
 
 }
 
 
 /* =========================================================
-   SELECTED ASSET
+   UPDATE SELECTED ASSET
 ========================================================= */
 
 function updateSelectedAsset(){
 
     const asset =
-        assets.find(item => item[0] === selectedSymbol);
+        assets.find(
+            item =>
+                item[0] === selectedSymbol
+        );
+
 
     if(!asset){
         return;
     }
 
-    const symbol = asset[0];
-    const name = asset[1];
-    const holding = getHolding(symbol);
 
-    $("selectedIcon").textContent = symbol;
-    $("selectedName").textContent = name;
-    $("selectedSymbol").textContent = symbol;
+    const symbol =
+        asset[0];
+
+    const name =
+        asset[1];
+
+    const holding =
+        getHolding(symbol);
+
+
+    $("selectedIcon").innerHTML = `
+
+        <img
+            src="${getLogoUrl(symbol)}"
+            alt="${escapeHtml(symbol)} logo"
+            style="
+                width:100%;
+                height:100%;
+                object-fit:contain;
+            "
+            onerror="
+                this.style.display='none';
+                this.parentElement.classList.add('fallback');
+                this.parentElement.textContent='${escapeHtml(symbol)}';
+            "
+        >
+
+    `;
+
+
+    $("selectedName").textContent =
+        name;
+
+
+    $("selectedSymbol").textContent =
+        symbol;
+
 
     $("selectedBalance").textContent =
         holding.balance;
 
+
     $("selectedInvested").textContent =
         holding.invested;
 
+
     $("selectedAssetValue").textContent =
         holding.value;
+
 
     $("selectedValue").textContent =
         holding.value;
@@ -1479,32 +2671,50 @@ function startProfitTimer(confirmedAt){
         return;
     }
 
+
     confirmedDepositTime =
         new Date(confirmedAt);
+
 
     if(
         Number.isNaN(
             confirmedDepositTime.getTime()
         )
     ){
+
         return;
+
     }
+
 
     const timer =
         $("profitTimer");
 
-    timer.classList.remove("inactive");
+
+    timer.classList.remove(
+        "inactive"
+    );
+
 
     $("timerState").textContent =
         "Active";
 
-    $("timerState").classList.add("active");
+
+    $("timerState")
+        .classList.add("active");
+
 
     updateProfitTimer();
 
+
     if(timerInterval){
-        clearInterval(timerInterval);
+
+        clearInterval(
+            timerInterval
+        );
+
     }
+
 
     timerInterval =
         setInterval(
@@ -1521,7 +2731,10 @@ function updateProfitTimer(){
         return;
     }
 
-    const now = new Date();
+
+    const now =
+        new Date();
+
 
     const nextCalculation =
         new Date(
@@ -1529,25 +2742,36 @@ function updateProfitTimer(){
             24 * 60 * 60 * 1000
         );
 
-    while(nextCalculation <= now){
+
+    while(
+        nextCalculation <= now
+    ){
+
         nextCalculation.setTime(
             nextCalculation.getTime() +
             24 * 60 * 60 * 1000
         );
+
     }
+
 
     let difference =
         nextCalculation.getTime() -
         now.getTime();
 
+
     if(difference < 0){
+
         difference = 0;
+
     }
+
 
     const hours =
         Math.floor(
             difference / 3600000
         );
+
 
     const minutes =
         Math.floor(
@@ -1555,15 +2779,20 @@ function updateProfitTimer(){
             60000
         );
 
+
     const seconds =
         Math.floor(
             (difference % 60000) /
             1000
         );
 
+
     $("profitTimer").textContent =
+
         `${String(hours).padStart(2,"0")}:` +
+
         `${String(minutes).padStart(2,"0")}:` +
+
         `${String(seconds).padStart(2,"0")}`;
 
 }
@@ -1583,6 +2812,7 @@ async function loadProfile(){
     } =
         await supabaseClient.auth.getUser();
 
+
     if(
         userError ||
         !user
@@ -1595,12 +2825,15 @@ async function loadProfile(){
 
     }
 
+
     const {
         data:profile,
         error:profileError
     } =
         await supabaseClient
+
             .from("profiles")
+
             .select(`
                 id,
                 full_name,
@@ -1610,8 +2843,14 @@ async function loadProfile(){
                 created_at,
                 updated_at
             `)
-            .eq("id",user.id)
+
+            .eq(
+                "id",
+                user.id
+            )
+
             .maybeSingle();
+
 
     if(profileError){
 
@@ -1620,58 +2859,92 @@ async function loadProfile(){
             profileError
         );
 
-        $("welcomeName").textContent =
-            user.user_metadata?.full_name ||
+
+        const fallbackName =
+            user
+                .user_metadata
+                ?.full_name ||
             "Welcome";
 
-        $("drawerName").textContent =
-            user.user_metadata?.full_name ||
-            "NEXORA User";
 
-        $("drawerEmail").textContent =
+        $("welcomeName")
+            .textContent =
+            fallbackName;
+
+
+        $("drawerName")
+            .textContent =
+            fallbackName;
+
+
+        $("drawerEmail")
+            .textContent =
             user.email || "—";
+
 
         const initials =
             getInitials(
-                user.user_metadata?.full_name
+                fallbackName
             );
 
-        $("accountBtn").textContent =
+
+        $("accountBtn")
+            .textContent =
             initials;
 
-        $("drawerAvatar").textContent =
+
+        $("drawerAvatar")
+            .textContent =
             initials;
+
 
         return;
 
     }
 
+
     const fullName =
         profile?.full_name ||
-        user.user_metadata?.full_name ||
+        user
+            .user_metadata
+            ?.full_name ||
         "NEXORA User";
+
 
     const email =
         profile?.email ||
         user.email ||
         "—";
 
-    $("welcomeName").textContent =
+
+    $("welcomeName")
+        .textContent =
         fullName;
 
-    $("drawerName").textContent =
+
+    $("drawerName")
+        .textContent =
         fullName;
 
-    $("drawerEmail").textContent =
+
+    $("drawerEmail")
+        .textContent =
         email;
 
-    const initials =
-        getInitials(fullName);
 
-    $("accountBtn").textContent =
+    const initials =
+        getInitials(
+            fullName
+        );
+
+
+    $("accountBtn")
+        .textContent =
         initials;
 
-    $("drawerAvatar").textContent =
+
+    $("drawerAvatar")
+        .textContent =
         initials;
 
 }
@@ -1683,8 +2956,15 @@ async function loadProfile(){
 
 function openDrawer(){
 
-    $("drawer").classList.add("open");
-    $("overlay").classList.add("show");
+    $("drawer")
+        .classList
+        .add("open");
+
+
+    $("overlay")
+        .classList
+        .add("show");
+
 
     document.body.style.overflow =
         "hidden";
@@ -1694,8 +2974,15 @@ function openDrawer(){
 
 function closeDrawer(){
 
-    $("drawer").classList.remove("open");
-    $("overlay").classList.remove("show");
+    $("drawer")
+        .classList
+        .remove("open");
+
+
+    $("overlay")
+        .classList
+        .remove("show");
+
 
     document.body.style.overflow =
         "";
@@ -1703,27 +2990,35 @@ function closeDrawer(){
 }
 
 
-$("menuBtn").addEventListener(
-    "click",
-    openDrawer
-);
+$("menuBtn")
+    .addEventListener(
+        "click",
+        openDrawer
+    );
 
-$("closeDrawer").addEventListener(
-    "click",
-    closeDrawer
-);
 
-$("overlay").addEventListener(
-    "click",
-    closeDrawer
-);
+$("closeDrawer")
+    .addEventListener(
+        "click",
+        closeDrawer
+    );
+
+
+$("overlay")
+    .addEventListener(
+        "click",
+        closeDrawer
+    );
+
 
 document.addEventListener(
     "keydown",
     event => {
 
         if(event.key === "Escape"){
+
             closeDrawer();
+
         }
 
     }
@@ -1731,79 +3026,91 @@ document.addEventListener(
 
 
 /* =========================================================
-   ACCOUNT BUTTON
+   ACCOUNT
 ========================================================= */
 
-$("accountBtn").addEventListener(
-    "click",
-    openDrawer
-);
+$("accountBtn")
+    .addEventListener(
+        "click",
+        openDrawer
+    );
 
 
 /* =========================================================
    SEARCH
 ========================================================= */
 
-$("assetSearch").addEventListener(
-    "input",
-    event => {
+$("assetSearch")
+    .addEventListener(
+        "input",
+        event => {
 
-        renderAssets(
-            event.target.value
-        );
+            renderAssets(
+                event.target.value
+            );
 
-    }
-);
+        }
+    );
 
 
 /* =========================================================
    LOGOUT
 ========================================================= */
 
-$("logoutBtn").addEventListener(
-    "click",
-    async () => {
+$("logoutBtn")
+    .addEventListener(
+        "click",
+        async () => {
 
-        const {
-            error
-        } =
-            await supabaseClient.auth.signOut();
+            const {
+                error
+            } =
+                await supabaseClient
+                    .auth
+                    .signOut();
 
-        if(error){
 
-            alert(
-                "Unable to log out right now."
-            );
+            if(error){
 
-            console.error(error);
+                alert(
+                    "Unable to log out right now."
+                );
 
-            return;
+                console.error(error);
+
+                return;
+
+            }
+
+
+            window.location.href =
+                "signin.html";
 
         }
-
-        window.location.href =
-            "signin.html";
-
-    }
-);
+    );
 
 
 /* =========================================================
    AUTH STATE
 ========================================================= */
 
-supabaseClient.auth.onAuthStateChange(
-    (event) => {
+supabaseClient
+    .auth
+    .onAuthStateChange(
+        (event) => {
 
-        if(event === "SIGNED_OUT"){
+            if(
+                event ===
+                "SIGNED_OUT"
+            ){
 
-            window.location.href =
-                "signin.html";
+                window.location.href =
+                    "signin.html";
+
+            }
 
         }
-
-    }
-);
+    );
 
 
 /* =========================================================
@@ -1820,25 +3127,34 @@ async function init(){
 
         updateSelectedAsset();
 
-    }catch(error){
+    }
+
+    catch(error){
 
         console.error(
             "Dashboard initialization error:",
             error
         );
 
-    }finally{
+    }
 
-        setTimeout(() => {
+    finally{
 
-            $("loadingScreen")
-                .classList.add("hidden");
+        setTimeout(
+            () => {
 
-        },300);
+                $("loadingScreen")
+                    .classList
+                    .add("hidden");
+
+            },
+            300
+        );
 
     }
 
 }
+
 
 init();
 
