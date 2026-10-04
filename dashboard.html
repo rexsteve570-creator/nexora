@@ -2,80 +2,70 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#050914">
 <title>NEXORA — Dashboard</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 :root{
-    --navy-950:#050914;
-    --navy-900:#080e1d;
-    --navy-850:#0b1224;
-    --navy-800:#0f172a;
-    --navy-750:#121c31;
-    --navy-700:#172238;
+  --navy:#050914;
+  --navy2:#080e1d;
+  --navy3:#0d1629;
+  --navy4:#111d33;
 
-    --gold:#d6b15e;
-    --gold-light:#f0d58a;
-    --gold-dark:#a98535;
+  --gold:#d6b15e;
+  --gold2:#f0d58a;
+  --gold3:#a98535;
 
-    --text:#f5f7fb;
-    --text-soft:#aeb7c8;
-    --text-muted:#737e92;
+  --white:#ffffff;
+  --text:#f4f6fa;
+  --muted:#8c96a8;
+  --muted2:#626d80;
 
-    --border:rgba(214,177,94,.16);
-    --border-soft:rgba(255,255,255,.07);
+  --bg:#050914;
+  --card:#0b1222;
+  --card2:#0e1729;
+  --border:rgba(255,255,255,.08);
 
-    --success:#46c58b;
-    --danger:#e56d78;
+  --success:#35c98a;
+  --danger:#ef6d78;
 
-    --shadow:0 18px 50px rgba(0,0,0,.30);
+  --shadow:0 18px 45px rgba(0,0,0,.28);
 }
 
 *{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
 }
 
 html{
-    background:var(--navy-950);
-    color-scheme:dark;
+  scroll-behavior:smooth;
 }
 
 body{
-    min-height:100vh;
-    background:
-        radial-gradient(circle at 50% -10%,rgba(214,177,94,.10),transparent 34%),
-        linear-gradient(180deg,#050914 0%,#080e1d 45%,#060b16 100%);
-    color:var(--text);
-    font-family:
-        Inter,
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Roboto,
-        Arial,
-        sans-serif;
-    padding-bottom:88px;
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 50% -10%,rgba(214,177,94,.10),transparent 35%),
+    var(--bg);
+  color:var(--text);
+  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
 }
 
 button,
-input,
-select{
-    font:inherit;
+input{
+  font:inherit;
 }
 
 button{
-    border:0;
-    cursor:pointer;
+  cursor:pointer;
 }
 
 a{
-    color:inherit;
-    text-decoration:none;
+  color:inherit;
+  text-decoration:none;
 }
 
 /* =========================
@@ -83,571 +73,555 @@ a{
 ========================= */
 
 .topbar{
-    position:sticky;
-    top:0;
-    z-index:100;
-    height:68px;
-
-    background:rgba(5,9,20,.90);
-    backdrop-filter:blur(20px);
-    -webkit-backdrop-filter:blur(20px);
-
-    border-bottom:1px solid rgba(255,255,255,.06);
+  position:sticky;
+  top:0;
+  z-index:1000;
+  height:68px;
+  background:rgba(5,9,20,.96);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--border);
 }
 
 .topbar-inner{
-    max-width:760px;
-    height:100%;
-    margin:auto;
-    padding:0 18px;
-
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
+  width:100%;
+  max-width:760px;
+  height:100%;
+  margin:auto;
+  padding:0 18px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
 }
 
-.left-head{
-    display:flex;
-    align-items:center;
-    gap:13px;
+.icon-btn{
+  width:42px;
+  height:42px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  background:#0b1221;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:.2s;
 }
 
-.menu-btn{
-    width:40px;
-    height:40px;
-    border-radius:12px;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    background:rgba(255,255,255,.045);
-    border:1px solid rgba(255,255,255,.07);
-    color:#fff;
-
-    transition:.2s;
+.icon-btn:hover{
+  border-color:rgba(214,177,94,.5);
 }
 
-.menu-btn:active{
-    transform:scale(.94);
+.hamburger{
+  display:flex;
+  flex-direction:column;
+  gap:5px;
 }
 
-.menu-lines{
-    width:18px;
-    display:flex;
-    flex-direction:column;
-    gap:4px;
+.hamburger span{
+  width:19px;
+  height:2px;
+  background:#fff;
+  border-radius:10px;
 }
 
-.menu-lines span{
-    width:100%;
-    height:1.5px;
-    background:var(--gold-light);
-    border-radius:5px;
+.logo{
+  font-size:20px;
+  font-weight:900;
+  letter-spacing:1.8px;
+  color:#fff;
 }
 
-.brand{
-    display:flex;
-    align-items:center;
-    gap:9px;
+.logo span{
+  color:var(--gold);
 }
 
-.brand-mark{
-    width:31px;
-    height:31px;
-    border-radius:9px;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    background:
-        linear-gradient(145deg,#f0d58a,#a98535);
-
-    color:#080e1d;
-    font-weight:900;
-    font-size:14px;
-
-    box-shadow:
-        0 4px 18px rgba(214,177,94,.18);
-}
-
-.brand-name{
-    font-size:15px;
-    letter-spacing:2.6px;
-    font-weight:800;
-}
-
-.account-btn{
-    width:39px;
-    height:39px;
-    border-radius:50%;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    background:
-        linear-gradient(145deg,#172238,#0b1224);
-
-    border:1px solid var(--border);
-    color:var(--gold-light);
-
-    font-weight:700;
-    font-size:13px;
+.account-circle{
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  border:1px solid rgba(214,177,94,.45);
+  background:linear-gradient(145deg,#18253c,#0b1220);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:13px;
+  font-weight:800;
+  color:var(--gold2);
 }
 
 /* =========================
-   PAGE
+   DRAWER
 ========================= */
 
-.container{
-    width:100%;
-    max-width:760px;
-    margin:0 auto;
-    padding:20px 16px 30px;
+.drawer-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.65);
+  z-index:1999;
+  opacity:0;
+  visibility:hidden;
+  transition:.25s;
+}
+
+.drawer-overlay.open{
+  opacity:1;
+  visibility:visible;
+}
+
+.drawer{
+  position:fixed;
+  top:0;
+  left:-310px;
+  width:290px;
+  max-width:86vw;
+  height:100vh;
+  background:#080e1c;
+  border-right:1px solid var(--border);
+  z-index:2000;
+  transition:.28s ease;
+  overflow-y:auto;
+}
+
+.drawer.open{
+  left:0;
+}
+
+.drawer-head{
+  height:170px;
+  padding:22px;
+  background:
+    radial-gradient(circle at 80% 0%,rgba(214,177,94,.18),transparent 45%),
+    linear-gradient(145deg,#0e1a2e,#050914);
+  border-bottom:1px solid var(--border);
+}
+
+.drawer-logo{
+  font-weight:900;
+  font-size:21px;
+  letter-spacing:2px;
+}
+
+.drawer-logo span{
+  color:var(--gold);
+}
+
+.drawer-user{
+  margin-top:27px;
+}
+
+.drawer-user-name{
+  font-size:16px;
+  font-weight:800;
+}
+
+.drawer-user-email{
+  margin-top:5px;
+  color:var(--muted);
+  font-size:12px;
+  word-break:break-all;
+}
+
+.drawer-nav{
+  padding:14px;
+}
+
+.drawer-link{
+  width:100%;
+  min-height:48px;
+  padding:0 13px;
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  gap:13px;
+  color:#cbd2de;
+  margin-bottom:5px;
+  transition:.2s;
+  font-size:14px;
+}
+
+.drawer-link:hover{
+  background:#101b2d;
+  color:#fff;
+}
+
+.drawer-link.active{
+  background:rgba(214,177,94,.10);
+  color:var(--gold2);
+  border:1px solid rgba(214,177,94,.12);
+}
+
+.drawer-icon{
+  width:22px;
+  text-align:center;
+  color:var(--gold);
+  font-size:16px;
+}
+
+.drawer-divider{
+  height:1px;
+  background:var(--border);
+  margin:12px 5px;
+}
+
+.logout{
+  color:#ef8991;
 }
 
 /* =========================
-   WELCOME
+   MAIN
 ========================= */
+
+.main{
+  width:100%;
+  max-width:760px;
+  margin:auto;
+  padding:22px 16px 105px;
+}
 
 .welcome{
-    margin-bottom:18px;
+  margin:3px 2px 18px;
 }
 
-.welcome-label{
-    color:var(--text-muted);
-    font-size:12px;
-    margin-bottom:5px;
+.welcome-small{
+  color:var(--muted);
+  font-size:13px;
+  margin-bottom:5px;
 }
 
 .welcome-name{
-    font-size:22px;
-    font-weight:750;
-    letter-spacing:-.4px;
+  font-size:24px;
+  line-height:1.2;
+  font-weight:850;
 }
 
 /* =========================
-   PORTFOLIO HERO
+   PORTFOLIO
 ========================= */
 
 .portfolio-card{
-    position:relative;
-    overflow:hidden;
-
-    border:1px solid rgba(214,177,94,.22);
-    border-radius:22px;
-
-    padding:22px;
-
-    background:
-        radial-gradient(
-            circle at 100% 0%,
-            rgba(214,177,94,.16),
-            transparent 38%
-        ),
-        linear-gradient(
-            145deg,
-            #111a2e 0%,
-            #0b1222 60%,
-            #080f1d 100%
-        );
-
-    box-shadow:var(--shadow);
+  position:relative;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 100% 0%,rgba(214,177,94,.20),transparent 34%),
+    linear-gradient(145deg,#0d1a30,#050914);
+  border:1px solid rgba(214,177,94,.16);
+  border-radius:21px;
+  padding:23px;
+  box-shadow:var(--shadow);
 }
 
 .portfolio-card:after{
-    content:"";
-    position:absolute;
-    width:170px;
-    height:170px;
-    right:-85px;
-    bottom:-95px;
-
-    border-radius:50%;
-
-    border:1px solid rgba(214,177,94,.08);
+  content:"";
+  position:absolute;
+  width:180px;
+  height:180px;
+  border-radius:50%;
+  border:1px solid rgba(214,177,94,.07);
+  right:-85px;
+  bottom:-95px;
 }
 
-.portfolio-top{
-    position:relative;
-    z-index:1;
-
-    display:flex;
-    justify-content:space-between;
-    align-items:flex-start;
-}
-
-.eyebrow{
-    color:var(--text-muted);
-    text-transform:uppercase;
-    letter-spacing:1.2px;
-    font-size:10px;
-    font-weight:700;
+.portfolio-label{
+  color:#9ba7ba;
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:1.2px;
 }
 
 .portfolio-value{
-    margin-top:8px;
-    font-size:31px;
-    line-height:1;
-    font-weight:800;
-    letter-spacing:-1px;
+  margin-top:8px;
+  font-size:32px;
+  font-weight:900;
+  letter-spacing:-.7px;
 }
 
 .portfolio-currency{
-    margin-top:8px;
-    color:var(--text-soft);
-    font-size:12px;
+  font-size:13px;
+  color:var(--gold2);
+  margin-left:5px;
 }
 
-.portfolio-badge{
-    padding:7px 10px;
-    border-radius:20px;
-
-    background:rgba(214,177,94,.08);
-    border:1px solid rgba(214,177,94,.18);
-
-    color:var(--gold-light);
-    font-size:10px;
-    font-weight:700;
+.portfolio-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin-top:24px;
 }
 
-.portfolio-divider{
-    height:1px;
-    background:rgba(255,255,255,.07);
-    margin:22px 0 17px;
+.portfolio-stat{
+  padding-top:13px;
+  border-top:1px solid rgba(255,255,255,.08);
 }
 
-.portfolio-stats{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:18px;
+.portfolio-stat-label{
+  color:#7f8a9d;
+  font-size:11px;
 }
 
-.mini-label{
-    color:var(--text-muted);
-    font-size:10px;
-    margin-bottom:6px;
-}
-
-.mini-value{
-    color:var(--text);
-    font-size:14px;
-    font-weight:650;
+.portfolio-stat-value{
+  margin-top:5px;
+  font-weight:750;
+  font-size:13px;
 }
 
 /* =========================
-   SECTION HEAD
+   CARDS
 ========================= */
 
-.section-head{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-
-    margin:27px 2px 12px;
+.card{
+  background:linear-gradient(145deg,#0b1221,#080e1a);
+  border:1px solid var(--border);
+  border-radius:18px;
+  margin-top:15px;
+  box-shadow:0 12px 35px rgba(0,0,0,.16);
 }
 
-.section-title{
-    font-size:14px;
-    font-weight:750;
+.card-head{
+  padding:17px 17px 13px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
 
-.section-subtitle{
-    font-size:10px;
-    color:var(--text-muted);
+.card-title{
+  font-size:15px;
+  font-weight:800;
+}
+
+.card-subtitle{
+  color:var(--muted);
+  font-size:11px;
 }
 
 /* =========================
-   ASSET SELECTOR
+   SEARCH
 ========================= */
 
-.asset-selector{
-    position:relative;
+.search-wrap{
+  padding:0 15px 13px;
 }
 
-.asset-trigger{
-    width:100%;
-    min-height:65px;
+.search{
+  width:100%;
+  height:43px;
+  border:1px solid var(--border);
+  background:#070d19;
+  border-radius:12px;
+  color:#fff;
+  outline:none;
+  padding:0 13px;
+}
 
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
+.search::placeholder{
+  color:#687387;
+}
 
-    padding:11px 14px;
+.search:focus{
+  border-color:rgba(214,177,94,.45);
+}
 
-    border-radius:17px;
+/* =========================
+   ASSETS
+========================= */
 
-    background:
-        linear-gradient(
-            145deg,
-            rgba(255,255,255,.045),
-            rgba(255,255,255,.018)
-        );
+.asset-list{
+  max-height:385px;
+  overflow-y:auto;
+  padding:0 9px 10px;
+}
 
-    border:1px solid var(--border-soft);
-    color:var(--text);
+.asset-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:11px 9px;
+  border-radius:13px;
+  transition:.18s;
+}
 
-    text-align:left;
+.asset-row:hover,
+.asset-row.selected{
+  background:#101a2b;
 }
 
 .asset-left{
-    display:flex;
-    align-items:center;
-    gap:12px;
+  display:flex;
+  align-items:center;
+  gap:11px;
+  min-width:0;
 }
 
-.asset-logo{
-    width:38px;
-    height:38px;
-    border-radius:50%;
-    background:#10192b;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    overflow:hidden;
-    border:1px solid rgba(255,255,255,.08);
-}
-
-.asset-logo img{
-    width:25px;
-    height:25px;
-    object-fit:contain;
-}
-
-.asset-symbol{
-    font-size:14px;
-    font-weight:750;
+.coin-logo{
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  object-fit:contain;
+  flex:none;
+  background:#fff;
+  padding:2px;
 }
 
 .asset-name{
-    margin-top:3px;
-    color:var(--text-muted);
-    font-size:10px;
+  min-width:0;
+}
+
+.asset-name strong{
+  display:block;
+  font-size:13px;
+  font-weight:800;
+}
+
+.asset-name span{
+  display:block;
+  color:var(--muted);
+  font-size:11px;
+  margin-top:2px;
 }
 
 .asset-right{
-    display:flex;
-    align-items:center;
-    gap:11px;
+  text-align:right;
+}
+
+.asset-price{
+  font-size:13px;
+  font-weight:750;
 }
 
 .asset-balance{
-    text-align:right;
-}
-
-.asset-balance-label{
-    color:var(--text-muted);
-    font-size:9px;
-}
-
-.asset-balance-value{
-    margin-top:3px;
-    font-size:12px;
-    font-weight:650;
-}
-
-.chevron{
-    color:var(--gold-light);
-    font-size:17px;
+  color:var(--muted);
+  font-size:10px;
+  margin-top:3px;
 }
 
 /* =========================
-   DROPDOWN
+   SELECTED ASSET
 ========================= */
 
-.asset-menu{
-    position:absolute;
-    top:73px;
-    left:0;
-    right:0;
-    z-index:40;
-
-    display:none;
-
-    max-height:420px;
-    overflow:hidden;
-
-    border-radius:18px;
-
-    background:#0b1222;
-    border:1px solid rgba(214,177,94,.18);
-
-    box-shadow:
-        0 25px 70px rgba(0,0,0,.55);
+.selected-asset{
+  margin:2px 15px 15px;
+  padding:16px;
+  background:linear-gradient(145deg,#0d192c,#080e1a);
+  border:1px solid rgba(214,177,94,.12);
+  border-radius:15px;
 }
 
-.asset-menu.open{
-    display:block;
+.selected-top{
+  display:flex;
+  align-items:center;
+  gap:11px;
 }
 
-.asset-search{
-    padding:12px;
-    border-bottom:1px solid rgba(255,255,255,.07);
+.selected-top .coin-logo{
+  width:42px;
+  height:42px;
 }
 
-.asset-search input{
-    width:100%;
-    height:40px;
-
-    padding:0 12px;
-
-    border-radius:11px;
-
-    outline:none;
-
-    color:#fff;
-    background:#070d1a;
-    border:1px solid rgba(255,255,255,.07);
+.selected-name strong{
+  display:block;
+  font-size:15px;
 }
 
-.asset-search input:focus{
-    border-color:rgba(214,177,94,.45);
+.selected-name span{
+  display:block;
+  color:var(--muted);
+  font-size:11px;
+  margin-top:3px;
 }
 
-.asset-list{
-    max-height:350px;
-    overflow-y:auto;
+.selected-value{
+  margin-top:15px;
+  font-size:23px;
+  font-weight:850;
 }
 
-.asset-item{
-    width:100%;
-    padding:11px 13px;
-
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-
-    background:transparent;
-    color:#fff;
-
-    border-bottom:1px solid rgba(255,255,255,.045);
-
-    text-align:left;
+.selected-stats{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:9px;
+  margin-top:13px;
 }
 
-.asset-item:hover{
-    background:rgba(214,177,94,.06);
+.selected-stat{
+  background:#080f1c;
+  border-radius:11px;
+  padding:10px;
 }
 
-.asset-item-info{
-    display:flex;
-    align-items:center;
-    gap:10px;
+.selected-stat label{
+  display:block;
+  color:var(--muted);
+  font-size:10px;
 }
 
-.asset-item-logo{
-    width:34px;
-    height:34px;
-
-    border-radius:50%;
-
-    background:#10192b;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    overflow:hidden;
-}
-
-.asset-item-logo img{
-    width:23px;
-    height:23px;
-}
-
-.asset-item-symbol{
-    font-size:12px;
-    font-weight:750;
-}
-
-.asset-item-name{
-    color:var(--text-muted);
-    font-size:9px;
-    margin-top:2px;
-}
-
-/* =========================
-   HOLDING CARD
-========================= */
-
-.holding-card{
-    margin-top:12px;
-
-    padding:18px;
-
-    border-radius:18px;
-
-    background:rgba(255,255,255,.025);
-    border:1px solid rgba(255,255,255,.065);
-}
-
-.holding-grid{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:10px;
-}
-
-.holding-box{
-    min-width:0;
-}
-
-.holding-label{
-    color:var(--text-muted);
-    font-size:9px;
-    margin-bottom:7px;
-}
-
-.holding-value{
-    font-size:13px;
-    font-weight:700;
+.selected-stat strong{
+  display:block;
+  margin-top:4px;
+  font-size:12px;
 }
 
 /* =========================
    PROFIT TIMER
 ========================= */
 
-.profit-card{
-    margin-top:12px;
-    padding:18px;
-
-    border-radius:18px;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(214,177,94,.07),
-            rgba(255,255,255,.02)
-        );
-
-    border:1px solid rgba(214,177,94,.15);
-}
-
-.profit-row{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:15px;
-}
-
-.profit-title{
-    font-size:12px;
-    font-weight:700;
-}
-
-.profit-description{
-    color:var(--text-muted);
-    font-size:9px;
-    margin-top:5px;
-    line-height:1.5;
+.profit-box{
+  padding:0 16px 16px;
 }
 
 .timer{
-    color:var(--gold-light);
-    font-size:13px;
-    font-weight:800;
-    white-space:nowrap;
+  padding:17px;
+  text-align:center;
+  background:#080e1a;
+  border:1px solid var(--border);
+  border-radius:14px;
+}
+
+.timer-label{
+  color:var(--muted);
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.9px;
+}
+
+.timer-value{
+  margin-top:7px;
+  color:var(--gold2);
+  font-size:25px;
+  font-weight:900;
+  letter-spacing:1px;
+}
+
+.timer-status{
+  color:var(--muted);
+  font-size:11px;
+  margin-top:5px;
+}
+
+/* =========================
+   STATISTICS
+========================= */
+
+.stats-grid{
+  padding:0 15px 15px;
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:9px;
+}
+
+.stat-box{
+  padding:13px;
+  border-radius:13px;
+  background:#080e1a;
+  border:1px solid rgba(255,255,255,.055);
+}
+
+.stat-label{
+  color:var(--muted);
+  font-size:10px;
+}
+
+.stat-value{
+  margin-top:5px;
+  font-size:14px;
+  font-weight:800;
 }
 
 /* =========================
@@ -655,299 +629,47 @@ a{
 ========================= */
 
 .actions{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:9px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  padding:0 15px 15px;
 }
 
 .action{
-    min-height:82px;
-
-    padding:13px 8px;
-
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    gap:9px;
-
-    border-radius:16px;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(255,255,255,.045),
-            rgba(255,255,255,.018)
-        );
-
-    border:1px solid rgba(255,255,255,.065);
-
-    color:#fff;
-
-    transition:.18s;
+  min-height:100px;
+  border-radius:14px;
+  border:1px solid var(--border);
+  background:#080f1c;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  text-align:center;
+  transition:.2s;
 }
 
-.action:active{
-    transform:scale(.97);
+.action:hover{
+  border-color:rgba(214,177,94,.35);
+  transform:translateY(-2px);
 }
 
 .action-icon{
-    width:32px;
-    height:32px;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    border-radius:10px;
-
-    color:var(--gold-light);
-
-    background:rgba(214,177,94,.08);
-    border:1px solid rgba(214,177,94,.14);
+  width:38px;
+  height:38px;
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(214,177,94,.10);
+  color:var(--gold2);
+  font-size:18px;
 }
 
-.action-icon svg{
-    width:16px;
-    height:16px;
-}
-
-.action-text{
-    font-size:9px;
-    font-weight:650;
-    color:var(--text-soft);
-}
-
-/* =========================
-   STATS
-========================= */
-
-.stats-card{
-    overflow:hidden;
-
-    border-radius:19px;
-
-    background:rgba(255,255,255,.022);
-    border:1px solid rgba(255,255,255,.065);
-}
-
-.stat-row{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-}
-
-.stat{
-    min-height:78px;
-    padding:16px;
-
-    border-bottom:1px solid rgba(255,255,255,.055);
-}
-
-.stat:nth-child(odd){
-    border-right:1px solid rgba(255,255,255,.055);
-}
-
-.stat:nth-last-child(-n+2){
-    border-bottom:0;
-}
-
-.stat-label{
-    color:var(--text-muted);
-    font-size:9px;
-    margin-bottom:7px;
-}
-
-.stat-value{
-    font-size:13px;
-    font-weight:700;
-}
-
-/* =========================
-   NOTE
-========================= */
-
-.info-note{
-    margin-top:12px;
-
-    padding:13px 14px;
-
-    border-radius:13px;
-
-    background:rgba(214,177,94,.045);
-    border:1px solid rgba(214,177,94,.11);
-
-    color:var(--text-muted);
-    font-size:9px;
-    line-height:1.55;
-}
-
-/* =========================
-   SIDE DRAWER
-========================= */
-
-.overlay{
-    position:fixed;
-    inset:0;
-    z-index:200;
-
-    background:rgba(0,0,0,.62);
-
-    opacity:0;
-    visibility:hidden;
-
-    transition:.25s;
-}
-
-.overlay.open{
-    opacity:1;
-    visibility:visible;
-}
-
-.drawer{
-    position:fixed;
-    top:0;
-    bottom:0;
-    left:0;
-
-    width:min(310px,86vw);
-
-    z-index:210;
-
-    transform:translateX(-105%);
-    transition:.28s ease;
-
-    background:
-        linear-gradient(
-            180deg,
-            #0b1222 0%,
-            #070d19 100%
-        );
-
-    border-right:1px solid rgba(214,177,94,.14);
-
-    box-shadow:20px 0 70px rgba(0,0,0,.45);
-
-    overflow-y:auto;
-}
-
-.drawer.open{
-    transform:translateX(0);
-}
-
-.drawer-head{
-    height:75px;
-
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-
-    padding:0 18px;
-
-    border-bottom:1px solid rgba(255,255,255,.06);
-}
-
-.drawer-brand{
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
-
-.drawer-title{
-    font-size:14px;
-    font-weight:800;
-    letter-spacing:2px;
-}
-
-.close-drawer{
-    width:35px;
-    height:35px;
-
-    border-radius:10px;
-
-    background:rgba(255,255,255,.045);
-    border:1px solid rgba(255,255,255,.07);
-
-    color:var(--text-soft);
-    font-size:20px;
-}
-
-.drawer-profile{
-    margin:18px;
-
-    padding:15px;
-
-    border-radius:15px;
-
-    background:rgba(214,177,94,.055);
-    border:1px solid rgba(214,177,94,.12);
-}
-
-.drawer-profile-name{
-    font-size:13px;
-    font-weight:700;
-}
-
-.drawer-profile-email{
-    color:var(--text-muted);
-    font-size:9px;
-    margin-top:5px;
-    word-break:break-word;
-}
-
-.drawer-nav{
-    padding:0 11px 22px;
-}
-
-.nav-label{
-    color:#58657b;
-    font-size:9px;
-    font-weight:700;
-    letter-spacing:1.2px;
-    text-transform:uppercase;
-
-    padding:12px 9px 7px;
-}
-
-.nav-link{
-    width:100%;
-
-    display:flex;
-    align-items:center;
-    gap:12px;
-
-    padding:12px 10px;
-
-    border-radius:11px;
-
-    color:var(--text-soft);
-
-    background:transparent;
-
-    text-align:left;
-
-    font-size:12px;
-}
-
-.nav-link:hover{
-    background:rgba(255,255,255,.04);
-    color:#fff;
-}
-
-.nav-link.active{
-    color:var(--gold-light);
-    background:rgba(214,177,94,.08);
-}
-
-.nav-icon{
-    width:20px;
-    display:flex;
-    justify-content:center;
-    color:inherit;
-}
-
-.nav-icon svg{
-    width:17px;
-    height:17px;
+.action span{
+  color:#dfe4ec;
+  font-size:11px;
+  font-weight:700;
 }
 
 /* =========================
@@ -955,804 +677,624 @@ a{
 ========================= */
 
 .bottom-nav{
-    position:fixed;
-    left:0;
-    right:0;
-    bottom:0;
-
-    z-index:150;
-
-    height:70px;
-
-    background:rgba(5,9,20,.94);
-    backdrop-filter:blur(18px);
-    -webkit-backdrop-filter:blur(18px);
-
-    border-top:1px solid rgba(255,255,255,.07);
+  position:fixed;
+  z-index:1000;
+  bottom:0;
+  left:0;
+  right:0;
+  height:70px;
+  background:rgba(5,9,20,.97);
+  backdrop-filter:blur(18px);
+  border-top:1px solid var(--border);
 }
 
 .bottom-inner{
-    max-width:760px;
-    height:100%;
-    margin:auto;
-
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
+  max-width:760px;
+  height:100%;
+  margin:auto;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
 }
 
 .bottom-link{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    gap:5px;
-
-    color:#69758a;
-
-    font-size:9px;
-    font-weight:600;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap:5px;
+  color:#69758a;
+  font-size:10px;
 }
 
-.bottom-link svg{
-    width:18px;
-    height:18px;
+.bottom-link strong{
+  font-size:17px;
+  line-height:1;
+  font-weight:400;
 }
 
 .bottom-link.active{
-    color:var(--gold-light);
+  color:var(--gold2);
 }
 
 /* =========================
    LOADING
 ========================= */
 
-.page-loading{
-    position:fixed;
-    inset:0;
-    z-index:500;
+.loading{
+  position:fixed;
+  inset:0;
+  z-index:5000;
+  background:#050914;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:.3s;
+}
 
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    background:#050914;
+.loading.hidden{
+  opacity:0;
+  pointer-events:none;
 }
 
 .loader{
-    width:34px;
-    height:34px;
-
-    border-radius:50%;
-
-    border:2px solid rgba(214,177,94,.18);
-    border-top-color:var(--gold-light);
-
-    animation:spin .8s linear infinite;
+  width:35px;
+  height:35px;
+  border:3px solid rgba(214,177,94,.18);
+  border-top-color:var(--gold);
+  border-radius:50%;
+  animation:spin .8s linear infinite;
 }
 
 @keyframes spin{
-    to{transform:rotate(360deg)}
+  to{transform:rotate(360deg)}
 }
 
-/* =========================
-   EMPTY
-========================= */
-
-.empty-assets{
-    padding:25px;
-    text-align:center;
-    color:var(--text-muted);
-    font-size:11px;
+.empty{
+  padding:22px;
+  text-align:center;
+  color:var(--muted);
+  font-size:12px;
 }
 
 /* =========================
    RESPONSIVE
 ========================= */
 
-@media(max-width:420px){
+@media(max-width:500px){
 
-    .container{
-        padding-left:13px;
-        padding-right:13px;
-    }
+  .main{
+    padding-left:13px;
+    padding-right:13px;
+  }
 
-    .portfolio-value{
-        font-size:28px;
-    }
+  .portfolio-value{
+    font-size:29px;
+  }
 
-    .actions{
-        gap:7px;
-    }
+  .portfolio-grid{
+    gap:7px;
+  }
 
-    .action{
-        min-height:78px;
-    }
+  .actions{
+    gap:7px;
+    padding-left:11px;
+    padding-right:11px;
+  }
+
+  .action{
+    min-height:94px;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<!-- LOADING -->
-<div class="page-loading" id="pageLoading">
-    <div class="loader"></div>
+<div class="loading" id="loading">
+  <div class="loader"></div>
 </div>
 
-<!-- OVERLAY -->
-<div class="overlay" id="overlay"></div>
+<!-- =========================
+     DRAWER
+========================= -->
 
-<!-- SIDE DRAWER -->
+<div class="drawer-overlay" id="drawerOverlay"></div>
+
 <aside class="drawer" id="drawer">
 
-    <div class="drawer-head">
+  <div class="drawer-head">
 
-        <div class="drawer-brand">
-
-            <div class="brand-mark">N</div>
-
-            <div class="drawer-title">
-                NEXORA
-            </div>
-
-        </div>
-
-        <button class="close-drawer" id="closeDrawer">
-            ×
-        </button>
-
+    <div class="drawer-logo">
+      NEX<span>ORA</span>
     </div>
 
-    <div class="drawer-profile">
+    <div class="drawer-user">
+      <div class="drawer-user-name" id="drawerName">
+        Loading...
+      </div>
 
-        <div class="drawer-profile-name" id="drawerName">
-            —
-        </div>
-
-        <div class="drawer-profile-email" id="drawerEmail">
-            —
-        </div>
-
+      <div class="drawer-user-email" id="drawerEmail">
+        Loading...
+      </div>
     </div>
 
-    <nav class="drawer-nav">
+  </div>
 
-        <div class="nav-label">
-            Overview
-        </div>
+  <nav class="drawer-nav">
 
-        <button class="nav-link active" onclick="navigate('dashboard.html')">
-            <span class="nav-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
-                    <rect x="3" y="3" width="7" height="7" rx="1"/>
-                    <rect x="14" y="3" width="7" height="7" rx="1"/>
-                    <rect x="3" y="14" width="7" height="7" rx="1"/>
-                    <rect x="14" y="14" width="7" height="7" rx="1"/>
-                </svg>
-            </span>
-            Portfolio
-        </button>
+    <a class="drawer-link active" href="dashboard.html">
+      <span class="drawer-icon">◈</span>
+      Portfolio
+    </a>
 
-        <div class="nav-label">
-            Assets
-        </div>
+    <a class="drawer-link" href="deposit.html">
+      <span class="drawer-icon">＋</span>
+      Deposit
+    </a>
 
-        <button class="nav-link" onclick="navigate('deposit.html')">
-            <span class="nav-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
-                    <path d="M12 3v13"/>
-                    <path d="m7 11 5 5 5-5"/>
-                    <path d="M4 21h16"/>
-                </svg>
-            </span>
-            Deposit
-        </button>
+    <a class="drawer-link" href="withdraw.html">
+      <span class="drawer-icon">↗</span>
+      Withdraw
+    </a>
 
-        <button class="nav-link" onclick="navigate('swap.html')">
-            <span class="nav-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
-                    <path d="M7 7h12l-3-3"/>
-                    <path d="M17 17H5l3 3"/>
-                    <path d="M19 7 16 4"/>
-                    <path d="M5 17 8 20"/>
-                </svg>
-            </span>
-            Swap Crypto
-        </button>
+    <a class="drawer-link" href="transactions.html">
+      <span class="drawer-icon">≡</span>
+      Transactions
+    </a>
 
-        <button class="nav-link" onclick="navigate('withdraw.html')">
-            <span class="nav-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
-                    <path d="M12 21V8"/>
-                    <path d="m7 13 5-5 5 5"/>
-                    <path d="M4 3h16"/>
-                </svg>
-            </span>
-            Withdraw
-        </button>
+    <a class="drawer-link" href="investments.html">
+      <span class="drawer-icon">▣</span>
+      My Investments
+    </a>
 
-        <button class="nav-link" onclick="navigate('transactions.html')">
-            <span class="nav-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
-                    <path d="M5 6h14"/>
-                    <path d="M5 12h14"/>
-                    <path d="M5 18h14"/>
-                    <circle cx="3" cy="6" r=".7" fill="currentColor"/>
-                    <circle cx="3" cy="12" r=".7" fill="currentColor"/>
-                    <circle cx="3" cy="18" r=".7" fill="currentColor"/>
-                </svg>
-            </span>
-            Transactions
-        </button>
+    <a class="drawer-link" href="referrals.html">
+      <span class="drawer-icon">♧</span>
+      Referrals
+    </a>
 
-        <div class="nav-label">
-            Account
-        </div>
+    <a class="drawer-link" href="profile.html">
+      <span class="drawer-icon">○</span>
+      Profile
+    </a>
 
-        <button class="nav-link" onclick="navigate('investments.html')">
-            <span class="nav-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
-                    <path d="M4 19V5"/>
-                    <path d="M4 19h16"/>
-                    <path d="m7 15 4-5 3 3 5-7"/>
-                </svg>
-            </span>
-            My Investments
-        </button>
+    <a class="drawer-link" href="support.html">
+      <span class="drawer-icon">?</span>
+      Support
+    </a>
 
-        <button class="nav-link" onclick="navigate('referrals.html')">
-            <span class="nav-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
-                    <circle cx="9" cy="8" r="3"/>
-                    <circle cx="17" cy="10" r="2.5"/>
-                    <path d="M3 20c.5-4 2.5-6 6-6s5.5 2 6 6"/>
-                    <path d="M15 15c3.2-.1 5 1.4 5.5 5"/>
-                </svg>
-            </span>
-            Referrals
-        </button>
+    <a class="drawer-link" href="notifications.html">
+      <span class="drawer-icon">◉</span>
+      Notifications
+    </a>
 
-        <button class="nav-link" onclick="navigate('profile.html')">
-            <span class="nav-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
-                    <circle cx="12" cy="8" r="3.5"/>
-                    <path d="M5 21c.7-4.1 3-6 7-6s6.3 1.9 7 6"/>
-                </svg>
-            </span>
-            Profile
-        </button>
+    <div class="drawer-divider"></div>
 
-        <button class="nav-link" onclick="navigate('notifications.html')">
-            <span class="nav-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
-                    <path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/>
-                    <path d="M10 21h4"/>
-                </svg>
-            </span>
-            Notifications
-        </button>
+    <a class="drawer-link logout" href="#" id="logoutBtn">
+      <span class="drawer-icon">↪</span>
+      Logout
+    </a>
 
-        <button class="nav-link" onclick="navigate('support.html')">
-            <span class="nav-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
-                    <circle cx="12" cy="12" r="9"/>
-                    <path d="M8.5 10a3.5 3.5 0 0 1 7 0c0 2.5-3.5 2.2-3.5 4"/>
-                    <circle cx="12" cy="17.5" r=".7" fill="currentColor"/>
-                </svg>
-            </span>
-            Support
-        </button>
-
-        <div class="nav-label">
-            Session
-        </div>
-
-        <button class="nav-link" id="logoutBtn">
-            <span class="nav-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
-                    <path d="M10 4H5v16h5"/>
-                    <path d="M14 8l4 4-4 4"/>
-                    <path d="M9 12h9"/>
-                </svg>
-            </span>
-            Logout
-        </button>
-
-    </nav>
+  </nav>
 
 </aside>
 
 
-<!-- HEADER -->
+<!-- =========================
+     HEADER
+========================= -->
+
 <header class="topbar">
 
-    <div class="topbar-inner">
+  <div class="topbar-inner">
 
-        <div class="left-head">
+    <button class="icon-btn" id="menuBtn" aria-label="Open menu">
+      <div class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </button>
 
-            <button class="menu-btn" id="menuBtn" aria-label="Open menu">
+    <a href="dashboard.html" class="logo">
+      NEX<span>ORA</span>
+    </a>
 
-                <span class="menu-lines">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </span>
+    <a href="profile.html" class="account-circle" id="accountInitials">
+      —
+    </a>
 
-            </button>
-
-            <a href="dashboard.html" class="brand">
-
-                <div class="brand-mark">
-                    N
-                </div>
-
-                <span class="brand-name">
-                    NEXORA
-                </span>
-
-            </a>
-
-        </div>
-
-        <button class="account-btn" id="accountBtn">
-            —
-        </button>
-
-    </div>
+  </div>
 
 </header>
 
 
-<!-- MAIN -->
-<main class="container">
+<!-- =========================
+     MAIN
+========================= -->
 
-    <section class="welcome">
+<main class="main">
 
-        <div class="welcome-label">
-            Welcome back
+  <section class="welcome">
+
+    <div class="welcome-small">
+      Welcome back
+    </div>
+
+    <div class="welcome-name" id="welcomeName">
+      —
+    </div>
+
+  </section>
+
+
+  <!-- PORTFOLIO -->
+
+  <section class="portfolio-card">
+
+    <div class="portfolio-label">
+      Total Portfolio Value
+    </div>
+
+    <div class="portfolio-value">
+      —
+      <span class="portfolio-currency">USD</span>
+    </div>
+
+    <div class="portfolio-grid">
+
+      <div class="portfolio-stat">
+        <div class="portfolio-stat-label">
+          Available
         </div>
 
-        <div class="welcome-name" id="welcomeName">
+        <div class="portfolio-stat-value">
+          —
+        </div>
+      </div>
+
+      <div class="portfolio-stat">
+        <div class="portfolio-stat-label">
+          Invested
+        </div>
+
+        <div class="portfolio-stat-value">
+          —
+        </div>
+      </div>
+
+      <div class="portfolio-stat">
+        <div class="portfolio-stat-label">
+          Partners
+        </div>
+
+        <div class="portfolio-stat-value">
+          —
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- CRYPTO ASSETS -->
+
+  <section class="card">
+
+    <div class="card-head">
+
+      <div class="card-title">
+        Crypto Assets
+      </div>
+
+      <div class="card-subtitle">
+        Your assets
+      </div>
+
+    </div>
+
+    <div class="search-wrap">
+
+      <input
+        type="search"
+        id="assetSearch"
+        class="search"
+        placeholder="Search crypto..."
+        autocomplete="off"
+      >
+
+    </div>
+
+    <div class="asset-list" id="assetList"></div>
+
+    <div class="selected-asset">
+
+      <div class="selected-top">
+
+        <img
+          class="coin-logo"
+          id="selectedLogo"
+          src=""
+          alt=""
+        >
+
+        <div class="selected-name">
+
+          <strong id="selectedName">
+            Bitcoin
+          </strong>
+
+          <span id="selectedSymbol">
+            BTC
+          </span>
+
+        </div>
+
+      </div>
+
+      <div class="selected-value">
+        —
+      </div>
+
+      <div class="selected-stats">
+
+        <div class="selected-stat">
+          <label>
+            Available
+          </label>
+
+          <strong>
             —
+          </strong>
         </div>
 
-    </section>
+        <div class="selected-stat">
+          <label>
+            Invested
+          </label>
 
-
-    <!-- PORTFOLIO -->
-    <section class="portfolio-card">
-
-        <div class="portfolio-top">
-
-            <div>
-
-                <div class="eyebrow">
-                    Total portfolio
-                </div>
-
-                <div class="portfolio-value">
-                    —
-                </div>
-
-                <div class="portfolio-currency">
-                    USD value
-                </div>
-
-            </div>
-
-            <div class="portfolio-badge">
-                NEXORA
-            </div>
-
+          <strong>
+            —
+          </strong>
         </div>
 
-        <div class="portfolio-divider"></div>
+        <div class="selected-stat">
+          <label>
+            Asset value
+          </label>
 
-        <div class="portfolio-stats">
-
-            <div>
-                <div class="mini-label">
-                    Available
-                </div>
-
-                <div class="mini-value">
-                    —
-                </div>
-            </div>
-
-            <div>
-                <div class="mini-label">
-                    Invested
-                </div>
-
-                <div class="mini-value">
-                    —
-                </div>
-            </div>
-
+          <strong>
+            —
+          </strong>
         </div>
 
-    </section>
+        <div class="selected-stat">
+          <label>
+            Current price
+          </label>
 
-
-    <!-- ASSETS -->
-    <div class="section-head">
-
-        <div class="section-title">
-            Crypto Assets
+          <strong>
+            —
+          </strong>
         </div>
 
-        <div class="section-subtitle">
-            Your portfolio
-        </div>
+      </div>
 
     </div>
 
-
-    <section class="asset-selector">
-
-        <button class="asset-trigger" id="assetTrigger">
-
-            <div class="asset-left">
-
-                <div class="asset-logo">
-                    <img id="selectedLogo" src="" alt="">
-                </div>
-
-                <div>
-
-                    <div class="asset-symbol" id="selectedSymbol">
-                        BTC
-                    </div>
-
-                    <div class="asset-name" id="selectedName">
-                        Bitcoin
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="asset-right">
-
-                <div class="asset-balance">
-
-                    <div class="asset-balance-label">
-                        Balance
-                    </div>
-
-                    <div class="asset-balance-value">
-                        —
-                    </div>
-
-                </div>
-
-                <div class="chevron">
-                    ›
-                </div>
-
-            </div>
-
-        </button>
+  </section>
 
 
-        <div class="asset-menu" id="assetMenu">
+  <!-- PROFIT -->
 
-            <div class="asset-search">
+  <section class="card">
 
-                <input
-                    type="search"
-                    id="assetSearch"
-                    placeholder="Search crypto..."
-                    autocomplete="off"
-                >
+    <div class="card-head">
 
-            </div>
-
-            <div class="asset-list" id="assetList"></div>
-
+      <div>
+        <div class="card-title">
+          Profit Calculation
         </div>
 
-    </section>
-
-
-    <!-- SELECTED ASSET -->
-    <section class="holding-card">
-
-        <div class="holding-grid">
-
-            <div class="holding-box">
-
-                <div class="holding-label">
-                    Available
-                </div>
-
-                <div class="holding-value">
-                    —
-                </div>
-
-            </div>
-
-            <div class="holding-box">
-
-                <div class="holding-label">
-                    Invested
-                </div>
-
-                <div class="holding-value">
-                    —
-                </div>
-
-            </div>
-
-            <div class="holding-box">
-
-                <div class="holding-label">
-                    Value
-                </div>
-
-                <div class="holding-value">
-                    —
-                </div>
-
-            </div>
-
+        <div class="card-subtitle">
+          Portfolio performance timer
         </div>
-
-    </section>
-
-
-    <!-- PROFIT TIMER -->
-    <section class="profit-card">
-
-        <div class="profit-row">
-
-            <div>
-
-                <div class="profit-title">
-                    Next portfolio calculation
-                </div>
-
-                <div class="profit-description" id="profitDescription">
-                    Awaiting confirmed deposit
-                </div>
-
-            </div>
-
-            <div class="timer" id="profitTimer">
-                —
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- ACTIONS -->
-    <div class="section-head">
-
-        <div class="section-title">
-            Quick actions
-        </div>
+      </div>
 
     </div>
 
+    <div class="profit-box">
 
-    <section class="actions">
+      <div class="timer">
 
-        <button class="action" onclick="navigate('swap.html')">
-
-            <span class="action-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
-                    <path d="M7 7h12l-3-3"/>
-                    <path d="M17 17H5l3 3"/>
-                    <path d="M19 7 16 4"/>
-                    <path d="M5 17 8 20"/>
-                </svg>
-            </span>
-
-            <span class="action-text">
-                Swap Crypto
-            </span>
-
-        </button>
-
-
-        <button class="action" onclick="navigate('deposit.html')">
-
-            <span class="action-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
-                    <path d="M12 3v13"/>
-                    <path d="m7 11 5 5 5-5"/>
-                    <path d="M4 21h16"/>
-                </svg>
-            </span>
-
-            <span class="action-text">
-                Add Funds
-            </span>
-
-        </button>
-
-
-        <button class="action" onclick="navigate('withdraw.html')">
-
-            <span class="action-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
-                    <path d="M12 21V8"/>
-                    <path d="m7 13 5-5 5 5"/>
-                    <path d="M4 3h16"/>
-                </svg>
-            </span>
-
-            <span class="action-text">
-                Withdraw
-            </span>
-
-        </button>
-
-    </section>
-
-
-    <!-- ACCOUNT STATS -->
-    <div class="section-head">
-
-        <div class="section-title">
-            Account overview
+        <div class="timer-label">
+          Next calculation
         </div>
+
+        <div class="timer-value" id="profitTimer">
+          —
+        </div>
+
+        <div class="timer-status" id="profitStatus">
+          Awaiting confirmed deposit
+        </div>
+
+      </div>
 
     </div>
 
-
-    <section class="stats-card">
-
-        <div class="stat-row">
-
-            <div class="stat">
-
-                <div class="stat-label">
-                    Incoming payments
-                </div>
-
-                <div class="stat-value">
-                    —
-                </div>
-
-            </div>
+  </section>
 
 
-            <div class="stat">
+  <!-- ACCOUNT STATISTICS -->
 
-                <div class="stat-label">
-                    Outgoing payments
-                </div>
+  <section class="card">
 
-                <div class="stat-value">
-                    —
-                </div>
+    <div class="card-head">
 
-            </div>
+      <div class="card-title">
+        Account Statistics
+      </div>
 
+    </div>
 
-            <div class="stat">
+    <div class="stats-grid">
 
-                <div class="stat-label">
-                    All accruals
-                </div>
-
-                <div class="stat-value">
-                    —
-                </div>
-
-            </div>
-
-
-            <div class="stat">
-
-                <div class="stat-label">
-                    Partners
-                </div>
-
-                <div class="stat-value">
-                    —
-                </div>
-
-            </div>
-
-
-            <div class="stat">
-
-                <div class="stat-label">
-                    Main profit
-                </div>
-
-                <div class="stat-value">
-                    —
-                </div>
-
-            </div>
-
-
-            <div class="stat">
-
-                <div class="stat-label">
-                    Partners profit
-                </div>
-
-                <div class="stat-value">
-                    —
-                </div>
-
-            </div>
-
+      <div class="stat-box">
+        <div class="stat-label">
+          Total Deposits
         </div>
 
-    </section>
+        <div class="stat-value">
+          —
+        </div>
+      </div>
 
+      <div class="stat-box">
+        <div class="stat-label">
+          Total Withdrawals
+        </div>
 
-    <div class="info-note">
-        USD values are calculated using the applicable exchange rate at the time of the relevant transaction or accrual. No portfolio value is displayed until verified financial data is available.
+        <div class="stat-value">
+          —
+        </div>
+      </div>
+
+      <div class="stat-box">
+        <div class="stat-label">
+          Total Profit
+        </div>
+
+        <div class="stat-value">
+          —
+        </div>
+      </div>
+
+      <div class="stat-box">
+        <div class="stat-label">
+          Referral Earnings
+        </div>
+
+        <div class="stat-value">
+          —
+        </div>
+      </div>
+
+      <div class="stat-box">
+        <div class="stat-label">
+          Investments
+        </div>
+
+        <div class="stat-value">
+          —
+        </div>
+      </div>
+
+      <div class="stat-box">
+        <div class="stat-label">
+          Account Status
+        </div>
+
+        <div class="stat-value" id="accountStatus">
+          —
+        </div>
+      </div>
+
     </div>
+
+  </section>
+
+
+  <!-- QUICK ACTIONS -->
+
+  <section class="card">
+
+    <div class="card-head">
+
+      <div class="card-title">
+        Quick Actions
+      </div>
+
+    </div>
+
+    <div class="actions">
+
+      <!-- KEEP NAME AS CURRENCY EXCHANGE -->
+
+      <a href="swap.html" class="action">
+
+        <div class="action-icon">
+          ⇄
+        </div>
+
+        <span>
+          Currency Exchange
+        </span>
+
+      </a>
+
+
+      <a href="deposit.html" class="action">
+
+        <div class="action-icon">
+          ＋
+        </div>
+
+        <span>
+          Add Funds
+        </span>
+
+      </a>
+
+
+      <a href="withdraw.html" class="action">
+
+        <div class="action-icon">
+          ↗
+        </div>
+
+        <span>
+          Withdraw Payment
+        </span>
+
+      </a>
+
+    </div>
+
+  </section>
 
 </main>
 
 
-<!-- BOTTOM NAV -->
+<!-- =========================
+     BOTTOM NAV
+========================= -->
+
 <nav class="bottom-nav">
 
-    <div class="bottom-inner">
+  <div class="bottom-inner">
 
-        <a class="bottom-link active" href="dashboard.html">
+    <a href="dashboard.html" class="bottom-link active">
+      <strong>⌂</strong>
+      Portfolio
+    </a>
 
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
-                <rect x="3" y="3" width="7" height="7" rx="1"/>
-                <rect x="14" y="3" width="7" height="7" rx="1"/>
-                <rect x="3" y="14" width="7" height="7" rx="1"/>
-                <rect x="14" y="14" width="7" height="7" rx="1"/>
-            </svg>
+    <a href="deposit.html" class="bottom-link">
+      <strong>＋</strong>
+      Deposit
+    </a>
 
-            Portfolio
+    <a href="transactions.html" class="bottom-link">
+      <strong>≡</strong>
+      History
+    </a>
 
-        </a>
+    <a href="profile.html" class="bottom-link">
+      <strong>○</strong>
+      Account
+    </a>
 
-
-        <a class="bottom-link" href="deposit.html">
-
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
-                <path d="M12 3v13"/>
-                <path d="m7 11 5 5 5-5"/>
-                <path d="M4 21h16"/>
-            </svg>
-
-            Deposit
-
-        </a>
-
-
-        <a class="bottom-link" href="transactions.html">
-
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
-                <path d="M5 6h14"/>
-                <path d="M5 12h14"/>
-                <path d="M5 18h14"/>
-            </svg>
-
-            History
-
-        </a>
-
-
-        <a class="bottom-link" href="profile.html">
-
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
-                <circle cx="12" cy="8" r="3.5"/>
-                <path d="M5 21c.7-4.1 3-6 7-6s6.3 1.9 7 6"/>
-            </svg>
-
-            Account
-
-        </a>
-
-    </div>
+  </div>
 
 </nav>
 
@@ -1764,90 +1306,91 @@ a{
 ========================================================= */
 
 const SUPABASE_URL =
-    "https://rihvvwktvgytbqzazage.supabase.co";
+  "https://rihvvwktvgytbqzazage.supabase.co";
 
 const SUPABASE_PUBLISHABLE_KEY =
-    "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
+  "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
 
 const supabaseClient =
-    window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_PUBLISHABLE_KEY,
-        {
-            auth:{
-                autoRefreshToken:true,
-                persistSession:true,
-                detectSessionInUrl:true
-            }
-        }
-    );
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY,
+    {
+      auth:{
+        autoRefreshToken:true,
+        persistSession:true,
+        detectSessionInUrl:true
+      }
+    }
+  );
 
 
 /* =========================================================
    CRYPTO LOGOS
+   SAME CDN STYLE AS YOUR HTML
 ========================================================= */
 
 const LOGO_BASE =
-    "https://cdn.jsdelivr.net/gh/madenix/Crypto-logo-cdn@main/Logos/";
+  "https://cdn.jsdelivr.net/gh/madenix/Crypto-logo-cdn@main/Logos/";
 
 const logoFiles = {
 
-    BTC:"BTC.svg",
-    ETH:"ETH.svg",
-    USDT:"USDT.svg",
-    BNB:"BNB.svg",
-    SOL:"SOL.svg",
-    XRP:"XRP.svg",
-    TON:"TON.svg",
-    DOGE:"DOGE.svg",
-    ADA:"ADA.svg",
-    TRX:"TRON.svg",
-    LTC:"LTC.svg",
-    AVAX:"AVAX.svg",
-    DOT:"DOT.svg",
-    LINK:"LINK.svg",
-    POL:"MATIC.svg",
-    SHIB:"SHIB.svg",
-    BCH:"BCH.svg",
-    XLM:"XLM.svg",
-    ATOM:"ATOM.svg",
-    NEAR:"NEAR.svg",
-    APT:"APT.svg",
-    ARB:"ARB.svg",
-    OP:"OP.svg"
+  BTC:"BTC.svg",
+  ETH:"ETH.svg",
+  USDT:"USDT.svg",
+  BNB:"BNB.svg",
+  SOL:"SOL.svg",
+  XRP:"XRP.svg",
+  TON:"TON.svg",
+  DOGE:"DOGE.svg",
+  ADA:"ADA.svg",
+  TRX:"TRON.svg",
+  LTC:"LTC.svg",
+  AVAX:"AVAX.svg",
+  DOT:"DOT.svg",
+  LINK:"LINK.svg",
+  POL:"MATIC.svg",
+  SHIB:"SHIB.svg",
+  BCH:"BCH.svg",
+  XLM:"XLM.svg",
+  ATOM:"ATOM.svg",
+  NEAR:"NEAR.svg",
+  APT:"APT.svg",
+  ARB:"ARB.svg",
+  OP:"OP.svg"
 
 };
 
 
 /* =========================================================
-   SUPPORTED ASSETS
+   ASSET DATA
 ========================================================= */
 
 const assets = [
 
-    ["BTC","Bitcoin"],
-    ["ETH","Ethereum"],
-    ["USDT","Tether"],
-    ["BNB","BNB"],
-    ["SOL","Solana"],
-    ["XRP","XRP"],
-    ["TON","Toncoin"],
-    ["DOGE","Dogecoin"],
-    ["ADA","Cardano"],
-    ["TRX","TRON"],
-    ["LTC","Litecoin"],
-    ["AVAX","Avalanche"],
-    ["DOT","Polkadot"],
-    ["LINK","Chainlink"],
-    ["POL","Polygon"],
-    ["SHIB","Shiba Inu"],
-    ["BCH","Bitcoin Cash"],
-    ["XLM","Stellar"],
-    ["ATOM","Cosmos"],
-    ["NEAR","NEAR Protocol"],
-    ["APT","Aptos"],
-    ["ARB","Arbitrum"],
-    ["OP","Optimism"]
+  ["BTC","Bitcoin"],
+  ["ETH","Ethereum"],
+  ["USDT","Tether"],
+  ["BNB","BNB"],
+  ["SOL","Solana"],
+  ["XRP","XRP"],
+  ["TON","Toncoin"],
+  ["DOGE","Dogecoin"],
+  ["ADA","Cardano"],
+  ["TRX","TRON"],
+  ["LTC","Litecoin"],
+  ["AVAX","Avalanche"],
+  ["DOT","Polkadot"],
+  ["LINK","Chainlink"],
+  ["POL","Polygon"],
+  ["SHIB","Shiba Inu"],
+  ["BCH","Bitcoin Cash"],
+  ["XLM","Stellar"],
+  ["ATOM","Cosmos"],
+  ["NEAR","NEAR Protocol"],
+  ["APT","Aptos"],
+  ["ARB","Arbitrum"],
+  ["OP","Optimism"]
 
 ];
 
@@ -1856,205 +1399,320 @@ let selectedAsset = "BTC";
 
 
 /* =========================================================
-   HELPERS
+   ELEMENTS
 ========================================================= */
 
-function $(id){
-    return document.getElementById(id);
-}
+const $ = id => document.getElementById(id);
 
 
-function navigate(page){
-    window.location.href = page;
-}
-
+/* =========================================================
+   ASSET LOGO
+========================================================= */
 
 function logoFor(symbol){
 
-    const file = logoFiles[symbol];
+  const file = logoFiles[symbol];
 
-    if(!file){
-        return "";
-    }
+  if(!file){
+    return "";
+  }
 
-    return LOGO_BASE + file;
-}
-
-
-function initials(name){
-
-    if(!name){
-        return "N";
-    }
-
-    const parts =
-        name.trim().split(/\s+/).filter(Boolean);
-
-    if(parts.length === 1){
-        return parts[0].substring(0,2).toUpperCase();
-    }
-
-    return (
-        parts[0][0] +
-        parts[parts.length - 1][0]
-    ).toUpperCase();
+  return LOGO_BASE + file;
 }
 
 
 /* =========================================================
-   RENDER ASSET LIST
+   RENDER ASSETS
 ========================================================= */
 
 function renderAssets(filter = ""){
 
-    const list = $("assetList");
+  const list = $("assetList");
 
-    const search =
-        filter.trim().toLowerCase();
+  const query = filter.trim().toLowerCase();
 
-    const filtered = assets.filter(asset => {
+  const filtered = assets.filter(asset => {
 
-        const symbol = asset[0].toLowerCase();
-        const name = asset[1].toLowerCase();
+    const symbol = asset[0].toLowerCase();
+    const name = asset[1].toLowerCase();
 
-        return (
-            symbol.includes(search) ||
-            name.includes(search)
-        );
+    return (
+      !query ||
+      symbol.includes(query) ||
+      name.includes(query)
+    );
+
+  });
+
+
+  if(!filtered.length){
+
+    list.innerHTML = `
+      <div class="empty">
+        No crypto asset found.
+      </div>
+    `;
+
+    return;
+  }
+
+
+  list.innerHTML = filtered.map(asset => {
+
+    const symbol = asset[0];
+    const name = asset[1];
+
+    return `
+
+      <div
+        class="asset-row ${symbol === selectedAsset ? "selected" : ""}"
+        data-symbol="${symbol}"
+      >
+
+        <div class="asset-left">
+
+          <img
+            class="coin-logo"
+            src="${logoFor(symbol)}"
+            alt="${name}"
+            loading="lazy"
+          >
+
+          <div class="asset-name">
+
+            <strong>
+              ${name}
+            </strong>
+
+            <span>
+              ${symbol}
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <div class="asset-right">
+
+          <div class="asset-price">
+            —
+          </div>
+
+          <div class="asset-balance">
+            —
+          </div>
+
+        </div>
+
+      </div>
+
+    `;
+
+  }).join("");
+
+
+  list.querySelectorAll(".asset-row").forEach(row => {
+
+    row.addEventListener("click", () => {
+
+      selectedAsset = row.dataset.symbol;
+
+      updateSelectedAsset();
+
+      renderAssets($("assetSearch").value);
 
     });
 
-
-    if(!filtered.length){
-
-        list.innerHTML = `
-            <div class="empty-assets">
-                No crypto assets found
-            </div>
-        `;
-
-        return;
-    }
-
-
-    list.innerHTML = filtered.map(asset => {
-
-        const symbol = asset[0];
-        const name = asset[1];
-
-        return `
-
-            <button
-                class="asset-item"
-                data-symbol="${symbol}"
-            >
-
-                <div class="asset-item-info">
-
-                    <div class="asset-item-logo">
-
-                        <img
-                            src="${logoFor(symbol)}"
-                            alt="${name}"
-                        >
-
-                    </div>
-
-                    <div>
-
-                        <div class="asset-item-symbol">
-                            ${symbol}
-                        </div>
-
-                        <div class="asset-item-name">
-                            ${name}
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <div class="asset-balance-value">
-                    —
-                </div>
-
-            </button>
-
-        `;
-
-    }).join("");
-
-
-    list.querySelectorAll(".asset-item")
-        .forEach(button => {
-
-            button.addEventListener("click", () => {
-
-                selectAsset(
-                    button.dataset.symbol
-                );
-
-            });
-
-        });
+  });
 
 }
 
 
 /* =========================================================
-   SELECT ASSET
+   SELECTED ASSET
 ========================================================= */
 
-function selectAsset(symbol){
+function updateSelectedAsset(){
 
-    const found =
-        assets.find(asset => asset[0] === symbol);
+  const asset = assets.find(
+    item => item[0] === selectedAsset
+  );
 
-    if(!found){
-        return;
-    }
+  if(!asset) return;
 
-    selectedAsset = symbol;
+  $("selectedLogo").src = logoFor(asset[0]);
+  $("selectedLogo").alt = asset[1];
 
-    $("selectedSymbol").textContent =
-        found[0];
-
-    $("selectedName").textContent =
-        found[1];
-
-    $("selectedLogo").src =
-        logoFor(symbol);
-
-    $("selectedLogo").alt =
-        found[1];
-
-    closeAssetMenu();
+  $("selectedName").textContent = asset[1];
+  $("selectedSymbol").textContent = asset[0];
 
 }
 
 
 /* =========================================================
-   ASSET MENU
+   PROFILE
 ========================================================= */
 
-function openAssetMenu(){
+async function loadProfile(user){
 
-    $("assetMenu").classList.add("open");
+  const { data, error } =
+    await supabaseClient
+      .from("profiles")
+      .select(`
+        id,
+        full_name,
+        email,
+        account_status,
+        kyc_status,
+        created_at,
+        updated_at
+      `)
+      .eq("id", user.id)
+      .maybeSingle();
 
-    setTimeout(() => {
-        $("assetSearch").focus();
-    },50);
+
+  if(error){
+
+    console.error("Profile error:",error);
+
+    return;
+
+  }
+
+
+  if(!data){
+
+    $("welcomeName").textContent =
+      user.user_metadata?.full_name ||
+      "NEXORA User";
+
+    $("drawerName").textContent =
+      user.user_metadata?.full_name ||
+      "NEXORA User";
+
+    $("drawerEmail").textContent =
+      user.email || "—";
+
+    return;
+
+  }
+
+
+  const fullName =
+    data.full_name ||
+    user.user_metadata?.full_name ||
+    "NEXORA User";
+
+
+  $("welcomeName").textContent =
+    fullName;
+
+  $("drawerName").textContent =
+    fullName;
+
+  $("drawerEmail").textContent =
+    data.email ||
+    user.email ||
+    "—";
+
+
+  $("accountStatus").textContent =
+    data.account_status || "—";
+
+
+  const initials =
+    fullName
+      .split(/\s+/)
+      .filter(Boolean)
+      .slice(0,2)
+      .map(name => name[0])
+      .join("")
+      .toUpperCase();
+
+
+  $("accountInitials").textContent =
+    initials || "—";
 
 }
 
 
-function closeAssetMenu(){
+/* =========================================================
+   PROFIT TIMER
+========================================================= */
 
-    $("assetMenu").classList.remove("open");
+let profitInterval = null;
 
-    $("assetSearch").value = "";
+function startProfitTimer(confirmedAt){
 
-    renderAssets();
+  if(!confirmedAt){
+
+    $("profitTimer").textContent = "—";
+
+    $("profitStatus").textContent =
+      "Awaiting confirmed deposit";
+
+    return;
+
+  }
+
+
+  function update(){
+
+    const start =
+      new Date(confirmedAt).getTime();
+
+    const now =
+      Date.now();
+
+    const elapsed =
+      now - start;
+
+    const day =
+      24 * 60 * 60 * 1000;
+
+    const remaining =
+      day - (elapsed % day);
+
+
+    const hours =
+      Math.floor(
+        remaining / (60 * 60 * 1000)
+      );
+
+    const minutes =
+      Math.floor(
+        (remaining % (60 * 60 * 1000)) /
+        (60 * 1000)
+      );
+
+    const seconds =
+      Math.floor(
+        (remaining % (60 * 1000)) /
+        1000
+      );
+
+
+    $("profitTimer").textContent =
+      `${String(hours).padStart(2,"0")}:` +
+      `${String(minutes).padStart(2,"0")}:` +
+      `${String(seconds).padStart(2,"0")}`;
+
+    $("profitStatus").textContent =
+      "Profit calculation cycle";
+
+  }
+
+
+  if(profitInterval){
+    clearInterval(profitInterval);
+  }
+
+
+  update();
+
+  profitInterval =
+    setInterval(update,1000);
 
 }
 
@@ -2065,378 +1723,136 @@ function closeAssetMenu(){
 
 function openDrawer(){
 
-    $("drawer").classList.add("open");
-    $("overlay").classList.add("open");
-
-    document.body.style.overflow = "hidden";
+  $("drawer").classList.add("open");
+  $("drawerOverlay").classList.add("open");
 
 }
-
 
 function closeDrawer(){
 
-    $("drawer").classList.remove("open");
-    $("overlay").classList.remove("open");
-
-    document.body.style.overflow = "";
+  $("drawer").classList.remove("open");
+  $("drawerOverlay").classList.remove("open");
 
 }
 
 
-/* =========================================================
-   PROFIT TIMER
-========================================================= */
-
-let profitTimerInterval = null;
-
-
-function startProfitTimer(confirmedAt){
-
-    if(!confirmedAt){
-
-        $("profitTimer").textContent = "—";
-
-        $("profitDescription").textContent =
-            "Awaiting confirmed deposit";
-
-        return;
-
-    }
-
-
-    if(profitTimerInterval){
-
-        clearInterval(profitTimerInterval);
-
-    }
-
-
-    function updateTimer(){
-
-        const confirmed =
-            new Date(confirmedAt).getTime();
-
-        const now =
-            Date.now();
-
-        const DAY =
-            24 * 60 * 60 * 1000;
-
-        const elapsed =
-            Math.max(0, now - confirmed);
-
-        const next =
-            Math.ceil(elapsed / DAY) * DAY;
-
-        const target =
-            confirmed + next;
-
-        const remaining =
-            Math.max(0,target - now);
-
-
-        const totalSeconds =
-            Math.floor(remaining / 1000);
-
-        const hours =
-            Math.floor(totalSeconds / 3600);
-
-        const minutes =
-            Math.floor(
-                (totalSeconds % 3600) / 60
-            );
-
-        const seconds =
-            totalSeconds % 60;
-
-
-        $("profitTimer").textContent =
-            `${String(hours).padStart(2,"0")}:` +
-            `${String(minutes).padStart(2,"0")}:` +
-            `${String(seconds).padStart(2,"0")}`;
-
-        $("profitDescription").textContent =
-            "Next calculation after the confirmed investment interval";
-
-    }
-
-
-    updateTimer();
-
-    profitTimerInterval =
-        setInterval(updateTimer,1000);
-
-}
-
-
-/* =========================================================
-   LOAD USER
-========================================================= */
-
-async function loadUser(){
-
-    try{
-
-        const {
-            data:{
-                user
-            },
-            error
-        } =
-        await supabaseClient.auth.getUser();
-
-
-        if(error || !user){
-
-            window.location.href =
-                "signin.html";
-
-            return;
-
-        }
-
-
-        let profile = null;
-
-
-        const profileResult =
-            await supabaseClient
-                .from("profiles")
-                .select(`
-                    id,
-                    full_name,
-                    email,
-                    account_status,
-                    kyc_status,
-                    created_at,
-                    updated_at
-                `)
-                .eq("id",user.id)
-                .maybeSingle();
-
-
-        if(!profileResult.error){
-
-            profile =
-                profileResult.data;
-
-        }
-
-
-        const fullName =
-            profile?.full_name ||
-            user.user_metadata?.full_name ||
-            "NEXORA Client";
-
-
-        const email =
-            profile?.email ||
-            user.email ||
-            "—";
-
-
-        $("welcomeName").textContent =
-            fullName;
-
-        $("drawerName").textContent =
-            fullName;
-
-        $("drawerEmail").textContent =
-            email;
-
-        $("accountBtn").textContent =
-            initials(fullName);
-
-
-        /*
-         * IMPORTANT:
-         * Financial values are intentionally left as "—"
-         * until the real wallet/ledger backend is connected.
-         *
-         * Do not display fabricated balances.
-         */
-
-
-        startProfitTimer(null);
-
-
-    }catch(error){
-
-        console.error(
-            "Dashboard authentication error:",
-            error
-        );
-
-        window.location.href =
-            "signin.html";
-
-    }finally{
-
-        $("pageLoading").style.display =
-            "none";
-
-    }
-
-}
+$("menuBtn").addEventListener(
+  "click",
+  openDrawer
+);
+
+
+$("drawerOverlay").addEventListener(
+  "click",
+  closeDrawer
+);
 
 
 /* =========================================================
    LOGOUT
 ========================================================= */
 
-async function logout(){
+$("logoutBtn").addEventListener(
+  "click",
+  async event => {
 
-    const button =
-        $("logoutBtn");
+    event.preventDefault();
 
-    button.disabled = true;
+    await supabaseClient.auth.signOut();
 
-    try{
+    window.location.href =
+      "signin.html";
 
-        const {
-            error
-        } =
-        await supabaseClient.auth.signOut();
-
-
-        if(error){
-
-            console.error(error);
-
-            button.disabled = false;
-
-            return;
-
-        }
+  }
+);
 
 
-        window.location.href =
-            "signin.html";
+/* =========================================================
+   SEARCH
+========================================================= */
+
+$("assetSearch").addEventListener(
+  "input",
+  event => {
+
+    renderAssets(
+      event.target.value
+    );
+
+  }
+);
 
 
-    }catch(error){
+/* =========================================================
+   AUTH + INITIALIZATION
+========================================================= */
 
-        console.error(error);
+async function init(){
 
-        button.disabled = false;
+  try{
+
+    const {
+      data: {
+        user
+      }
+    } =
+      await supabaseClient.auth.getUser();
+
+
+    if(!user){
+
+      window.location.href =
+        "signin.html";
+
+      return;
 
     }
+
+
+    await loadProfile(user);
+
+
+    renderAssets();
+
+    updateSelectedAsset();
+
+
+    /*
+      Profit timer remains inactive until
+      a legitimate confirmed deposit timestamp
+      is supplied by the backend.
+
+      Example later:
+
+      startProfitTimer(confirmedAt);
+    */
+
+  }catch(error){
+
+    console.error(
+      "Dashboard initialization error:",
+      error
+    );
+
+  }finally{
+
+    setTimeout(() => {
+
+      $("loading")
+        .classList.add("hidden");
+
+    },300);
+
+  }
 
 }
 
 
 /* =========================================================
-   EVENTS
+   START
 ========================================================= */
 
-$("menuBtn").addEventListener(
-    "click",
-    openDrawer
-);
-
-
-$("closeDrawer").addEventListener(
-    "click",
-    closeDrawer
-);
-
-
-$("overlay").addEventListener(
-    "click",
-    closeDrawer
-);
-
-
-$("assetTrigger").addEventListener(
-    "click",
-    () => {
-
-        if(
-            $("assetMenu")
-                .classList.contains("open")
-        ){
-
-            closeAssetMenu();
-
-        }else{
-
-            openAssetMenu();
-
-        }
-
-    }
-);
-
-
-$("assetSearch").addEventListener(
-    "input",
-    event => {
-
-        renderAssets(
-            event.target.value
-        );
-
-    }
-);
-
-
-$("logoutBtn").addEventListener(
-    "click",
-    logout
-);
-
-
-$("accountBtn").addEventListener(
-    "click",
-    openDrawer
-);
-
-
-document.addEventListener(
-    "keydown",
-    event => {
-
-        if(event.key === "Escape"){
-
-            closeDrawer();
-            closeAssetMenu();
-
-        }
-
-    }
-);
-
-
-document.addEventListener(
-    "click",
-    event => {
-
-        const selector =
-            document.querySelector(".asset-selector");
-
-        if(
-            $("assetMenu").classList.contains("open") &&
-            selector &&
-            !selector.contains(event.target)
-        ){
-
-            closeAssetMenu();
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   INITIALIZE
-========================================================= */
-
-selectAsset("BTC");
-
-renderAssets();
-
-loadUser();
+init();
 
 </script>
 
