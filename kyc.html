@@ -1,0 +1,2636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>NEXORA — Identity Verification</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+  --navy:#050914;
+  --navy2:#080e1d;
+  --navy3:#0d1629;
+  --navy4:#111d33;
+
+  --gold:#d6b15e;
+  --gold2:#f0d58a;
+  --gold3:#a98535;
+
+  --white:#ffffff;
+  --text:#f4f6fa;
+  --muted:#8c96a8;
+  --muted2:#626d80;
+
+  --bg:#050914;
+  --card:#0b1222;
+  --card2:#0e1729;
+
+  --border:rgba(255,255,255,.08);
+
+  --success:#35c98b;
+  --warning:#e6b85c;
+  --danger:#ef6b73;
+}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  min-height:100vh;
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(214,177,94,.07),
+      transparent 30%
+    ),
+    var(--bg);
+  color:var(--text);
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Arial,
+    sans-serif;
+}
+
+button,
+input,
+select{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+/* =========================================================
+   TOPBAR — MATCH PROFILE / DASHBOARD
+========================================================= */
+
+.topbar{
+  height:68px;
+  background:rgba(5,9,20,.94);
+  border-bottom:1px solid var(--border);
+  position:sticky;
+  top:0;
+  z-index:100;
+  backdrop-filter:blur(16px);
+}
+
+.topbar-inner{
+  width:min(760px,100%);
+  height:100%;
+  margin:0 auto;
+  padding:0 18px;
+  display:grid;
+  grid-template-columns:44px 1fr 44px;
+  align-items:center;
+}
+
+.menu-button{
+  width:40px;
+  height:40px;
+  border:0;
+  border-radius:12px;
+  background:transparent;
+  color:var(--text);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:23px;
+}
+
+.menu-button:active{
+  background:rgba(255,255,255,.06);
+}
+
+.logo{
+  justify-self:center;
+  font-size:18px;
+  font-weight:900;
+  letter-spacing:2px;
+  color:var(--white);
+}
+
+.logo span{
+  color:var(--gold2);
+}
+
+.header-profile{
+  justify-self:end;
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  border:1px solid rgba(214,177,94,.35);
+  background:var(--navy3);
+  color:var(--gold2);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:12px;
+  font-weight:900;
+}
+
+/* =========================================================
+   SIDE DRAWER
+========================================================= */
+
+.drawer-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.58);
+  opacity:0;
+  visibility:hidden;
+  transition:.22s ease;
+  z-index:150;
+}
+
+.drawer-overlay.active{
+  opacity:1;
+  visibility:visible;
+}
+
+.drawer{
+  position:fixed;
+  left:0;
+  top:0;
+  bottom:0;
+  width:min(290px,84vw);
+  background:
+    linear-gradient(
+      180deg,
+      #080e1d,
+      #050914
+    );
+  border-right:1px solid var(--border);
+  transform:translateX(-100%);
+  transition:.25s ease;
+  z-index:160;
+  overflow-y:auto;
+}
+
+.drawer.active{
+  transform:translateX(0);
+}
+
+.drawer-header{
+  height:68px;
+  padding:0 18px;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.drawer-logo{
+  font-size:18px;
+  font-weight:900;
+  letter-spacing:2px;
+}
+
+.drawer-logo span{
+  color:var(--gold2);
+}
+
+.drawer-close{
+  width:38px;
+  height:38px;
+  border:0;
+  border-radius:11px;
+  background:rgba(255,255,255,.045);
+  color:var(--muted);
+  font-size:22px;
+}
+
+.drawer-user{
+  padding:20px 18px;
+  border-bottom:1px solid var(--border);
+}
+
+.drawer-avatar{
+  width:44px;
+  height:44px;
+  border-radius:14px;
+  background:
+    linear-gradient(
+      145deg,
+      var(--gold2),
+      var(--gold3)
+    );
+  color:#111;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:13px;
+  font-weight:900;
+  margin-bottom:10px;
+}
+
+.drawer-name{
+  font-size:14px;
+  font-weight:800;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.drawer-email{
+  color:var(--muted);
+  font-size:11px;
+  margin-top:4px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.drawer-nav{
+  padding:12px 10px;
+}
+
+.drawer-link{
+  min-height:48px;
+  width:100%;
+  display:flex;
+  align-items:center;
+  gap:13px;
+  padding:10px 12px;
+  border-radius:12px;
+  color:var(--muted);
+  font-size:13px;
+  font-weight:650;
+  margin-bottom:3px;
+}
+
+.drawer-link:hover{
+  background:rgba(255,255,255,.035);
+  color:var(--text);
+}
+
+.drawer-link.active{
+  background:rgba(214,177,94,.09);
+  color:var(--gold2);
+}
+
+.drawer-icon{
+  width:28px;
+  text-align:center;
+  font-size:17px;
+  flex:none;
+}
+
+.drawer-divider{
+  height:1px;
+  background:var(--border);
+  margin:10px 4px;
+}
+
+.drawer-link.logout{
+  color:#ef8d94;
+}
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+.page{
+  width:min(760px,100%);
+  margin:0 auto;
+  padding:26px 16px 100px;
+}
+
+.page-title{
+  margin-bottom:22px;
+}
+
+.page-title h1{
+  font-size:27px;
+  line-height:1.2;
+  margin-bottom:7px;
+}
+
+.page-title p{
+  color:var(--muted);
+  font-size:14px;
+}
+
+/* =========================================================
+   INFO BANNER
+========================================================= */
+
+.info-banner{
+  background:
+    linear-gradient(
+      145deg,
+      rgba(214,177,94,.10),
+      rgba(14,23,41,.98)
+    );
+  border:1px solid rgba(214,177,94,.18);
+  border-radius:18px;
+  padding:18px;
+  margin-bottom:16px;
+}
+
+.info-banner-top{
+  display:flex;
+  align-items:flex-start;
+  gap:13px;
+}
+
+.info-icon{
+  width:42px;
+  height:42px;
+  min-width:42px;
+  border-radius:13px;
+  background:rgba(214,177,94,.10);
+  border:1px solid rgba(214,177,94,.18);
+  color:var(--gold2);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
+  font-weight:900;
+}
+
+.info-content h3{
+  font-size:14px;
+  margin-bottom:5px;
+}
+
+.info-content p{
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.6;
+}
+
+/* =========================================================
+   STATUS CARD
+========================================================= */
+
+.status-card{
+  background:
+    linear-gradient(
+      145deg,
+      var(--card),
+      var(--card2)
+    );
+  border:1px solid var(--border);
+  border-radius:18px;
+  margin-bottom:16px;
+  padding:18px;
+}
+
+.status-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+}
+
+.status-label{
+  color:var(--muted);
+  font-size:12px;
+}
+
+.status-value{
+  margin-top:5px;
+  font-size:18px;
+  font-weight:850;
+}
+
+.status-badge{
+  padding:7px 11px;
+  border-radius:999px;
+  font-size:10px;
+  font-weight:850;
+  letter-spacing:.4px;
+  border:1px solid var(--border);
+  color:var(--muted);
+  background:rgba(255,255,255,.04);
+  white-space:nowrap;
+}
+
+.status-badge.pending{
+  color:var(--warning);
+  background:rgba(230,184,92,.08);
+  border-color:rgba(230,184,92,.18);
+}
+
+.status-badge.approved{
+  color:#9df0c7;
+  background:rgba(53,201,139,.08);
+  border-color:rgba(53,201,139,.18);
+}
+
+.status-badge.rejected{
+  color:#ffb0b5;
+  background:rgba(239,107,115,.08);
+  border-color:rgba(239,107,115,.18);
+}
+
+.status-description{
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.6;
+  margin-top:12px;
+}
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.card{
+  background:
+    linear-gradient(
+      145deg,
+      var(--card),
+      var(--card2)
+    );
+  border:1px solid var(--border);
+  border-radius:18px;
+  margin-bottom:16px;
+  overflow:hidden;
+}
+
+.card-header{
+  padding:18px 18px 14px;
+  border-bottom:1px solid var(--border);
+}
+
+.card-header h3{
+  font-size:15px;
+}
+
+.card-header p{
+  margin-top:5px;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.55;
+}
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.form-body{
+  padding:18px;
+}
+
+.form-group{
+  margin-bottom:16px;
+}
+
+.form-label{
+  display:block;
+  color:var(--muted);
+  font-size:12px;
+  margin-bottom:7px;
+}
+
+.form-input,
+.form-select{
+  width:100%;
+  min-height:48px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  background:#070d1b;
+  color:var(--text);
+  padding:0 13px;
+  outline:none;
+}
+
+.form-input:focus,
+.form-select:focus{
+  border-color:rgba(214,177,94,.55);
+}
+
+.form-select{
+  appearance:auto;
+}
+
+.form-help{
+  color:var(--muted2);
+  font-size:10px;
+  line-height:1.5;
+  margin-top:6px;
+}
+
+.file-input{
+  width:100%;
+  padding:13px;
+  min-height:48px;
+  border-radius:12px;
+  border:1px dashed rgba(214,177,94,.25);
+  background:#070d1b;
+  color:var(--muted);
+  outline:none;
+}
+
+.file-input:focus{
+  border-color:rgba(214,177,94,.55);
+}
+
+.upload-box{
+  border:1px dashed rgba(214,177,94,.25);
+  background:rgba(214,177,94,.025);
+  border-radius:14px;
+  padding:14px;
+}
+
+.upload-title{
+  font-size:12px;
+  font-weight:750;
+  margin-bottom:4px;
+}
+
+.upload-description{
+  color:var(--muted);
+  font-size:10px;
+  line-height:1.5;
+  margin-bottom:11px;
+}
+
+.form-divider{
+  height:1px;
+  background:var(--border);
+  margin:19px 0;
+}
+
+.primary-button{
+  width:100%;
+  min-height:49px;
+  border-radius:13px;
+  border:0;
+  background:
+    linear-gradient(
+      145deg,
+      var(--gold2),
+      var(--gold3)
+    );
+  color:#111;
+  font-weight:850;
+}
+
+.primary-button:disabled{
+  opacity:.55;
+  cursor:not-allowed;
+}
+
+/* =========================================================
+   MESSAGES
+========================================================= */
+
+.message{
+  display:none;
+  padding:12px 13px;
+  border-radius:11px;
+  margin-bottom:15px;
+  font-size:12px;
+  line-height:1.5;
+}
+
+.message.show{
+  display:block;
+}
+
+.message.success{
+  color:#9df0c7;
+  background:rgba(53,201,139,.08);
+  border:1px solid rgba(53,201,139,.18);
+}
+
+.message.error{
+  color:#ffb0b5;
+  background:rgba(239,107,115,.08);
+  border:1px solid rgba(239,107,115,.18);
+}
+
+.message.warning{
+  color:#f3d58b;
+  background:rgba(230,184,92,.08);
+  border:1px solid rgba(230,184,92,.18);
+}
+
+/* =========================================================
+   REJECTION
+========================================================= */
+
+.rejection-card{
+  display:none;
+  background:rgba(239,107,115,.045);
+  border:1px solid rgba(239,107,115,.16);
+  border-radius:15px;
+  padding:15px;
+  margin-bottom:16px;
+}
+
+.rejection-card.show{
+  display:block;
+}
+
+.rejection-title{
+  color:#ffb0b5;
+  font-size:12px;
+  font-weight:800;
+  margin-bottom:5px;
+}
+
+.rejection-text{
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.55;
+}
+
+/* =========================================================
+   APPROVED
+========================================================= */
+
+.approved-card{
+  display:none;
+  text-align:center;
+  padding:26px 20px;
+}
+
+.approved-card.show{
+  display:block;
+}
+
+.approved-icon{
+  width:58px;
+  height:58px;
+  border-radius:18px;
+  margin:0 auto 13px;
+  background:rgba(53,201,139,.08);
+  border:1px solid rgba(53,201,139,.18);
+  color:var(--success);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:25px;
+  font-weight:900;
+}
+
+.approved-card h3{
+  font-size:17px;
+  margin-bottom:6px;
+}
+
+.approved-card p{
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.6;
+}
+
+/* =========================================================
+   BOTTOM NAV
+========================================================= */
+
+.bottom-nav{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  height:70px;
+  background:rgba(5,9,20,.96);
+  border-top:1px solid var(--border);
+  display:flex;
+  justify-content:center;
+  z-index:90;
+  backdrop-filter:blur(18px);
+}
+
+.bottom-inner{
+  width:min(760px,100%);
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  align-items:center;
+}
+
+.nav-item{
+  height:70px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
+  color:var(--muted);
+  font-size:10px;
+}
+
+.nav-item.active{
+  color:var(--gold2);
+}
+
+.nav-icon{
+  font-size:18px;
+  line-height:1;
+}
+
+.nav-label{
+  font-size:10px;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:480px){
+
+  .topbar-inner{
+    padding:0 14px;
+  }
+
+  .page{
+    padding-left:13px;
+    padding-right:13px;
+  }
+
+}
+</style>
+</head>
+
+<body>
+
+<!-- =========================================================
+     TOPBAR
+========================================================= -->
+
+<header class="topbar">
+
+  <div class="topbar-inner">
+
+    <button
+      class="menu-button"
+      id="menuButton"
+      aria-label="Open menu"
+      aria-expanded="false"
+    >
+      ☰
+    </button>
+
+    <a
+      href="dashboard.html"
+      class="logo"
+    >
+      NEX<span>ORA</span>
+    </a>
+
+    <button
+      class="header-profile"
+      id="headerInitials"
+      aria-label="Account"
+    >
+      —
+    </button>
+
+  </div>
+
+</header>
+
+
+<!-- =========================================================
+     DRAWER OVERLAY
+========================================================= -->
+
+<div
+  class="drawer-overlay"
+  id="drawerOverlay"
+></div>
+
+
+<!-- =========================================================
+     SIDE DRAWER
+========================================================= -->
+
+<aside
+  class="drawer"
+  id="drawer"
+  aria-hidden="true"
+>
+
+  <div class="drawer-header">
+
+    <div class="drawer-logo">
+      NEX<span>ORA</span>
+    </div>
+
+    <button
+      class="drawer-close"
+      id="drawerClose"
+      aria-label="Close menu"
+    >
+      ×
+    </button>
+
+  </div>
+
+
+  <div class="drawer-user">
+
+    <div
+      class="drawer-avatar"
+      id="drawerInitials"
+    >
+      —
+    </div>
+
+    <div
+      class="drawer-name"
+      id="drawerName"
+    >
+      Loading...
+    </div>
+
+    <div
+      class="drawer-email"
+      id="drawerEmail"
+    >
+      Loading...
+    </div>
+
+  </div>
+
+
+  <nav class="drawer-nav">
+
+    <a
+      href="dashboard.html"
+      class="drawer-link"
+    >
+      <span class="drawer-icon">⌂</span>
+      <span>Portfolio</span>
+    </a>
+
+
+    <a
+      href="deposit.html"
+      class="drawer-link"
+    >
+      <span class="drawer-icon">＋</span>
+      <span>Deposit</span>
+    </a>
+
+
+    <a
+      href="withdraw.html"
+      class="drawer-link"
+    >
+      <span class="drawer-icon">↗</span>
+      <span>Withdraw</span>
+    </a>
+
+
+    <a
+      href="transactions.html"
+      class="drawer-link"
+    >
+      <span class="drawer-icon">≡</span>
+      <span>Transactions</span>
+    </a>
+
+
+    <a
+      href="referrals.html"
+      class="drawer-link"
+    >
+      <span class="drawer-icon">♧</span>
+      <span>Referrals</span>
+    </a>
+
+
+    <a
+      href="profile.html"
+      class="drawer-link"
+    >
+      <span class="drawer-icon">○</span>
+      <span>Profile</span>
+    </a>
+
+
+    <a
+      href="support.html"
+      class="drawer-link"
+    >
+      <span class="drawer-icon">?</span>
+      <span>Support</span>
+    </a>
+
+
+    <a
+      href="notifications.html"
+      class="drawer-link"
+    >
+      <span class="drawer-icon">♢</span>
+      <span>Notifications</span>
+    </a>
+
+
+    <div class="drawer-divider"></div>
+
+
+    <a
+      href="#"
+      class="drawer-link logout"
+      id="drawerLogout"
+    >
+      <span class="drawer-icon">↪</span>
+      <span>Logout</span>
+    </a>
+
+  </nav>
+
+</aside>
+
+
+<!-- =========================================================
+     PAGE
+========================================================= -->
+
+<main class="page">
+
+  <div class="page-title">
+
+    <h1>Identity Verification</h1>
+
+    <p>
+      Verify your identity securely with NEXORA.
+    </p>
+
+  </div>
+
+
+  <!-- =======================================================
+       INFORMATION
+  ======================================================== -->
+
+  <section class="info-banner">
+
+    <div class="info-banner-top">
+
+      <div class="info-icon">
+        ✓
+      </div>
+
+      <div class="info-content">
+
+        <h3>
+          Verification is optional
+        </h3>
+
+        <p>
+          KYC is recommended for users making deposits
+          of <strong>$1,000 or more</strong>. You can
+          continue using your account without completing
+          verification for normal activity.
+        </p>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =======================================================
+       STATUS
+  ======================================================== -->
+
+  <section class="status-card">
+
+    <div class="status-top">
+
+      <div>
+
+        <div class="status-label">
+          Current verification status
+        </div>
+
+        <div
+          class="status-value"
+          id="statusValue"
+        >
+          Not Started
+        </div>
+
+      </div>
+
+
+      <div
+        class="status-badge"
+        id="statusBadge"
+      >
+        NOT STARTED
+      </div>
+
+    </div>
+
+
+    <div
+      class="status-description"
+      id="statusDescription"
+    >
+      Your identity has not been submitted for verification.
+    </div>
+
+  </section>
+
+
+  <!-- =======================================================
+       REJECTION
+  ======================================================== -->
+
+  <section
+    class="rejection-card"
+    id="rejectionCard"
+  >
+
+    <div class="rejection-title">
+      Verification requires attention
+    </div>
+
+    <div
+      class="rejection-text"
+      id="rejectionText"
+    >
+      —
+    </div>
+
+  </section>
+
+
+  <!-- =======================================================
+       APPROVED
+  ======================================================== -->
+
+  <section
+    class="card approved-card"
+    id="approvedCard"
+  >
+
+    <div class="approved-icon">
+      ✓
+    </div>
+
+    <h3>
+      Identity Verified
+    </h3>
+
+    <p>
+      Your NEXORA identity verification has been approved.
+    </p>
+
+  </section>
+
+
+  <!-- =======================================================
+       KYC FORM
+  ======================================================== -->
+
+  <section
+    class="card"
+    id="kycFormCard"
+  >
+
+    <div class="card-header">
+
+      <h3>
+        Verification Details
+      </h3>
+
+      <p>
+        Enter your legal information exactly as it appears
+        on your identity document.
+      </p>
+
+    </div>
+
+
+    <div class="form-body">
+
+      <div
+        class="message"
+        id="formMessage"
+      ></div>
+
+
+      <!-- FULL NAME -->
+
+      <div class="form-group">
+
+        <label
+          class="form-label"
+          for="fullName"
+        >
+          Full legal name
+        </label>
+
+        <input
+          id="fullName"
+          class="form-input"
+          type="text"
+          maxlength="120"
+          autocomplete="name"
+          placeholder="Enter your legal name"
+        >
+
+      </div>
+
+
+      <!-- DATE OF BIRTH -->
+
+      <div class="form-group">
+
+        <label
+          class="form-label"
+          for="dateOfBirth"
+        >
+          Date of birth
+        </label>
+
+        <input
+          id="dateOfBirth"
+          class="form-input"
+          type="date"
+          autocomplete="bday"
+        >
+
+      </div>
+
+
+      <!-- COUNTRY -->
+
+      <div class="form-group">
+
+        <label
+          class="form-label"
+          for="country"
+        >
+          Country
+        </label>
+
+        <input
+          id="country"
+          class="form-input"
+          type="text"
+          maxlength="80"
+          autocomplete="country-name"
+          placeholder="Enter your country"
+        >
+
+      </div>
+
+
+      <!-- ID TYPE -->
+
+      <div class="form-group">
+
+        <label
+          class="form-label"
+          for="idType"
+        >
+          Identity document type
+        </label>
+
+        <select
+          id="idType"
+          class="form-select"
+        >
+
+          <option value="">
+            Select document type
+          </option>
+
+          <option value="NATIONAL_ID">
+            National ID
+          </option>
+
+          <option value="PASSPORT">
+            International Passport
+          </option>
+
+          <option value="DRIVERS_LICENSE">
+            Driver's Licence
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- ID NUMBER -->
+
+      <div class="form-group">
+
+        <label
+          class="form-label"
+          for="idNumber"
+        >
+          ID number
+        </label>
+
+        <input
+          id="idNumber"
+          class="form-input"
+          type="text"
+          maxlength="100"
+          autocomplete="off"
+          placeholder="Enter the number on your document"
+        >
+
+        <div class="form-help">
+          Make sure the number matches the identity document
+          you upload.
+        </div>
+
+      </div>
+
+
+      <div class="form-divider"></div>
+
+
+      <!-- ID DOCUMENT -->
+
+      <div class="form-group">
+
+        <div class="upload-box">
+
+          <div class="upload-title">
+            Identity document
+          </div>
+
+          <div class="upload-description">
+            Upload a clear image or PDF of your selected
+            identity document. Maximum file size: 10 MB.
+          </div>
+
+          <input
+            id="idDocument"
+            class="file-input"
+            type="file"
+            accept="image/jpeg,image/png,application/pdf"
+          >
+
+        </div>
+
+      </div>
+
+
+      <!-- SELFIE -->
+
+      <div class="form-group">
+
+        <div class="upload-box">
+
+          <div class="upload-title">
+            Selfie
+          </div>
+
+          <div class="upload-description">
+            Upload a clear selfie for identity review.
+            Use a JPEG or PNG image, maximum 10 MB.
+          </div>
+
+          <input
+            id="selfie"
+            class="file-input"
+            type="file"
+            accept="image/jpeg,image/png"
+          >
+
+        </div>
+
+      </div>
+
+
+      <div
+        class="message warning show"
+        style="margin-top:4px;"
+      >
+        Only submit genuine information and documents
+        belonging to you. Do not upload another person's
+        identity document.
+      </div>
+
+
+      <button
+        class="primary-button"
+        id="submitKyc"
+      >
+        Submit Verification
+      </button>
+
+    </div>
+
+  </section>
+
+</main>
+
+
+<!-- =========================================================
+     BOTTOM NAV
+========================================================= -->
+
+<nav class="bottom-nav">
+
+  <div class="bottom-inner">
+
+    <a
+      href="dashboard.html"
+      class="nav-item"
+    >
+
+      <div class="nav-icon">
+        ⌂
+      </div>
+
+      <div class="nav-label">
+        Portfolio
+      </div>
+
+    </a>
+
+
+    <a
+      href="deposit.html"
+      class="nav-item"
+    >
+
+      <div class="nav-icon">
+        ＋
+      </div>
+
+      <div class="nav-label">
+        Deposit
+      </div>
+
+    </a>
+
+
+    <a
+      href="transactions.html"
+      class="nav-item"
+    >
+
+      <div class="nav-icon">
+        ≡
+      </div>
+
+      <div class="nav-label">
+        History
+      </div>
+
+    </a>
+
+
+    <a
+      href="profile.html"
+      class="nav-item active"
+    >
+
+      <div class="nav-icon">
+        ○
+      </div>
+
+      <div class="nav-label">
+        Account
+      </div>
+
+    </a>
+
+  </div>
+
+</nav>
+
+
+<script>
+
+/* =========================================================
+   SUPABASE
+========================================================= */
+
+const SUPABASE_URL =
+  "https://rihvvwktvgytbqzazage.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY,
+    {
+      auth:{
+        autoRefreshToken:true,
+        persistSession:true,
+        detectSessionInUrl:true
+      }
+    }
+  );
+
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function $(id){
+  return document.getElementById(id);
+}
+
+
+function getInitials(name){
+
+  if(!name){
+    return "—";
+  }
+
+  const parts =
+    name
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean);
+
+  if(parts.length === 1){
+
+    return parts[0]
+      .substring(0,2)
+      .toUpperCase();
+
+  }
+
+  return (
+    parts[0][0] +
+    parts[parts.length - 1][0]
+  ).toUpperCase();
+
+}
+
+
+function cleanStatus(value){
+
+  if(!value){
+    return "Not Started";
+  }
+
+  return String(value)
+    .replaceAll("_"," ")
+    .toLowerCase()
+    .replace(
+      /\b\w/g,
+      char => char.toUpperCase()
+    );
+
+}
+
+
+function showMessage(
+  type,
+  text
+){
+
+  const message =
+    $("formMessage");
+
+  message.className =
+    "message " +
+    type +
+    " show";
+
+  message.textContent =
+    text;
+
+}
+
+
+function clearMessage(){
+
+  const message =
+    $("formMessage");
+
+  message.className =
+    "message";
+
+  message.textContent =
+    "";
+
+}
+
+
+/* =========================================================
+   DRAWER
+========================================================= */
+
+function openDrawer(){
+
+  $("drawer")
+    .classList.add("active");
+
+  $("drawerOverlay")
+    .classList.add("active");
+
+  $("drawer")
+    .setAttribute(
+      "aria-hidden",
+      "false"
+    );
+
+  $("menuButton")
+    .setAttribute(
+      "aria-expanded",
+      "true"
+    );
+
+}
+
+
+function closeDrawer(){
+
+  $("drawer")
+    .classList.remove("active");
+
+  $("drawerOverlay")
+    .classList.remove("active");
+
+  $("drawer")
+    .setAttribute(
+      "aria-hidden",
+      "true"
+    );
+
+  $("menuButton")
+    .setAttribute(
+      "aria-expanded",
+      "false"
+    );
+
+}
+
+
+$("menuButton")
+  .addEventListener(
+    "click",
+    openDrawer
+  );
+
+
+$("drawerClose")
+  .addEventListener(
+    "click",
+    closeDrawer
+  );
+
+
+$("drawerOverlay")
+  .addEventListener(
+    "click",
+    closeDrawer
+  );
+
+
+document
+  .querySelectorAll(".drawer-link")
+  .forEach(link => {
+
+    link.addEventListener(
+      "click",
+      function(){
+
+        if(
+          this.id !== "drawerLogout"
+        ){
+          closeDrawer();
+        }
+
+      }
+    );
+
+  });
+
+
+/* =========================================================
+   DISPLAY USER
+========================================================= */
+
+function displayUser(user, profile){
+
+  const metadata =
+    user?.user_metadata || {};
+
+  const name =
+    profile?.full_name ||
+    metadata.full_name ||
+    (
+      user?.email
+        ? user.email.split("@")[0]
+        : "—"
+    );
+
+  const email =
+    profile?.email ||
+    user?.email ||
+    "—";
+
+  const initials =
+    getInitials(name);
+
+
+  $("headerInitials").textContent =
+    initials;
+
+  $("drawerInitials").textContent =
+    initials;
+
+  $("drawerName").textContent =
+    name;
+
+  $("drawerEmail").textContent =
+    email;
+
+  $("fullName").value =
+    name === "—"
+      ? ""
+      : name;
+
+}
+
+
+/* =========================================================
+   LOAD USER PROFILE
+========================================================= */
+
+async function loadUser(){
+
+  const {
+    data:{
+      user
+    },
+    error
+  } =
+    await supabaseClient
+      .auth
+      .getUser();
+
+
+  if(error || !user){
+
+    window.location.href =
+      "signin.html";
+
+    return null;
+
+  }
+
+
+  displayUser(
+    user,
+    null
+  );
+
+
+  const {
+    data:profile
+  } =
+    await supabaseClient
+      .from("profiles")
+      .select(`
+        id,
+        full_name,
+        email,
+        kyc_status
+      `)
+      .eq(
+        "id",
+        user.id
+      )
+      .maybeSingle();
+
+
+  if(profile){
+
+    displayUser(
+      user,
+      profile
+    );
+
+  }
+
+
+  return {
+    user,
+    profile
+  };
+
+}
+
+
+/* =========================================================
+   STATUS UI
+========================================================= */
+
+function renderKycStatus(record){
+
+  const status =
+    record?.status ||
+    "NOT_STARTED";
+
+  const badge =
+    $("statusBadge");
+
+  const value =
+    $("statusValue");
+
+  const description =
+    $("statusDescription");
+
+  badge.className =
+    "status-badge";
+
+  $("rejectionCard")
+    .classList.remove(
+      "show"
+    );
+
+  $("approvedCard")
+    .classList.remove(
+      "show"
+    );
+
+  $("kycFormCard")
+    .style.display =
+    "block";
+
+
+  if(status === "PENDING"){
+
+    value.textContent =
+      "Pending Review";
+
+    badge.textContent =
+      "PENDING";
+
+    badge.classList.add(
+      "pending"
+    );
+
+    description.textContent =
+      "Your verification has been submitted and is waiting for review.";
+
+    $("kycFormCard")
+      .style.display =
+      "none";
+
+    return;
+
+  }
+
+
+  if(status === "APPROVED"){
+
+    value.textContent =
+      "Verified";
+
+    badge.textContent =
+      "APPROVED";
+
+    badge.classList.add(
+      "approved"
+    );
+
+    description.textContent =
+      "Your identity verification has been approved.";
+
+    $("kycFormCard")
+      .style.display =
+      "none";
+
+    $("approvedCard")
+      .classList.add(
+        "show"
+      );
+
+    return;
+
+  }
+
+
+  if(status === "REJECTED"){
+
+    value.textContent =
+      "Rejected";
+
+    badge.textContent =
+      "REJECTED";
+
+    badge.classList.add(
+      "rejected"
+    );
+
+    description.textContent =
+      "Your previous verification was rejected. You can review your information and submit again.";
+
+    if(record.rejection_reason){
+
+      $("rejectionText")
+        .textContent =
+        record.rejection_reason;
+
+      $("rejectionCard")
+        .classList.add(
+          "show"
+        );
+
+    }
+
+    $("kycFormCard")
+      .style.display =
+      "block";
+
+    return;
+
+  }
+
+
+  value.textContent =
+    "Not Started";
+
+  badge.textContent =
+    "NOT STARTED";
+
+  description.textContent =
+    "Your identity has not been submitted for verification.";
+
+}
+
+
+/* =========================================================
+   LOAD KYC
+========================================================= */
+
+async function loadKyc(){
+
+  const {
+    data:{
+      user
+    },
+    error:userError
+  } =
+    await supabaseClient
+      .auth
+      .getUser();
+
+
+  if(
+    userError ||
+    !user
+  ){
+
+    window.location.href =
+      "signin.html";
+
+    return;
+
+  }
+
+
+  const {
+    data:record,
+    error
+  } =
+    await supabaseClient
+      .from("kyc_submissions")
+      .select(`
+        id,
+        user_id,
+        full_name,
+        date_of_birth,
+        country,
+        id_type,
+        id_number,
+        document_path,
+        selfie_path,
+        status,
+        rejection_reason,
+        submitted_at,
+        reviewed_at,
+        created_at,
+        updated_at
+      `)
+      .eq(
+        "user_id",
+        user.id
+      )
+      .maybeSingle();
+
+
+  if(error){
+
+    console.error(
+      "KYC loading error:",
+      error
+    );
+
+    showMessage(
+      "error",
+      "Unable to load your verification status."
+    );
+
+    return;
+
+  }
+
+
+  if(record){
+
+    renderKycStatus(
+      record
+    );
+
+
+    if(record.full_name){
+
+      $("fullName").value =
+        record.full_name;
+
+    }
+
+
+    if(record.date_of_birth){
+
+      $("dateOfBirth").value =
+        record.date_of_birth;
+
+    }
+
+
+    if(record.country){
+
+      $("country").value =
+        record.country;
+
+    }
+
+
+    if(record.id_type){
+
+      $("idType").value =
+        record.id_type;
+
+    }
+
+
+    if(record.id_number){
+
+      $("idNumber").value =
+        record.id_number;
+
+    }
+
+  }else{
+
+    renderKycStatus(
+      null
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   VALIDATE FILE
+========================================================= */
+
+function validateFile(
+  file,
+  allowPdf
+){
+
+  if(!file){
+
+    return "Please select the required file.";
+
+  }
+
+
+  if(
+    file.size >
+    10 * 1024 * 1024
+  ){
+
+    return "Each file must be 10 MB or smaller.";
+
+  }
+
+
+  const allowed =
+    allowPdf
+      ? [
+          "image/jpeg",
+          "image/png",
+          "application/pdf"
+        ]
+      : [
+          "image/jpeg",
+          "image/png"
+        ];
+
+
+  if(
+    !allowed.includes(
+      file.type
+    )
+  ){
+
+    return allowPdf
+      ? "Use a JPEG, PNG or PDF file."
+      : "Use a JPEG or PNG image.";
+
+  }
+
+
+  return null;
+
+}
+
+
+/* =========================================================
+   FILE EXTENSION
+========================================================= */
+
+function getExtension(file){
+
+  const name =
+    file.name || "";
+
+  const parts =
+    name.split(".");
+
+  if(parts.length < 2){
+
+    if(file.type === "image/png"){
+      return "png";
+    }
+
+    if(file.type === "application/pdf"){
+      return "pdf";
+    }
+
+    return "jpg";
+
+  }
+
+  return parts
+    .pop()
+    .toLowerCase()
+    .replace(
+      /[^a-z0-9]/g,
+      ""
+    );
+
+}
+
+
+/* =========================================================
+   UPLOAD FILE
+========================================================= */
+
+async function uploadKycFile(
+  userId,
+  file,
+  prefix
+){
+
+  const extension =
+    getExtension(file);
+
+  const filePath =
+    userId +
+    "/" +
+    prefix +
+    "-" +
+    Date.now() +
+    "-" +
+    crypto.randomUUID() +
+    "." +
+    extension;
+
+
+  const {
+    error
+  } =
+    await supabaseClient
+      .storage
+      .from("kyc-documents")
+      .upload(
+        filePath,
+        file,
+        {
+          cacheControl:"3600",
+          upsert:false
+        }
+      );
+
+
+  if(error){
+
+    throw error;
+
+  }
+
+
+  return filePath;
+
+}
+
+
+/* =========================================================
+   SUBMIT KYC
+========================================================= */
+
+$("submitKyc")
+  .addEventListener(
+    "click",
+    async function(){
+
+      clearMessage();
+
+
+      const button =
+        $("submitKyc");
+
+
+      const fullName =
+        $("fullName")
+          .value
+          .trim();
+
+
+      const dateOfBirth =
+        $("dateOfBirth")
+          .value;
+
+
+      const country =
+        $("country")
+          .value
+          .trim();
+
+
+      const idType =
+        $("idType")
+          .value;
+
+
+      const idNumber =
+        $("idNumber")
+          .value
+          .trim();
+
+
+      const idDocument =
+        $("idDocument")
+          .files[0];
+
+
+      const selfie =
+        $("selfie")
+          .files[0];
+
+
+      /* Validation */
+
+      if(fullName.length < 2){
+
+        showMessage(
+          "error",
+          "Please enter your full legal name."
+        );
+
+        return;
+
+      }
+
+
+      if(!dateOfBirth){
+
+        showMessage(
+          "error",
+          "Please enter your date of birth."
+        );
+
+        return;
+
+      }
+
+
+      if(!country){
+
+        showMessage(
+          "error",
+          "Please enter your country."
+        );
+
+        return;
+
+      }
+
+
+      if(!idType){
+
+        showMessage(
+          "error",
+          "Please select your identity document type."
+        );
+
+        return;
+
+      }
+
+
+      if(!idNumber){
+
+        showMessage(
+          "error",
+          "Please enter your identity document number."
+        );
+
+        return;
+
+      }
+
+
+      const idFileError =
+        validateFile(
+          idDocument,
+          true
+        );
+
+
+      if(idFileError){
+
+        showMessage(
+          "error",
+          idFileError
+        );
+
+        return;
+
+      }
+
+
+      const selfieFileError =
+        validateFile(
+          selfie,
+          false
+        );
+
+
+      if(selfieFileError){
+
+        showMessage(
+          "error",
+          "Selfie: " +
+          selfieFileError
+        );
+
+        return;
+
+      }
+
+
+      button.disabled =
+        true;
+
+      button.textContent =
+        "Uploading...";
+
+
+      try{
+
+        const {
+          data:{
+            user
+          },
+          error:userError
+        } =
+          await supabaseClient
+            .auth
+            .getUser();
+
+
+        if(
+          userError ||
+          !user
+        ){
+
+          throw new Error(
+            "Your session has expired. Please sign in again."
+          );
+
+        }
+
+
+        /* Upload identity document */
+
+        const documentPath =
+          await uploadKycFile(
+            user.id,
+            idDocument,
+            "identity"
+          );
+
+
+        button.textContent =
+          "Uploading Selfie...";
+
+
+        /* Upload selfie */
+
+        const selfiePath =
+          await uploadKycFile(
+            user.id,
+            selfie,
+            "selfie"
+          );
+
+
+        button.textContent =
+          "Submitting...";
+
+
+        const now =
+          new Date()
+            .toISOString();
+
+
+        /*
+          Check whether a KYC record already exists.
+          This allows rejected users to resubmit.
+        */
+
+        const {
+          data:existing,
+          error:existingError
+        } =
+          await supabaseClient
+            .from("kyc_submissions")
+            .select("id,status")
+            .eq(
+              "user_id",
+              user.id
+            )
+            .maybeSingle();
+
+
+        if(existingError){
+
+          throw existingError;
+
+        }
+
+
+        const payload = {
+          user_id:user.id,
+          full_name:fullName,
+          date_of_birth:dateOfBirth,
+          country:country,
+          id_type:idType,
+          id_number:idNumber,
+          document_path:documentPath,
+          selfie_path:selfiePath,
+          status:"PENDING",
+          rejection_reason:null,
+          submitted_at:now,
+          reviewed_at:null,
+          updated_at:now
+        };
+
+
+        if(existing){
+
+          /*
+            Don't allow a user to overwrite an already
+            approved KYC submission.
+          */
+
+          if(
+            existing.status ===
+            "APPROVED"
+          ){
+
+            throw new Error(
+              "Your identity verification is already approved."
+            );
+
+          }
+
+
+          const {
+            error:updateError
+          } =
+            await supabaseClient
+              .from("kyc_submissions")
+              .update(payload)
+              .eq(
+                "id",
+                existing.id
+              )
+              .eq(
+                "user_id",
+                user.id
+              );
+
+
+          if(updateError){
+
+            throw updateError;
+
+          }
+
+        }else{
+
+          const {
+            error:insertError
+          } =
+            await supabaseClient
+              .from("kyc_submissions")
+              .insert(
+                payload
+              );
+
+
+          if(insertError){
+
+            throw insertError;
+
+          }
+
+        }
+
+
+        showMessage(
+          "success",
+          "Your identity verification has been submitted successfully and is now pending review."
+        );
+
+
+        renderKycStatus({
+          status:"PENDING"
+        });
+
+
+        window.scrollTo({
+          top:0,
+          behavior:"smooth"
+        });
+
+
+      }catch(error){
+
+        console.error(
+          "KYC submission error:",
+          error
+        );
+
+
+        showMessage(
+          "error",
+          error.message ||
+          "Unable to submit your verification. Please try again."
+        );
+
+      }finally{
+
+        button.disabled =
+          false;
+
+        button.textContent =
+          "Submit Verification";
+
+      }
+
+    }
+  );
+
+
+/* =========================================================
+   HEADER ACCOUNT
+========================================================= */
+
+$("headerInitials")
+  .addEventListener(
+    "click",
+    function(){
+
+      window.location.href =
+        "profile.html";
+
+    }
+  );
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+async function logout(){
+
+  const {
+    error
+  } =
+    await supabaseClient
+      .auth
+      .signOut();
+
+
+  if(error){
+
+    alert(
+      "Unable to sign out. Please try again."
+    );
+
+    return;
+
+  }
+
+
+  window.location.href =
+    "signin.html";
+
+}
+
+
+$("drawerLogout")
+  .addEventListener(
+    "click",
+    function(event){
+
+      event.preventDefault();
+
+      closeDrawer();
+
+      logout();
+
+    }
+  );
+
+
+/* =========================================================
+   AUTH STATE
+========================================================= */
+
+supabaseClient.auth
+  .onAuthStateChange(
+    (event,session) => {
+
+      if(
+        event === "SIGNED_OUT" ||
+        !session
+      ){
+
+        window.location.href =
+          "signin.html";
+
+      }
+
+    }
+  );
+
+
+/* =========================================================
+   START
+========================================================= */
+
+(async function(){
+
+  const result =
+    await loadUser();
+
+
+  if(result){
+
+    await loadKyc();
+
+  }
+
+})();
+
+</script>
+
+</body>
+</html>
