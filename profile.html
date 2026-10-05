@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>NEXORA — Profile Diagnostic</title>
+  <title>NEXORA — Profile</title>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -20,7 +20,6 @@
       --gold2:#f1cc6b;
       --green:#22c55e;
       --red:#ef4444;
-      --yellow:#eab308;
     }
 
     *{
@@ -167,116 +166,6 @@
     }
 
     /* =========================================================
-       DIAGNOSTIC CARD
-    ========================================================= */
-
-    .diagnostic-card{
-      border-color:rgba(234,179,8,.25);
-    }
-
-    .diagnostic-header{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      margin-bottom:18px;
-    }
-
-    .diagnostic-icon{
-      width:42px;
-      height:42px;
-      border-radius:12px;
-      background:rgba(234,179,8,.1);
-      color:#facc15;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:20px;
-      flex:none;
-    }
-
-    .diagnostic-header h2{
-      font-size:16px;
-      margin-bottom:4px;
-    }
-
-    .diagnostic-header p{
-      color:var(--muted);
-      font-size:11px;
-    }
-
-    .diagnostic-status{
-      padding:13px;
-      border-radius:11px;
-      background:rgba(255,255,255,.035);
-      border:1px solid var(--border);
-      margin-bottom:12px;
-    }
-
-    .diagnostic-status strong{
-      display:block;
-      font-size:12px;
-      margin-bottom:6px;
-    }
-
-    .diagnostic-status span{
-      color:var(--muted);
-      font-size:12px;
-      word-break:break-word;
-    }
-
-    .error-box{
-      display:none;
-      margin-top:12px;
-      padding:14px;
-      border-radius:12px;
-      background:rgba(239,68,68,.09);
-      border:1px solid rgba(239,68,68,.3);
-      color:#ffb0b0;
-      font-size:12px;
-      line-height:1.6;
-      white-space:pre-wrap;
-      word-break:break-word;
-    }
-
-    .error-box.show{
-      display:block;
-    }
-
-    .success-box{
-      display:none;
-      margin-top:12px;
-      padding:14px;
-      border-radius:12px;
-      background:rgba(34,197,94,.08);
-      border:1px solid rgba(34,197,94,.25);
-      color:#9af0b6;
-      font-size:12px;
-      line-height:1.6;
-      white-space:pre-wrap;
-      word-break:break-word;
-    }
-
-    .success-box.show{
-      display:block;
-    }
-
-    .debug-button{
-      width:100%;
-      min-height:44px;
-      border:1px solid rgba(217,173,76,.35);
-      background:rgba(217,173,76,.08);
-      color:var(--gold2);
-      border-radius:12px;
-      font-weight:800;
-      font-size:13px;
-      margin-top:12px;
-    }
-
-    .debug-button:hover{
-      background:rgba(217,173,76,.13);
-    }
-
-    /* =========================================================
        PROFILE HERO
     ========================================================= */
 
@@ -348,7 +237,7 @@
     }
 
     /* =========================================================
-       INFO
+       SECTION HEAD
     ========================================================= */
 
     .section-head{
@@ -365,6 +254,10 @@
       font-size:12px;
       line-height:1.5;
     }
+
+    /* =========================================================
+       ACCOUNT INFORMATION
+    ========================================================= */
 
     .info-row{
       min-height:54px;
@@ -494,8 +387,13 @@
       min-height:44px;
     }
 
+    .primary-btn:disabled{
+      opacity:.55;
+      cursor:not-allowed;
+    }
+
     /* =========================================================
-       EDIT
+       EDIT PROFILE
     ========================================================= */
 
     .form-group{
@@ -520,8 +418,12 @@
       padding:0 13px;
     }
 
+    .input:focus{
+      border-color:rgba(217,173,76,.55);
+    }
+
     /* =========================================================
-       ACTIONS
+       ACCOUNT SETTINGS
     ========================================================= */
 
     .action-list{
@@ -586,6 +488,35 @@
 
     .danger-item .action-info strong{
       color:#ff8585;
+    }
+
+    /* =========================================================
+       MESSAGE
+    ========================================================= */
+
+    .page-message{
+      display:none;
+      margin-bottom:16px;
+      padding:13px 14px;
+      border-radius:12px;
+      font-size:12px;
+      line-height:1.5;
+    }
+
+    .page-message.show{
+      display:block;
+    }
+
+    .page-message.error{
+      background:rgba(239,68,68,.09);
+      border:1px solid rgba(239,68,68,.25);
+      color:#ffb0b0;
+    }
+
+    .page-message.success{
+      background:rgba(34,197,94,.08);
+      border:1px solid rgba(34,197,94,.22);
+      color:#9af0b6;
     }
 
     /* =========================================================
@@ -690,7 +621,7 @@
     }
 
     /* =========================================================
-       BOTTOM
+       BOTTOM NAV
     ========================================================= */
 
     .bottom-nav{
@@ -771,6 +702,8 @@
       <button
         class="menu-btn"
         id="menuBtn"
+        type="button"
+        aria-label="Open menu"
       >
         ☰
       </button>
@@ -785,6 +718,8 @@
       <button
         class="profile-btn"
         id="profileInitials"
+        type="button"
+        aria-label="Profile"
       >
         —
       </button>
@@ -821,6 +756,7 @@
       <button
         class="drawer-close"
         id="drawerClose"
+        type="button"
       >
         ×
       </button>
@@ -832,6 +768,7 @@
 
       <button
         class="drawer-link"
+        type="button"
         onclick="location.href='dashboard.html'"
       >
         <span class="drawer-link-icon">⌂</span>
@@ -841,6 +778,7 @@
 
       <button
         class="drawer-link"
+        type="button"
         onclick="location.href='deposit.html'"
       >
         <span class="drawer-link-icon">＋</span>
@@ -850,6 +788,7 @@
 
       <button
         class="drawer-link"
+        type="button"
         onclick="location.href='withdraw.html'"
       >
         <span class="drawer-link-icon">↗</span>
@@ -859,6 +798,7 @@
 
       <button
         class="drawer-link"
+        type="button"
         onclick="location.href='transactions.html'"
       >
         <span class="drawer-link-icon">≡</span>
@@ -868,6 +808,7 @@
 
       <button
         class="drawer-link"
+        type="button"
         onclick="location.href='referrals.html'"
       >
         <span class="drawer-link-icon">♧</span>
@@ -877,6 +818,7 @@
 
       <button
         class="drawer-link active"
+        type="button"
         onclick="location.href='profile.html'"
       >
         <span class="drawer-link-icon">○</span>
@@ -886,6 +828,7 @@
 
       <button
         class="drawer-link"
+        type="button"
         onclick="location.href='support.html'"
       >
         <span class="drawer-link-icon">?</span>
@@ -895,6 +838,7 @@
 
       <button
         class="drawer-link"
+        type="button"
         onclick="location.href='notifications.html'"
       >
         <span class="drawer-link-icon">◌</span>
@@ -908,6 +852,7 @@
       <button
         class="drawer-link"
         id="drawerLogout"
+        type="button"
       >
         <span class="drawer-link-icon">↪</span>
         <span>Logout</span>
@@ -926,7 +871,9 @@
 
     <div class="page-title">
 
-      <h1>Profile</h1>
+      <h1>
+        Profile
+      </h1>
 
       <p>
         Manage your NEXORA account and verification status.
@@ -935,93 +882,10 @@
     </div>
 
 
-    <!-- =====================================================
-         DIAGNOSTIC
-    ====================================================== -->
-
-    <section class="card section-card diagnostic-card">
-
-      <div class="diagnostic-header">
-
-        <div class="diagnostic-icon">
-          !
-        </div>
-
-        <div>
-
-          <h2>
-            Supabase Diagnostic
-          </h2>
-
-          <p>
-            Temporary diagnostic information
-          </p>
-
-        </div>
-
-      </div>
-
-
-      <div class="diagnostic-status">
-
-        <strong>
-          Authentication
-        </strong>
-
-        <span id="authDiagnostic">
-          Checking...
-        </span>
-
-      </div>
-
-
-      <div class="diagnostic-status">
-
-        <strong>
-          Profile Query
-        </strong>
-
-        <span id="profileDiagnostic">
-          Waiting...
-        </span>
-
-      </div>
-
-
-      <div class="diagnostic-status">
-
-        <strong>
-          KYC Query
-        </strong>
-
-        <span id="kycDiagnostic">
-          Waiting...
-        </span>
-
-      </div>
-
-
-      <div
-        class="error-box"
-        id="errorBox"
-      ></div>
-
-
-      <div
-        class="success-box"
-        id="successBox"
-      ></div>
-
-
-      <button
-        class="debug-button"
-        id="retryButton"
-        type="button"
-      >
-        Run Diagnostic Again
-      </button>
-
-    </section>
+    <div
+      class="page-message"
+      id="pageMessage"
+    ></div>
 
 
     <!-- =====================================================
@@ -1161,7 +1025,7 @@
 
 
     <!-- =====================================================
-         KYC
+         IDENTITY VERIFICATION
     ====================================================== -->
 
     <section class="card section-card kyc-card">
@@ -1208,7 +1072,8 @@
         class="kyc-message"
         id="kycMessage"
       >
-        Identity verification is optional.
+        Identity verification is optional. You can complete it
+        when needed.
       </div>
 
 
@@ -1218,7 +1083,6 @@
           class="primary-btn"
           id="kycButton"
           type="button"
-          onclick="location.href='kyc.html'"
         >
           Verify Identity
         </button>
@@ -1404,6 +1268,7 @@
 
       <button
         class="bottom-link"
+        type="button"
         onclick="location.href='dashboard.html'"
       >
         <span class="bottom-link-icon">⌂</span>
@@ -1413,6 +1278,7 @@
 
       <button
         class="bottom-link"
+        type="button"
         onclick="location.href='deposit.html'"
       >
         <span class="bottom-link-icon">＋</span>
@@ -1422,6 +1288,7 @@
 
       <button
         class="bottom-link"
+        type="button"
         onclick="location.href='transactions.html'"
       >
         <span class="bottom-link-icon">≡</span>
@@ -1431,6 +1298,7 @@
 
       <button
         class="bottom-link active"
+        type="button"
         onclick="location.href='profile.html'"
       >
         <span class="bottom-link-icon">○</span>
@@ -1449,7 +1317,7 @@
   <script>
 
     /* =========================================================
-       SUPABASE CONFIG
+       SUPABASE
     ========================================================= */
 
     const SUPABASE_URL =
@@ -1459,116 +1327,35 @@
       "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
 
 
-    let db;
+    const db =
+      supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+      );
+
+
+    let currentUser = null;
 
 
     /* =========================================================
-       DOM HELPER
+       HELPERS
     ========================================================= */
 
-    function $(id) {
+    function $(id){
       return document.getElementById(id);
     }
 
 
-    /* =========================================================
-       DIAGNOSTIC ERROR
-    ========================================================= */
-
-    function showDiagnosticError(
-      title,
-      error
-    ) {
-
-      const box =
-        $("errorBox");
-
-      let details = "";
-
-      if (typeof error === "string") {
-
-        details = error;
-
-      } else if (error) {
-
-        details =
-          "Message: " +
-          (error.message || "No message") +
-          "\n\n" +
-
-          "Details: " +
-          (error.details || "None") +
-          "\n\n" +
-
-          "Hint: " +
-          (error.hint || "None") +
-          "\n\n" +
-
-          "Code: " +
-          (error.code || "None") +
-          "\n\n" +
-
-          "Status: " +
-          (error.status || "None");
-
-      } else {
-
-        details =
-          "Unknown error.";
-
-      }
-
-
-      box.textContent =
-        title +
-        "\n\n" +
-        details;
-
-
-      box.classList.add("show");
-
-      $("successBox")
-        .classList.remove("show");
-
-    }
-
-
-    /* =========================================================
-       DIAGNOSTIC SUCCESS
-    ========================================================= */
-
-    function showDiagnosticSuccess(
-      message
-    ) {
-
-      const box =
-        $("successBox");
-
-      box.textContent =
-        message;
-
-      box.classList.add("show");
-
-      $("errorBox")
-        .classList.remove("show");
-
-    }
-
-
-    /* =========================================================
-       INITIALS
-    ========================================================= */
-
     function getInitials(
       name,
       email
-    ) {
+    ){
 
       const source =
         String(name || "").trim() ||
         String(email || "").trim();
 
-      if (!source) {
+      if(!source){
         return "—";
       }
 
@@ -1577,7 +1364,7 @@
           .split(/\s+/)
           .filter(Boolean);
 
-      if (parts.length >= 2) {
+      if(parts.length >= 2){
 
         return (
           parts[0][0] +
@@ -1593,27 +1380,21 @@
     }
 
 
-    /* =========================================================
-       DATE
-    ========================================================= */
+    function formatDate(value){
 
-    function formatDate(value) {
-
-      if (!value) {
+      if(!value){
         return "—";
       }
 
       const date =
         new Date(value);
 
-      if (
+      if(
         Number.isNaN(
           date.getTime()
         )
-      ) {
-
+      ){
         return "—";
-
       }
 
       return date.toLocaleDateString(
@@ -1628,13 +1409,40 @@
     }
 
 
+    function showMessage(
+      message,
+      type
+    ){
+
+      const box =
+        $("pageMessage");
+
+      box.textContent =
+        message;
+
+      box.className =
+        "page-message show " +
+        type;
+
+    }
+
+
+    function hideMessage(){
+
+      $("pageMessage")
+        .className =
+        "page-message";
+
+    }
+
+
     /* =========================================================
        ACCOUNT STATUS
     ========================================================= */
 
     function setAccountStatus(
       status
-    ) {
+    ){
 
       const normalized =
         String(
@@ -1643,9 +1451,7 @@
 
       const label =
         normalized.charAt(0) +
-        normalized
-          .slice(1)
-          .toLowerCase();
+        normalized.slice(1).toLowerCase();
 
 
       $("accountStatus")
@@ -1672,8 +1478,9 @@
     ========================================================= */
 
     function setKycStatus(
-      status
-    ) {
+      status,
+      rejectionReason
+    ){
 
       const normalized =
         String(
@@ -1681,29 +1488,38 @@
         ).toUpperCase();
 
 
-      $("kycStatusValue")
-        .textContent =
+      const readable =
         normalized.replace(
           /_/g,
           " "
         );
+
+
+      $("kycStatusValue")
+        .textContent =
+        readable;
 
 
       $("kycStatusInfo")
         .textContent =
-        normalized.replace(
-          /_/g,
-          " "
-        );
+        readable;
 
 
       const button =
         $("kycButton");
 
 
-      if (
+      button.style.display =
+        "inline-block";
+
+
+      button.disabled =
+        false;
+
+
+      if(
         normalized === "PENDING"
-      ) {
+      ){
 
         button.textContent =
           "Under Review";
@@ -1718,9 +1534,9 @@
       }
 
 
-      else if (
+      else if(
         normalized === "APPROVED"
-      ) {
+      ){
 
         button.style.display =
           "none";
@@ -1732,30 +1548,37 @@
       }
 
 
-      else if (
+      else if(
         normalized === "REJECTED"
-      ) {
+      ){
 
         button.textContent =
           "Verify Again";
 
-        button.disabled =
-          false;
+        let message =
+          "Your previous verification was rejected. You can submit your information again.";
+
+        if(
+          rejectionReason
+        ){
+
+          message +=
+            " Reason: " +
+            rejectionReason;
+
+        }
 
         $("kycMessage")
           .textContent =
-          "Your previous verification was rejected. You can submit your information again.";
+          message;
 
       }
 
 
-      else {
+      else{
 
         button.textContent =
           "Verify Identity";
-
-        button.disabled =
-          false;
 
         $("kycMessage")
           .textContent =
@@ -1767,53 +1590,37 @@
 
 
     /* =========================================================
-       MAIN DIAGNOSTIC
+       LOAD PROFILE
     ========================================================= */
 
-    async function runDiagnostic() {
+    async function loadProfile(){
 
-      $("authDiagnostic")
-        .textContent =
-        "Checking Supabase connection...";
-
-      $("profileDiagnostic")
-        .textContent =
-        "Waiting...";
-
-      $("kycDiagnostic")
-        .textContent =
-        "Waiting...";
-
-      $("errorBox")
-        .classList.remove("show");
-
-      $("successBox")
-        .classList.remove("show");
+      hideMessage();
 
 
-      try {
+      try{
 
         /* =====================================================
-           STEP 1 — CREATE CLIENT
+           GET SESSION
         ===================================================== */
 
-        try {
+        const {
+          data:sessionData,
+          error:sessionError
+        } =
+          await db.auth.getSession();
 
-          db =
-            supabase.createClient(
-              SUPABASE_URL,
-              SUPABASE_KEY
-            );
 
-        } catch (error) {
+        if(sessionError){
 
-          $("authDiagnostic")
-            .textContent =
-            "FAILED";
+          console.error(
+            "Session error:",
+            sessionError
+          );
 
-          showDiagnosticError(
-            "SUPABASE CLIENT ERROR",
-            error
+          showMessage(
+            "Unable to load your session. Please sign in again.",
+            "error"
           );
 
           return;
@@ -1821,26 +1628,41 @@
         }
 
 
+        const session =
+          sessionData?.session;
+
+
+        if(!session){
+
+          location.href =
+            "signin.html";
+
+          return;
+
+        }
+
+
         /* =====================================================
-           STEP 2 — AUTH
+           GET USER
         ===================================================== */
 
-        let authResult;
+        const {
+          data:userData,
+          error:userError
+        } =
+          await db.auth.getUser();
 
-        try {
 
-          authResult =
-            await db.auth.getUser();
+        if(userError){
 
-        } catch (error) {
+          console.error(
+            "User error:",
+            userError
+          );
 
-          $("authDiagnostic")
-            .textContent =
-            "FAILED";
-
-          showDiagnosticError(
-            "AUTHENTICATION REQUEST FAILED",
-            error
+          showMessage(
+            "Unable to load your account. Please sign in again.",
+            "error"
           );
 
           return;
@@ -1848,162 +1670,89 @@
         }
 
 
-        const authError =
-          authResult.error;
-
-        const user =
-          authResult.data?.user;
+        currentUser =
+          userData?.user;
 
 
-        if (authError) {
+        if(!currentUser){
 
-          $("authDiagnostic")
-            .textContent =
-            "FAILED";
-
-          showDiagnosticError(
-            "AUTHENTICATION ERROR",
-            authError
-          );
+          location.href =
+            "signin.html";
 
           return;
 
         }
-
-
-        if (!user) {
-
-          $("authDiagnostic")
-            .textContent =
-            "NO AUTHENTICATED USER";
-
-          showDiagnosticError(
-            "NO LOGGED-IN USER",
-            "Supabase is working, but there is no authenticated user session on this page.\n\nIf you are already logged in elsewhere, check that this page is using the same Supabase project and domain."
-          );
-
-          return;
-
-        }
-
-
-        $("authDiagnostic")
-          .textContent =
-          "SUCCESS — User session found";
 
 
         /* =====================================================
-           DISPLAY USER ID
+           LOAD PROFILE
         ===================================================== */
 
-        const userEmail =
-          user.email || "No email";
+        const {
+          data:profile,
+          error:profileError
+        } =
+          await db
+            .from("profiles")
+            .select(`
+              id,
+              full_name,
+              email,
+              account_status,
+              kyc_status,
+              created_at,
+              updated_at
+            `)
+            .eq(
+              "id",
+              currentUser.id
+            )
+            .maybeSingle();
 
-        $("profileDiagnostic")
-          .textContent =
-          "Authenticated user: " +
-          userEmail;
+
+        if(profileError){
+
+          console.error(
+            "Profile error:",
+            profileError
+          );
+
+          showMessage(
+            "We couldn't load your profile information right now. Please try again.",
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        if(!profile){
+
+          showMessage(
+            "Your profile information could not be found.",
+            "error"
+          );
+
+          return;
+
+        }
 
 
         /* =====================================================
-           STEP 3 — PROFILE QUERY
-        ===================================================== */
-
-        let profileResult;
-
-        try {
-
-          profileResult =
-            await db
-              .from("profiles")
-              .select(`
-                id,
-                full_name,
-                email,
-                account_status,
-                kyc_status,
-                created_at,
-                updated_at
-              `)
-              .eq(
-                "id",
-                user.id
-              )
-              .maybeSingle();
-
-        } catch (error) {
-
-          $("profileDiagnostic")
-            .textContent =
-            "REQUEST FAILED";
-
-          showDiagnosticError(
-            "PROFILE QUERY REQUEST FAILED",
-            error
-          );
-
-          return;
-
-        }
-
-
-        if (
-          profileResult.error
-        ) {
-
-          $("profileDiagnostic")
-            .textContent =
-            "FAILED";
-
-          showDiagnosticError(
-            "PROFILE QUERY ERROR",
-            profileResult.error
-          );
-
-          return;
-
-        }
-
-
-        const profile =
-          profileResult.data;
-
-
-        if (!profile) {
-
-          $("profileDiagnostic")
-            .textContent =
-            "NO PROFILE ROW FOUND";
-
-          showDiagnosticError(
-            "PROFILE NOT FOUND",
-            "Authentication succeeded, but no row was returned from public.profiles for this user's ID.\n\nUser ID:\n" +
-            user.id +
-            "\n\nThis usually means the profile row was not created or the RLS policy is blocking the SELECT."
-          );
-
-          return;
-
-        }
-
-
-        $("profileDiagnostic")
-          .textContent =
-          "SUCCESS — Profile row found";
-
-
-        /* =====================================================
-           DISPLAY PROFILE
+           PROFILE VALUES
         ===================================================== */
 
         const fullName =
           profile.full_name ||
-          user.user_metadata?.full_name ||
+          currentUser
+            .user_metadata
+            ?.full_name ||
           "";
 
         const email =
           profile.email ||
-          user.email ||
+          currentUser.email ||
           "";
 
 
@@ -2018,14 +1767,17 @@
           .textContent =
           initials;
 
+
         $("profileInitials")
           .textContent =
           initials;
+
 
         $("heroName")
           .textContent =
           fullName ||
           "NEXORA User";
+
 
         $("heroEmail")
           .textContent =
@@ -2038,26 +1790,23 @@
           fullName ||
           "—";
 
+
         $("email")
           .textContent =
           email ||
           "—";
 
+
         $("memberSince")
           .textContent =
           formatDate(
             profile.created_at ||
-            user.created_at
+            currentUser.created_at
           );
 
 
         setAccountStatus(
           profile.account_status
-        );
-
-
-        setKycStatus(
-          profile.kyc_status
         );
 
 
@@ -2067,102 +1816,65 @@
 
 
         /* =====================================================
-           STEP 4 — KYC QUERY
+           LOAD KYC
         ===================================================== */
 
-        let kycResult;
+        const {
+          data:kyc,
+          error:kycError
+        } =
+          await db
+            .from("kyc_submissions")
+            .select(`
+              status,
+              rejection_reason
+            `)
+            .eq(
+              "user_id",
+              currentUser.id
+            )
+            .maybeSingle();
 
-        try {
 
-          kycResult =
-            await db
-              .from("kyc_submissions")
-              .select(`
-                status,
-                rejection_reason,
-                submitted_at,
-                reviewed_at
-              `)
-              .eq(
-                "user_id",
-                user.id
-              )
-              .maybeSingle();
+        if(kycError){
 
-        } catch (error) {
-
-          $("kycDiagnostic")
-            .textContent =
-            "REQUEST FAILED";
-
-          showDiagnosticError(
-            "KYC QUERY REQUEST FAILED",
-            error
+          console.error(
+            "KYC error:",
+            kycError
           );
 
-          return;
-
-        }
-
-
-        if (
-          kycResult.error
-        ) {
-
-          $("kycDiagnostic")
-            .textContent =
-            "FAILED";
-
-          showDiagnosticError(
-            "KYC QUERY ERROR",
-            kycResult.error
-          );
-
-          return;
-
-        }
-
-
-        if (
-          kycResult.data
-        ) {
-
-          $("kycDiagnostic")
-            .textContent =
-            "SUCCESS — KYC row found";
+          /*
+             If the KYC query fails, we still keep
+             the rest of the profile working.
+          */
 
           setKycStatus(
-            kycResult.data.status
+            profile.kyc_status ||
+            "NOT_STARTED"
           );
 
-        } else {
+        }else{
 
-          $("kycDiagnostic")
-            .textContent =
-            "SUCCESS — No KYC submission yet";
+          setKycStatus(
+            kyc?.status ||
+            profile.kyc_status ||
+            "NOT_STARTED",
+            kyc?.rejection_reason
+          );
 
         }
 
 
-        /* =====================================================
-           EVERYTHING WORKED
-        ===================================================== */
-
-        showDiagnosticSuccess(
-          "Supabase authentication, profile query, and KYC query completed successfully."
-        );
-
-
-      } catch (error) {
+      }catch(error){
 
         console.error(
-          "Unexpected diagnostic error:",
+          "Profile loading error:",
           error
         );
 
-        showDiagnosticError(
-          "UNEXPECTED JAVASCRIPT ERROR",
-          error
+        showMessage(
+          "Something went wrong while loading your profile. Please refresh the page.",
+          "error"
         );
 
       }
@@ -2177,49 +1889,16 @@
     $("profileForm")
       .addEventListener(
         "submit",
-        async event => {
+        async function(event){
 
           event.preventDefault();
 
 
-          if (!db) {
+          if(!currentUser){
 
-            showDiagnosticError(
-              "SUPABASE CLIENT NOT READY",
-              "Run the diagnostic first."
-            );
-
-            return;
-
-          }
-
-
-          const {
-            data:{
-              user
-            },
-            error:authError
-          } =
-            await db.auth.getUser();
-
-
-          if (authError) {
-
-            showDiagnosticError(
-              "AUTH ERROR",
-              authError
-            );
-
-            return;
-
-          }
-
-
-          if (!user) {
-
-            showDiagnosticError(
-              "NO USER SESSION",
-              "There is no authenticated user."
+            showMessage(
+              "Your session has expired. Please sign in again.",
+              "error"
             );
 
             return;
@@ -2233,11 +1912,11 @@
               .trim();
 
 
-          if (name.length < 2) {
+          if(name.length < 2){
 
-            showDiagnosticError(
-              "INVALID NAME",
-              "Please enter a valid full name."
+            showMessage(
+              "Please enter your full name.",
+              "error"
             );
 
             return;
@@ -2248,6 +1927,7 @@
           const button =
             $("saveProfileBtn");
 
+
           button.disabled =
             true;
 
@@ -2255,9 +1935,14 @@
             "Saving...";
 
 
-          try {
+          hideMessage();
 
-            const result =
+
+          try{
+
+            const {
+              error
+            } =
               await db
                 .from("profiles")
                 .update({
@@ -2268,15 +1953,20 @@
                 })
                 .eq(
                   "id",
-                  user.id
+                  currentUser.id
                 );
 
 
-            if (result.error) {
+            if(error){
 
-              showDiagnosticError(
-                "PROFILE UPDATE ERROR",
-                result.error
+              console.error(
+                "Profile update error:",
+                error
+              );
+
+              showMessage(
+                "Unable to update your profile right now. Please try again.",
+                "error"
               );
 
               return;
@@ -2284,7 +1974,7 @@
             }
 
 
-            try {
+            try{
 
               await db.auth.updateUser({
                 data:{
@@ -2292,32 +1982,38 @@
                 }
               });
 
-            } catch (metadataError) {
+            }catch(metadataError){
 
               console.warn(
-                "Metadata update failed:",
+                "Metadata update warning:",
                 metadataError
               );
 
             }
 
 
-            showDiagnosticSuccess(
-              "Profile updated successfully."
+            showMessage(
+              "Your profile has been updated successfully.",
+              "success"
             );
 
 
-            await runDiagnostic();
+            await loadProfile();
 
 
-          } catch (error) {
+          }catch(error){
 
-            showDiagnosticError(
-              "PROFILE UPDATE FAILED",
+            console.error(
+              "Save profile error:",
               error
             );
 
-          } finally {
+            showMessage(
+              "Something went wrong while saving your profile.",
+              "error"
+            );
+
+          }finally{
 
             button.disabled =
               false;
@@ -2332,41 +2028,69 @@
 
 
     /* =========================================================
+       KYC BUTTON
+    ========================================================= */
+
+    $("kycButton")
+      .addEventListener(
+        "click",
+        function(){
+
+          location.href =
+            "kyc.html";
+
+        }
+      );
+
+
+    /* =========================================================
        LOGOUT
     ========================================================= */
 
-    async function logout() {
+    async function logout(){
 
-      if (!db) {
+      try{
+
+        const {
+          error
+        } =
+          await db.auth.signOut();
+
+
+        if(error){
+
+          console.error(
+            "Logout error:",
+            error
+          );
+
+          showMessage(
+            "Unable to sign out right now. Please try again.",
+            "error"
+          );
+
+          return;
+
+        }
+
 
         location.href =
           "signin.html";
 
-        return;
 
-      }
+      }catch(error){
 
-
-      const {
-        error
-      } =
-        await db.auth.signOut();
-
-
-      if (error) {
-
-        showDiagnosticError(
-          "LOGOUT ERROR",
+        console.error(
+          "Logout error:",
           error
         );
 
-        return;
+        showMessage(
+          "Unable to sign out right now. Please try again.",
+          "error"
+        );
 
       }
-
-
-      location.href =
-        "signin.html";
 
     }
 
@@ -2396,7 +2120,7 @@
       $("drawerOverlay");
 
 
-    function openDrawer() {
+    function openDrawer(){
 
       drawer.classList.add(
         "show"
@@ -2412,7 +2136,7 @@
     }
 
 
-    function closeDrawer() {
+    function closeDrawer(){
 
       drawer.classList.remove(
         "show"
@@ -2450,73 +2174,30 @@
 
 
     /* =========================================================
-       PROFILE BUTTON
-    ========================================================= */
-
-    $("profileInitials")
-      .addEventListener(
-        "click",
-        closeDrawer
-      );
-
-
-    /* =========================================================
-       RETRY
-    ========================================================= */
-
-    $("retryButton")
-      .addEventListener(
-        "click",
-        runDiagnostic
-      );
-
-
-    /* =========================================================
        AUTH STATE
     ========================================================= */
 
-    function setupAuthListener() {
+    db.auth.onAuthStateChange(
+      function(event){
 
-      if (!db) {
-        return;
-      }
+        if(
+          event === "SIGNED_OUT"
+        ){
 
-      db.auth.onAuthStateChange(
-        (event, session) => {
-
-          if (
-            event === "SIGNED_OUT"
-          ) {
-
-            location.href =
-              "signin.html";
-
-          }
+          location.href =
+            "signin.html";
 
         }
-      );
 
-    }
+      }
+    );
 
 
     /* =========================================================
        START
     ========================================================= */
 
-    runDiagnostic()
-      .then(() => {
-
-        setupAuthListener();
-
-      })
-      .catch(error => {
-
-        showDiagnosticError(
-          "DIAGNOSTIC STARTUP ERROR",
-          error
-        );
-
-      });
+    loadProfile();
 
   </script>
 
