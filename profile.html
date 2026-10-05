@@ -1,1069 +1,1005 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>NEXORA — Profile</title>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<style>
-:root{
-  --navy:#050914;
-  --navy2:#080e1d;
-  --navy3:#0d1629;
-  --navy4:#111d33;
-
-  --gold:#d6b15e;
-  --gold2:#f0d58a;
-  --gold3:#a98535;
-
-  --white:#ffffff;
-  --text:#f4f6fa;
-  --muted:#8c96a8;
-  --muted2:#626d80;
-
-  --bg:#050914;
-  --card:#0b1222;
-  --card2:#0e1729;
-
-  --border:rgba(255,255,255,.08);
-
-  --success:#35c98b;
-  --warning:#e6b85c;
-  --danger:#ef6b73;
-}
-
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-}
-
-html{
-  scroll-behavior:smooth;
-}
-
-body{
-  min-height:100vh;
-  background:
-    radial-gradient(
-      circle at top right,
-      rgba(214,177,94,.07),
-      transparent 30%
-    ),
-    var(--bg);
-  color:var(--text);
-  font-family:
-    Inter,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    Roboto,
-    Arial,
-    sans-serif;
-}
-
-button,
-input{
-  font:inherit;
-}
-
-button{
-  cursor:pointer;
-}
-
-a{
-  color:inherit;
-  text-decoration:none;
-}
-
-/* =========================================================
-   TOPBAR — MATCH DASHBOARD
-========================================================= */
-
-.topbar{
-  height:68px;
-  background:rgba(5,9,20,.94);
-  border-bottom:1px solid var(--border);
-  position:sticky;
-  top:0;
-  z-index:100;
-  backdrop-filter:blur(16px);
-}
-
-.topbar-inner{
-  width:min(760px,100%);
-  height:100%;
-  margin:0 auto;
-  padding:0 18px;
-  display:grid;
-  grid-template-columns:44px 1fr 44px;
-  align-items:center;
-}
-
-.menu-button{
-  width:40px;
-  height:40px;
-  border:0;
-  border-radius:12px;
-  background:transparent;
-  color:var(--text);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:23px;
-}
-
-.menu-button:active{
-  background:rgba(255,255,255,.06);
-}
-
-.logo{
-  justify-self:center;
-  font-size:18px;
-  font-weight:900;
-  letter-spacing:2px;
-  color:var(--white);
-}
-
-.logo span{
-  color:var(--gold2);
-}
-
-.header-profile{
-  justify-self:end;
-  width:38px;
-  height:38px;
-  border-radius:50%;
-  border:1px solid rgba(214,177,94,.35);
-  background:var(--navy3);
-  color:var(--gold2);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:12px;
-  font-weight:900;
-}
-
-/* =========================================================
-   SIDE DRAWER
-========================================================= */
-
-.drawer-overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.58);
-  opacity:0;
-  visibility:hidden;
-  transition:.22s ease;
-  z-index:150;
-}
-
-.drawer-overlay.active{
-  opacity:1;
-  visibility:visible;
-}
-
-.drawer{
-  position:fixed;
-  left:0;
-  top:0;
-  bottom:0;
-  width:min(290px,84vw);
-  background:
-    linear-gradient(
-      180deg,
-      #080e1d,
-      #050914
-    );
-  border-right:1px solid var(--border);
-  transform:translateX(-100%);
-  transition:.25s ease;
-  z-index:160;
-  overflow-y:auto;
-}
-
-.drawer.active{
-  transform:translateX(0);
-}
-
-.drawer-header{
-  height:68px;
-  padding:0 18px;
-  border-bottom:1px solid var(--border);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-}
-
-.drawer-logo{
-  font-size:18px;
-  font-weight:900;
-  letter-spacing:2px;
-}
-
-.drawer-logo span{
-  color:var(--gold2);
-}
-
-.drawer-close{
-  width:38px;
-  height:38px;
-  border:0;
-  border-radius:11px;
-  background:rgba(255,255,255,.045);
-  color:var(--muted);
-  font-size:22px;
-}
-
-.drawer-user{
-  padding:20px 18px;
-  border-bottom:1px solid var(--border);
-}
-
-.drawer-avatar{
-  width:44px;
-  height:44px;
-  border-radius:14px;
-  background:linear-gradient(
-    145deg,
-    var(--gold2),
-    var(--gold3)
-  );
-  color:#111;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:13px;
-  font-weight:900;
-  margin-bottom:10px;
-}
-
-.drawer-name{
-  font-size:14px;
-  font-weight:800;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-}
-
-.drawer-email{
-  color:var(--muted);
-  font-size:11px;
-  margin-top:4px;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-}
-
-.drawer-nav{
-  padding:12px 10px;
-}
-
-.drawer-link{
-  min-height:48px;
-  width:100%;
-  display:flex;
-  align-items:center;
-  gap:13px;
-  padding:10px 12px;
-  border-radius:12px;
-  color:var(--muted);
-  font-size:13px;
-  font-weight:650;
-  margin-bottom:3px;
-}
-
-.drawer-link:hover{
-  background:rgba(255,255,255,.035);
-  color:var(--text);
-}
-
-.drawer-link.active{
-  background:rgba(214,177,94,.09);
-  color:var(--gold2);
-}
-
-.drawer-icon{
-  width:28px;
-  text-align:center;
-  font-size:17px;
-  flex:none;
-}
-
-.drawer-divider{
-  height:1px;
-  background:var(--border);
-  margin:10px 4px;
-}
-
-.drawer-link.logout{
-  color:#ef8d94;
-}
-
-/* =========================================================
-   PAGE
-========================================================= */
-
-.page{
-  width:min(760px,100%);
-  margin:0 auto;
-  padding:26px 16px 100px;
-}
-
-.page-title{
-  margin-bottom:22px;
-}
-
-.page-title h1{
-  font-size:27px;
-  line-height:1.2;
-  margin-bottom:7px;
-}
-
-.page-title p{
-  color:var(--muted);
-  font-size:14px;
-}
-
-/* =========================================================
-   PROFILE HERO
-========================================================= */
-
-.profile-hero{
-  background:
-    linear-gradient(
-      145deg,
-      rgba(214,177,94,.10),
-      rgba(14,23,41,.98) 45%
-    );
-  border:1px solid rgba(214,177,94,.18);
-  border-radius:22px;
-  padding:24px;
-  margin-bottom:16px;
-  position:relative;
-  overflow:hidden;
-}
-
-.profile-hero::after{
-  content:"";
-  position:absolute;
-  width:180px;
-  height:180px;
-  right:-70px;
-  top:-80px;
-  border-radius:50%;
-  background:rgba(214,177,94,.07);
-}
-
-.profile-top{
-  display:flex;
-  align-items:center;
-  gap:16px;
-  position:relative;
-  z-index:1;
-}
-
-.avatar{
-  width:72px;
-  height:72px;
-  min-width:72px;
-  border-radius:22px;
-  background:
-    linear-gradient(
-      145deg,
-      var(--gold2),
-      var(--gold3)
-    );
-  color:#111;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:24px;
-  font-weight:900;
-  box-shadow:
-    0 12px 35px rgba(214,177,94,.16);
-}
-
-.profile-main{
-  min-width:0;
-}
-
-.profile-main h2{
-  font-size:20px;
-  margin-bottom:5px;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-
-.profile-main p{
-  color:var(--muted);
-  font-size:13px;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-
-.status-row{
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-  margin-top:16px;
-}
-
-.badge{
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-  padding:7px 10px;
-  border-radius:999px;
-  font-size:11px;
-  font-weight:800;
-  letter-spacing:.4px;
-}
-
-.badge-account{
-  color:var(--gold2);
-  background:rgba(214,177,94,.10);
-  border:1px solid rgba(214,177,94,.20);
-}
-
-.badge-kyc{
-  color:#9da8ba;
-  background:rgba(255,255,255,.05);
-  border:1px solid var(--border);
-}
-
-/* =========================================================
-   CARDS
-========================================================= */
-
-.card{
-  background:
-    linear-gradient(
-      145deg,
-      var(--card),
-      var(--card2)
-    );
-  border:1px solid var(--border);
-  border-radius:18px;
-  margin-bottom:16px;
-  overflow:hidden;
-}
-
-.card-header{
-  padding:18px 18px 14px;
-  border-bottom:1px solid var(--border);
-}
-
-.card-header h3{
-  font-size:15px;
-}
-
-.card-header p{
-  margin-top:5px;
-  color:var(--muted);
-  font-size:12px;
-}
-
-.info-list{
-  padding:4px 18px;
-}
-
-.info-row{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:20px;
-  min-height:62px;
-  border-bottom:1px solid rgba(255,255,255,.055);
-}
-
-.info-row:last-child{
-  border-bottom:0;
-}
-
-.info-label{
-  color:var(--muted);
-  font-size:12px;
-}
-
-.info-value{
-  text-align:right;
-  font-size:13px;
-  font-weight:600;
-  max-width:58%;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-}
-
-.info-value.gold{
-  color:var(--gold2);
-}
-
-.info-value.success{
-  color:var(--success);
-}
-
-.info-value.warning{
-  color:var(--warning);
-}
-
-.info-value.danger{
-  color:var(--danger);
-}
-
-/* =========================================================
-   ACTIONS
-========================================================= */
-
-.action-list{
-  padding:8px;
-}
-
-.action-button{
-  width:100%;
-  min-height:58px;
-  padding:12px 14px;
-  background:transparent;
-  border:0;
-  color:var(--text);
-  display:flex;
-  align-items:center;
-  gap:13px;
-  border-radius:13px;
-  text-align:left;
-}
-
-.action-button:hover{
-  background:rgba(255,255,255,.035);
-}
-
-.action-icon{
-  width:40px;
-  height:40px;
-  border-radius:12px;
-  background:var(--navy4);
-  border:1px solid var(--border);
-  color:var(--gold2);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:17px;
-  font-weight:800;
-}
-
-.action-content{
-  flex:1;
-}
-
-.action-title{
-  font-size:13px;
-  font-weight:700;
-}
-
-.action-description{
-  color:var(--muted);
-  font-size:11px;
-  margin-top:3px;
-}
-
-.action-arrow{
-  color:var(--muted2);
-  font-size:18px;
-}
-
-/* =========================================================
-   EDIT FORM
-========================================================= */
-
-.form-section{
-  display:none;
-  padding:18px;
-  border-top:1px solid var(--border);
-}
-
-.form-section.active{
-  display:block;
-}
-
-.form-group{
-  margin-bottom:15px;
-}
-
-.form-label{
-  display:block;
-  color:var(--muted);
-  font-size:12px;
-  margin-bottom:7px;
-}
-
-.form-input{
-  width:100%;
-  height:48px;
-  border-radius:12px;
-  border:1px solid var(--border);
-  background:#070d1b;
-  color:var(--text);
-  padding:0 13px;
-  outline:none;
-}
-
-.form-input:focus{
-  border-color:rgba(214,177,94,.55);
-}
-
-.form-input:disabled{
-  opacity:.55;
-  cursor:not-allowed;
-}
-
-.form-actions{
-  display:flex;
-  gap:10px;
-}
-
-.primary-button,
-.secondary-button{
-  flex:1;
-  min-height:46px;
-  border-radius:12px;
-  font-weight:800;
-  border:1px solid var(--border);
-}
-
-.primary-button{
-  background:
-    linear-gradient(
-      145deg,
-      var(--gold2),
-      var(--gold3)
-    );
-  color:#111;
-  border:0;
-}
-
-.secondary-button{
-  background:var(--navy4);
-  color:var(--text);
-}
-
-.primary-button:disabled,
-.secondary-button:disabled{
-  opacity:.6;
-  cursor:not-allowed;
-}
-
-.message{
-  display:none;
-  padding:11px 12px;
-  border-radius:11px;
-  margin-bottom:14px;
-  font-size:12px;
-  line-height:1.5;
-}
-
-.message.show{
-  display:block;
-}
-
-.message.success{
-  color:#9df0c7;
-  background:rgba(53,201,139,.08);
-  border:1px solid rgba(53,201,139,.18);
-}
-
-.message.error{
-  color:#ffb0b5;
-  background:rgba(239,107,115,.08);
-  border:1px solid rgba(239,107,115,.18);
-}
-
-/* =========================================================
-   LOGOUT
-========================================================= */
-
-.logout-button{
-  width:100%;
-  min-height:50px;
-  border-radius:14px;
-  background:rgba(239,107,115,.06);
-  border:1px solid rgba(239,107,115,.18);
-  color:#ef8d94;
-  font-weight:800;
-  margin-top:4px;
-}
-
-/* =========================================================
-   BOTTOM NAV — MATCH DASHBOARD
-========================================================= */
-
-.bottom-nav{
-  position:fixed;
-  left:0;
-  right:0;
-  bottom:0;
-  height:70px;
-  background:rgba(5,9,20,.96);
-  border-top:1px solid var(--border);
-  display:flex;
-  justify-content:center;
-  z-index:90;
-  backdrop-filter:blur(18px);
-}
-
-.bottom-inner{
-  width:min(760px,100%);
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  align-items:center;
-}
-
-.nav-item{
-  height:70px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:4px;
-  color:var(--muted);
-  font-size:10px;
-}
-
-.nav-item.active{
-  color:var(--gold2);
-}
-
-.nav-icon{
-  font-size:18px;
-  line-height:1;
-}
-
-.nav-label{
-  font-size:10px;
-}
-
-/* =========================================================
-   RESPONSIVE
-========================================================= */
-
-@media(max-width:480px){
-
-  .topbar-inner{
-    padding:0 14px;
-  }
-
-  .page{
-    padding-left:13px;
-    padding-right:13px;
-  }
-
-  .profile-hero{
-    padding:20px;
-  }
-
-  .avatar{
-    width:64px;
-    height:64px;
-    min-width:64px;
-  }
-
-  .profile-main h2{
-    font-size:18px;
-  }
-
-  .info-row{
-    min-height:59px;
-  }
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>NEXORA — Profile</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    :root {
+      --bg: #07111f;
+      --bg2: #0b1728;
+      --card: #0d1b2e;
+      --card2: #101f33;
+      --border: rgba(255,255,255,.08);
+      --text: #f5f7fa;
+      --muted: #8e9aac;
+      --gold: #d9ad4c;
+      --gold2: #f1cc6b;
+      --green: #22c55e;
+      --red: #ef4444;
+      --shadow: 0 15px 45px rgba(0,0,0,.22);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+      padding-bottom: 82px;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* =========================================================
+       TOPBAR
+    ========================================================= */
+
+    .topbar {
+      height: 68px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(7,17,31,.96);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .topbar-inner {
+      max-width: 760px;
+      height: 100%;
+      margin: 0 auto;
+      padding: 0 18px;
+      display: grid;
+      grid-template-columns: 44px 1fr 44px;
+      align-items: center;
+    }
+
+    .menu-btn,
+    .profile-btn {
+      width: 40px;
+      height: 40px;
+      border: 0;
+      background: transparent;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+    }
+
+    .menu-btn {
+      font-size: 25px;
+    }
+
+    .menu-btn:hover,
+    .profile-btn:hover {
+      background: rgba(255,255,255,.05);
+    }
+
+    .logo {
+      text-align: center;
+      font-size: 21px;
+      font-weight: 800;
+      letter-spacing: 2px;
+    }
+
+    .logo span {
+      color: var(--gold);
+    }
+
+    .profile-btn {
+      background: var(--gold);
+      color: #111827;
+      font-size: 13px;
+      font-weight: 800;
+      width: 36px;
+      height: 36px;
+      justify-self: end;
+      border-radius: 50%;
+    }
+
+    /* =========================================================
+       PAGE
+    ========================================================= */
+
+    .page {
+      width: 100%;
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 22px 18px 30px;
+    }
+
+    .page-title {
+      margin-bottom: 18px;
+    }
+
+    .page-title h1 {
+      font-size: 25px;
+      line-height: 1.2;
+      margin-bottom: 6px;
+    }
+
+    .page-title p {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    /* =========================================================
+       CARDS
+    ========================================================= */
+
+    .card {
+      background: linear-gradient(
+        145deg,
+        rgba(16,31,51,.98),
+        rgba(10,24,41,.98)
+      );
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+
+    .section-card {
+      padding: 20px;
+    }
+
+    .section-head {
+      margin-bottom: 17px;
+    }
+
+    .section-head h3 {
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+
+    .section-head p {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    /* =========================================================
+       PROFILE HERO
+    ========================================================= */
+
+    .profile-hero {
+      padding: 22px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: linear-gradient(
+        135deg,
+        var(--gold2),
+        var(--gold)
+      );
+      color: #121212;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 800;
+      flex: none;
+    }
+
+    .hero-info {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .hero-info h2 {
+      font-size: 19px;
+      margin-bottom: 4px;
+      word-break: break-word;
+    }
+
+    .hero-info p {
+      color: var(--muted);
+      font-size: 13px;
+      word-break: break-word;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 9px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .3px;
+    }
+
+    .status-pill.active {
+      background: rgba(34,197,94,.12);
+      color: #5ee58a;
+    }
+
+    .status-pill.pending {
+      background: rgba(217,173,76,.12);
+      color: var(--gold2);
+    }
+
+    .status-pill.suspended,
+    .status-pill.closed {
+      background: rgba(239,68,68,.12);
+      color: #ff7777;
+    }
+
+    /* =========================================================
+       INFORMATION
+    ========================================================= */
+
+    .info-row {
+      min-height: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .info-row:last-child {
+      border-bottom: 0;
+    }
+
+    .info-label {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .info-value {
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 600;
+      text-align: right;
+      max-width: 60%;
+      word-break: break-word;
+    }
+
+    /* =========================================================
+       KYC
+    ========================================================= */
+
+    .kyc-card {
+      border: 1px solid rgba(217,173,76,.22);
+      background:
+        linear-gradient(
+          145deg,
+          rgba(217,173,76,.07),
+          rgba(13,27,46,.98)
+        );
+    }
+
+    .kyc-head {
+      display: flex;
+      align-items: flex-start;
+      gap: 13px;
+    }
+
+    .kyc-icon {
+      width: 42px;
+      height: 42px;
+      flex: none;
+      border-radius: 13px;
+      background: rgba(217,173,76,.12);
+      color: var(--gold2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    .kyc-title {
+      flex: 1;
+    }
+
+    .kyc-title h3 {
+      font-size: 16px;
+      margin-bottom: 5px;
+    }
+
+    .kyc-title p {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .kyc-status {
+      margin-top: 18px;
+      padding: 13px 14px;
+      border-radius: 12px;
+      background: rgba(255,255,255,.035);
+      border: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .kyc-status-label {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .kyc-status-value {
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .kyc-status-value.not_started {
+      color: var(--muted);
+    }
+
+    .kyc-status-value.pending {
+      color: var(--gold2);
+    }
+
+    .kyc-status-value.approved {
+      color: #5ee58a;
+    }
+
+    .kyc-status-value.rejected {
+      color: #ff7777;
+    }
+
+    .kyc-message {
+      display: none;
+      margin-top: 12px;
+      padding: 12px 13px;
+      border-radius: 11px;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .kyc-message.show {
+      display: block;
+    }
+
+    .kyc-message.success {
+      background: rgba(34,197,94,.08);
+      border: 1px solid rgba(34,197,94,.18);
+      color: #9af0b6;
+    }
+
+    .kyc-message.warning {
+      background: rgba(217,173,76,.08);
+      border: 1px solid rgba(217,173,76,.18);
+      color: #f0d58e;
+    }
+
+    .kyc-message.danger {
+      background: rgba(239,68,68,.08);
+      border: 1px solid rgba(239,68,68,.18);
+      color: #ff9a9a;
+    }
+
+    .kyc-action {
+      margin-top: 15px;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    /* =========================================================
+       BUTTONS
+    ========================================================= */
+
+    .primary-btn {
+      border: 0;
+      border-radius: 12px;
+      background: linear-gradient(
+        135deg,
+        var(--gold2),
+        var(--gold)
+      );
+      color: #111827;
+      font-weight: 800;
+      padding: 12px 17px;
+      font-size: 13px;
+      min-height: 44px;
+    }
+
+    .primary-btn:hover {
+      filter: brightness(1.06);
+    }
+
+    .primary-btn:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+    }
+
+    /* =========================================================
+       FORM
+    ========================================================= */
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 7px;
+    }
+
+    .input {
+      width: 100%;
+      height: 46px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      outline: none;
+      background: #091525;
+      color: var(--text);
+      padding: 0 13px;
+    }
+
+    .input:focus {
+      border-color: rgba(217,173,76,.55);
+    }
+
+    /* =========================================================
+       ACTION LIST
+    ========================================================= */
+
+    .action-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .action-item {
+      width: 100%;
+      min-height: 58px;
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      background: transparent;
+      color: var(--text);
+      text-align: left;
+    }
+
+    .action-item:last-child {
+      border-bottom: 0;
+    }
+
+    .action-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 11px;
+      background: rgba(255,255,255,.045);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold2);
+      font-size: 17px;
+      flex: none;
+    }
+
+    .action-info {
+      flex: 1;
+    }
+
+    .action-info strong {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 3px;
+    }
+
+    .action-info span {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.4;
+    }
+
+    .action-arrow {
+      color: var(--muted);
+      font-size: 17px;
+    }
+
+    .danger-item .action-icon {
+      color: #ff7777;
+      background: rgba(239,68,68,.08);
+    }
+
+    .danger-item .action-info strong {
+      color: #ff8585;
+    }
+
+    /* =========================================================
+       MESSAGE
+    ========================================================= */
+
+    .message {
+      display: none;
+      margin-bottom: 15px;
+      padding: 12px 14px;
+      border-radius: 11px;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .message.show {
+      display: block;
+    }
+
+    .message.error {
+      background: rgba(239,68,68,.09);
+      border: 1px solid rgba(239,68,68,.2);
+      color: #ff9c9c;
+    }
+
+    .message.success {
+      background: rgba(34,197,94,.09);
+      border: 1px solid rgba(34,197,94,.2);
+      color: #99efb5;
+    }
+
+    /* =========================================================
+       DRAWER
+    ========================================================= */
+
+    .drawer-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.6);
+      z-index: 190;
+      display: none;
+    }
+
+    .drawer-overlay.show {
+      display: block;
+    }
+
+    .drawer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: min(310px,86vw);
+      background: #081423;
+      border-right: 1px solid var(--border);
+      z-index: 200;
+      transform: translateX(-100%);
+      transition: transform .25s ease;
+      overflow-y: auto;
+    }
+
+    .drawer.show {
+      transform: translateX(0);
+    }
+
+    .drawer-head {
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 18px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .drawer-logo {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: 2px;
+    }
+
+    .drawer-logo span {
+      color: var(--gold);
+    }
+
+    .drawer-close {
+      width: 38px;
+      height: 38px;
+      border: 0;
+      background: transparent;
+      color: var(--text);
+      font-size: 25px;
+      border-radius: 10px;
+    }
+
+    .drawer-close:hover {
+      background: rgba(255,255,255,.05);
+    }
+
+    .drawer-links {
+      padding: 14px 10px;
+    }
+
+    .drawer-link {
+      width: 100%;
+      min-height: 49px;
+      border: 0;
+      background: transparent;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      padding: 0 13px;
+      border-radius: 12px;
+      text-align: left;
+      margin-bottom: 4px;
+      font-size: 13px;
+    }
+
+    .drawer-link:hover,
+    .drawer-link.active {
+      background: rgba(217,173,76,.09);
+      color: var(--gold2);
+    }
+
+    .drawer-link-icon {
+      width: 25px;
+      text-align: center;
+      font-size: 17px;
+      color: var(--muted);
+    }
+
+    .drawer-link.active .drawer-link-icon {
+      color: var(--gold2);
+    }
+
+    .drawer-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 10px 13px;
+    }
+
+    /* =========================================================
+       BOTTOM NAV
+    ========================================================= */
+
+    .bottom-nav {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 70px;
+      background: rgba(7,17,31,.97);
+      backdrop-filter: blur(16px);
+      border-top: 1px solid var(--border);
+      z-index: 120;
+    }
+
+    .bottom-nav-inner {
+      max-width: 760px;
+      height: 100%;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4,1fr);
+    }
+
+    .bottom-link {
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      font-size: 10px;
+      font-weight: 600;
+    }
+
+    .bottom-link-icon {
+      font-size: 20px;
+      line-height: 1;
+    }
+
+    .bottom-link.active {
+      color: var(--gold2);
+    }
+
+    /* =========================================================
+       MOBILE
+    ========================================================= */
+
+    @media (max-width:480px) {
+
+      .page {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+
+      .profile-hero {
+        padding: 18px;
+      }
+
+      .section-card {
+        padding: 17px;
+      }
+
+      .info-value {
+        max-width: 55%;
+      }
+
+    }
+  </style>
 </head>
 
 <body>
 
-<!-- =========================================================
-     TOPBAR
-========================================================= -->
+  <!-- =======================================================
+       TOPBAR
+  ======================================================== -->
 
-<header class="topbar">
+  <header class="topbar">
 
-  <div class="topbar-inner">
+    <div class="topbar-inner">
 
-    <button
-      class="menu-button"
-      id="menuButton"
-      aria-label="Open menu"
-      aria-expanded="false"
-    >
-      ☰
-    </button>
+      <button
+        class="menu-btn"
+        id="menuBtn"
+        aria-label="Open menu"
+      >
+        ☰
+      </button>
 
-    <a href="dashboard.html" class="logo">
-      NEX<span>ORA</span>
-    </a>
+      <a
+        href="dashboard.html"
+        class="logo"
+      >
+        NEX<span>ORA</span>
+      </a>
 
-    <button
-      class="header-profile"
-      id="headerInitials"
-      aria-label="Account"
-    >
-      —
-    </button>
-
-  </div>
-
-</header>
-
-
-<!-- =========================================================
-     DRAWER OVERLAY
-========================================================= -->
-
-<div
-  class="drawer-overlay"
-  id="drawerOverlay"
-></div>
-
-
-<!-- =========================================================
-     SIDE DRAWER
-========================================================= -->
-
-<aside
-  class="drawer"
-  id="drawer"
-  aria-hidden="true"
->
-
-  <div class="drawer-header">
-
-    <div class="drawer-logo">
-      NEX<span>ORA</span>
-    </div>
-
-    <button
-      class="drawer-close"
-      id="drawerClose"
-      aria-label="Close menu"
-    >
-      ×
-    </button>
-
-  </div>
-
-
-  <div class="drawer-user">
-
-    <div
-      class="drawer-avatar"
-      id="drawerInitials"
-    >
-      —
-    </div>
-
-    <div
-      class="drawer-name"
-      id="drawerName"
-    >
-      Loading...
-    </div>
-
-    <div
-      class="drawer-email"
-      id="drawerEmail"
-    >
-      Loading...
-    </div>
-
-  </div>
-
-
-  <nav class="drawer-nav">
-
-    <a
-      href="dashboard.html"
-      class="drawer-link"
-    >
-      <span class="drawer-icon">⌂</span>
-      <span>Portfolio</span>
-    </a>
-
-
-    <a
-      href="deposit.html"
-      class="drawer-link"
-    >
-      <span class="drawer-icon">＋</span>
-      <span>Deposit</span>
-    </a>
-
-
-    <a
-      href="withdraw.html"
-      class="drawer-link"
-    >
-      <span class="drawer-icon">↗</span>
-      <span>Withdraw</span>
-    </a>
-
-
-    <a
-      href="transactions.html"
-      class="drawer-link"
-    >
-      <span class="drawer-icon">≡</span>
-      <span>Transactions</span>
-    </a>
-
-
-    <a
-      href="referrals.html"
-      class="drawer-link"
-    >
-      <span class="drawer-icon">♧</span>
-      <span>Referrals</span>
-    </a>
-
-
-    <a
-      href="profile.html"
-      class="drawer-link active"
-    >
-      <span class="drawer-icon">○</span>
-      <span>Profile</span>
-    </a>
-
-
-    <a
-      href="support.html"
-      class="drawer-link"
-    >
-      <span class="drawer-icon">?</span>
-      <span>Support</span>
-    </a>
-
-
-    <a
-      href="notifications.html"
-      class="drawer-link"
-    >
-      <span class="drawer-icon">♢</span>
-      <span>Notifications</span>
-    </a>
-
-
-    <div class="drawer-divider"></div>
-
-
-    <a
-      href="#"
-      class="drawer-link logout"
-      id="drawerLogout"
-    >
-      <span class="drawer-icon">↪</span>
-      <span>Logout</span>
-    </a>
-
-  </nav>
-
-</aside>
-
-
-<!-- =========================================================
-     PAGE
-========================================================= -->
-
-<main class="page">
-
-  <div class="page-title">
-
-    <h1>Profile</h1>
-
-    <p>
-      Manage your NEXORA account information.
-    </p>
-
-  </div>
-
-
-  <!-- PROFILE HERO -->
-
-  <section class="profile-hero">
-
-    <div class="profile-top">
-
-      <div
-        class="avatar"
+      <button
+        class="profile-btn"
         id="profileInitials"
+        aria-label="Profile"
       >
         —
-      </div>
+      </button>
 
-      <div class="profile-main">
+    </div>
 
-        <h2 id="profileName">
-          Loading...
-        </h2>
+  </header>
 
-        <p id="profileEmail">
-          Loading...
-        </p>
 
-      </div>
+  <!-- =======================================================
+       DRAWER OVERLAY
+  ======================================================== -->
+
+  <div
+    class="drawer-overlay"
+    id="drawerOverlay"
+  ></div>
+
+
+  <!-- =======================================================
+       DRAWER
+  ======================================================== -->
+
+  <aside
+    class="drawer"
+    id="drawer"
+  >
+
+    <div class="drawer-head">
+
+      <a
+        href="dashboard.html"
+        class="drawer-logo"
+      >
+        NEX<span>ORA</span>
+      </a>
+
+      <button
+        class="drawer-close"
+        id="drawerClose"
+        aria-label="Close menu"
+      >
+        ×
+      </button>
 
     </div>
 
 
-    <div class="status-row">
+    <nav class="drawer-links">
 
-      <span class="badge badge-account">
-
-        <span>●</span>
-
-        <span id="accountStatus">
-          —
-        </span>
-
-      </span>
+      <button
+        class="drawer-link"
+        onclick="location.href='dashboard.html'"
+      >
+        <span class="drawer-link-icon">⌂</span>
+        <span>Portfolio</span>
+      </button>
 
 
-      <span class="badge badge-kyc">
-
-        KYC:
-
-        <span id="kycStatus">
-          —
-        </span>
-
-      </span>
-
-    </div>
-
-  </section>
+      <button
+        class="drawer-link"
+        onclick="location.href='deposit.html'"
+      >
+        <span class="drawer-link-icon">＋</span>
+        <span>Deposit</span>
+      </button>
 
 
-  <!-- ACCOUNT INFORMATION -->
+      <button
+        class="drawer-link"
+        onclick="location.href='withdraw.html'"
+      >
+        <span class="drawer-link-icon">↗</span>
+        <span>Withdraw</span>
+      </button>
 
-  <section class="card">
 
-    <div class="card-header">
+      <button
+        class="drawer-link"
+        onclick="location.href='transactions.html'"
+      >
+        <span class="drawer-link-icon">≡</span>
+        <span>Transactions</span>
+      </button>
 
-      <h3>
-        Account Information
-      </h3>
+
+      <button
+        class="drawer-link"
+        onclick="location.href='referrals.html'"
+      >
+        <span class="drawer-link-icon">♧</span>
+        <span>Referrals</span>
+      </button>
+
+
+      <button
+        class="drawer-link active"
+        onclick="location.href='profile.html'"
+      >
+        <span class="drawer-link-icon">○</span>
+        <span>Profile</span>
+      </button>
+
+
+      <button
+        class="drawer-link"
+        onclick="location.href='support.html'"
+      >
+        <span class="drawer-link-icon">?</span>
+        <span>Support</span>
+      </button>
+
+
+      <button
+        class="drawer-link"
+        onclick="location.href='notifications.html'"
+      >
+        <span class="drawer-link-icon">◌</span>
+        <span>Notifications</span>
+      </button>
+
+
+      <div class="drawer-divider"></div>
+
+
+      <button
+        class="drawer-link"
+        id="drawerLogout"
+      >
+        <span class="drawer-link-icon">↪</span>
+        <span>Logout</span>
+      </button>
+
+    </nav>
+
+  </aside>
+
+
+  <!-- =======================================================
+       MAIN PAGE
+  ======================================================== -->
+
+  <main class="page">
+
+    <div class="page-title">
+
+      <h1>Profile</h1>
 
       <p>
-        Your account details stored securely with NEXORA.
+        Manage your NEXORA account and verification status.
       </p>
 
     </div>
 
 
-    <div class="info-list">
+    <!-- =====================================================
+         PROFILE HERO
+    ====================================================== -->
+
+    <section class="card profile-hero">
+
+      <div
+        class="avatar"
+        id="avatar"
+      >
+        —
+      </div>
+
+
+      <div class="hero-info">
+
+        <h2 id="heroName">
+          Loading...
+        </h2>
+
+        <p id="heroEmail">
+          Loading...
+        </p>
+
+
+        <div
+          class="status-pill pending"
+          id="accountStatus"
+        >
+          Account status: Loading...
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         ACCOUNT INFORMATION
+    ====================================================== -->
+
+    <section class="card section-card">
+
+      <div class="section-head">
+
+        <h3>
+          Account Information
+        </h3>
+
+        <p>
+          Your basic NEXORA account details.
+        </p>
+
+      </div>
+
 
       <div class="info-row">
 
@@ -1084,12 +1020,12 @@ a{
       <div class="info-row">
 
         <span class="info-label">
-          Email address
+          Email
         </span>
 
         <span
           class="info-value"
-          id="emailAddress"
+          id="email"
         >
           —
         </span>
@@ -1104,8 +1040,8 @@ a{
         </span>
 
         <span
-          class="info-value gold"
-          id="accountStatusDetail"
+          class="info-value"
+          id="accountStatusInfo"
         >
           —
         </span>
@@ -1116,12 +1052,12 @@ a{
       <div class="info-row">
 
         <span class="info-label">
-          KYC status
+          Identity verification
         </span>
 
         <span
           class="info-value"
-          id="kycStatusDetail"
+          id="kycStatusInfo"
         >
           —
         </span>
@@ -1132,1269 +1068,1181 @@ a{
       <div class="info-row">
 
         <span class="info-label">
-          Account created
+          Member since
         </span>
 
         <span
           class="info-value"
-          id="createdAt"
+          id="memberSince"
         >
           —
         </span>
 
       </div>
 
+    </section>
 
-      <div class="info-row">
 
-        <span class="info-label">
-          User ID
+    <!-- =====================================================
+         IDENTITY VERIFICATION
+    ====================================================== -->
+
+    <section class="card section-card kyc-card">
+
+      <div class="kyc-head">
+
+        <div class="kyc-icon">
+          ✓
+        </div>
+
+
+        <div class="kyc-title">
+
+          <h3>
+            Identity Verification
+          </h3>
+
+          <p>
+            Verification is optional. It is recommended for
+            users making deposits of $1,000 or more.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="kyc-status">
+
+        <span class="kyc-status-label">
+          Verification status
         </span>
 
         <span
-          class="info-value"
-          id="userId"
+          class="kyc-status-value not_started"
+          id="kycStatusValue"
         >
-          —
+          NOT STARTED
         </span>
 
       </div>
 
-    </div>
-
-  </section>
-
-
-  <!-- ACCOUNT SETTINGS -->
-
-  <section class="card">
-
-    <div class="card-header">
-
-      <h3>
-        Account Settings
-      </h3>
-
-      <p>
-        Update your account and security settings.
-      </p>
-
-    </div>
-
-
-    <div class="action-list">
-
-      <button
-        class="action-button"
-        id="editProfileButton"
-      >
-
-        <div class="action-icon">
-          ✎
-        </div>
-
-        <div class="action-content">
-
-          <div class="action-title">
-            Edit profile
-          </div>
-
-          <div class="action-description">
-            Update your display name
-          </div>
-
-        </div>
-
-        <div class="action-arrow">
-          ›
-        </div>
-
-      </button>
-
-
-      <button
-        class="action-button"
-        id="changePasswordButton"
-      >
-
-        <div class="action-icon">
-          🔒
-        </div>
-
-        <div class="action-content">
-
-          <div class="action-title">
-            Change password
-          </div>
-
-          <div class="action-description">
-            Send a secure password reset link
-          </div>
-
-        </div>
-
-        <div class="action-arrow">
-          ›
-        </div>
-
-      </button>
-
-    </div>
-
-
-    <!-- EDIT PROFILE -->
-
-    <div
-      class="form-section"
-      id="editProfileSection"
-    >
 
       <div
-        class="message"
-        id="editMessage"
+        class="kyc-message"
+        id="kycMessage"
       ></div>
 
 
-      <div class="form-group">
-
-        <label
-          class="form-label"
-          for="editFullName"
-        >
-          Full name
-        </label>
-
-        <input
-          id="editFullName"
-          class="form-input"
-          type="text"
-          maxlength="100"
-          autocomplete="name"
-          placeholder="Enter your full name"
-        >
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label
-          class="form-label"
-          for="editEmail"
-        >
-          Email address
-        </label>
-
-        <input
-          id="editEmail"
-          class="form-input"
-          type="email"
-          disabled
-        >
-
-      </div>
-
-
-      <div class="form-actions">
+      <div class="kyc-action">
 
         <button
-          class="secondary-button"
-          id="cancelEdit"
+          class="primary-btn"
+          id="kycButton"
+          type="button"
+          onclick="openKyc()"
         >
-          Cancel
+          Verify Identity
         </button>
 
+      </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         PAGE MESSAGE
+    ====================================================== -->
+
+    <div
+      class="message"
+      id="pageMessage"
+    ></div>
+
+
+    <!-- =====================================================
+         EDIT PROFILE
+    ====================================================== -->
+
+    <section class="card section-card">
+
+      <div class="section-head">
+
+        <h3>
+          Edit Profile
+        </h3>
+
+        <p>
+          Update the name associated with your account.
+        </p>
+
+      </div>
+
+
+      <form id="profileForm">
+
+        <div class="form-group">
+
+          <label for="editName">
+            Full name
+          </label>
+
+          <input
+            class="input"
+            type="text"
+            id="editName"
+            autocomplete="name"
+            placeholder="Enter your full name"
+            required
+          >
+
+        </div>
+
+
         <button
-          class="primary-button"
-          id="saveProfile"
+          class="primary-btn"
+          id="saveProfileBtn"
+          type="submit"
         >
           Save Changes
         </button>
 
+      </form>
+
+    </section>
+
+
+    <!-- =====================================================
+         ACCOUNT SETTINGS
+    ====================================================== -->
+
+    <section class="card section-card">
+
+      <div class="section-head">
+
+        <h3>
+          Account Settings
+        </h3>
+
+        <p>
+          Security and account management.
+        </p>
+
       </div>
 
-    </div>
+
+      <div class="action-list">
+
+        <button
+          class="action-item"
+          type="button"
+          onclick="location.href='reset-password.html'"
+        >
+
+          <span class="action-icon">
+            🔒
+          </span>
+
+          <span class="action-info">
+
+            <strong>
+              Change Password
+            </strong>
+
+            <span>
+              Update your account password.
+            </span>
+
+          </span>
+
+          <span class="action-arrow">
+            ›
+          </span>
+
+        </button>
 
 
-    <!-- PASSWORD -->
+        <button
+          class="action-item"
+          type="button"
+          onclick="location.href='support.html'"
+        >
 
-    <div
-      class="form-section"
-      id="passwordSection"
-    >
+          <span class="action-icon">
+            ?
+          </span>
 
-      <div
-        class="message"
-        id="passwordMessage"
-      ></div>
+          <span class="action-info">
+
+            <strong>
+              Support
+            </strong>
+
+            <span>
+              Get help with your NEXORA account.
+            </span>
+
+          </span>
+
+          <span class="action-arrow">
+            ›
+          </span>
+
+        </button>
 
 
-      <p
-        style="
-          color:var(--muted);
-          font-size:12px;
-          line-height:1.6;
-          margin-bottom:14px;
-        "
+        <button
+          class="action-item danger-item"
+          id="logoutBtn"
+          type="button"
+        >
+
+          <span class="action-icon">
+            ↪
+          </span>
+
+          <span class="action-info">
+
+            <strong>
+              Logout
+            </strong>
+
+            <span>
+              Sign out of this account.
+            </span>
+
+          </span>
+
+          <span class="action-arrow">
+            ›
+          </span>
+
+        </button>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- =======================================================
+       BOTTOM NAV
+  ======================================================== -->
+
+  <nav class="bottom-nav">
+
+    <div class="bottom-nav-inner">
+
+      <button
+        class="bottom-link"
+        type="button"
+        onclick="location.href='dashboard.html'"
       >
-        We will send a secure password reset link to your
-        registered email address.
-      </p>
+
+        <span class="bottom-link-icon">
+          ⌂
+        </span>
+
+        <span>
+          Portfolio
+        </span>
+
+      </button>
 
 
       <button
-        class="primary-button"
-        id="sendPasswordReset"
-        style="width:100%;"
+        class="bottom-link"
+        type="button"
+        onclick="location.href='deposit.html'"
       >
-        Send Password Reset Link
+
+        <span class="bottom-link-icon">
+          ＋
+        </span>
+
+        <span>
+          Deposit
+        </span>
+
+      </button>
+
+
+      <button
+        class="bottom-link"
+        type="button"
+        onclick="location.href='transactions.html'"
+      >
+
+        <span class="bottom-link-icon">
+          ≡
+        </span>
+
+        <span>
+          History
+        </span>
+
+      </button>
+
+
+      <button
+        class="bottom-link active"
+        type="button"
+        onclick="location.href='profile.html'"
+      >
+
+        <span class="bottom-link-icon">
+          ○
+        </span>
+
+        <span>
+          Account
+        </span>
+
       </button>
 
     </div>
 
-  </section>
+  </nav>
 
 
-  <!-- LOGOUT -->
+  <!-- =======================================================
+       JAVASCRIPT
+  ======================================================== -->
 
-  <button
-    class="logout-button"
-    id="logoutButton"
-  >
-    Sign Out
-  </button>
+  <script>
 
-</main>
+    /* =========================================================
+       SUPABASE
+    ========================================================= */
 
+    const SUPABASE_URL =
+      "https://rihvvwktvgytbqzazage.supabase.co";
 
-<!-- =========================================================
-     BOTTOM NAV — EXACT DASHBOARD STRUCTURE
-========================================================= -->
+    const SUPABASE_KEY =
+      "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
 
-<nav class="bottom-nav">
-
-  <div class="bottom-inner">
-
-    <a
-      href="dashboard.html"
-      class="nav-item"
-    >
-
-      <div class="nav-icon">
-        ⌂
-      </div>
-
-      <div class="nav-label">
-        Portfolio
-      </div>
-
-    </a>
+    const db =
+      supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+      );
 
 
-    <a
-      href="deposit.html"
-      class="nav-item"
-    >
+    /* =========================================================
+       SHORTCUT
+    ========================================================= */
 
-      <div class="nav-icon">
-        ＋
-      </div>
-
-      <div class="nav-label">
-        Deposit
-      </div>
-
-    </a>
+    const $ = id =>
+      document.getElementById(id);
 
 
-    <a
-      href="transactions.html"
-      class="nav-item"
-    >
+    /* =========================================================
+       INITIALS
+    ========================================================= */
 
-      <div class="nav-icon">
-        ≡
-      </div>
+    function getInitials(name, email) {
 
-      <div class="nav-label">
-        History
-      </div>
+      const source =
+        String(name || "").trim() ||
+        String(email || "").trim();
 
-    </a>
-
-
-    <a
-      href="profile.html"
-      class="nav-item active"
-    >
-
-      <div class="nav-icon">
-        ○
-      </div>
-
-      <div class="nav-label">
-        Account
-      </div>
-
-    </a>
-
-  </div>
-
-</nav>
-
-
-<script>
-
-/* =========================================================
-   SUPABASE
-========================================================= */
-
-const SUPABASE_URL =
-  "https://rihvvwktvgytbqzazage.supabase.co";
-
-const SUPABASE_PUBLISHABLE_KEY =
-  "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
-
-const supabaseClient =
-  window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_PUBLISHABLE_KEY,
-    {
-      auth:{
-        autoRefreshToken:true,
-        persistSession:true,
-        detectSessionInUrl:true
+      if (!source) {
+        return "—";
       }
+
+      const parts =
+        source
+          .split(/\s+/)
+          .filter(Boolean);
+
+      if (parts.length >= 2) {
+
+        return (
+          parts[0][0] +
+          parts[1][0]
+        ).toUpperCase();
+
+      }
+
+      return source
+        .slice(0, 2)
+        .toUpperCase();
+
     }
-  );
 
 
-/* =========================================================
-   HELPERS
-========================================================= */
+    /* =========================================================
+       DATE FORMAT
+    ========================================================= */
 
-function $(id){
-  return document.getElementById(id);
-}
+    function formatDate(value) {
 
+      if (!value) {
+        return "—";
+      }
 
-function getInitials(name){
+      const date =
+        new Date(value);
 
-  if(!name){
-    return "—";
-  }
+      if (
+        Number.isNaN(
+          date.getTime()
+        )
+      ) {
+        return "—";
+      }
 
-  const parts =
-    name
-      .trim()
-      .split(/\s+/)
-      .filter(Boolean);
-
-  if(parts.length === 1){
-
-    return parts[0]
-      .substring(0,2)
-      .toUpperCase();
-
-  }
-
-  return (
-    parts[0][0] +
-    parts[parts.length - 1][0]
-  ).toUpperCase();
-
-}
-
-
-function formatDate(date){
-
-  if(!date){
-    return "—";
-  }
-
-  const d =
-    new Date(date);
-
-  if(
-    Number.isNaN(
-      d.getTime()
-    )
-  ){
-    return "—";
-  }
-
-  return d.toLocaleDateString(
-    undefined,
-    {
-      day:"2-digit",
-      month:"short",
-      year:"numeric"
-    }
-  );
-
-}
-
-
-function cleanStatus(value){
-
-  if(!value){
-    return "—";
-  }
-
-  return String(value)
-    .replaceAll("_"," ")
-    .toLowerCase()
-    .replace(
-      /\b\w/g,
-      char => char.toUpperCase()
-    );
-
-}
-
-
-/* =========================================================
-   DRAWER
-========================================================= */
-
-function openDrawer(){
-
-  $("drawer")
-    .classList.add("active");
-
-  $("drawerOverlay")
-    .classList.add("active");
-
-  $("drawer")
-    .setAttribute(
-      "aria-hidden",
-      "false"
-    );
-
-  $("menuButton")
-    .setAttribute(
-      "aria-expanded",
-      "true"
-    );
-
-}
-
-
-function closeDrawer(){
-
-  $("drawer")
-    .classList.remove("active");
-
-  $("drawerOverlay")
-    .classList.remove("active");
-
-  $("drawer")
-    .setAttribute(
-      "aria-hidden",
-      "true"
-    );
-
-  $("menuButton")
-    .setAttribute(
-      "aria-expanded",
-      "false"
-    );
-
-}
-
-
-$("menuButton")
-  .addEventListener(
-    "click",
-    openDrawer
-  );
-
-
-$("drawerClose")
-  .addEventListener(
-    "click",
-    closeDrawer
-  );
-
-
-$("drawerOverlay")
-  .addEventListener(
-    "click",
-    closeDrawer
-  );
-
-
-/* Close drawer after navigation */
-
-document
-  .querySelectorAll(".drawer-link")
-  .forEach(link => {
-
-    link.addEventListener(
-      "click",
-      function(){
-
-        if(
-          this.id !== "drawerLogout"
-        ){
-          closeDrawer();
+      return date.toLocaleDateString(
+        undefined,
+        {
+          year: "numeric",
+          month: "long",
+          day: "numeric"
         }
-
-      }
-    );
-
-  });
-
-
-/* =========================================================
-   DISPLAY PROFILE
-========================================================= */
-
-function displayProfile(
-  user,
-  profile
-){
-
-  const metadata =
-    user?.user_metadata || {};
-
-
-  const name =
-    profile?.full_name ||
-    metadata.full_name ||
-    (
-      user?.email
-        ? user.email.split("@")[0]
-        : "—"
-    );
-
-
-  const email =
-    profile?.email ||
-    user?.email ||
-    "—";
-
-
-  const accountStatus =
-    profile?.account_status ||
-    "PENDING";
-
-
-  const kycStatus =
-    profile?.kyc_status ||
-    "NOT_STARTED";
-
-
-  const createdAt =
-    profile?.created_at ||
-    user?.created_at ||
-    null;
-
-
-  const initials =
-    getInitials(name);
-
-
-  /* Hero */
-
-  $("profileName").textContent =
-    name;
-
-  $("profileEmail").textContent =
-    email;
-
-  $("profileInitials").textContent =
-    initials;
-
-
-  /* Header */
-
-  $("headerInitials").textContent =
-    initials;
-
-
-  /* Drawer */
-
-  $("drawerInitials").textContent =
-    initials;
-
-  $("drawerName").textContent =
-    name;
-
-  $("drawerEmail").textContent =
-    email;
-
-
-  /* Status */
-
-  $("accountStatus").textContent =
-    cleanStatus(accountStatus);
-
-  $("kycStatus").textContent =
-    cleanStatus(kycStatus);
-
-
-  /* Details */
-
-  $("fullName").textContent =
-    name;
-
-  $("emailAddress").textContent =
-    email;
-
-  $("accountStatusDetail").textContent =
-    cleanStatus(accountStatus);
-
-  $("kycStatusDetail").textContent =
-    cleanStatus(kycStatus);
-
-  $("createdAt").textContent =
-    formatDate(createdAt);
-
-  $("userId").textContent =
-    user?.id || "—";
-
-
-  /* Form */
-
-  $("editFullName").value =
-    name === "—"
-      ? ""
-      : name;
-
-  $("editEmail").value =
-    email === "—"
-      ? ""
-      : email;
-
-}
-
-
-/* =========================================================
-   LOAD PROFILE
-========================================================= */
-
-async function loadProfile(){
-
-  try{
-
-    const {
-      data:{
-        user
-      },
-      error:userError
-    } =
-      await supabaseClient
-        .auth
-        .getUser();
-
-
-    if(userError){
-
-      console.error(
-        userError
-      );
-
-      window.location.href =
-        "signin.html";
-
-      return;
-
-    }
-
-
-    if(!user){
-
-      window.location.href =
-        "signin.html";
-
-      return;
-
-    }
-
-
-    /* Show Auth information immediately */
-
-    displayProfile(
-      user,
-      null
-    );
-
-
-    /* Load database profile */
-
-    const {
-      data:profile,
-      error:profileError
-    } =
-      await supabaseClient
-        .from("profiles")
-        .select(`
-          id,
-          full_name,
-          email,
-          account_status,
-          kyc_status,
-          created_at,
-          updated_at
-        `)
-        .eq(
-          "id",
-          user.id
-        )
-        .maybeSingle();
-
-
-    if(profileError){
-
-      console.error(
-        "Profile loading error:",
-        profileError
-      );
-
-      return;
-
-    }
-
-
-    if(profile){
-
-      displayProfile(
-        user,
-        profile
       );
 
     }
 
-  }catch(error){
 
-    console.error(
-      "Unexpected profile error:",
-      error
-    );
+    /* =========================================================
+       NORMALIZE STATUS
+    ========================================================= */
 
-  }
+    function normalizeStatus(value) {
 
-}
-
-
-/* =========================================================
-   EDIT PROFILE
-========================================================= */
-
-$("editProfileButton")
-  .addEventListener(
-    "click",
-    function(){
-
-      const section =
-        $("editProfileSection");
-
-
-      section.classList.toggle(
-        "active"
-      );
-
-
-      $("passwordSection")
-        .classList.remove(
-          "active"
-        );
-
-
-      if(
-        section.classList.contains(
-          "active"
-        )
-      ){
-
-        setTimeout(
-          () => {
-
-            $("editFullName")
-              .focus();
-
-          },
-          100
-        );
-
-      }
+      return String(
+        value || "NOT_STARTED"
+      ).toUpperCase();
 
     }
-  );
 
 
-$("cancelEdit")
-  .addEventListener(
-    "click",
-    function(){
+    /* =========================================================
+       PAGE MESSAGE
+    ========================================================= */
 
-      $("editProfileSection")
-        .classList.remove(
-          "active"
-        );
+    function showMessage(
+      message,
+      type = "success"
+    ) {
 
+      const box =
+        $("pageMessage");
 
-      $("editMessage")
-        .className =
-        "message";
+      box.textContent =
+        message;
 
+      box.className =
+        "message show " + type;
 
-      $("editMessage")
-        .textContent = "";
+      setTimeout(() => {
+
+        box.className =
+          "message";
+
+      }, 5000);
 
     }
-  );
 
 
-/* =========================================================
-   SAVE PROFILE
-========================================================= */
+    /* =========================================================
+       KYC MESSAGE
+    ========================================================= */
 
-$("saveProfile")
-  .addEventListener(
-    "click",
-    async function(){
+    function showKycMessage(
+      message,
+      type
+    ) {
+
+      const box =
+        $("kycMessage");
+
+      box.textContent =
+        message;
+
+      box.className =
+        "kyc-message show " + type;
+
+    }
+
+
+    /* =========================================================
+       ACCOUNT STATUS
+    ========================================================= */
+
+    function setAccountStatus(status) {
+
+      const normalized =
+        String(
+          status || "PENDING"
+        ).toUpperCase();
+
+      const label =
+        normalized.charAt(0) +
+        normalized
+          .slice(1)
+          .toLowerCase();
+
+      const pill =
+        $("accountStatus");
+
+      pill.textContent =
+        "Account status: " +
+        label;
+
+      pill.className =
+        "status-pill " +
+        normalized.toLowerCase();
+
+      $("accountStatusInfo")
+        .textContent =
+        label;
+
+    }
+
+
+    /* =========================================================
+       KYC STATUS
+    ========================================================= */
+
+    function setKycStatus(status) {
+
+      const normalized =
+        normalizeStatus(status);
+
+      const value =
+        $("kycStatusValue");
+
+      const info =
+        $("kycStatusInfo");
 
       const button =
-        $("saveProfile");
-
-      const message =
-        $("editMessage");
-
-      const fullName =
-        $("editFullName")
-          .value
-          .trim();
+        $("kycButton");
 
 
-      if(fullName.length < 2){
+      value.className =
+        "kyc-status-value " +
+        normalized.toLowerCase();
 
-        message.className =
-          "message error show";
+      value.textContent =
+        normalized.replace(
+          /_/g,
+          " "
+        );
 
-        message.textContent =
-          "Please enter a valid full name.";
+      info.textContent =
+        normalized.replace(
+          /_/g,
+          " "
+        );
+
+
+      button.style.display =
+        "inline-flex";
+
+      button.disabled =
+        false;
+
+
+      /* NOT STARTED */
+
+      if (
+        normalized ===
+        "NOT_STARTED"
+      ) {
+
+        button.textContent =
+          "Verify Identity";
+
+        showKycMessage(
+          "Identity verification is optional. You can complete it when needed.",
+          "warning"
+        );
 
         return;
 
       }
 
 
-      button.disabled = true;
+      /* PENDING */
+
+      if (
+        normalized ===
+        "PENDING"
+      ) {
+
+        button.textContent =
+          "Under Review";
+
+        button.disabled =
+          true;
+
+        showKycMessage(
+          "Your identity verification has been submitted and is currently under review.",
+          "warning"
+        );
+
+        return;
+
+      }
+
+
+      /* APPROVED */
+
+      if (
+        normalized ===
+        "APPROVED"
+      ) {
+
+        button.style.display =
+          "none";
+
+        showKycMessage(
+          "Your identity has been verified successfully.",
+          "success"
+        );
+
+        return;
+
+      }
+
+
+      /* REJECTED */
+
+      if (
+        normalized ===
+        "REJECTED"
+      ) {
+
+        button.textContent =
+          "Verify Again";
+
+        showKycMessage(
+          "Your previous verification was rejected. You can submit your information again.",
+          "danger"
+        );
+
+        return;
+
+      }
+
 
       button.textContent =
-        "Saving...";
+        "Verify Identity";
+
+    }
 
 
-      try{
+    /* =========================================================
+       OPEN KYC
+    ========================================================= */
+
+    function openKyc() {
+
+      location.href =
+        "kyc.html";
+
+    }
+
+
+    /* =========================================================
+       LOAD PROFILE
+    ========================================================= */
+
+    async function loadProfile() {
+
+      try {
 
         const {
-          data:{
+          data: {
             user
           },
-          error:userError
+          error: authError
         } =
-          await supabaseClient
-            .auth
-            .getUser();
+          await db.auth.getUser();
 
 
-        if(
-          userError ||
-          !user
-        ){
+        if (authError) {
+          throw authError;
+        }
 
-          throw new Error(
-            "Your session has expired. Please sign in again."
-          );
+
+        if (!user) {
+
+          location.href =
+            "signin.html";
+
+          return;
 
         }
 
 
-        /* Update profiles */
-
         const {
-          data:profile,
-          error:updateError
+          data: profile,
+          error
         } =
-          await supabaseClient
+          await db
             .from("profiles")
-            .update({
-              full_name:fullName,
-              updated_at:
-                new Date()
-                  .toISOString()
-            })
+            .select(`
+              id,
+              full_name,
+              email,
+              account_status,
+              kyc_status,
+              created_at,
+              updated_at
+            `)
             .eq(
               "id",
               user.id
             )
-            .select()
-            .single();
+            .maybeSingle();
 
 
-        if(updateError){
-
-          throw updateError;
-
+        if (error) {
+          throw error;
         }
 
 
-        /* Synchronize Auth metadata */
+        const fullName =
+          profile?.full_name ||
+          user.user_metadata?.full_name ||
+          "";
+
+        const email =
+          profile?.email ||
+          user.email ||
+          "";
+
+
+        const initials =
+          getInitials(
+            fullName,
+            email
+          );
+
+
+        /* HERO */
+
+        $("avatar")
+          .textContent =
+          initials;
+
+        $("profileInitials")
+          .textContent =
+          initials;
+
+        $("heroName")
+          .textContent =
+          fullName ||
+          "NEXORA User";
+
+        $("heroEmail")
+          .textContent =
+          email ||
+          "—";
+
+
+        /* ACCOUNT INFO */
+
+        $("fullName")
+          .textContent =
+          fullName ||
+          "—";
+
+        $("email")
+          .textContent =
+          email ||
+          "—";
+
+        $("memberSince")
+          .textContent =
+          formatDate(
+            profile?.created_at ||
+            user.created_at
+          );
+
+
+        /* ACCOUNT STATUS */
+
+        setAccountStatus(
+          profile?.account_status
+        );
+
+
+        /* PROFILE KYC STATUS */
+
+        setKycStatus(
+          profile?.kyc_status
+        );
+
+
+        /* EDIT FIELD */
+
+        $("editName")
+          .value =
+          fullName;
+
+
+        /* =====================================================
+           LOAD KYC SUBMISSION
+        ===================================================== */
 
         const {
-          error:metadataError
+          data: kycSubmission,
+          error: kycError
         } =
-          await supabaseClient
-            .auth
-            .updateUser({
-              data:{
-                full_name:fullName
-              }
-            });
+          await db
+            .from("kyc_submissions")
+            .select(`
+              status,
+              rejection_reason,
+              submitted_at,
+              reviewed_at
+            `)
+            .eq(
+              "user_id",
+              user.id
+            )
+            .maybeSingle();
 
 
-        if(metadataError){
+        if (
+          !kycError &&
+          kycSubmission
+        ) {
 
-          console.warn(
-            "Auth metadata update warning:",
-            metadataError
+          setKycStatus(
+            kycSubmission.status
           );
 
         }
 
-
-        displayProfile(
-          user,
-          profile
-        );
-
-
-        message.className =
-          "message success show";
-
-        message.textContent =
-          "Your profile has been updated successfully.";
-
-
-        setTimeout(
-          () => {
-
-            $("editProfileSection")
-              .classList.remove(
-                "active"
-              );
-
-            message.className =
-              "message";
-
-            message.textContent = "";
-
-          },
-          1600
-        );
-
-
-      }catch(error){
+      } catch (error) {
 
         console.error(
+          "Profile load error:",
           error
         );
 
-
-        message.className =
-          "message error show";
-
-        message.textContent =
+        showMessage(
           error.message ||
-          "Unable to update your profile.";
-
-      }finally{
-
-        button.disabled = false;
-
-        button.textContent =
-          "Save Changes";
+          "Unable to load your profile.",
+          "error"
+        );
 
       }
 
     }
-  );
 
 
-/* =========================================================
-   CHANGE PASSWORD
-========================================================= */
+    /* =========================================================
+       UPDATE PROFILE
+    ========================================================= */
 
-$("changePasswordButton")
-  .addEventListener(
-    "click",
-    function(){
+    $("profileForm")
+      .addEventListener(
+        "submit",
+        async event => {
 
-      const section =
-        $("passwordSection");
-
-
-      section.classList.toggle(
-        "active"
-      );
+          event.preventDefault();
 
 
-      $("editProfileSection")
-        .classList.remove(
-          "active"
-        );
+          const {
+            data: {
+              user
+            }
+          } =
+            await db.auth.getUser();
 
 
-      $("passwordMessage")
-        .className =
-        "message";
+          if (!user) {
+
+            location.href =
+              "signin.html";
+
+            return;
+
+          }
 
 
-      $("passwordMessage")
-        .textContent = "";
-
-    }
-  );
-
-
-$("sendPasswordReset")
-  .addEventListener(
-    "click",
-    async function(){
-
-      const button =
-        $("sendPasswordReset");
-
-      const message =
-        $("passwordMessage");
+          const name =
+            $("editName")
+              .value
+              .trim();
 
 
-      try{
+          if (name.length < 2) {
 
-        const {
-          data:{
-            user
-          },
-          error:userError
-        } =
-          await supabaseClient
-            .auth
-            .getUser();
+            showMessage(
+              "Please enter a valid full name.",
+              "error"
+            );
 
+            return;
 
-        if(
-          userError ||
-          !user
-        ){
-
-          throw new Error(
-            "Your session has expired."
-          );
-
-        }
+          }
 
 
-        if(!user.email){
+          const button =
+            $("saveProfileBtn");
 
-          throw new Error(
-            "No email address is associated with this account."
-          );
+          button.disabled =
+            true;
 
-        }
-
-
-        button.disabled = true;
-
-        button.textContent =
-          "Sending...";
+          button.textContent =
+            "Saving...";
 
 
-        const {
-          error
-        } =
-          await supabaseClient
-            .auth
-            .resetPasswordForEmail(
-              user.email,
-              {
-                redirectTo:
-                  window.location.origin +
-                  "/reset-password.html"
-              }
+          try {
+
+            const {
+              error
+            } =
+              await db
+                .from("profiles")
+                .update({
+                  full_name: name,
+                  updated_at:
+                    new Date()
+                      .toISOString()
+                })
+                .eq(
+                  "id",
+                  user.id
+                );
+
+
+            if (error) {
+              throw error;
+            }
+
+
+            /* Update Supabase auth metadata too */
+
+            try {
+
+              await db.auth.updateUser({
+                data: {
+                  full_name: name
+                }
+              });
+
+            } catch (
+              metadataError
+            ) {
+
+              console.warn(
+                "Auth metadata update skipped:",
+                metadataError
+              );
+
+            }
+
+
+            showMessage(
+              "Profile updated successfully.",
+              "success"
             );
 
 
-        if(error){
+            await loadProfile();
 
+
+          } catch (error) {
+
+            console.error(
+              "Profile update error:",
+              error
+            );
+
+            showMessage(
+              error.message ||
+              "Unable to update your profile.",
+              "error"
+            );
+
+          } finally {
+
+            button.disabled =
+              false;
+
+            button.textContent =
+              "Save Changes";
+
+          }
+
+        }
+      );
+
+
+    /* =========================================================
+       LOGOUT
+    ========================================================= */
+
+    async function logout() {
+
+      try {
+
+        const {
+          error
+        } =
+          await db.auth.signOut();
+
+
+        if (error) {
           throw error;
-
         }
 
 
-        message.className =
-          "message success show";
+        location.href =
+          "signin.html";
 
-        message.textContent =
-          "Password reset link sent to your email address.";
-
-      }catch(error){
+      } catch (error) {
 
         console.error(
+          "Logout error:",
           error
         );
 
-
-        message.className =
-          "message error show";
-
-        message.textContent =
+        showMessage(
           error.message ||
-          "Unable to send password reset link.";
-
-      }finally{
-
-        button.disabled = false;
-
-        button.textContent =
-          "Send Password Reset Link";
+          "Unable to log out.",
+          "error"
+        );
 
       }
 
     }
-  );
 
 
-/* =========================================================
-   LOGOUT
-========================================================= */
-
-async function logout(){
-
-  const button =
-    $("logoutButton");
-
-  if(button){
-
-    button.disabled = true;
-
-    button.textContent =
-      "Signing Out...";
-
-  }
+    $("logoutBtn")
+      .addEventListener(
+        "click",
+        logout
+      );
 
 
-  const {
-    error
-  } =
-    await supabaseClient
-      .auth
-      .signOut();
+    $("drawerLogout")
+      .addEventListener(
+        "click",
+        logout
+      );
 
 
-  if(error){
+    /* =========================================================
+       DRAWER
+    ========================================================= */
 
-    console.error(
-      error
-    );
+    const drawer =
+      $("drawer");
+
+    const drawerOverlay =
+      $("drawerOverlay");
 
 
-    if(button){
+    function openDrawer() {
 
-      button.disabled = false;
+      drawer.classList.add(
+        "show"
+      );
 
-      button.textContent =
-        "Sign Out";
+      drawerOverlay.classList.add(
+        "show"
+      );
+
+      document.body.style.overflow =
+        "hidden";
 
     }
 
 
-    alert(
-      "Unable to sign out. Please try again."
-    );
+    function closeDrawer() {
 
-    return;
+      drawer.classList.remove(
+        "show"
+      );
 
-  }
+      drawerOverlay.classList.remove(
+        "show"
+      );
 
-
-  window.location.href =
-    "signin.html";
-
-}
-
-
-/* Main logout */
-
-$("logoutButton")
-  .addEventListener(
-    "click",
-    logout
-  );
-
-
-/* Drawer logout */
-
-$("drawerLogout")
-  .addEventListener(
-    "click",
-    function(event){
-
-      event.preventDefault();
-
-      closeDrawer();
-
-      logout();
+      document.body.style.overflow =
+        "";
 
     }
-  );
 
 
-/* =========================================================
-   HEADER ACCOUNT BUTTON
-========================================================= */
-
-$("headerInitials")
-  .addEventListener(
-    "click",
-    function(){
-
-      window.location.href =
-        "profile.html";
-
-    }
-  );
+    $("menuBtn")
+      .addEventListener(
+        "click",
+        openDrawer
+      );
 
 
-/* =========================================================
-   AUTH STATE
-========================================================= */
+    $("drawerClose")
+      .addEventListener(
+        "click",
+        closeDrawer
+      );
 
-supabaseClient.auth
-  .onAuthStateChange(
-    (event,session) => {
 
-      if(
-        event === "SIGNED_OUT" ||
-        !session
-      ){
+    drawerOverlay
+      .addEventListener(
+        "click",
+        closeDrawer
+      );
 
-        window.location.href =
-          "signin.html";
+
+    /* =========================================================
+       PROFILE BUTTON
+    ========================================================= */
+
+    $("profileInitials")
+      .addEventListener(
+        "click",
+        () => {
+
+          closeDrawer();
+
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+          });
+
+        }
+      );
+
+
+    /* =========================================================
+       AUTH STATE
+    ========================================================= */
+
+    db.auth.onAuthStateChange(
+      (event, session) => {
+
+        if (
+          event === "SIGNED_OUT" ||
+          !session
+        ) {
+
+          location.href =
+            "signin.html";
+
+        }
 
       }
-
-    }
-  );
+    );
 
 
-/* =========================================================
-   START
-========================================================= */
+    /* =========================================================
+       INITIAL LOAD
+    ========================================================= */
 
-loadProfile();
+    loadProfile();
 
-</script>
+  </script>
 
 </body>
 </html>
