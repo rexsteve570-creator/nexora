@@ -4,40 +4,35 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>NEXORA — Profile</title>
+  <title>NEXORA — Profile Diagnostic</title>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
-    :root {
-      --bg: #07111f;
-      --bg2: #0b1728;
-      --card: #0d1b2e;
-      --card2: #101f33;
-      --border: rgba(255,255,255,.08);
-      --text: #f5f7fa;
-      --muted: #8e9aac;
-      --gold: #d9ad4c;
-      --gold2: #f1cc6b;
-      --green: #22c55e;
-      --red: #ef4444;
-      --shadow: 0 15px 45px rgba(0,0,0,.22);
+    :root{
+      --bg:#07111f;
+      --card:#0d1b2e;
+      --card2:#101f33;
+      --border:rgba(255,255,255,.08);
+      --text:#f5f7fa;
+      --muted:#8e9aac;
+      --gold:#d9ad4c;
+      --gold2:#f1cc6b;
+      --green:#22c55e;
+      --red:#ef4444;
+      --yellow:#eab308;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
     }
 
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      min-height: 100vh;
-      background: var(--bg);
-      color: var(--text);
+    body{
+      min-height:100vh;
+      background:var(--bg);
+      color:var(--text);
       font-family:
         Inter,
         system-ui,
@@ -45,265 +40,365 @@
         BlinkMacSystemFont,
         "Segoe UI",
         sans-serif;
-      padding-bottom: 82px;
+      padding-bottom:82px;
     }
 
     button,
-    input {
-      font: inherit;
+    input{
+      font:inherit;
     }
 
-    button {
-      cursor: pointer;
+    button{
+      cursor:pointer;
     }
 
-    a {
-      color: inherit;
-      text-decoration: none;
+    a{
+      color:inherit;
+      text-decoration:none;
     }
 
     /* =========================================================
        TOPBAR
     ========================================================= */
 
-    .topbar {
-      height: 68px;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(7,17,31,.96);
-      backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--border);
+    .topbar{
+      height:68px;
+      position:sticky;
+      top:0;
+      z-index:100;
+      background:rgba(7,17,31,.97);
+      backdrop-filter:blur(16px);
+      border-bottom:1px solid var(--border);
     }
 
-    .topbar-inner {
-      max-width: 760px;
-      height: 100%;
-      margin: 0 auto;
-      padding: 0 18px;
-      display: grid;
-      grid-template-columns: 44px 1fr 44px;
-      align-items: center;
+    .topbar-inner{
+      max-width:760px;
+      height:100%;
+      margin:0 auto;
+      padding:0 18px;
+      display:grid;
+      grid-template-columns:44px 1fr 44px;
+      align-items:center;
     }
 
     .menu-btn,
-    .profile-btn {
-      width: 40px;
-      height: 40px;
-      border: 0;
-      background: transparent;
-      color: var(--text);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 12px;
+    .profile-btn{
+      width:40px;
+      height:40px;
+      border:0;
+      background:transparent;
+      color:var(--text);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:12px;
     }
 
-    .menu-btn {
-      font-size: 25px;
+    .menu-btn{
+      font-size:25px;
     }
 
-    .menu-btn:hover,
-    .profile-btn:hover {
-      background: rgba(255,255,255,.05);
+    .menu-btn:hover{
+      background:rgba(255,255,255,.05);
     }
 
-    .logo {
-      text-align: center;
-      font-size: 21px;
-      font-weight: 800;
-      letter-spacing: 2px;
+    .logo{
+      text-align:center;
+      font-size:21px;
+      font-weight:800;
+      letter-spacing:2px;
     }
 
-    .logo span {
-      color: var(--gold);
+    .logo span{
+      color:var(--gold);
     }
 
-    .profile-btn {
-      background: var(--gold);
-      color: #111827;
-      font-size: 13px;
-      font-weight: 800;
-      width: 36px;
-      height: 36px;
-      justify-self: end;
-      border-radius: 50%;
+    .profile-btn{
+      background:var(--gold);
+      color:#111827;
+      font-size:13px;
+      font-weight:800;
+      width:36px;
+      height:36px;
+      justify-self:end;
+      border-radius:50%;
     }
 
     /* =========================================================
        PAGE
     ========================================================= */
 
-    .page {
-      width: 100%;
-      max-width: 760px;
-      margin: 0 auto;
-      padding: 22px 18px 30px;
+    .page{
+      width:100%;
+      max-width:760px;
+      margin:0 auto;
+      padding:22px 18px 30px;
     }
 
-    .page-title {
-      margin-bottom: 18px;
+    .page-title{
+      margin-bottom:18px;
     }
 
-    .page-title h1 {
-      font-size: 25px;
-      line-height: 1.2;
-      margin-bottom: 6px;
+    .page-title h1{
+      font-size:25px;
+      margin-bottom:6px;
     }
 
-    .page-title p {
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.5;
+    .page-title p{
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.5;
     }
 
-    /* =========================================================
-       CARDS
-    ========================================================= */
-
-    .card {
-      background: linear-gradient(
+    .card{
+      background:linear-gradient(
         145deg,
         rgba(16,31,51,.98),
         rgba(10,24,41,.98)
       );
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      box-shadow: var(--shadow);
-      margin-bottom: 16px;
-      overflow: hidden;
+      border:1px solid var(--border);
+      border-radius:18px;
+      margin-bottom:16px;
+      overflow:hidden;
     }
 
-    .section-card {
-      padding: 20px;
+    .section-card{
+      padding:20px;
     }
 
-    .section-head {
-      margin-bottom: 17px;
+    /* =========================================================
+       DIAGNOSTIC CARD
+    ========================================================= */
+
+    .diagnostic-card{
+      border-color:rgba(234,179,8,.25);
     }
 
-    .section-head h3 {
-      font-size: 16px;
-      margin-bottom: 4px;
+    .diagnostic-header{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      margin-bottom:18px;
     }
 
-    .section-head p {
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.5;
+    .diagnostic-icon{
+      width:42px;
+      height:42px;
+      border-radius:12px;
+      background:rgba(234,179,8,.1);
+      color:#facc15;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:20px;
+      flex:none;
+    }
+
+    .diagnostic-header h2{
+      font-size:16px;
+      margin-bottom:4px;
+    }
+
+    .diagnostic-header p{
+      color:var(--muted);
+      font-size:11px;
+    }
+
+    .diagnostic-status{
+      padding:13px;
+      border-radius:11px;
+      background:rgba(255,255,255,.035);
+      border:1px solid var(--border);
+      margin-bottom:12px;
+    }
+
+    .diagnostic-status strong{
+      display:block;
+      font-size:12px;
+      margin-bottom:6px;
+    }
+
+    .diagnostic-status span{
+      color:var(--muted);
+      font-size:12px;
+      word-break:break-word;
+    }
+
+    .error-box{
+      display:none;
+      margin-top:12px;
+      padding:14px;
+      border-radius:12px;
+      background:rgba(239,68,68,.09);
+      border:1px solid rgba(239,68,68,.3);
+      color:#ffb0b0;
+      font-size:12px;
+      line-height:1.6;
+      white-space:pre-wrap;
+      word-break:break-word;
+    }
+
+    .error-box.show{
+      display:block;
+    }
+
+    .success-box{
+      display:none;
+      margin-top:12px;
+      padding:14px;
+      border-radius:12px;
+      background:rgba(34,197,94,.08);
+      border:1px solid rgba(34,197,94,.25);
+      color:#9af0b6;
+      font-size:12px;
+      line-height:1.6;
+      white-space:pre-wrap;
+      word-break:break-word;
+    }
+
+    .success-box.show{
+      display:block;
+    }
+
+    .debug-button{
+      width:100%;
+      min-height:44px;
+      border:1px solid rgba(217,173,76,.35);
+      background:rgba(217,173,76,.08);
+      color:var(--gold2);
+      border-radius:12px;
+      font-weight:800;
+      font-size:13px;
+      margin-top:12px;
+    }
+
+    .debug-button:hover{
+      background:rgba(217,173,76,.13);
     }
 
     /* =========================================================
        PROFILE HERO
     ========================================================= */
 
-    .profile-hero {
-      padding: 22px;
-      display: flex;
-      align-items: center;
-      gap: 16px;
+    .profile-hero{
+      padding:22px;
+      display:flex;
+      align-items:center;
+      gap:16px;
     }
 
-    .avatar {
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      background: linear-gradient(
+    .avatar{
+      width:64px;
+      height:64px;
+      border-radius:50%;
+      background:linear-gradient(
         135deg,
         var(--gold2),
         var(--gold)
       );
-      color: #121212;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-      font-weight: 800;
-      flex: none;
+      color:#121212;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:20px;
+      font-weight:800;
+      flex:none;
     }
 
-    .hero-info {
-      min-width: 0;
-      flex: 1;
+    .hero-info{
+      min-width:0;
+      flex:1;
     }
 
-    .hero-info h2 {
-      font-size: 19px;
-      margin-bottom: 4px;
-      word-break: break-word;
+    .hero-info h2{
+      font-size:19px;
+      margin-bottom:4px;
+      word-break:break-word;
     }
 
-    .hero-info p {
-      color: var(--muted);
-      font-size: 13px;
-      word-break: break-word;
+    .hero-info p{
+      color:var(--muted);
+      font-size:13px;
+      word-break:break-word;
     }
 
-    .status-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      margin-top: 9px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: .3px;
+    .status-pill{
+      display:inline-flex;
+      margin-top:9px;
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:11px;
+      font-weight:800;
     }
 
-    .status-pill.active {
-      background: rgba(34,197,94,.12);
-      color: #5ee58a;
+    .status-pill.active{
+      background:rgba(34,197,94,.12);
+      color:#5ee58a;
     }
 
-    .status-pill.pending {
-      background: rgba(217,173,76,.12);
-      color: var(--gold2);
+    .status-pill.pending{
+      background:rgba(217,173,76,.12);
+      color:var(--gold2);
     }
 
     .status-pill.suspended,
-    .status-pill.closed {
-      background: rgba(239,68,68,.12);
-      color: #ff7777;
+    .status-pill.closed{
+      background:rgba(239,68,68,.12);
+      color:#ff7777;
     }
 
     /* =========================================================
-       INFORMATION
+       INFO
     ========================================================= */
 
-    .info-row {
-      min-height: 54px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 15px;
-      border-bottom: 1px solid var(--border);
+    .section-head{
+      margin-bottom:17px;
     }
 
-    .info-row:last-child {
-      border-bottom: 0;
+    .section-head h3{
+      font-size:16px;
+      margin-bottom:4px;
     }
 
-    .info-label {
-      color: var(--muted);
-      font-size: 13px;
+    .section-head p{
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.5;
     }
 
-    .info-value {
-      color: var(--text);
-      font-size: 13px;
-      font-weight: 600;
-      text-align: right;
-      max-width: 60%;
-      word-break: break-word;
+    .info-row{
+      min-height:54px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:15px;
+      border-bottom:1px solid var(--border);
+    }
+
+    .info-row:last-child{
+      border-bottom:0;
+    }
+
+    .info-label{
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .info-value{
+      color:var(--text);
+      font-size:13px;
+      font-weight:600;
+      text-align:right;
+      max-width:60%;
+      word-break:break-word;
     }
 
     /* =========================================================
        KYC
     ========================================================= */
 
-    .kyc-card {
-      border: 1px solid rgba(217,173,76,.22);
+    .kyc-card{
+      border:1px solid rgba(217,173,76,.22);
       background:
         linear-gradient(
           145deg,
@@ -312,449 +407,351 @@
         );
     }
 
-    .kyc-head {
-      display: flex;
-      align-items: flex-start;
-      gap: 13px;
+    .kyc-head{
+      display:flex;
+      align-items:flex-start;
+      gap:13px;
     }
 
-    .kyc-icon {
-      width: 42px;
-      height: 42px;
-      flex: none;
-      border-radius: 13px;
-      background: rgba(217,173,76,.12);
-      color: var(--gold2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
+    .kyc-icon{
+      width:42px;
+      height:42px;
+      flex:none;
+      border-radius:13px;
+      background:rgba(217,173,76,.12);
+      color:var(--gold2);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:20px;
     }
 
-    .kyc-title {
-      flex: 1;
+    .kyc-title{
+      flex:1;
     }
 
-    .kyc-title h3 {
-      font-size: 16px;
-      margin-bottom: 5px;
+    .kyc-title h3{
+      font-size:16px;
+      margin-bottom:5px;
     }
 
-    .kyc-title p {
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.55;
+    .kyc-title p{
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.55;
     }
 
-    .kyc-status {
-      margin-top: 18px;
-      padding: 13px 14px;
-      border-radius: 12px;
-      background: rgba(255,255,255,.035);
-      border: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
+    .kyc-status{
+      margin-top:18px;
+      padding:13px 14px;
+      border-radius:12px;
+      background:rgba(255,255,255,.035);
+      border:1px solid var(--border);
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
     }
 
-    .kyc-status-label {
-      color: var(--muted);
-      font-size: 12px;
+    .kyc-status-label{
+      color:var(--muted);
+      font-size:12px;
     }
 
-    .kyc-status-value {
-      font-size: 12px;
-      font-weight: 800;
+    .kyc-status-value{
+      font-size:12px;
+      font-weight:800;
     }
 
-    .kyc-status-value.not_started {
-      color: var(--muted);
+    .kyc-message{
+      margin-top:12px;
+      padding:12px;
+      border-radius:11px;
+      background:rgba(217,173,76,.08);
+      border:1px solid rgba(217,173,76,.18);
+      color:#f0d58e;
+      font-size:12px;
+      line-height:1.5;
     }
 
-    .kyc-status-value.pending {
-      color: var(--gold2);
+    .kyc-action{
+      margin-top:15px;
+      display:flex;
+      justify-content:flex-end;
     }
 
-    .kyc-status-value.approved {
-      color: #5ee58a;
-    }
-
-    .kyc-status-value.rejected {
-      color: #ff7777;
-    }
-
-    .kyc-message {
-      display: none;
-      margin-top: 12px;
-      padding: 12px 13px;
-      border-radius: 11px;
-      font-size: 12px;
-      line-height: 1.55;
-    }
-
-    .kyc-message.show {
-      display: block;
-    }
-
-    .kyc-message.success {
-      background: rgba(34,197,94,.08);
-      border: 1px solid rgba(34,197,94,.18);
-      color: #9af0b6;
-    }
-
-    .kyc-message.warning {
-      background: rgba(217,173,76,.08);
-      border: 1px solid rgba(217,173,76,.18);
-      color: #f0d58e;
-    }
-
-    .kyc-message.danger {
-      background: rgba(239,68,68,.08);
-      border: 1px solid rgba(239,68,68,.18);
-      color: #ff9a9a;
-    }
-
-    .kyc-action {
-      margin-top: 15px;
-      display: flex;
-      justify-content: flex-end;
-    }
-
-    /* =========================================================
-       BUTTONS
-    ========================================================= */
-
-    .primary-btn {
-      border: 0;
-      border-radius: 12px;
-      background: linear-gradient(
+    .primary-btn{
+      border:0;
+      border-radius:12px;
+      background:linear-gradient(
         135deg,
         var(--gold2),
         var(--gold)
       );
-      color: #111827;
-      font-weight: 800;
-      padding: 12px 17px;
-      font-size: 13px;
-      min-height: 44px;
-    }
-
-    .primary-btn:hover {
-      filter: brightness(1.06);
-    }
-
-    .primary-btn:disabled {
-      opacity: .55;
-      cursor: not-allowed;
+      color:#111827;
+      font-weight:800;
+      padding:12px 17px;
+      font-size:13px;
+      min-height:44px;
     }
 
     /* =========================================================
-       FORM
+       EDIT
     ========================================================= */
 
-    .form-group {
-      margin-bottom: 15px;
+    .form-group{
+      margin-bottom:15px;
     }
 
-    .form-group label {
-      display: block;
-      color: var(--muted);
-      font-size: 12px;
-      margin-bottom: 7px;
+    .form-group label{
+      display:block;
+      color:var(--muted);
+      font-size:12px;
+      margin-bottom:7px;
     }
 
-    .input {
-      width: 100%;
-      height: 46px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      outline: none;
-      background: #091525;
-      color: var(--text);
-      padding: 0 13px;
-    }
-
-    .input:focus {
-      border-color: rgba(217,173,76,.55);
+    .input{
+      width:100%;
+      height:46px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      outline:none;
+      background:#091525;
+      color:var(--text);
+      padding:0 13px;
     }
 
     /* =========================================================
-       ACTION LIST
+       ACTIONS
     ========================================================= */
 
-    .action-list {
-      display: flex;
-      flex-direction: column;
+    .action-list{
+      display:flex;
+      flex-direction:column;
     }
 
-    .action-item {
-      width: 100%;
-      min-height: 58px;
-      display: flex;
-      align-items: center;
-      gap: 13px;
-      border: 0;
-      border-bottom: 1px solid var(--border);
-      background: transparent;
-      color: var(--text);
-      text-align: left;
+    .action-item{
+      width:100%;
+      min-height:58px;
+      border:0;
+      border-bottom:1px solid var(--border);
+      background:transparent;
+      color:var(--text);
+      display:flex;
+      align-items:center;
+      gap:13px;
+      text-align:left;
     }
 
-    .action-item:last-child {
-      border-bottom: 0;
+    .action-item:last-child{
+      border-bottom:0;
     }
 
-    .action-icon {
-      width: 38px;
-      height: 38px;
-      border-radius: 11px;
-      background: rgba(255,255,255,.045);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--gold2);
-      font-size: 17px;
-      flex: none;
+    .action-icon{
+      width:38px;
+      height:38px;
+      border-radius:11px;
+      background:rgba(255,255,255,.045);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--gold2);
+      flex:none;
     }
 
-    .action-info {
-      flex: 1;
+    .action-info{
+      flex:1;
     }
 
-    .action-info strong {
-      display: block;
-      font-size: 13px;
-      margin-bottom: 3px;
+    .action-info strong{
+      display:block;
+      font-size:13px;
+      margin-bottom:3px;
     }
 
-    .action-info span {
-      display: block;
-      color: var(--muted);
-      font-size: 11px;
-      line-height: 1.4;
+    .action-info span{
+      display:block;
+      color:var(--muted);
+      font-size:11px;
     }
 
-    .action-arrow {
-      color: var(--muted);
-      font-size: 17px;
+    .action-arrow{
+      color:var(--muted);
+      font-size:17px;
     }
 
-    .danger-item .action-icon {
-      color: #ff7777;
-      background: rgba(239,68,68,.08);
+    .danger-item .action-icon{
+      color:#ff7777;
+      background:rgba(239,68,68,.08);
     }
 
-    .danger-item .action-info strong {
-      color: #ff8585;
-    }
-
-    /* =========================================================
-       MESSAGE
-    ========================================================= */
-
-    .message {
-      display: none;
-      margin-bottom: 15px;
-      padding: 12px 14px;
-      border-radius: 11px;
-      font-size: 12px;
-      line-height: 1.5;
-    }
-
-    .message.show {
-      display: block;
-    }
-
-    .message.error {
-      background: rgba(239,68,68,.09);
-      border: 1px solid rgba(239,68,68,.2);
-      color: #ff9c9c;
-    }
-
-    .message.success {
-      background: rgba(34,197,94,.09);
-      border: 1px solid rgba(34,197,94,.2);
-      color: #99efb5;
+    .danger-item .action-info strong{
+      color:#ff8585;
     }
 
     /* =========================================================
        DRAWER
     ========================================================= */
 
-    .drawer-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,.6);
-      z-index: 190;
-      display: none;
+    .drawer-overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.6);
+      z-index:190;
+      display:none;
     }
 
-    .drawer-overlay.show {
-      display: block;
+    .drawer-overlay.show{
+      display:block;
     }
 
-    .drawer {
-      position: fixed;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      width: min(310px,86vw);
-      background: #081423;
-      border-right: 1px solid var(--border);
-      z-index: 200;
-      transform: translateX(-100%);
-      transition: transform .25s ease;
-      overflow-y: auto;
+    .drawer{
+      position:fixed;
+      top:0;
+      left:0;
+      bottom:0;
+      width:min(310px,86vw);
+      background:#081423;
+      border-right:1px solid var(--border);
+      z-index:200;
+      transform:translateX(-100%);
+      transition:transform .25s ease;
+      overflow-y:auto;
     }
 
-    .drawer.show {
-      transform: translateX(0);
+    .drawer.show{
+      transform:translateX(0);
     }
 
-    .drawer-head {
-      height: 68px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 18px;
-      border-bottom: 1px solid var(--border);
+    .drawer-head{
+      height:68px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:0 18px;
+      border-bottom:1px solid var(--border);
     }
 
-    .drawer-logo {
-      font-size: 20px;
-      font-weight: 800;
-      letter-spacing: 2px;
+    .drawer-logo{
+      font-size:20px;
+      font-weight:800;
+      letter-spacing:2px;
     }
 
-    .drawer-logo span {
-      color: var(--gold);
+    .drawer-logo span{
+      color:var(--gold);
     }
 
-    .drawer-close {
-      width: 38px;
-      height: 38px;
-      border: 0;
-      background: transparent;
-      color: var(--text);
-      font-size: 25px;
-      border-radius: 10px;
+    .drawer-close{
+      width:38px;
+      height:38px;
+      border:0;
+      background:transparent;
+      color:var(--text);
+      font-size:25px;
     }
 
-    .drawer-close:hover {
-      background: rgba(255,255,255,.05);
+    .drawer-links{
+      padding:14px 10px;
     }
 
-    .drawer-links {
-      padding: 14px 10px;
+    .drawer-link{
+      width:100%;
+      min-height:49px;
+      border:0;
+      background:transparent;
+      color:var(--text);
+      display:flex;
+      align-items:center;
+      gap:13px;
+      padding:0 13px;
+      border-radius:12px;
+      text-align:left;
+      margin-bottom:4px;
+      font-size:13px;
     }
 
-    .drawer-link {
-      width: 100%;
-      min-height: 49px;
-      border: 0;
-      background: transparent;
-      color: var(--text);
-      display: flex;
-      align-items: center;
-      gap: 13px;
-      padding: 0 13px;
-      border-radius: 12px;
-      text-align: left;
-      margin-bottom: 4px;
-      font-size: 13px;
+    .drawer-link.active,
+    .drawer-link:hover{
+      background:rgba(217,173,76,.09);
+      color:var(--gold2);
     }
 
-    .drawer-link:hover,
-    .drawer-link.active {
-      background: rgba(217,173,76,.09);
-      color: var(--gold2);
+    .drawer-link-icon{
+      width:25px;
+      text-align:center;
+      color:var(--muted);
+      font-size:17px;
     }
 
-    .drawer-link-icon {
-      width: 25px;
-      text-align: center;
-      font-size: 17px;
-      color: var(--muted);
-    }
-
-    .drawer-link.active .drawer-link-icon {
-      color: var(--gold2);
-    }
-
-    .drawer-divider {
-      height: 1px;
-      background: var(--border);
-      margin: 10px 13px;
+    .drawer-divider{
+      height:1px;
+      background:var(--border);
+      margin:10px 13px;
     }
 
     /* =========================================================
-       BOTTOM NAV
+       BOTTOM
     ========================================================= */
 
-    .bottom-nav {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 70px;
-      background: rgba(7,17,31,.97);
-      backdrop-filter: blur(16px);
-      border-top: 1px solid var(--border);
-      z-index: 120;
+    .bottom-nav{
+      position:fixed;
+      left:0;
+      right:0;
+      bottom:0;
+      height:70px;
+      background:rgba(7,17,31,.97);
+      backdrop-filter:blur(16px);
+      border-top:1px solid var(--border);
+      z-index:120;
     }
 
-    .bottom-nav-inner {
-      max-width: 760px;
-      height: 100%;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(4,1fr);
+    .bottom-nav-inner{
+      max-width:760px;
+      height:100%;
+      margin:0 auto;
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
     }
 
-    .bottom-link {
-      border: 0;
-      background: transparent;
-      color: var(--muted);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-      font-size: 10px;
-      font-weight: 600;
+    .bottom-link{
+      border:0;
+      background:transparent;
+      color:var(--muted);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:4px;
+      font-size:10px;
+      font-weight:600;
     }
 
-    .bottom-link-icon {
-      font-size: 20px;
-      line-height: 1;
+    .bottom-link-icon{
+      font-size:20px;
+      line-height:1;
     }
 
-    .bottom-link.active {
-      color: var(--gold2);
+    .bottom-link.active{
+      color:var(--gold2);
     }
 
-    /* =========================================================
-       MOBILE
-    ========================================================= */
+    @media(max-width:480px){
 
-    @media (max-width:480px) {
-
-      .page {
-        padding-left: 14px;
-        padding-right: 14px;
+      .page{
+        padding-left:14px;
+        padding-right:14px;
       }
 
-      .profile-hero {
-        padding: 18px;
+      .profile-hero{
+        padding:18px;
       }
 
-      .section-card {
-        padding: 17px;
+      .section-card{
+        padding:17px;
       }
 
-      .info-value {
-        max-width: 55%;
+      .info-value{
+        max-width:55%;
       }
 
     }
@@ -774,7 +771,6 @@
       <button
         class="menu-btn"
         id="menuBtn"
-        aria-label="Open menu"
       >
         ☰
       </button>
@@ -789,7 +785,6 @@
       <button
         class="profile-btn"
         id="profileInitials"
-        aria-label="Profile"
       >
         —
       </button>
@@ -800,7 +795,7 @@
 
 
   <!-- =======================================================
-       DRAWER OVERLAY
+       DRAWER
   ======================================================== -->
 
   <div
@@ -808,10 +803,6 @@
     id="drawerOverlay"
   ></div>
 
-
-  <!-- =======================================================
-       DRAWER
-  ======================================================== -->
 
   <aside
     class="drawer"
@@ -830,7 +821,6 @@
       <button
         class="drawer-close"
         id="drawerClose"
-        aria-label="Close menu"
       >
         ×
       </button>
@@ -929,7 +919,7 @@
 
 
   <!-- =======================================================
-       MAIN PAGE
+       MAIN
   ======================================================== -->
 
   <main class="page">
@@ -946,6 +936,95 @@
 
 
     <!-- =====================================================
+         DIAGNOSTIC
+    ====================================================== -->
+
+    <section class="card section-card diagnostic-card">
+
+      <div class="diagnostic-header">
+
+        <div class="diagnostic-icon">
+          !
+        </div>
+
+        <div>
+
+          <h2>
+            Supabase Diagnostic
+          </h2>
+
+          <p>
+            Temporary diagnostic information
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="diagnostic-status">
+
+        <strong>
+          Authentication
+        </strong>
+
+        <span id="authDiagnostic">
+          Checking...
+        </span>
+
+      </div>
+
+
+      <div class="diagnostic-status">
+
+        <strong>
+          Profile Query
+        </strong>
+
+        <span id="profileDiagnostic">
+          Waiting...
+        </span>
+
+      </div>
+
+
+      <div class="diagnostic-status">
+
+        <strong>
+          KYC Query
+        </strong>
+
+        <span id="kycDiagnostic">
+          Waiting...
+        </span>
+
+      </div>
+
+
+      <div
+        class="error-box"
+        id="errorBox"
+      ></div>
+
+
+      <div
+        class="success-box"
+        id="successBox"
+      ></div>
+
+
+      <button
+        class="debug-button"
+        id="retryButton"
+        type="button"
+      >
+        Run Diagnostic Again
+      </button>
+
+    </section>
+
+
+    <!-- =====================================================
          PROFILE HERO
     ====================================================== -->
 
@@ -958,7 +1037,6 @@
         —
       </div>
 
-
       <div class="hero-info">
 
         <h2 id="heroName">
@@ -968,7 +1046,6 @@
         <p id="heroEmail">
           Loading...
         </p>
-
 
         <div
           class="status-pill pending"
@@ -1084,7 +1161,7 @@
 
 
     <!-- =====================================================
-         IDENTITY VERIFICATION
+         KYC
     ====================================================== -->
 
     <section class="card section-card kyc-card">
@@ -1094,7 +1171,6 @@
         <div class="kyc-icon">
           ✓
         </div>
-
 
         <div class="kyc-title">
 
@@ -1119,7 +1195,7 @@
         </span>
 
         <span
-          class="kyc-status-value not_started"
+          class="kyc-status-value"
           id="kycStatusValue"
         >
           NOT STARTED
@@ -1131,7 +1207,9 @@
       <div
         class="kyc-message"
         id="kycMessage"
-      ></div>
+      >
+        Identity verification is optional.
+      </div>
 
 
       <div class="kyc-action">
@@ -1140,7 +1218,7 @@
           class="primary-btn"
           id="kycButton"
           type="button"
-          onclick="openKyc()"
+          onclick="location.href='kyc.html'"
         >
           Verify Identity
         </button>
@@ -1148,16 +1226,6 @@
       </div>
 
     </section>
-
-
-    <!-- =====================================================
-         PAGE MESSAGE
-    ====================================================== -->
-
-    <div
-      class="message"
-      id="pageMessage"
-    ></div>
 
 
     <!-- =====================================================
@@ -1191,8 +1259,8 @@
             class="input"
             type="text"
             id="editName"
-            autocomplete="name"
             placeholder="Enter your full name"
+            autocomplete="name"
             required
           >
 
@@ -1336,69 +1404,37 @@
 
       <button
         class="bottom-link"
-        type="button"
         onclick="location.href='dashboard.html'"
       >
-
-        <span class="bottom-link-icon">
-          ⌂
-        </span>
-
-        <span>
-          Portfolio
-        </span>
-
+        <span class="bottom-link-icon">⌂</span>
+        <span>Portfolio</span>
       </button>
 
 
       <button
         class="bottom-link"
-        type="button"
         onclick="location.href='deposit.html'"
       >
-
-        <span class="bottom-link-icon">
-          ＋
-        </span>
-
-        <span>
-          Deposit
-        </span>
-
+        <span class="bottom-link-icon">＋</span>
+        <span>Deposit</span>
       </button>
 
 
       <button
         class="bottom-link"
-        type="button"
         onclick="location.href='transactions.html'"
       >
-
-        <span class="bottom-link-icon">
-          ≡
-        </span>
-
-        <span>
-          History
-        </span>
-
+        <span class="bottom-link-icon">≡</span>
+        <span>History</span>
       </button>
 
 
       <button
         class="bottom-link active"
-        type="button"
         onclick="location.href='profile.html'"
       >
-
-        <span class="bottom-link-icon">
-          ○
-        </span>
-
-        <span>
-          Account
-        </span>
-
+        <span class="bottom-link-icon">○</span>
+        <span>Account</span>
       </button>
 
     </div>
@@ -1413,7 +1449,7 @@
   <script>
 
     /* =========================================================
-       SUPABASE
+       SUPABASE CONFIG
     ========================================================= */
 
     const SUPABASE_URL =
@@ -1422,26 +1458,111 @@
     const SUPABASE_KEY =
       "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
 
-    const db =
-      supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY
-      );
+
+    let db;
 
 
     /* =========================================================
-       SHORTCUT
+       DOM HELPER
     ========================================================= */
 
-    const $ = id =>
-      document.getElementById(id);
+    function $(id) {
+      return document.getElementById(id);
+    }
+
+
+    /* =========================================================
+       DIAGNOSTIC ERROR
+    ========================================================= */
+
+    function showDiagnosticError(
+      title,
+      error
+    ) {
+
+      const box =
+        $("errorBox");
+
+      let details = "";
+
+      if (typeof error === "string") {
+
+        details = error;
+
+      } else if (error) {
+
+        details =
+          "Message: " +
+          (error.message || "No message") +
+          "\n\n" +
+
+          "Details: " +
+          (error.details || "None") +
+          "\n\n" +
+
+          "Hint: " +
+          (error.hint || "None") +
+          "\n\n" +
+
+          "Code: " +
+          (error.code || "None") +
+          "\n\n" +
+
+          "Status: " +
+          (error.status || "None");
+
+      } else {
+
+        details =
+          "Unknown error.";
+
+      }
+
+
+      box.textContent =
+        title +
+        "\n\n" +
+        details;
+
+
+      box.classList.add("show");
+
+      $("successBox")
+        .classList.remove("show");
+
+    }
+
+
+    /* =========================================================
+       DIAGNOSTIC SUCCESS
+    ========================================================= */
+
+    function showDiagnosticSuccess(
+      message
+    ) {
+
+      const box =
+        $("successBox");
+
+      box.textContent =
+        message;
+
+      box.classList.add("show");
+
+      $("errorBox")
+        .classList.remove("show");
+
+    }
 
 
     /* =========================================================
        INITIALS
     ========================================================= */
 
-    function getInitials(name, email) {
+    function getInitials(
+      name,
+      email
+    ) {
 
       const source =
         String(name || "").trim() ||
@@ -1466,14 +1587,14 @@
       }
 
       return source
-        .slice(0, 2)
+        .slice(0,2)
         .toUpperCase();
 
     }
 
 
     /* =========================================================
-       DATE FORMAT
+       DATE
     ========================================================= */
 
     function formatDate(value) {
@@ -1490,79 +1611,19 @@
           date.getTime()
         )
       ) {
+
         return "—";
+
       }
 
       return date.toLocaleDateString(
         undefined,
         {
-          year: "numeric",
-          month: "long",
-          day: "numeric"
+          year:"numeric",
+          month:"long",
+          day:"numeric"
         }
       );
-
-    }
-
-
-    /* =========================================================
-       NORMALIZE STATUS
-    ========================================================= */
-
-    function normalizeStatus(value) {
-
-      return String(
-        value || "NOT_STARTED"
-      ).toUpperCase();
-
-    }
-
-
-    /* =========================================================
-       PAGE MESSAGE
-    ========================================================= */
-
-    function showMessage(
-      message,
-      type = "success"
-    ) {
-
-      const box =
-        $("pageMessage");
-
-      box.textContent =
-        message;
-
-      box.className =
-        "message show " + type;
-
-      setTimeout(() => {
-
-        box.className =
-          "message";
-
-      }, 5000);
-
-    }
-
-
-    /* =========================================================
-       KYC MESSAGE
-    ========================================================= */
-
-    function showKycMessage(
-      message,
-      type
-    ) {
-
-      const box =
-        $("kycMessage");
-
-      box.textContent =
-        message;
-
-      box.className =
-        "kyc-message show " + type;
 
     }
 
@@ -1571,7 +1632,9 @@
        ACCOUNT STATUS
     ========================================================= */
 
-    function setAccountStatus(status) {
+    function setAccountStatus(
+      status
+    ) {
 
       const normalized =
         String(
@@ -1584,16 +1647,18 @@
           .slice(1)
           .toLowerCase();
 
-      const pill =
-        $("accountStatus");
 
-      pill.textContent =
+      $("accountStatus")
+        .textContent =
         "Account status: " +
         label;
 
-      pill.className =
+
+      $("accountStatus")
+        .className =
         "status-pill " +
         normalized.toLowerCase();
+
 
       $("accountStatusInfo")
         .textContent =
@@ -1606,70 +1671,38 @@
        KYC STATUS
     ========================================================= */
 
-    function setKycStatus(status) {
+    function setKycStatus(
+      status
+    ) {
 
       const normalized =
-        normalizeStatus(status);
+        String(
+          status || "NOT_STARTED"
+        ).toUpperCase();
 
-      const value =
-        $("kycStatusValue");
 
-      const info =
-        $("kycStatusInfo");
+      $("kycStatusValue")
+        .textContent =
+        normalized.replace(
+          /_/g,
+          " "
+        );
+
+
+      $("kycStatusInfo")
+        .textContent =
+        normalized.replace(
+          /_/g,
+          " "
+        );
+
 
       const button =
         $("kycButton");
 
 
-      value.className =
-        "kyc-status-value " +
-        normalized.toLowerCase();
-
-      value.textContent =
-        normalized.replace(
-          /_/g,
-          " "
-        );
-
-      info.textContent =
-        normalized.replace(
-          /_/g,
-          " "
-        );
-
-
-      button.style.display =
-        "inline-flex";
-
-      button.disabled =
-        false;
-
-
-      /* NOT STARTED */
-
       if (
-        normalized ===
-        "NOT_STARTED"
-      ) {
-
-        button.textContent =
-          "Verify Identity";
-
-        showKycMessage(
-          "Identity verification is optional. You can complete it when needed.",
-          "warning"
-        );
-
-        return;
-
-      }
-
-
-      /* PENDING */
-
-      if (
-        normalized ===
-        "PENDING"
+        normalized === "PENDING"
       ) {
 
         button.textContent =
@@ -1678,140 +1711,298 @@
         button.disabled =
           true;
 
-        showKycMessage(
-          "Your identity verification has been submitted and is currently under review.",
-          "warning"
-        );
-
-        return;
+        $("kycMessage")
+          .textContent =
+          "Your identity verification has been submitted and is currently under review.";
 
       }
 
 
-      /* APPROVED */
-
-      if (
-        normalized ===
-        "APPROVED"
+      else if (
+        normalized === "APPROVED"
       ) {
 
         button.style.display =
           "none";
 
-        showKycMessage(
-          "Your identity has been verified successfully.",
-          "success"
-        );
-
-        return;
+        $("kycMessage")
+          .textContent =
+          "Your identity has been verified successfully.";
 
       }
 
 
-      /* REJECTED */
-
-      if (
-        normalized ===
-        "REJECTED"
+      else if (
+        normalized === "REJECTED"
       ) {
 
         button.textContent =
           "Verify Again";
 
-        showKycMessage(
-          "Your previous verification was rejected. You can submit your information again.",
-          "danger"
-        );
+        button.disabled =
+          false;
 
-        return;
+        $("kycMessage")
+          .textContent =
+          "Your previous verification was rejected. You can submit your information again.";
 
       }
 
 
-      button.textContent =
-        "Verify Identity";
+      else {
+
+        button.textContent =
+          "Verify Identity";
+
+        button.disabled =
+          false;
+
+        $("kycMessage")
+          .textContent =
+          "Identity verification is optional. You can complete it when needed.";
+
+      }
 
     }
 
 
     /* =========================================================
-       OPEN KYC
+       MAIN DIAGNOSTIC
     ========================================================= */
 
-    function openKyc() {
+    async function runDiagnostic() {
 
-      location.href =
-        "kyc.html";
+      $("authDiagnostic")
+        .textContent =
+        "Checking Supabase connection...";
 
-    }
+      $("profileDiagnostic")
+        .textContent =
+        "Waiting...";
 
+      $("kycDiagnostic")
+        .textContent =
+        "Waiting...";
 
-    /* =========================================================
-       LOAD PROFILE
-    ========================================================= */
+      $("errorBox")
+        .classList.remove("show");
 
-    async function loadProfile() {
+      $("successBox")
+        .classList.remove("show");
+
 
       try {
 
-        const {
-          data: {
-            user
-          },
-          error: authError
-        } =
-          await db.auth.getUser();
+        /* =====================================================
+           STEP 1 — CREATE CLIENT
+        ===================================================== */
 
+        try {
 
-        if (authError) {
-          throw authError;
-        }
+          db =
+            supabase.createClient(
+              SUPABASE_URL,
+              SUPABASE_KEY
+            );
 
+        } catch (error) {
 
-        if (!user) {
+          $("authDiagnostic")
+            .textContent =
+            "FAILED";
 
-          location.href =
-            "signin.html";
+          showDiagnosticError(
+            "SUPABASE CLIENT ERROR",
+            error
+          );
 
           return;
 
         }
 
 
-        const {
-          data: profile,
-          error
-        } =
-          await db
-            .from("profiles")
-            .select(`
-              id,
-              full_name,
-              email,
-              account_status,
-              kyc_status,
-              created_at,
-              updated_at
-            `)
-            .eq(
-              "id",
-              user.id
-            )
-            .maybeSingle();
+        /* =====================================================
+           STEP 2 — AUTH
+        ===================================================== */
 
+        let authResult;
 
-        if (error) {
-          throw error;
+        try {
+
+          authResult =
+            await db.auth.getUser();
+
+        } catch (error) {
+
+          $("authDiagnostic")
+            .textContent =
+            "FAILED";
+
+          showDiagnosticError(
+            "AUTHENTICATION REQUEST FAILED",
+            error
+          );
+
+          return;
+
         }
 
 
+        const authError =
+          authResult.error;
+
+        const user =
+          authResult.data?.user;
+
+
+        if (authError) {
+
+          $("authDiagnostic")
+            .textContent =
+            "FAILED";
+
+          showDiagnosticError(
+            "AUTHENTICATION ERROR",
+            authError
+          );
+
+          return;
+
+        }
+
+
+        if (!user) {
+
+          $("authDiagnostic")
+            .textContent =
+            "NO AUTHENTICATED USER";
+
+          showDiagnosticError(
+            "NO LOGGED-IN USER",
+            "Supabase is working, but there is no authenticated user session on this page.\n\nIf you are already logged in elsewhere, check that this page is using the same Supabase project and domain."
+          );
+
+          return;
+
+        }
+
+
+        $("authDiagnostic")
+          .textContent =
+          "SUCCESS — User session found";
+
+
+        /* =====================================================
+           DISPLAY USER ID
+        ===================================================== */
+
+        const userEmail =
+          user.email || "No email";
+
+        $("profileDiagnostic")
+          .textContent =
+          "Authenticated user: " +
+          userEmail;
+
+
+        /* =====================================================
+           STEP 3 — PROFILE QUERY
+        ===================================================== */
+
+        let profileResult;
+
+        try {
+
+          profileResult =
+            await db
+              .from("profiles")
+              .select(`
+                id,
+                full_name,
+                email,
+                account_status,
+                kyc_status,
+                created_at,
+                updated_at
+              `)
+              .eq(
+                "id",
+                user.id
+              )
+              .maybeSingle();
+
+        } catch (error) {
+
+          $("profileDiagnostic")
+            .textContent =
+            "REQUEST FAILED";
+
+          showDiagnosticError(
+            "PROFILE QUERY REQUEST FAILED",
+            error
+          );
+
+          return;
+
+        }
+
+
+        if (
+          profileResult.error
+        ) {
+
+          $("profileDiagnostic")
+            .textContent =
+            "FAILED";
+
+          showDiagnosticError(
+            "PROFILE QUERY ERROR",
+            profileResult.error
+          );
+
+          return;
+
+        }
+
+
+        const profile =
+          profileResult.data;
+
+
+        if (!profile) {
+
+          $("profileDiagnostic")
+            .textContent =
+            "NO PROFILE ROW FOUND";
+
+          showDiagnosticError(
+            "PROFILE NOT FOUND",
+            "Authentication succeeded, but no row was returned from public.profiles for this user's ID.\n\nUser ID:\n" +
+            user.id +
+            "\n\nThis usually means the profile row was not created or the RLS policy is blocking the SELECT."
+          );
+
+          return;
+
+        }
+
+
+        $("profileDiagnostic")
+          .textContent =
+          "SUCCESS — Profile row found";
+
+
+        /* =====================================================
+           DISPLAY PROFILE
+        ===================================================== */
+
         const fullName =
-          profile?.full_name ||
+          profile.full_name ||
           user.user_metadata?.full_name ||
           "";
 
         const email =
-          profile?.email ||
+          profile.email ||
           user.email ||
           "";
 
@@ -1822,8 +2013,6 @@
             email
           );
 
-
-        /* HERO */
 
         $("avatar")
           .textContent =
@@ -1844,8 +2033,6 @@
           "—";
 
 
-        /* ACCOUNT INFO */
-
         $("fullName")
           .textContent =
           fullName ||
@@ -1859,26 +2046,20 @@
         $("memberSince")
           .textContent =
           formatDate(
-            profile?.created_at ||
+            profile.created_at ||
             user.created_at
           );
 
 
-        /* ACCOUNT STATUS */
-
         setAccountStatus(
-          profile?.account_status
+          profile.account_status
         );
 
-
-        /* PROFILE KYC STATUS */
 
         setKycStatus(
-          profile?.kyc_status
+          profile.kyc_status
         );
 
-
-        /* EDIT FIELD */
 
         $("editName")
           .value =
@@ -1886,50 +2067,102 @@
 
 
         /* =====================================================
-           LOAD KYC SUBMISSION
+           STEP 4 — KYC QUERY
         ===================================================== */
 
-        const {
-          data: kycSubmission,
-          error: kycError
-        } =
-          await db
-            .from("kyc_submissions")
-            .select(`
-              status,
-              rejection_reason,
-              submitted_at,
-              reviewed_at
-            `)
-            .eq(
-              "user_id",
-              user.id
-            )
-            .maybeSingle();
+        let kycResult;
+
+        try {
+
+          kycResult =
+            await db
+              .from("kyc_submissions")
+              .select(`
+                status,
+                rejection_reason,
+                submitted_at,
+                reviewed_at
+              `)
+              .eq(
+                "user_id",
+                user.id
+              )
+              .maybeSingle();
+
+        } catch (error) {
+
+          $("kycDiagnostic")
+            .textContent =
+            "REQUEST FAILED";
+
+          showDiagnosticError(
+            "KYC QUERY REQUEST FAILED",
+            error
+          );
+
+          return;
+
+        }
 
 
         if (
-          !kycError &&
-          kycSubmission
+          kycResult.error
         ) {
 
-          setKycStatus(
-            kycSubmission.status
+          $("kycDiagnostic")
+            .textContent =
+            "FAILED";
+
+          showDiagnosticError(
+            "KYC QUERY ERROR",
+            kycResult.error
           );
 
+          return;
+
         }
+
+
+        if (
+          kycResult.data
+        ) {
+
+          $("kycDiagnostic")
+            .textContent =
+            "SUCCESS — KYC row found";
+
+          setKycStatus(
+            kycResult.data.status
+          );
+
+        } else {
+
+          $("kycDiagnostic")
+            .textContent =
+            "SUCCESS — No KYC submission yet";
+
+        }
+
+
+        /* =====================================================
+           EVERYTHING WORKED
+        ===================================================== */
+
+        showDiagnosticSuccess(
+          "Supabase authentication, profile query, and KYC query completed successfully."
+        );
+
 
       } catch (error) {
 
         console.error(
-          "Profile load error:",
+          "Unexpected diagnostic error:",
           error
         );
 
-        showMessage(
-          error.message ||
-          "Unable to load your profile.",
-          "error"
+        showDiagnosticError(
+          "UNEXPECTED JAVASCRIPT ERROR",
+          error
         );
 
       }
@@ -1938,7 +2171,7 @@
 
 
     /* =========================================================
-       UPDATE PROFILE
+       SAVE PROFILE
     ========================================================= */
 
     $("profileForm")
@@ -1949,18 +2182,45 @@
           event.preventDefault();
 
 
+          if (!db) {
+
+            showDiagnosticError(
+              "SUPABASE CLIENT NOT READY",
+              "Run the diagnostic first."
+            );
+
+            return;
+
+          }
+
+
           const {
-            data: {
+            data:{
               user
-            }
+            },
+            error:authError
           } =
             await db.auth.getUser();
 
 
+          if (authError) {
+
+            showDiagnosticError(
+              "AUTH ERROR",
+              authError
+            );
+
+            return;
+
+          }
+
+
           if (!user) {
 
-            location.href =
-              "signin.html";
+            showDiagnosticError(
+              "NO USER SESSION",
+              "There is no authenticated user."
+            );
 
             return;
 
@@ -1975,9 +2235,9 @@
 
           if (name.length < 2) {
 
-            showMessage(
-              "Please enter a valid full name.",
-              "error"
+            showDiagnosticError(
+              "INVALID NAME",
+              "Please enter a valid full name."
             );
 
             return;
@@ -1997,13 +2257,11 @@
 
           try {
 
-            const {
-              error
-            } =
+            const result =
               await db
                 .from("profiles")
                 .update({
-                  full_name: name,
+                  full_name:name,
                   updated_at:
                     new Date()
                       .toISOString()
@@ -2014,53 +2272,49 @@
                 );
 
 
-            if (error) {
-              throw error;
+            if (result.error) {
+
+              showDiagnosticError(
+                "PROFILE UPDATE ERROR",
+                result.error
+              );
+
+              return;
+
             }
 
-
-            /* Update Supabase auth metadata too */
 
             try {
 
               await db.auth.updateUser({
-                data: {
-                  full_name: name
+                data:{
+                  full_name:name
                 }
               });
 
-            } catch (
-              metadataError
-            ) {
+            } catch (metadataError) {
 
               console.warn(
-                "Auth metadata update skipped:",
+                "Metadata update failed:",
                 metadataError
               );
 
             }
 
 
-            showMessage(
-              "Profile updated successfully.",
-              "success"
+            showDiagnosticSuccess(
+              "Profile updated successfully."
             );
 
 
-            await loadProfile();
+            await runDiagnostic();
 
 
           } catch (error) {
 
-            console.error(
-              "Profile update error:",
+            showDiagnosticError(
+              "PROFILE UPDATE FAILED",
               error
-            );
-
-            showMessage(
-              error.message ||
-              "Unable to update your profile.",
-              "error"
             );
 
           } finally {
@@ -2083,36 +2337,36 @@
 
     async function logout() {
 
-      try {
-
-        const {
-          error
-        } =
-          await db.auth.signOut();
-
-
-        if (error) {
-          throw error;
-        }
-
+      if (!db) {
 
         location.href =
           "signin.html";
 
-      } catch (error) {
+        return;
 
-        console.error(
-          "Logout error:",
+      }
+
+
+      const {
+        error
+      } =
+        await db.auth.signOut();
+
+
+      if (error) {
+
+        showDiagnosticError(
+          "LOGOUT ERROR",
           error
         );
 
-        showMessage(
-          error.message ||
-          "Unable to log out.",
-          "error"
-        );
+        return;
 
       }
+
+
+      location.href =
+        "signin.html";
 
     }
 
@@ -2202,16 +2456,18 @@
     $("profileInitials")
       .addEventListener(
         "click",
-        () => {
+        closeDrawer
+      );
 
-          closeDrawer();
 
-          window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-          });
+    /* =========================================================
+       RETRY
+    ========================================================= */
 
-        }
+    $("retryButton")
+      .addEventListener(
+        "click",
+        runDiagnostic
       );
 
 
@@ -2219,28 +2475,48 @@
        AUTH STATE
     ========================================================= */
 
-    db.auth.onAuthStateChange(
-      (event, session) => {
+    function setupAuthListener() {
 
-        if (
-          event === "SIGNED_OUT" ||
-          !session
-        ) {
+      if (!db) {
+        return;
+      }
 
-          location.href =
-            "signin.html";
+      db.auth.onAuthStateChange(
+        (event, session) => {
+
+          if (
+            event === "SIGNED_OUT"
+          ) {
+
+            location.href =
+              "signin.html";
+
+          }
 
         }
+      );
 
-      }
-    );
+    }
 
 
     /* =========================================================
-       INITIAL LOAD
+       START
     ========================================================= */
 
-    loadProfile();
+    runDiagnostic()
+      .then(() => {
+
+        setupAuthListener();
+
+      })
+      .catch(error => {
+
+        showDiagnosticError(
+          "DIAGNOSTIC STARTUP ERROR",
+          error
+        );
+
+      });
 
   </script>
 
