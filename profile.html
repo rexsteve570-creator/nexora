@@ -48,7 +48,11 @@ html{
 body{
   min-height:100vh;
   background:
-    radial-gradient(circle at top right, rgba(214,177,94,.07), transparent 30%),
+    radial-gradient(
+      circle at top right,
+      rgba(214,177,94,.07),
+      transparent 30%
+    ),
     var(--bg);
   color:var(--text);
   font-family:
@@ -76,59 +80,62 @@ a{
 }
 
 /* =========================================================
-   HEADER
+   TOPBAR — MATCH DASHBOARD
 ========================================================= */
 
-.header{
-  height:70px;
+.topbar{
+  height:68px;
   background:rgba(5,9,20,.94);
   border-bottom:1px solid var(--border);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 18px;
   position:sticky;
   top:0;
   z-index:100;
   backdrop-filter:blur(16px);
 }
 
-.brand{
-  display:flex;
+.topbar-inner{
+  width:min(760px,100%);
+  height:100%;
+  margin:0 auto;
+  padding:0 18px;
+  display:grid;
+  grid-template-columns:44px 1fr 44px;
   align-items:center;
-  gap:10px;
-  font-weight:800;
-  letter-spacing:2px;
-  font-size:17px;
 }
 
-.brand-mark{
-  width:32px;
-  height:32px;
-  border-radius:9px;
-  background:linear-gradient(
-    145deg,
-    var(--gold2),
-    var(--gold3)
-  );
+.menu-button{
+  width:40px;
+  height:40px;
+  border:0;
+  border-radius:12px;
+  background:transparent;
+  color:var(--text);
   display:flex;
   align-items:center;
   justify-content:center;
-  color:#111;
+  font-size:23px;
+}
+
+.menu-button:active{
+  background:rgba(255,255,255,.06);
+}
+
+.logo{
+  justify-self:center;
+  font-size:18px;
   font-weight:900;
-  box-shadow:
-    0 8px 25px rgba(214,177,94,.18);
+  letter-spacing:2px;
+  color:var(--white);
 }
 
-.header-right{
-  display:flex;
-  align-items:center;
-  gap:10px;
+.logo span{
+  color:var(--gold2);
 }
 
-.profile-button{
-  width:40px;
-  height:40px;
+.header-profile{
+  justify-self:end;
+  width:38px;
+  height:38px;
   border-radius:50%;
   border:1px solid rgba(214,177,94,.35);
   background:var(--navy3);
@@ -136,11 +143,168 @@ a{
   display:flex;
   align-items:center;
   justify-content:center;
-  font-weight:800;
+  font-size:12px;
+  font-weight:900;
 }
 
 /* =========================================================
-   LAYOUT
+   SIDE DRAWER
+========================================================= */
+
+.drawer-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.58);
+  opacity:0;
+  visibility:hidden;
+  transition:.22s ease;
+  z-index:150;
+}
+
+.drawer-overlay.active{
+  opacity:1;
+  visibility:visible;
+}
+
+.drawer{
+  position:fixed;
+  left:0;
+  top:0;
+  bottom:0;
+  width:min(290px,84vw);
+  background:
+    linear-gradient(
+      180deg,
+      #080e1d,
+      #050914
+    );
+  border-right:1px solid var(--border);
+  transform:translateX(-100%);
+  transition:.25s ease;
+  z-index:160;
+  overflow-y:auto;
+}
+
+.drawer.active{
+  transform:translateX(0);
+}
+
+.drawer-header{
+  height:68px;
+  padding:0 18px;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.drawer-logo{
+  font-size:18px;
+  font-weight:900;
+  letter-spacing:2px;
+}
+
+.drawer-logo span{
+  color:var(--gold2);
+}
+
+.drawer-close{
+  width:38px;
+  height:38px;
+  border:0;
+  border-radius:11px;
+  background:rgba(255,255,255,.045);
+  color:var(--muted);
+  font-size:22px;
+}
+
+.drawer-user{
+  padding:20px 18px;
+  border-bottom:1px solid var(--border);
+}
+
+.drawer-avatar{
+  width:44px;
+  height:44px;
+  border-radius:14px;
+  background:linear-gradient(
+    145deg,
+    var(--gold2),
+    var(--gold3)
+  );
+  color:#111;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:13px;
+  font-weight:900;
+  margin-bottom:10px;
+}
+
+.drawer-name{
+  font-size:14px;
+  font-weight:800;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.drawer-email{
+  color:var(--muted);
+  font-size:11px;
+  margin-top:4px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.drawer-nav{
+  padding:12px 10px;
+}
+
+.drawer-link{
+  min-height:48px;
+  width:100%;
+  display:flex;
+  align-items:center;
+  gap:13px;
+  padding:10px 12px;
+  border-radius:12px;
+  color:var(--muted);
+  font-size:13px;
+  font-weight:650;
+  margin-bottom:3px;
+}
+
+.drawer-link:hover{
+  background:rgba(255,255,255,.035);
+  color:var(--text);
+}
+
+.drawer-link.active{
+  background:rgba(214,177,94,.09);
+  color:var(--gold2);
+}
+
+.drawer-icon{
+  width:28px;
+  text-align:center;
+  font-size:17px;
+  flex:none;
+}
+
+.drawer-divider{
+  height:1px;
+  background:var(--border);
+  margin:10px 4px;
+}
+
+.drawer-link.logout{
+  color:#ef8d94;
+}
+
+/* =========================================================
+   PAGE
 ========================================================= */
 
 .page{
@@ -278,11 +442,12 @@ a{
 ========================================================= */
 
 .card{
-  background:linear-gradient(
-    145deg,
-    var(--card),
-    var(--card2)
-  );
+  background:
+    linear-gradient(
+      145deg,
+      var(--card),
+      var(--card2)
+    );
   border:1px solid var(--border);
   border-radius:18px;
   margin-bottom:16px;
@@ -472,11 +637,12 @@ a{
 }
 
 .primary-button{
-  background:linear-gradient(
-    145deg,
-    var(--gold2),
-    var(--gold3)
-  );
+  background:
+    linear-gradient(
+      145deg,
+      var(--gold2),
+      var(--gold3)
+    );
   color:#111;
   border:0;
 }
@@ -484,6 +650,12 @@ a{
 .secondary-button{
   background:var(--navy4);
   color:var(--text);
+}
+
+.primary-button:disabled,
+.secondary-button:disabled{
+  opacity:.6;
+  cursor:not-allowed;
 }
 
 .message{
@@ -527,7 +699,7 @@ a{
 }
 
 /* =========================================================
-   BOTTOM NAV
+   BOTTOM NAV — MATCH DASHBOARD
 ========================================================= */
 
 .bottom-nav{
@@ -546,22 +718,20 @@ a{
 
 .bottom-inner{
   width:min(760px,100%);
-  display:flex;
-  justify-content:space-around;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
   align-items:center;
 }
 
 .nav-item{
-  min-width:65px;
-  text-align:center;
+  height:70px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
   color:var(--muted);
   font-size:10px;
-  padding:7px 5px;
-}
-
-.nav-item span{
-  display:block;
-  margin-top:4px;
 }
 
 .nav-item.active{
@@ -570,17 +740,11 @@ a{
 
 .nav-icon{
   font-size:18px;
+  line-height:1;
 }
 
-/* =========================================================
-   LOADING
-========================================================= */
-
-.loading{
-  padding:30px 10px;
-  text-align:center;
-  color:var(--muted);
-  font-size:13px;
+.nav-label{
+  font-size:10px;
 }
 
 /* =========================================================
@@ -589,7 +753,7 @@ a{
 
 @media(max-width:480px){
 
-  .header{
+  .topbar-inner{
     padding:0 14px;
   }
 
@@ -622,27 +786,191 @@ a{
 <body>
 
 <!-- =========================================================
-     HEADER
+     TOPBAR
 ========================================================= -->
 
-<header class="header">
+<header class="topbar">
 
-  <a href="dashboard.html" class="brand">
-    <div class="brand-mark">N</div>
-    <span>NEXORA</span>
-  </a>
+  <div class="topbar-inner">
 
-  <div class="header-right">
     <button
-      class="profile-button"
+      class="menu-button"
+      id="menuButton"
+      aria-label="Open menu"
+      aria-expanded="false"
+    >
+      ☰
+    </button>
+
+    <a href="dashboard.html" class="logo">
+      NEX<span>ORA</span>
+    </a>
+
+    <button
+      class="header-profile"
       id="headerInitials"
-      aria-label="Profile"
+      aria-label="Account"
     >
       —
     </button>
+
   </div>
 
 </header>
+
+
+<!-- =========================================================
+     DRAWER OVERLAY
+========================================================= -->
+
+<div
+  class="drawer-overlay"
+  id="drawerOverlay"
+></div>
+
+
+<!-- =========================================================
+     SIDE DRAWER
+========================================================= -->
+
+<aside
+  class="drawer"
+  id="drawer"
+  aria-hidden="true"
+>
+
+  <div class="drawer-header">
+
+    <div class="drawer-logo">
+      NEX<span>ORA</span>
+    </div>
+
+    <button
+      class="drawer-close"
+      id="drawerClose"
+      aria-label="Close menu"
+    >
+      ×
+    </button>
+
+  </div>
+
+
+  <div class="drawer-user">
+
+    <div
+      class="drawer-avatar"
+      id="drawerInitials"
+    >
+      —
+    </div>
+
+    <div
+      class="drawer-name"
+      id="drawerName"
+    >
+      Loading...
+    </div>
+
+    <div
+      class="drawer-email"
+      id="drawerEmail"
+    >
+      Loading...
+    </div>
+
+  </div>
+
+
+  <nav class="drawer-nav">
+
+    <a
+      href="dashboard.html"
+      class="drawer-link"
+    >
+      <span class="drawer-icon">⌂</span>
+      <span>Portfolio</span>
+    </a>
+
+
+    <a
+      href="deposit.html"
+      class="drawer-link"
+    >
+      <span class="drawer-icon">＋</span>
+      <span>Deposit</span>
+    </a>
+
+
+    <a
+      href="withdraw.html"
+      class="drawer-link"
+    >
+      <span class="drawer-icon">↗</span>
+      <span>Withdraw</span>
+    </a>
+
+
+    <a
+      href="transactions.html"
+      class="drawer-link"
+    >
+      <span class="drawer-icon">≡</span>
+      <span>Transactions</span>
+    </a>
+
+
+    <a
+      href="referrals.html"
+      class="drawer-link"
+    >
+      <span class="drawer-icon">♧</span>
+      <span>Referrals</span>
+    </a>
+
+
+    <a
+      href="profile.html"
+      class="drawer-link active"
+    >
+      <span class="drawer-icon">○</span>
+      <span>Profile</span>
+    </a>
+
+
+    <a
+      href="support.html"
+      class="drawer-link"
+    >
+      <span class="drawer-icon">?</span>
+      <span>Support</span>
+    </a>
+
+
+    <a
+      href="notifications.html"
+      class="drawer-link"
+    >
+      <span class="drawer-icon">♢</span>
+      <span>Notifications</span>
+    </a>
+
+
+    <div class="drawer-divider"></div>
+
+
+    <a
+      href="#"
+      class="drawer-link logout"
+      id="drawerLogout"
+    >
+      <span class="drawer-icon">↪</span>
+      <span>Logout</span>
+    </a>
+
+  </nav>
+
+</aside>
 
 
 <!-- =========================================================
@@ -652,40 +980,65 @@ a{
 <main class="page">
 
   <div class="page-title">
+
     <h1>Profile</h1>
-    <p>Manage your NEXORA account information.</p>
+
+    <p>
+      Manage your NEXORA account information.
+    </p>
+
   </div>
 
 
-  <!-- =======================================================
-       PROFILE HERO
-  ======================================================== -->
+  <!-- PROFILE HERO -->
 
   <section class="profile-hero">
 
     <div class="profile-top">
 
-      <div class="avatar" id="profileInitials">
+      <div
+        class="avatar"
+        id="profileInitials"
+      >
         —
       </div>
 
       <div class="profile-main">
-        <h2 id="profileName">Loading...</h2>
-        <p id="profileEmail">Loading...</p>
+
+        <h2 id="profileName">
+          Loading...
+        </h2>
+
+        <p id="profileEmail">
+          Loading...
+        </p>
+
       </div>
 
     </div>
 
+
     <div class="status-row">
 
       <span class="badge badge-account">
+
         <span>●</span>
-        <span id="accountStatus">—</span>
+
+        <span id="accountStatus">
+          —
+        </span>
+
       </span>
 
+
       <span class="badge badge-kyc">
+
         KYC:
-        <span id="kycStatus">—</span>
+
+        <span id="kycStatus">
+          —
+        </span>
+
       </span>
 
     </div>
@@ -693,77 +1046,118 @@ a{
   </section>
 
 
-  <!-- =======================================================
-       ACCOUNT INFORMATION
-  ======================================================== -->
+  <!-- ACCOUNT INFORMATION -->
 
   <section class="card">
 
     <div class="card-header">
-      <h3>Account Information</h3>
-      <p>Your account details stored securely with NEXORA.</p>
+
+      <h3>
+        Account Information
+      </h3>
+
+      <p>
+        Your account details stored securely with NEXORA.
+      </p>
+
     </div>
+
 
     <div class="info-list">
 
       <div class="info-row">
-        <span class="info-label">Full name</span>
+
+        <span class="info-label">
+          Full name
+        </span>
+
         <span
           class="info-value"
           id="fullName"
         >
           —
         </span>
+
       </div>
 
+
       <div class="info-row">
-        <span class="info-label">Email address</span>
+
+        <span class="info-label">
+          Email address
+        </span>
+
         <span
           class="info-value"
           id="emailAddress"
         >
           —
         </span>
+
       </div>
 
+
       <div class="info-row">
-        <span class="info-label">Account status</span>
+
+        <span class="info-label">
+          Account status
+        </span>
+
         <span
           class="info-value gold"
           id="accountStatusDetail"
         >
           —
         </span>
+
       </div>
 
+
       <div class="info-row">
-        <span class="info-label">KYC status</span>
+
+        <span class="info-label">
+          KYC status
+        </span>
+
         <span
           class="info-value"
           id="kycStatusDetail"
         >
           —
         </span>
+
       </div>
 
+
       <div class="info-row">
-        <span class="info-label">Account created</span>
+
+        <span class="info-label">
+          Account created
+        </span>
+
         <span
           class="info-value"
           id="createdAt"
         >
           —
         </span>
+
       </div>
 
+
       <div class="info-row">
-        <span class="info-label">User ID</span>
+
+        <span class="info-label">
+          User ID
+        </span>
+
         <span
           class="info-value"
           id="userId"
         >
           —
         </span>
+
       </div>
 
     </div>
@@ -771,15 +1165,20 @@ a{
   </section>
 
 
-  <!-- =======================================================
-       ACCOUNT ACTIONS
-  ======================================================== -->
+  <!-- ACCOUNT SETTINGS -->
 
   <section class="card">
 
     <div class="card-header">
-      <h3>Account Settings</h3>
-      <p>Update your account and security settings.</p>
+
+      <h3>
+        Account Settings
+      </h3>
+
+      <p>
+        Update your account and security settings.
+      </p>
+
     </div>
 
 
@@ -795,6 +1194,7 @@ a{
         </div>
 
         <div class="action-content">
+
           <div class="action-title">
             Edit profile
           </div>
@@ -802,6 +1202,7 @@ a{
           <div class="action-description">
             Update your display name
           </div>
+
         </div>
 
         <div class="action-arrow">
@@ -821,6 +1222,7 @@ a{
         </div>
 
         <div class="action-content">
+
           <div class="action-title">
             Change password
           </div>
@@ -828,6 +1230,7 @@ a{
           <div class="action-description">
             Send a secure password reset link
           </div>
+
         </div>
 
         <div class="action-arrow">
@@ -839,9 +1242,7 @@ a{
     </div>
 
 
-    <!-- =====================================================
-         EDIT PROFILE FORM
-    ====================================================== -->
+    <!-- EDIT PROFILE -->
 
     <div
       class="form-section"
@@ -852,6 +1253,7 @@ a{
         class="message"
         id="editMessage"
       ></div>
+
 
       <div class="form-group">
 
@@ -873,6 +1275,7 @@ a{
 
       </div>
 
+
       <div class="form-group">
 
         <label
@@ -890,6 +1293,7 @@ a{
         >
 
       </div>
+
 
       <div class="form-actions">
 
@@ -912,9 +1316,7 @@ a{
     </div>
 
 
-    <!-- =====================================================
-         PASSWORD SECTION
-    ====================================================== -->
+    <!-- PASSWORD -->
 
     <div
       class="form-section"
@@ -925,6 +1327,7 @@ a{
         class="message"
         id="passwordMessage"
       ></div>
+
 
       <p
         style="
@@ -937,6 +1340,7 @@ a{
         We will send a secure password reset link to your
         registered email address.
       </p>
+
 
       <button
         class="primary-button"
@@ -951,9 +1355,7 @@ a{
   </section>
 
 
-  <!-- =======================================================
-       LOGOUT
-  ======================================================== -->
+  <!-- LOGOUT -->
 
   <button
     class="logout-button"
@@ -966,7 +1368,7 @@ a{
 
 
 <!-- =========================================================
-     BOTTOM NAV
+     BOTTOM NAV — EXACT DASHBOARD STRUCTURE
 ========================================================= -->
 
 <nav class="bottom-nav">
@@ -977,32 +1379,63 @@ a{
       href="dashboard.html"
       class="nav-item"
     >
-      <div class="nav-icon">⌂</div>
-      <span>Home</span>
+
+      <div class="nav-icon">
+        ⌂
+      </div>
+
+      <div class="nav-label">
+        Portfolio
+      </div>
+
     </a>
 
-    <a
-      href="dashboard.html"
-      class="nav-item"
-    >
-      <div class="nav-icon">◈</div>
-      <span>Assets</span>
-    </a>
 
     <a
-      href="swap.html"
+      href="deposit.html"
       class="nav-item"
     >
-      <div class="nav-icon">⇄</div>
-      <span>Exchange</span>
+
+      <div class="nav-icon">
+        ＋
+      </div>
+
+      <div class="nav-label">
+        Deposit
+      </div>
+
     </a>
+
+
+    <a
+      href="transactions.html"
+      class="nav-item"
+    >
+
+      <div class="nav-icon">
+        ≡
+      </div>
+
+      <div class="nav-label">
+        History
+      </div>
+
+    </a>
+
 
     <a
       href="profile.html"
       class="nav-item active"
     >
-      <div class="nav-icon">◉</div>
-      <span>Profile</span>
+
+      <div class="nav-icon">
+        ○
+      </div>
+
+      <div class="nav-label">
+        Account
+      </div>
+
     </a>
 
   </div>
@@ -1058,15 +1491,18 @@ function getInitials(name){
       .filter(Boolean);
 
   if(parts.length === 1){
+
     return parts[0]
       .substring(0,2)
       .toUpperCase();
+
   }
 
   return (
     parts[0][0] +
     parts[parts.length - 1][0]
   ).toUpperCase();
+
 }
 
 
@@ -1076,9 +1512,14 @@ function formatDate(date){
     return "—";
   }
 
-  const d = new Date(date);
+  const d =
+    new Date(date);
 
-  if(Number.isNaN(d.getTime())){
+  if(
+    Number.isNaN(
+      d.getTime()
+    )
+  ){
     return "—";
   }
 
@@ -1090,6 +1531,7 @@ function formatDate(date){
       year:"numeric"
     }
   );
+
 }
 
 
@@ -1102,18 +1544,119 @@ function cleanStatus(value){
   return String(value)
     .replaceAll("_"," ")
     .toLowerCase()
-    .replace(/\b\w/g,char => char.toUpperCase());
+    .replace(
+      /\b\w/g,
+      char => char.toUpperCase()
+    );
+
 }
+
+
+/* =========================================================
+   DRAWER
+========================================================= */
+
+function openDrawer(){
+
+  $("drawer")
+    .classList.add("active");
+
+  $("drawerOverlay")
+    .classList.add("active");
+
+  $("drawer")
+    .setAttribute(
+      "aria-hidden",
+      "false"
+    );
+
+  $("menuButton")
+    .setAttribute(
+      "aria-expanded",
+      "true"
+    );
+
+}
+
+
+function closeDrawer(){
+
+  $("drawer")
+    .classList.remove("active");
+
+  $("drawerOverlay")
+    .classList.remove("active");
+
+  $("drawer")
+    .setAttribute(
+      "aria-hidden",
+      "true"
+    );
+
+  $("menuButton")
+    .setAttribute(
+      "aria-expanded",
+      "false"
+    );
+
+}
+
+
+$("menuButton")
+  .addEventListener(
+    "click",
+    openDrawer
+  );
+
+
+$("drawerClose")
+  .addEventListener(
+    "click",
+    closeDrawer
+  );
+
+
+$("drawerOverlay")
+  .addEventListener(
+    "click",
+    closeDrawer
+  );
+
+
+/* Close drawer after navigation */
+
+document
+  .querySelectorAll(".drawer-link")
+  .forEach(link => {
+
+    link.addEventListener(
+      "click",
+      function(){
+
+        if(
+          this.id !== "drawerLogout"
+        ){
+          closeDrawer();
+        }
+
+      }
+    );
+
+  });
 
 
 /* =========================================================
    DISPLAY PROFILE
 ========================================================= */
 
-function displayProfile(user, profile){
+function displayProfile(
+  user,
+  profile
+){
 
   const metadata =
     user?.user_metadata || {};
+
 
   const name =
     profile?.full_name ||
@@ -1124,23 +1667,31 @@ function displayProfile(user, profile){
         : "—"
     );
 
+
   const email =
     profile?.email ||
     user?.email ||
     "—";
 
+
   const accountStatus =
     profile?.account_status ||
     "PENDING";
+
 
   const kycStatus =
     profile?.kyc_status ||
     "NOT_STARTED";
 
+
   const createdAt =
     profile?.created_at ||
     user?.created_at ||
     null;
+
+
+  const initials =
+    getInitials(name);
 
 
   /* Hero */
@@ -1152,10 +1703,25 @@ function displayProfile(user, profile){
     email;
 
   $("profileInitials").textContent =
-    getInitials(name);
+    initials;
+
+
+  /* Header */
 
   $("headerInitials").textContent =
-    getInitials(name);
+    initials;
+
+
+  /* Drawer */
+
+  $("drawerInitials").textContent =
+    initials;
+
+  $("drawerName").textContent =
+    name;
+
+  $("drawerEmail").textContent =
+    email;
 
 
   /* Status */
@@ -1191,10 +1757,15 @@ function displayProfile(user, profile){
   /* Form */
 
   $("editFullName").value =
-    name === "—" ? "" : name;
+    name === "—"
+      ? ""
+      : name;
 
   $("editEmail").value =
-    email === "—" ? "" : email;
+    email === "—"
+      ? ""
+      : email;
+
 }
 
 
@@ -1212,25 +1783,36 @@ async function loadProfile(){
       },
       error:userError
     } =
-      await supabaseClient.auth.getUser();
+      await supabaseClient
+        .auth
+        .getUser();
 
 
     if(userError){
-      console.error(userError);
+
+      console.error(
+        userError
+      );
+
       window.location.href =
         "signin.html";
+
       return;
+
     }
 
 
     if(!user){
+
       window.location.href =
         "signin.html";
+
       return;
+
     }
 
 
-    /* Immediately show Auth information */
+    /* Show Auth information immediately */
 
     displayProfile(
       user,
@@ -1238,7 +1820,7 @@ async function loadProfile(){
     );
 
 
-    /* Get database profile */
+    /* Load database profile */
 
     const {
       data:profile,
@@ -1255,7 +1837,10 @@ async function loadProfile(){
           created_at,
           updated_at
         `)
-        .eq("id",user.id)
+        .eq(
+          "id",
+          user.id
+        )
         .maybeSingle();
 
 
@@ -1266,12 +1851,8 @@ async function loadProfile(){
         profileError
       );
 
-      /*
-       Auth data is already displayed,
-       so the page can continue safely.
-      */
-
       return;
+
     }
 
 
@@ -1292,6 +1873,7 @@ async function loadProfile(){
     );
 
   }
+
 }
 
 
@@ -1307,18 +1889,30 @@ $("editProfileButton")
       const section =
         $("editProfileSection");
 
+
       section.classList.toggle(
         "active"
       );
 
-      $("passwordSection")
-        .classList.remove("active");
 
-      if(section.classList.contains("active")){
+      $("passwordSection")
+        .classList.remove(
+          "active"
+        );
+
+
+      if(
+        section.classList.contains(
+          "active"
+        )
+      ){
 
         setTimeout(
           () => {
-            $("editFullName").focus();
+
+            $("editFullName")
+              .focus();
+
           },
           100
         );
@@ -1335,10 +1929,15 @@ $("cancelEdit")
     function(){
 
       $("editProfileSection")
-        .classList.remove("active");
+        .classList.remove(
+          "active"
+        );
+
 
       $("editMessage")
-        .className = "message";
+        .className =
+        "message";
+
 
       $("editMessage")
         .textContent = "";
@@ -1377,6 +1976,7 @@ $("saveProfile")
           "Please enter a valid full name.";
 
         return;
+
       }
 
 
@@ -1394,10 +1994,15 @@ $("saveProfile")
           },
           error:userError
         } =
-          await supabaseClient.auth.getUser();
+          await supabaseClient
+            .auth
+            .getUser();
 
 
-        if(userError || !user){
+        if(
+          userError ||
+          !user
+        ){
 
           throw new Error(
             "Your session has expired. Please sign in again."
@@ -1406,7 +2011,7 @@ $("saveProfile")
         }
 
 
-        /* Update profiles table */
+        /* Update profiles */
 
         const {
           data:profile,
@@ -1416,28 +2021,37 @@ $("saveProfile")
             .from("profiles")
             .update({
               full_name:fullName,
-              updated_at:new Date().toISOString()
+              updated_at:
+                new Date()
+                  .toISOString()
             })
-            .eq("id",user.id)
+            .eq(
+              "id",
+              user.id
+            )
             .select()
             .single();
 
 
         if(updateError){
+
           throw updateError;
+
         }
 
 
-        /* Also keep Auth metadata synchronized */
+        /* Synchronize Auth metadata */
 
         const {
           error:metadataError
         } =
-          await supabaseClient.auth.updateUser({
-            data:{
-              full_name:fullName
-            }
-          });
+          await supabaseClient
+            .auth
+            .updateUser({
+              data:{
+                full_name:fullName
+              }
+            });
 
 
         if(metadataError){
@@ -1467,7 +2081,9 @@ $("saveProfile")
           () => {
 
             $("editProfileSection")
-              .classList.remove("active");
+              .classList.remove(
+                "active"
+              );
 
             message.className =
               "message";
@@ -1481,7 +2097,10 @@ $("saveProfile")
 
       }catch(error){
 
-        console.error(error);
+        console.error(
+          error
+        );
+
 
         message.className =
           "message error show";
@@ -1515,15 +2134,22 @@ $("changePasswordButton")
       const section =
         $("passwordSection");
 
+
       section.classList.toggle(
         "active"
       );
 
+
       $("editProfileSection")
-        .classList.remove("active");
+        .classList.remove(
+          "active"
+        );
+
 
       $("passwordMessage")
-        .className = "message";
+        .className =
+        "message";
+
 
       $("passwordMessage")
         .textContent = "";
@@ -1552,10 +2178,15 @@ $("sendPasswordReset")
           },
           error:userError
         } =
-          await supabaseClient.auth.getUser();
+          await supabaseClient
+            .auth
+            .getUser();
 
 
-        if(userError || !user){
+        if(
+          userError ||
+          !user
+        ){
 
           throw new Error(
             "Your session has expired."
@@ -1582,7 +2213,8 @@ $("sendPasswordReset")
         const {
           error
         } =
-          await supabaseClient.auth
+          await supabaseClient
+            .auth
             .resetPasswordForEmail(
               user.email,
               {
@@ -1594,7 +2226,9 @@ $("sendPasswordReset")
 
 
         if(error){
+
           throw error;
+
         }
 
 
@@ -1604,10 +2238,12 @@ $("sendPasswordReset")
         message.textContent =
           "Password reset link sent to your email address.";
 
-
       }catch(error){
 
-        console.error(error);
+        console.error(
+          error
+        );
+
 
         message.className =
           "message error show";
@@ -1633,45 +2269,98 @@ $("sendPasswordReset")
    LOGOUT
 ========================================================= */
 
+async function logout(){
+
+  const button =
+    $("logoutButton");
+
+  if(button){
+
+    button.disabled = true;
+
+    button.textContent =
+      "Signing Out...";
+
+  }
+
+
+  const {
+    error
+  } =
+    await supabaseClient
+      .auth
+      .signOut();
+
+
+  if(error){
+
+    console.error(
+      error
+    );
+
+
+    if(button){
+
+      button.disabled = false;
+
+      button.textContent =
+        "Sign Out";
+
+    }
+
+
+    alert(
+      "Unable to sign out. Please try again."
+    );
+
+    return;
+
+  }
+
+
+  window.location.href =
+    "signin.html";
+
+}
+
+
+/* Main logout */
+
 $("logoutButton")
   .addEventListener(
     "click",
-    async function(){
-
-      const button =
-        $("logoutButton");
-
-      button.disabled = true;
-
-      button.textContent =
-        "Signing Out...";
+    logout
+  );
 
 
-      const {
-        error
-      } =
-        await supabaseClient.auth.signOut();
+/* Drawer logout */
+
+$("drawerLogout")
+  .addEventListener(
+    "click",
+    function(event){
+
+      event.preventDefault();
+
+      closeDrawer();
+
+      logout();
+
+    }
+  );
 
 
-      if(error){
+/* =========================================================
+   HEADER ACCOUNT BUTTON
+========================================================= */
 
-        console.error(error);
-
-        button.disabled = false;
-
-        button.textContent =
-          "Sign Out";
-
-        alert(
-          "Unable to sign out. Please try again."
-        );
-
-        return;
-      }
-
+$("headerInitials")
+  .addEventListener(
+    "click",
+    function(){
 
       window.location.href =
-        "signin.html";
+        "profile.html";
 
     }
   );
