@@ -9,2448 +9,1991 @@
 
 <style>
 :root{
-  --bg:#07111f;
-  --bg2:#0a1728;
-  --card:#0d1b2d;
-  --gold:#d6ad55;
-  --gold2:#f0cf79;
-  --text:#f5f7fa;
-  --muted:#8d9bad;
-  --border:rgba(214,173,85,.18);
-  --danger:#ef6262;
-  --success:#55c98a;
-  --shadow:0 14px 35px rgba(0,0,0,.25);
+    --bg:#06131f;
+    --bg2:#081b2b;
+    --card:#0c2133;
+    --card2:#102b40;
+    --border:rgba(255,255,255,.08);
+    --text:#f5f7fa;
+    --muted:#91a1b2;
+    --gold:#d6b25e;
+    --gold2:#f0d58a;
+    --danger:#ef6b73;
+    --success:#63d49a;
+    --shadow:0 18px 50px rgba(0,0,0,.25);
 }
 
 *{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
 }
 
 html,body{
-  min-height:100%;
+    min-height:100%;
 }
 
 body{
-  background:var(--bg);
-  color:var(--text);
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
-  padding-bottom:90px;
+    font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    padding-bottom:82px;
 }
 
-button,
-input,
-select{
-  font:inherit;
+button,input,select{
+    font:inherit;
 }
 
 button{
-  cursor:pointer;
+    cursor:pointer;
 }
 
 a{
-  color:inherit;
-  text-decoration:none;
+    color:inherit;
+    text-decoration:none;
 }
 
-
-/* =========================
-   TOPBAR
-========================= */
+/* TOPBAR */
 
 .topbar{
-  height:68px;
-  position:sticky;
-  top:0;
-  z-index:1000;
-  background:rgba(7,17,31,.96);
-  border-bottom:1px solid rgba(255,255,255,.06);
-  backdrop-filter:blur(16px);
+    position:sticky;
+    top:0;
+    z-index:1000;
+    height:68px;
+    background:rgba(6,19,31,.96);
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--border);
 }
 
 .topbar-inner{
-  max-width:760px;
-  height:68px;
-  margin:auto;
-  padding:0 18px;
-  display:grid;
-  grid-template-columns:44px 1fr 44px;
-  align-items:center;
+    max-width:760px;
+    height:68px;
+    margin:auto;
+    padding:0 18px;
+    display:grid;
+    grid-template-columns:44px 1fr 44px;
+    align-items:center;
+}
+
+.menu-btn,
+.avatar-btn{
+    width:40px;
+    height:40px;
+    border:1px solid var(--border);
+    background:var(--card);
+    color:var(--text);
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
 }
 
 .menu-btn{
-  width:40px;
-  height:40px;
-  border:0;
-  border-radius:12px;
-  background:transparent;
-  color:var(--text);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:23px;
+    font-size:22px;
 }
 
-.menu-btn:active{
-  background:rgba(255,255,255,.06);
+.avatar-btn{
+    font-size:13px;
+    font-weight:800;
+    color:var(--gold2);
 }
 
 .logo{
-  justify-self:center;
-  font-size:22px;
-  font-weight:800;
-  letter-spacing:1.8px;
+    justify-self:center;
+    font-size:21px;
+    font-weight:900;
+    letter-spacing:1.5px;
 }
 
 .logo span{
-  color:var(--gold);
+    color:var(--gold);
 }
 
-.profile-mini{
-  justify-self:end;
-  width:38px;
-  height:38px;
-  border-radius:50%;
-  border:1px solid var(--border);
-  background:linear-gradient(145deg,#182a40,#0b1727);
-  color:var(--gold2);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:12px;
-  font-weight:800;
-}
-
-
-/* =========================
-   DRAWER
-========================= */
+/* DRAWER */
 
 .drawer-overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.58);
-  z-index:1999;
-  display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.62);
+    z-index:1100;
+    display:none;
 }
 
-.drawer-overlay.show{
-  display:block;
+.drawer-overlay.open{
+    display:block;
 }
 
 .drawer{
-  position:fixed;
-  top:0;
-  left:-300px;
-  width:285px;
-  max-width:86vw;
-  height:100%;
-  background:#091625;
-  border-right:1px solid var(--border);
-  z-index:2000;
-  transition:left .25s ease;
-  padding:22px 16px;
-  overflow-y:auto;
+    position:fixed;
+    top:0;
+    left:-310px;
+    width:290px;
+    max-width:86%;
+    height:100vh;
+    background:#081b2b;
+    border-right:1px solid var(--border);
+    z-index:1200;
+    transition:left .25s ease;
+    padding:20px 16px;
+    overflow-y:auto;
 }
 
-.drawer.show{
-  left:0;
+.drawer.open{
+    left:0;
 }
 
 .drawer-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:4px 4px 22px;
-}
-
-.drawer-close{
-  width:38px;
-  height:38px;
-  border:0;
-  border-radius:11px;
-  background:rgba(255,255,255,.05);
-  color:var(--text);
-  font-size:20px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:20px;
 }
 
 .drawer-logo{
-  font-size:21px;
-  font-weight:800;
-  letter-spacing:1.5px;
+    font-size:21px;
+    font-weight:900;
+    letter-spacing:1.5px;
 }
 
 .drawer-logo span{
-  color:var(--gold);
+    color:var(--gold);
 }
 
-.drawer-nav{
-  display:flex;
-  flex-direction:column;
-  gap:5px;
+.close-drawer{
+    width:38px;
+    height:38px;
+    border-radius:11px;
+    border:1px solid var(--border);
+    background:var(--card);
+    color:var(--text);
+    font-size:22px;
 }
 
 .drawer-link{
-  min-height:48px;
-  border-radius:12px;
-  display:flex;
-  align-items:center;
-  gap:13px;
-  padding:0 14px;
-  color:#c9d1dc;
-  font-size:14px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    min-height:48px;
+    padding:0 13px;
+    margin:5px 0;
+    border-radius:12px;
+    color:#dbe3eb;
+    font-size:14px;
 }
 
-.drawer-link:hover,
-.drawer-link.active{
-  background:rgba(214,173,85,.10);
-  color:var(--gold2);
-}
-
-.drawer-icon{
-  width:22px;
-  text-align:center;
-  font-size:17px;
+.drawer-link:hover{
+    background:var(--card2);
+    color:var(--gold2);
 }
 
 .drawer-divider{
-  height:1px;
-  background:rgba(255,255,255,.06);
-  margin:10px 5px;
+    height:1px;
+    background:var(--border);
+    margin:15px 0;
 }
 
+.logout-link{
+    color:#f18b91;
+}
 
-/* =========================
-   PAGE
-========================= */
+/* MAIN */
 
 .page{
-  width:100%;
-  max-width:760px;
-  margin:0 auto;
-  padding:22px 18px 30px;
+    max-width:760px;
+    margin:0 auto;
+    padding:24px 18px 30px;
 }
 
 .page-title{
-  font-size:26px;
-  font-weight:800;
-  margin-bottom:7px;
+    font-size:27px;
+    font-weight:850;
+    letter-spacing:-.4px;
 }
 
 .page-subtitle{
-  color:var(--muted);
-  font-size:13px;
-  line-height:1.6;
-  margin-bottom:22px;
+    margin-top:7px;
+    color:var(--muted);
+    font-size:14px;
+    line-height:1.55;
 }
 
-
-/* =========================
-   CARDS
-========================= */
-
-.card{
-  background:linear-gradient(145deg,var(--card),var(--bg2));
-  border:1px solid var(--border);
-  border-radius:18px;
-  box-shadow:var(--shadow);
-  padding:18px;
-  margin-bottom:15px;
-}
-
-.card-title{
-  font-size:15px;
-  font-weight:750;
-  margin-bottom:15px;
-}
-
-.label{
-  display:block;
-  font-size:12px;
-  color:var(--muted);
-  margin-bottom:8px;
-}
-
-
-/* =========================
-   ASSETS
-========================= */
-
-.asset-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:10px;
-}
-
-.asset-btn{
-  border:1px solid rgba(255,255,255,.07);
-  background:#0a1829;
-  border-radius:14px;
-  padding:12px;
-  display:flex;
-  align-items:center;
-  gap:11px;
-  color:var(--text);
-  text-align:left;
-  transition:.2s;
-}
-
-.asset-btn:hover{
-  border-color:rgba(214,173,85,.35);
-}
-
-.asset-btn.selected{
-  border-color:var(--gold);
-  background:rgba(214,173,85,.08);
-}
-
-.coin-logo{
-  width:34px;
-  height:34px;
-  object-fit:contain;
-  flex:0 0 34px;
-}
-
-.asset-info{
-  min-width:0;
-}
-
-.asset-name{
-  font-size:13px;
-  font-weight:700;
-}
-
-.asset-symbol{
-  color:var(--muted);
-  font-size:11px;
-  margin-top:2px;
-}
-
-
-/* =========================
-   FORM
-========================= */
-
-.field{
-  margin-bottom:15px;
-}
-
-.input{
-  width:100%;
-  height:50px;
-  border-radius:12px;
-  border:1px solid rgba(255,255,255,.09);
-  background:#081524;
-  color:var(--text);
-  outline:none;
-  padding:0 14px;
-}
-
-.input:focus{
-  border-color:rgba(214,173,85,.65);
-}
-
-.input::placeholder{
-  color:#617084;
-}
-
-.network-grid{
-  display:grid;
-  gap:9px;
-}
-
-.network-btn{
-  width:100%;
-  border:1px solid rgba(255,255,255,.08);
-  background:#081524;
-  color:var(--text);
-  border-radius:12px;
-  min-height:48px;
-  padding:10px 13px;
-  text-align:left;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-
-.network-btn.selected{
-  border-color:var(--gold);
-  background:rgba(214,173,85,.08);
-}
-
-.network-name{
-  font-size:13px;
-  font-weight:650;
-}
-
-.network-status{
-  font-size:10px;
-  color:var(--muted);
-}
-
-.network-btn.selected .network-status{
-  color:var(--gold2);
-}
-
-
-/* =========================
-   SUMMARY
-========================= */
-
-.summary{
-  border-top:1px solid rgba(255,255,255,.07);
-  padding-top:14px;
-  margin-top:6px;
-}
-
-.summary-row{
-  display:flex;
-  justify-content:space-between;
-  gap:15px;
-  padding:7px 0;
-  font-size:13px;
-}
-
-.summary-row span:first-child{
-  color:var(--muted);
-}
-
-.summary-row strong{
-  font-weight:700;
-}
-
-.gold{
-  color:var(--gold2);
-}
-
-
-/* =========================
-   BUTTON
-========================= */
-
-.primary-btn{
-  width:100%;
-  height:52px;
-  border:0;
-  border-radius:13px;
-  background:linear-gradient(135deg,#d6ad55,#b98b34);
-  color:#07111f;
-  font-weight:850;
-  font-size:14px;
-  margin-top:4px;
-  box-shadow:0 10px 24px rgba(214,173,85,.14);
-}
-
-.primary-btn:disabled{
-  opacity:.45;
-  cursor:not-allowed;
-}
-
-
-/* =========================
-   WITHDRAWAL HISTORY
-========================= */
-
-.withdrawal-list{
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
-
-.withdrawal-item{
-  border:1px solid rgba(255,255,255,.07);
-  background:#091726;
-  border-radius:13px;
-  padding:13px;
-}
-
-.withdrawal-top{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-}
-
-.withdrawal-asset{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
-.withdrawal-asset img{
-  width:31px;
-  height:31px;
-  object-fit:contain;
-}
-
-.withdrawal-symbol{
-  font-weight:750;
-  font-size:13px;
-}
-
-.withdrawal-network{
-  color:var(--muted);
-  font-size:10px;
-  margin-top:2px;
-}
-
-.status{
-  font-size:10px;
-  font-weight:750;
-  padding:5px 8px;
-  border-radius:999px;
-  background:rgba(214,173,85,.10);
-  color:var(--gold2);
-}
-
-.status.completed{
-  color:var(--success);
-  background:rgba(85,201,138,.09);
-}
-
-.status.rejected{
-  color:var(--danger);
-  background:rgba(239,98,98,.09);
-}
-
-.withdrawal-bottom{
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  margin-top:10px;
-  font-size:11px;
-  color:var(--muted);
-}
-
-.empty{
-  color:var(--muted);
-  text-align:center;
-  padding:20px 10px;
-  font-size:13px;
-}
-
-
-/* =========================
-   ALERTS
-========================= */
+/* ALERT */
 
 .alert{
-  display:none;
-  border-radius:12px;
-  padding:12px 13px;
-  margin-bottom:14px;
-  font-size:12px;
-  line-height:1.5;
+    display:none;
+    margin-top:18px;
+    padding:13px 14px;
+    border-radius:13px;
+    border:1px solid rgba(239,107,115,.3);
+    background:rgba(239,107,115,.09);
+    color:#ffb8bc;
+    font-size:13px;
+    line-height:1.45;
 }
 
 .alert.show{
-  display:block;
+    display:block;
 }
 
-.alert.error{
-  background:rgba(239,98,98,.09);
-  border:1px solid rgba(239,98,98,.22);
-  color:#ffaaaa;
+/* CARD */
+
+.card{
+    margin-top:18px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:18px;
+    box-shadow:var(--shadow);
 }
 
-.alert.success{
-  background:rgba(85,201,138,.09);
-  border:1px solid rgba(85,201,138,.22);
-  color:#8be2b1;
+.card-title{
+    font-size:16px;
+    font-weight:800;
+    margin-bottom:15px;
 }
 
+/* ASSETS */
 
-/* =========================
-   BOTTOM NAV
-========================= */
+.asset-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:9px;
+}
+
+.asset-btn{
+    min-height:72px;
+    border:1px solid var(--border);
+    background:#091a29;
+    color:var(--text);
+    border-radius:14px;
+    padding:10px 7px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    transition:.18s ease;
+}
+
+.asset-btn:hover{
+    border-color:rgba(214,178,94,.45);
+}
+
+.asset-btn.active{
+    border-color:var(--gold);
+    background:rgba(214,178,94,.08);
+}
+
+.asset-logo{
+    width:25px;
+    height:25px;
+    object-fit:contain;
+}
+
+.asset-name{
+    font-size:11px;
+    font-weight:700;
+    color:#dbe3eb;
+}
+
+.asset-symbol{
+    font-size:10px;
+    color:var(--muted);
+}
+
+/* BALANCE */
+
+.balance-box{
+    margin-top:16px;
+    padding:14px;
+    border-radius:14px;
+    background:#091a29;
+    border:1px solid var(--border);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+}
+
+.balance-label{
+    font-size:12px;
+    color:var(--muted);
+}
+
+.balance-value{
+    margin-top:4px;
+    font-size:17px;
+    font-weight:850;
+    color:var(--gold2);
+    word-break:break-word;
+}
+
+.balance-status{
+    font-size:11px;
+    color:var(--success);
+    white-space:nowrap;
+}
+
+/* FORM */
+
+.field{
+    margin-top:16px;
+}
+
+.label{
+    display:block;
+    margin-bottom:8px;
+    color:#cdd7e1;
+    font-size:12px;
+    font-weight:700;
+}
+
+.input{
+    width:100%;
+    height:48px;
+    border-radius:12px;
+    border:1px solid var(--border);
+    background:#081a29;
+    color:var(--text);
+    outline:none;
+    padding:0 13px;
+}
+
+.input:focus{
+    border-color:rgba(214,178,94,.65);
+}
+
+.input::placeholder{
+    color:#617487;
+}
+
+.network-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:9px;
+}
+
+.network-btn{
+    min-height:46px;
+    border-radius:11px;
+    border:1px solid var(--border);
+    background:#091a29;
+    color:#dce5ee;
+    font-size:12px;
+    font-weight:700;
+}
+
+.network-btn.active{
+    border-color:var(--gold);
+    color:var(--gold2);
+    background:rgba(214,178,94,.08);
+}
+
+.network-btn.disabled{
+    opacity:.4;
+    cursor:not-allowed;
+}
+
+.helper{
+    margin-top:7px;
+    font-size:11px;
+    color:var(--muted);
+    line-height:1.4;
+}
+
+/* SUMMARY */
+
+.summary{
+    margin-top:18px;
+    border-top:1px solid var(--border);
+    padding-top:16px;
+}
+
+.summary-row{
+    display:flex;
+    justify-content:space-between;
+    gap:15px;
+    margin:9px 0;
+    font-size:13px;
+}
+
+.summary-row span:first-child{
+    color:var(--muted);
+}
+
+.summary-row span:last-child{
+    font-weight:750;
+    text-align:right;
+}
+
+.summary-row.receive span:last-child{
+    color:var(--gold2);
+}
+
+/* BUTTON */
+
+.request-btn{
+    width:100%;
+    height:50px;
+    margin-top:18px;
+    border:0;
+    border-radius:13px;
+    background:linear-gradient(135deg,#d6b25e,#efd17e);
+    color:#08131d;
+    font-weight:900;
+    font-size:14px;
+}
+
+.request-btn:disabled{
+    opacity:.45;
+    cursor:not-allowed;
+}
+
+/* WITHDRAWALS */
+
+.withdrawal-list{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.withdrawal-item{
+    padding:14px;
+    border:1px solid var(--border);
+    background:#091a29;
+    border-radius:14px;
+}
+
+.withdrawal-top{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+}
+
+.withdrawal-asset{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    font-weight:800;
+    font-size:13px;
+}
+
+.withdrawal-asset img{
+    width:26px;
+    height:26px;
+}
+
+.status{
+    font-size:10px;
+    font-weight:900;
+    padding:5px 8px;
+    border-radius:7px;
+    background:rgba(214,178,94,.1);
+    color:var(--gold2);
+}
+
+.withdrawal-meta{
+    margin-top:10px;
+    color:var(--muted);
+    font-size:11px;
+    line-height:1.6;
+}
+
+.empty{
+    text-align:center;
+    color:var(--muted);
+    padding:20px 10px;
+    font-size:13px;
+}
+
+/* BOTTOM NAV */
 
 .bottom-nav{
-  position:fixed;
-  left:0;
-  right:0;
-  bottom:0;
-  height:70px;
-  background:rgba(7,17,31,.97);
-  border-top:1px solid rgba(255,255,255,.07);
-  z-index:1000;
-  backdrop-filter:blur(18px);
+    position:fixed;
+    left:0;
+    right:0;
+    bottom:0;
+    height:70px;
+    z-index:1000;
+    background:rgba(6,19,31,.97);
+    backdrop-filter:blur(14px);
+    border-top:1px solid var(--border);
 }
 
-.bottom-nav-inner{
-  max-width:760px;
-  height:70px;
-  margin:auto;
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
+.bottom-inner{
+    max-width:760px;
+    height:70px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
 }
 
 .bottom-link{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:5px;
-  color:#718094;
-  font-size:10px;
-  font-weight:650;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:4px;
+    color:#8191a1;
+    font-size:10px;
+    font-weight:700;
 }
 
-.bottom-link .nav-icon{
-  font-size:19px;
-  line-height:1;
+.bottom-link strong{
+    font-size:19px;
+    font-weight:500;
+    line-height:18px;
 }
 
 .bottom-link.active{
-  color:var(--gold2);
+    color:var(--gold2);
 }
 
+@media(max-width:520px){
+    .page{
+        padding-left:14px;
+        padding-right:14px;
+    }
 
-/* =========================
-   MOBILE
-========================= */
+    .asset-grid{
+        grid-template-columns:repeat(3,1fr);
+    }
 
-@media(max-width:420px){
+    .network-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
 
-  .page{
-    padding-left:14px;
-    padding-right:14px;
-  }
-
-  .asset-grid{
-    grid-template-columns:1fr 1fr;
-  }
-
-  .page-title{
-    font-size:24px;
-  }
-
+@media(max-width:350px){
+    .asset-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
 }
 </style>
 </head>
 
 <body>
 
-
-<!-- =====================================================
-     HEADER
-===================================================== -->
-
 <header class="topbar">
+    <div class="topbar-inner">
 
-  <div class="topbar-inner">
+        <button class="menu-btn" id="menuBtn">☰</button>
 
-    <button
-      class="menu-btn"
-      id="menuBtn"
-      aria-label="Open menu"
-    >
-      ☰
-    </button>
+        <a href="dashboard.html" class="logo">
+            NEX<span>ORA</span>
+        </a>
 
-    <a
-      href="dashboard.html"
-      class="logo"
-    >
-      NEX<span>ORA</span>
-    </a>
+        <button class="avatar-btn" id="avatarBtn">
+            OA
+        </button>
 
-    <div
-      class="profile-mini"
-      id="profileInitials"
-    >
-      —
     </div>
-
-  </div>
-
 </header>
 
 
-<!-- =====================================================
-     DRAWER
-===================================================== -->
+<div class="drawer-overlay" id="drawerOverlay"></div>
 
-<div
-  class="drawer-overlay"
-  id="drawerOverlay"
-></div>
+<aside class="drawer" id="drawer">
 
+    <div class="drawer-head">
 
-<aside
-  class="drawer"
-  id="drawer"
->
+        <div class="drawer-logo">
+            NEX<span>ORA</span>
+        </div>
 
-  <div class="drawer-head">
+        <button class="close-drawer" id="closeDrawer">
+            ×
+        </button>
 
-    <div class="drawer-logo">
-      NEX<span>ORA</span>
     </div>
 
-    <button
-      class="drawer-close"
-      id="drawerClose"
-      aria-label="Close menu"
-    >
-      ×
-    </button>
-
-  </div>
-
-
-  <nav class="drawer-nav">
-
-    <a
-      class="drawer-link"
-      href="dashboard.html"
-    >
-      <span class="drawer-icon">⌂</span>
-      <span>Portfolio</span>
+    <a class="drawer-link" href="dashboard.html">
+        <span>⌂</span>
+        <span>Portfolio</span>
     </a>
 
-
-    <a
-      class="drawer-link"
-      href="deposit.html"
-    >
-      <span class="drawer-icon">＋</span>
-      <span>Deposit</span>
+    <a class="drawer-link" href="deposit.html">
+        <span>＋</span>
+        <span>Deposit</span>
     </a>
 
-
-    <a
-      class="drawer-link active"
-      href="withdraw.html"
-    >
-      <span class="drawer-icon">↗</span>
-      <span>Withdraw</span>
+    <a class="drawer-link" href="withdraw.html">
+        <span>↗</span>
+        <span>Withdraw</span>
     </a>
 
-
-    <a
-      class="drawer-link"
-      href="transactions.html"
-    >
-      <span class="drawer-icon">≡</span>
-      <span>Transactions</span>
+    <a class="drawer-link" href="transactions.html">
+        <span>≡</span>
+        <span>Transactions</span>
     </a>
 
-
-    <a
-      class="drawer-link"
-      href="investments.html"
-    >
-      <span class="drawer-icon">◈</span>
-      <span>My Investments</span>
+    <a class="drawer-link" href="investments.html">
+        <span>◈</span>
+        <span>My Investments</span>
     </a>
 
-
-    <a
-      class="drawer-link"
-      href="referrals.html"
-    >
-      <span class="drawer-icon">♧</span>
-      <span>Referrals</span>
+    <a class="drawer-link" href="referrals.html">
+        <span>♧</span>
+        <span>Referrals</span>
     </a>
 
-
-    <a
-      class="drawer-link"
-      href="profile.html"
-    >
-      <span class="drawer-icon">○</span>
-      <span>Profile</span>
+    <a class="drawer-link" href="profile.html">
+        <span>○</span>
+        <span>Profile</span>
     </a>
 
-
-    <a
-      class="drawer-link"
-      href="support.html"
-    >
-      <span class="drawer-icon">?</span>
-      <span>Support</span>
+    <a class="drawer-link" href="support.html">
+        <span>?</span>
+        <span>Support</span>
     </a>
 
-
-    <a
-      class="drawer-link"
-      href="notifications.html"
-    >
-      <span class="drawer-icon">♢</span>
-      <span>Notifications</span>
+    <a class="drawer-link" href="notifications.html">
+        <span>♢</span>
+        <span>Notifications</span>
     </a>
-
 
     <div class="drawer-divider"></div>
 
-
-    <a
-      class="drawer-link"
-      href="#"
-      id="logoutBtn"
-    >
-      <span class="drawer-icon">↪</span>
-      <span>Logout</span>
+    <a class="drawer-link logout-link" href="#" id="logoutBtn">
+        <span>↪</span>
+        <span>Logout</span>
     </a>
-
-  </nav>
 
 </aside>
 
 
-<!-- =====================================================
-     MAIN
-===================================================== -->
-
 <main class="page">
 
-  <h1 class="page-title">
-    Withdraw
-  </h1>
+    <h1 class="page-title">Withdraw</h1>
+
+    <p class="page-subtitle">
+        Select an asset, choose the network, enter the destination and withdrawal amount.
+    </p>
+
+    <div class="alert" id="alertBox"></div>
 
 
-  <p class="page-subtitle">
-    Select an asset, choose the network, enter the destination and withdrawal amount.
-  </p>
+    <section class="card">
 
-
-  <div
-    class="alert error"
-    id="errorAlert"
-  ></div>
-
-
-  <div
-    class="alert success"
-    id="successAlert"
-  ></div>
-
-
-  <!-- ===================================================
-       ASSET
-  ==================================================== -->
-
-  <section class="card">
-
-    <div class="card-title">
-      Select Asset
-    </div>
-
-
-    <div
-      class="asset-grid"
-      id="assetGrid"
-    ></div>
-
-  </section>
-
-
-  <!-- ===================================================
-       DETAILS
-  ==================================================== -->
-
-  <section class="card">
-
-    <div class="card-title">
-      Withdrawal Details
-    </div>
-
-
-    <!-- NETWORK -->
-
-    <div class="field">
-
-      <label class="label">
-        Network
-      </label>
-
-
-      <div
-        class="network-grid"
-        id="networkGrid"
-      >
-
-        <div class="empty">
-          Select an asset first.
+        <div class="card-title">
+            Select Asset
         </div>
 
-      </div>
+        <div class="asset-grid" id="assetGrid"></div>
 
-    </div>
-
-
-    <!-- ADDRESS -->
-
-    <div class="field">
-
-      <label
-        class="label"
-        for="address"
-      >
-        Destination Address
-      </label>
+    </section>
 
 
-      <input
-        id="address"
-        class="input"
-        type="text"
-        placeholder="Enter wallet address"
-        autocomplete="off"
-      >
+    <section class="card">
 
-    </div>
+        <div class="card-title">
+            Withdrawal Details
+        </div>
 
 
-    <!-- MEMO -->
+        <div class="balance-box">
 
-    <div
-      class="field"
-      id="memoField"
-      style="display:none;"
-    >
+            <div>
 
-      <label
-        class="label"
-        for="memo"
-      >
-        Memo / Tag
-      </label>
+                <div class="balance-label">
+                    Available Balance
+                </div>
 
+                <div class="balance-value" id="availableBalance">
+                    —
+                </div>
 
-      <input
-        id="memo"
-        class="input"
-        type="text"
-        placeholder="Enter memo or destination tag"
-        autocomplete="off"
-      >
+            </div>
 
-    </div>
+            <div class="balance-status" id="balanceStatus">
+                Loading
+            </div>
+
+        </div>
 
 
-    <!-- AMOUNT -->
+        <div class="field">
 
-    <div class="field">
+            <label class="label">
+                Network
+            </label>
 
-      <label
-        class="label"
-        for="amount"
-      >
-        Amount
-      </label>
+            <div class="network-grid" id="networkGrid"></div>
 
+            <div class="helper" id="networkHelper">
+                Select a network.
+            </div>
 
-      <input
-        id="amount"
-        class="input"
-        type="number"
-        min="0"
-        step="any"
-        placeholder="0.00"
-        inputmode="decimal"
-      >
-
-    </div>
+        </div>
 
 
-    <!-- SUMMARY -->
+        <div class="field">
 
-    <div class="summary">
+            <label class="label" for="address">
+                Destination Address
+            </label>
 
-      <div class="summary-row">
+            <input
+                class="input"
+                id="address"
+                type="text"
+                autocomplete="off"
+                placeholder="Enter destination address"
+            >
 
-        <span>
-          Withdrawal fee
-        </span>
-
-        <strong id="feeValue">
-          —
-        </strong>
-
-      </div>
+        </div>
 
 
-      <div class="summary-row">
+        <div class="field" id="memoField" style="display:none;">
 
-        <span>
-          Amount to receive
-        </span>
+            <label class="label" for="memoTag">
+                Memo / Tag
+            </label>
 
-        <strong
-          class="gold"
-          id="receiveValue"
+            <input
+                class="input"
+                id="memoTag"
+                type="text"
+                autocomplete="off"
+                placeholder="Enter memo or tag"
+            >
+
+            <div class="helper">
+                Only required when the receiving service provides a memo or destination tag.
+            </div>
+
+        </div>
+
+
+        <div class="field">
+
+            <label class="label" for="amount">
+                Amount
+            </label>
+
+            <input
+                class="input"
+                id="amount"
+                type="number"
+                min="0"
+                step="any"
+                inputmode="decimal"
+                placeholder="0.00"
+            >
+
+            <div class="helper" id="amountHelper">
+                Enter an amount within your available balance.
+            </div>
+
+        </div>
+
+
+        <div class="summary">
+
+            <div class="summary-row">
+
+                <span>
+                    Withdrawal fee
+                </span>
+
+                <span id="feeValue">
+                    0
+                </span>
+
+            </div>
+
+            <div class="summary-row receive">
+
+                <span>
+                    Amount to receive
+                </span>
+
+                <span id="receiveValue">
+                    —
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <button
+            class="request-btn"
+            id="requestBtn"
+            disabled
         >
-          —
-        </strong>
+            Request Withdrawal
+        </button>
 
-      </div>
-
-    </div>
+    </section>
 
 
-    <button
-      class="primary-btn"
-      id="withdrawBtn"
-      disabled
-    >
-      Request Withdrawal
-    </button>
+    <section class="card">
 
-  </section>
+        <div class="card-title">
+            Recent Withdrawals
+        </div>
 
+        <div class="withdrawal-list" id="withdrawalList">
+            <div class="empty">
+                Loading...
+            </div>
+        </div>
 
-  <!-- ===================================================
-       RECENT WITHDRAWALS
-  ==================================================== -->
-
-  <section class="card">
-
-    <div class="card-title">
-      Recent Withdrawals
-    </div>
-
-
-    <div
-      class="withdrawal-list"
-      id="withdrawalList"
-    >
-
-      <div class="empty">
-        Loading withdrawals...
-      </div>
-
-    </div>
-
-  </section>
+    </section>
 
 </main>
 
 
-<!-- =====================================================
-     BOTTOM NAV
-===================================================== -->
-
 <nav class="bottom-nav">
 
-  <div class="bottom-nav-inner">
+    <div class="bottom-inner">
 
+        <a class="bottom-link" href="dashboard.html">
+            <strong>⌂</strong>
+            <span>Portfolio</span>
+        </a>
 
-    <a
-      href="dashboard.html"
-      class="bottom-link"
-    >
+        <a class="bottom-link" href="deposit.html">
+            <strong>＋</strong>
+            <span>Deposit</span>
+        </a>
 
-      <span class="nav-icon">
-        ⌂
-      </span>
+        <a class="bottom-link active" href="transactions.html">
+            <strong>≡</strong>
+            <span>History</span>
+        </a>
 
-      <span>
-        Portfolio
-      </span>
+        <a class="bottom-link" href="profile.html">
+            <strong>○</strong>
+            <span>Account</span>
+        </a>
 
-    </a>
-
-
-    <a
-      href="deposit.html"
-      class="bottom-link"
-    >
-
-      <span class="nav-icon">
-        ＋
-      </span>
-
-      <span>
-        Deposit
-      </span>
-
-    </a>
-
-
-    <a
-      href="transactions.html"
-      class="bottom-link"
-    >
-
-      <span class="nav-icon">
-        ≡
-      </span>
-
-      <span>
-        History
-      </span>
-
-    </a>
-
-
-    <a
-      href="profile.html"
-      class="bottom-link"
-    >
-
-      <span class="nav-icon">
-        ○
-      </span>
-
-      <span>
-        Account
-      </span>
-
-    </a>
-
-  </div>
+    </div>
 
 </nav>
 
 
 <script>
 
-/* =====================================================
-   SUPABASE
-===================================================== */
-
 const SUPABASE_URL =
-  "https://rihvvwktvgytbqzazage.supabase.co";
+    "https://rihvvwktvgytbqzazage.supabase.co";
 
 const SUPABASE_KEY =
-  "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
+    "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
 
 const db =
-  supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
+    supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
 
-
-/* =====================================================
-   CRYPTO LOGOS
-===================================================== */
 
 const LOGO_BASE =
-  "https://cdn.jsdelivr.net/gh/madenix/Crypto-logo-cdn@main/Logos/";
+    "https://cdn.jsdelivr.net/gh/madenix/Crypto-logo-cdn@main/Logos/";
 
 const logoFiles = {
+    BTC:"BTC.svg",
+    ETH:"ETH.svg",
+    USDT:"USDT.svg",
+    USDC:"USDC.svg",
+    BNB:"BNB.svg",
+    SOL:"SOL.svg",
+    XRP:"XRP.svg",
+    TON:"TON.svg",
+    DOGE:"DOGE.svg",
+    ADA:"ADA.svg",
+    TRX:"TRON.svg",
+    LTC:"LTC.svg",
+    AVAX:"AVAX.svg",
+    DOT:"DOT.svg",
+    LINK:"LINK.svg",
+    POL:"MATIC.svg",
+    SHIB:"SHIB.svg",
+    BCH:"BCH.svg",
+    XLM:"XLM.svg",
+    ATOM:"ATOM.svg",
+    NEAR:"NEAR.svg",
+    APT:"APT.svg",
+    ARB:"ARB.svg",
+    OP:"OP.svg"
+};
 
-  BTC:"BTC.svg",
 
-  ETH:"ETH.svg",
+const assets = [
+    ["BTC","Bitcoin"],
+    ["ETH","Ethereum"],
+    ["USDT","Tether"],
+    ["USDC","USD Coin"],
+    ["BNB","BNB"],
+    ["SOL","Solana"],
+    ["XRP","XRP"],
+    ["TON","Toncoin"],
+    ["DOGE","Dogecoin"],
+    ["ADA","Cardano"],
+    ["TRX","TRON"],
+    ["LTC","Litecoin"],
+    ["AVAX","Avalanche"],
+    ["DOT","Polkadot"],
+    ["LINK","Chainlink"],
+    ["POL","Polygon"],
+    ["SHIB","Shiba Inu"],
+    ["BCH","Bitcoin Cash"],
+    ["XLM","Stellar"],
+    ["ATOM","Cosmos"],
+    ["NEAR","NEAR Protocol"],
+    ["APT","Aptos"],
+    ["ARB","Arbitrum"],
+    ["OP","Optimism"]
+];
 
-  USDT:"USDT.svg",
 
-  USDC:"USDC.svg",
+const networks = {
 
-  BNB:"BNB.svg",
+    BTC:["Bitcoin"],
 
-  SOL:"SOL.svg",
+    ETH:["ERC20"],
 
-  XRP:"XRP.svg",
+    USDT:[
+        "TRC20",
+        "ERC20",
+        "BEP20"
+    ],
 
-  TON:"TON.svg",
+    USDC:[
+        "ERC20",
+        "BEP20"
+    ],
 
-  DOGE:"DOGE.svg",
+    BNB:["BEP20"],
 
-  ADA:"ADA.svg",
+    SOL:["Solana"],
 
-  TRX:"TRON.svg",
+    XRP:["XRP Ledger"],
 
-  LTC:"LTC.svg",
+    TON:["TON"],
 
-  AVAX:"AVAX.svg",
+    DOGE:["Dogecoin"],
 
-  DOT:"DOT.svg",
+    ADA:["Cardano"],
 
-  LINK:"LINK.svg",
+    TRX:["TRON"],
 
-  POL:"MATIC.svg",
+    LTC:["Litecoin"],
 
-  SHIB:"SHIB.svg",
+    AVAX:["Avalanche C-Chain"],
 
-  BCH:"BCH.svg",
+    DOT:["Polkadot"],
 
-  XLM:"XLM.svg",
+    LINK:["ERC20"],
 
-  ATOM:"ATOM.svg",
+    POL:["Polygon"],
 
-  NEAR:"NEAR.svg",
+    SHIB:["ERC20"],
 
-  APT:"APT.svg",
+    BCH:["Bitcoin Cash"],
 
-  ARB:"ARB.svg",
+    XLM:["Stellar"],
 
-  OP:"OP.svg"
+    ATOM:["Cosmos"],
+
+    NEAR:["NEAR"],
+
+    APT:["Aptos"],
+
+    ARB:["Coming Soon"],
+
+    OP:["Coming Soon"]
 
 };
 
 
-function coinLogo(asset){
-
-  return (
-    LOGO_BASE +
-    (logoFiles[asset] || "")
-  );
-
-}
-
-
-/* =====================================================
-   SUPPORTED ASSETS
-===================================================== */
-
-const assets = [
-
-  {
-    symbol:"BTC",
-    name:"Bitcoin",
-    networks:[
-      "Bitcoin"
-    ]
-  },
-
-  {
-    symbol:"ETH",
-    name:"Ethereum",
-    networks:[
-      "Ethereum / ERC20"
-    ]
-  },
-
-  {
-    symbol:"USDT",
-    name:"Tether",
-    networks:[
-      "TRC20",
-      "ERC20",
-      "BEP20"
-    ]
-  },
-
-  {
-    symbol:"USDC",
-    name:"USD Coin",
-    networks:[
-      "ERC20",
-      "BEP20"
-    ]
-  },
-
-  {
-    symbol:"BNB",
-    name:"BNB",
-    networks:[
-      "BNB Smart Chain"
-    ]
-  },
-
-  {
-    symbol:"SOL",
-    name:"Solana",
-    networks:[
-      "Solana"
-    ]
-  },
-
-  {
-    symbol:"XRP",
-    name:"XRP",
-    networks:[
-      "XRP Ledger"
-    ]
-  },
-
-  {
-    symbol:"TON",
-    name:"Toncoin",
-    networks:[
-      "TON"
-    ]
-  },
-
-  {
-    symbol:"DOGE",
-    name:"Dogecoin",
-    networks:[
-      "Dogecoin"
-    ]
-  },
-
-  {
-    symbol:"ADA",
-    name:"Cardano",
-    networks:[
-      "Cardano"
-    ]
-  },
-
-  {
-    symbol:"TRX",
-    name:"TRON",
-    networks:[
-      "TRON"
-    ]
-  },
-
-  {
-    symbol:"LTC",
-    name:"Litecoin",
-    networks:[
-      "Litecoin"
-    ]
-  },
-
-  {
-    symbol:"AVAX",
-    name:"Avalanche",
-    networks:[
-      "Avalanche C-Chain"
-    ]
-  },
-
-  {
-    symbol:"DOT",
-    name:"Polkadot",
-    networks:[
-      "Polkadot"
-    ]
-  },
-
-  {
-    symbol:"LINK",
-    name:"Chainlink",
-    networks:[
-      "Ethereum / ERC20"
-    ]
-  },
-
-  {
-    symbol:"POL",
-    name:"Polygon",
-    networks:[
-      "Polygon"
-    ]
-  },
-
-  {
-    symbol:"SHIB",
-    name:"Shiba Inu",
-    networks:[
-      "Ethereum / ERC20"
-    ]
-  },
-
-  {
-    symbol:"BCH",
-    name:"Bitcoin Cash",
-    networks:[
-      "Bitcoin Cash"
-    ]
-  },
-
-  {
-    symbol:"XLM",
-    name:"Stellar",
-    networks:[
-      "Stellar"
-    ]
-  },
-
-  {
-    symbol:"ATOM",
-    name:"Cosmos",
-    networks:[
-      "Cosmos"
-    ]
-  },
-
-  {
-    symbol:"NEAR",
-    name:"NEAR Protocol",
-    networks:[
-      "NEAR"
-    ]
-  },
-
-  {
-    symbol:"APT",
-    name:"Aptos",
-    networks:[
-      "Aptos"
-    ]
-  },
-
-  {
-    symbol:"ARB",
-    name:"Arbitrum",
-    networks:[
-      "Arbitrum"
-    ]
-  },
-
-  {
-    symbol:"OP",
-    name:"Optimism",
-    networks:[
-      "Optimism"
-    ]
-  }
-
-];
-
-
-/* =====================================================
-   STATE
-===================================================== */
-
 let currentUser = null;
 
-let selectedAsset = null;
+let selectedAsset = "USDT";
 
-let selectedNetwork = null;
+let selectedNetwork = "TRC20";
 
+let wallets = {};
 
-/* =====================================================
-   DOM
-===================================================== */
+let currentBalance = 0;
+
+let submitting = false;
+
 
 const assetGrid =
-  document.getElementById(
-    "assetGrid"
-  );
+    document.getElementById("assetGrid");
 
 const networkGrid =
-  document.getElementById(
-    "networkGrid"
-  );
+    document.getElementById("networkGrid");
+
+const availableBalance =
+    document.getElementById("availableBalance");
+
+const balanceStatus =
+    document.getElementById("balanceStatus");
+
+const networkHelper =
+    document.getElementById("networkHelper");
 
 const addressInput =
-  document.getElementById(
-    "address"
-  );
-
-const memoInput =
-  document.getElementById(
-    "memo"
-  );
+    document.getElementById("address");
 
 const memoField =
-  document.getElementById(
-    "memoField"
-  );
+    document.getElementById("memoField");
+
+const memoInput =
+    document.getElementById("memoTag");
 
 const amountInput =
-  document.getElementById(
-    "amount"
-  );
+    document.getElementById("amount");
+
+const amountHelper =
+    document.getElementById("amountHelper");
 
 const feeValue =
-  document.getElementById(
-    "feeValue"
-  );
+    document.getElementById("feeValue");
 
 const receiveValue =
-  document.getElementById(
-    "receiveValue"
-  );
+    document.getElementById("receiveValue");
 
-const withdrawBtn =
-  document.getElementById(
-    "withdrawBtn"
-  );
+const requestBtn =
+    document.getElementById("requestBtn");
+
+const alertBox =
+    document.getElementById("alertBox");
 
 const withdrawalList =
-  document.getElementById(
-    "withdrawalList"
-  );
-
-const errorAlert =
-  document.getElementById(
-    "errorAlert"
-  );
-
-const successAlert =
-  document.getElementById(
-    "successAlert"
-  );
-
-const profileInitials =
-  document.getElementById(
-    "profileInitials"
-  );
+    document.getElementById("withdrawalList");
 
 
-/* =====================================================
-   ALERTS
-===================================================== */
+function showAlert(message){
 
-function showError(message){
+    alertBox.textContent = message;
 
-  successAlert.classList.remove(
-    "show"
-  );
-
-  errorAlert.textContent =
-    message;
-
-  errorAlert.classList.add(
-    "show"
-  );
-
-  window.scrollTo({
-    top:0,
-    behavior:"smooth"
-  });
-
+    alertBox.classList.add("show");
 }
 
 
-function showSuccess(message){
+function hideAlert(){
 
-  errorAlert.classList.remove(
-    "show"
-  );
+    alertBox.textContent = "";
 
-  successAlert.textContent =
-    message;
+    alertBox.classList.remove("show");
 
-  successAlert.classList.add(
-    "show"
-  );
-
-  window.scrollTo({
-    top:0,
-    behavior:"smooth"
-  });
-
+    alertBox.style.borderColor = "";
+    alertBox.style.background = "";
+    alertBox.style.color = "";
 }
 
 
-function clearAlerts(){
+function formatBalance(value){
 
-  errorAlert.classList.remove(
-    "show"
-  );
+    const number =
+        Number(value || 0);
 
-  successAlert.classList.remove(
-    "show"
-  );
-
-}
-
-
-/* =====================================================
-   INITIALS
-===================================================== */
-
-function makeInitials(name){
-
-  if(!name){
-
-    return "NX";
-
-  }
-
-
-  const parts =
-    name
-      .trim()
-      .split(/\s+/);
-
-
-  if(parts.length === 1){
-
-    return parts[0]
-      .substring(0,2)
-      .toUpperCase();
-
-  }
-
-
-  return (
-    parts[0][0] +
-    parts[parts.length - 1][0]
-  ).toUpperCase();
-
-}
-
-
-/* =====================================================
-   RENDER ASSETS
-===================================================== */
-
-function renderAssets(){
-
-  assetGrid.innerHTML = "";
-
-
-  assets.forEach(asset => {
-
-    const button =
-      document.createElement(
-        "button"
-      );
-
-
-    button.type =
-      "button";
-
-
-    button.className =
-      "asset-btn";
-
-
-    button.dataset.asset =
-      asset.symbol;
-
-
-    button.innerHTML = `
-
-      <img
-        class="coin-logo"
-        src="${coinLogo(asset.symbol)}"
-        alt="${asset.name}"
-      >
-
-      <div class="asset-info">
-
-        <div class="asset-name">
-          ${asset.name}
-        </div>
-
-        <div class="asset-symbol">
-          ${asset.symbol}
-        </div>
-
-      </div>
-
-    `;
-
-
-    button.addEventListener(
-      "click",
-      () => selectAsset(asset)
-    );
-
-
-    assetGrid.appendChild(
-      button
-    );
-
-  });
-
-}
-
-
-/* =====================================================
-   SELECT ASSET
-===================================================== */
-
-function selectAsset(asset){
-
-  clearAlerts();
-
-
-  selectedAsset =
-    asset;
-
-
-  selectedNetwork =
-    null;
-
-
-  document
-    .querySelectorAll(
-      ".asset-btn"
-    )
-    .forEach(btn => {
-
-      btn.classList.toggle(
-        "selected",
-        btn.dataset.asset ===
-        asset.symbol
-      );
-
-    });
-
-
-  renderNetworks(
-    asset
-  );
-
-
-  updateMemoVisibility();
-
-  updateSummary();
-
-  updateButton();
-
-}
-
-
-/* =====================================================
-   RENDER NETWORKS
-===================================================== */
-
-function renderNetworks(asset){
-
-  networkGrid.innerHTML =
-    "";
-
-
-  asset.networks.forEach(
-    network => {
-
-      const button =
-        document.createElement(
-          "button"
-        );
-
-
-      button.type =
-        "button";
-
-
-      button.className =
-        "network-btn";
-
-
-      button.innerHTML = `
-
-        <span class="network-name">
-          ${network}
-        </span>
-
-        <span class="network-status">
-          Available
-        </span>
-
-      `;
-
-
-      button.addEventListener(
-        "click",
-        () => {
-
-          selectedNetwork =
-            network;
-
-
-          document
-            .querySelectorAll(
-              ".network-btn"
-            )
-            .forEach(item => {
-
-              item.classList.remove(
-                "selected"
-              );
-
-            });
-
-
-          button.classList.add(
-            "selected"
-          );
-
-
-          updateMemoVisibility();
-
-          updateButton();
-
-        }
-      );
-
-
-      networkGrid.appendChild(
-        button
-      );
-
+    if(!Number.isFinite(number)){
+        return "0";
     }
-  );
 
-}
+    if(number === 0){
+        return "0";
+    }
 
-
-/* =====================================================
-   MEMO / TAG
-===================================================== */
-
-function updateMemoVisibility(){
-
-  if(
-    selectedAsset &&
-    selectedAsset.symbol === "XRP"
-  ){
-
-    memoField.style.display =
-      "block";
-
-    memoInput.placeholder =
-      "Enter destination tag if required";
-
-  }
-
-  else{
-
-    memoField.style.display =
-      "none";
-
-    memoInput.value =
-      "";
-
-  }
-
-}
-
-
-/* =====================================================
-   SUMMARY
-===================================================== */
-
-function updateSummary(){
-
-  const amount =
-    parseFloat(
-      amountInput.value
+    return number.toLocaleString(
+        undefined,
+        {
+            maximumFractionDigits:18
+        }
     );
-
-
-  if(
-    !selectedAsset ||
-    !amount ||
-    amount <= 0
-  ){
-
-    feeValue.textContent =
-      "—";
-
-    receiveValue.textContent =
-      "—";
-
-    return;
-
-  }
-
-
-  const fee =
-    0;
-
-
-  const receive =
-    Math.max(
-      0,
-      amount - fee
-    );
-
-
-  feeValue.textContent =
-    `${fee} ${selectedAsset.symbol}`;
-
-
-  receiveValue.textContent =
-    `${receive} ${selectedAsset.symbol}`;
-
 }
 
 
-/* =====================================================
-   BUTTON STATE
-===================================================== */
+function formatDate(value){
 
-function updateButton(){
+    if(!value){
+        return "—";
+    }
 
-  const amount =
-    parseFloat(
-      amountInput.value
-    );
-
-
-  const ready =
-    !!selectedAsset &&
-    !!selectedNetwork &&
-    addressInput.value.trim().length > 0 &&
-    Number.isFinite(amount) &&
-    amount > 0;
-
-
-  withdrawBtn.disabled =
-    !ready;
-
+    return new Date(value).toLocaleString();
 }
 
 
-/* =====================================================
-   INPUT EVENTS
-===================================================== */
+function escapeHtml(value){
 
-amountInput.addEventListener(
-  "input",
-  () => {
-
-    updateSummary();
-
-    updateButton();
-
-  }
-);
+    return String(value ?? "")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+}
 
 
-addressInput.addEventListener(
-  "input",
-  updateButton
-);
-
-
-memoInput.addEventListener(
-  "input",
-  updateButton
-);
-
-
-/* =====================================================
-   LOAD USER
-===================================================== */
+/* AUTH */
 
 async function loadUser(){
 
-  const {
-    data,
-    error
-  } =
-    await db.auth.getUser();
+    const {
+        data,
+        error
+    } = await db.auth.getUser();
 
+    if(error || !data.user){
 
-  if(
-    error ||
-    !data.user
-  ){
+        window.location.href =
+            "signin.html";
 
-    window.location.href =
-      "signin.html";
+        return false;
+    }
 
-    return false;
+    currentUser =
+        data.user;
 
-  }
-
-
-  currentUser =
-    data.user;
-
-
-  const metadata =
-    currentUser.user_metadata ||
-    {};
-
-
-  profileInitials.textContent =
-    makeInitials(
-      metadata.full_name ||
-      currentUser.email ||
-      "NX"
-    );
-
-
-  return true;
-
+    return true;
 }
 
 
-/* =====================================================
-   LOAD WITHDRAWALS
-===================================================== */
+/* WALLETS */
 
-async function loadWithdrawals(){
+async function loadWallets(){
 
-  if(!currentUser){
-
-    return;
-
-  }
-
-
-  withdrawalList.innerHTML =
-    `
-      <div class="empty">
-        Loading withdrawals...
-      </div>
-    `;
+    const {
+        data,
+        error
+    } = await db
+        .from("wallets")
+        .select(`
+            asset,
+            available_balance,
+            locked_balance
+        `)
+        .eq("user_id",currentUser.id);
 
 
-  const {
-    data,
-    error
-  } =
-    await db
-      .from("withdrawals")
-      .select(`
-        id,
-        asset,
-        network,
-        amount,
-        fee,
-        net_amount,
-        status,
-        created_at,
-        external_reference
-      `)
-      .eq(
-        "user_id",
-        currentUser.id
-      )
-      .order(
-        "created_at",
-        {
-          ascending:false
+    if(error){
+
+        console.error(error);
+
+        showAlert(
+            "Unable to load your wallet balance. Please try again."
+        );
+
+        return false;
+    }
+
+
+    wallets = {};
+
+
+    for(const wallet of (data || [])){
+
+        wallets[wallet.asset] = {
+
+            available:
+                Number(wallet.available_balance || 0),
+
+            locked:
+                Number(wallet.locked_balance || 0)
+
+        };
+
+    }
+
+    return true;
+}
+
+
+/* ASSETS */
+
+function renderAssets(){
+
+    assetGrid.innerHTML = "";
+
+
+    for(const [symbol,name] of assets){
+
+        const button =
+            document.createElement("button");
+
+        button.type = "button";
+
+        button.className =
+            "asset-btn" +
+            (
+                symbol === selectedAsset
+                    ? " active"
+                    : ""
+            );
+
+
+        button.innerHTML = `
+
+            <img
+                class="asset-logo"
+                src="${LOGO_BASE}${logoFiles[symbol]}"
+                alt="${escapeHtml(symbol)}"
+            >
+
+            <div class="asset-name">
+                ${escapeHtml(name)}
+            </div>
+
+            <div class="asset-symbol">
+                ${escapeHtml(symbol)}
+            </div>
+
+        `;
+
+
+        button.addEventListener(
+            "click",
+            () => selectAsset(symbol)
+        );
+
+
+        assetGrid.appendChild(button);
+    }
+}
+
+
+/* NETWORKS */
+
+function renderNetworks(){
+
+    networkGrid.innerHTML = "";
+
+
+    const list =
+        networks[selectedAsset] || [];
+
+
+    for(const network of list){
+
+        const button =
+            document.createElement("button");
+
+        button.type = "button";
+
+
+        const unavailable =
+            network === "Coming Soon";
+
+
+        button.className =
+            "network-btn" +
+            (
+                network === selectedNetwork
+                    ? " active"
+                    : ""
+            ) +
+            (
+                unavailable
+                    ? " disabled"
+                    : ""
+            );
+
+
+        button.textContent =
+            network;
+
+
+        if(!unavailable){
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    selectedNetwork =
+                        network;
+
+                    renderNetworks();
+
+                    updateForm();
+
+                }
+            );
+
         }
-      )
-      .limit(20);
 
 
-  if(error){
-
-    console.error(
-      "Withdrawal history error:",
-      error
-    );
+        networkGrid.appendChild(button);
+    }
 
 
-    withdrawalList.innerHTML =
-      `
-        <div class="empty">
-          Unable to load withdrawals.
-        </div>
-      `;
+    if(selectedAsset === "XRP"){
 
+        networkHelper.textContent =
+            "XRP Ledger selected. A destination tag is only needed when the receiving service provides one.";
 
-    return;
+    }else if(
+        selectedAsset === "ARB" ||
+        selectedAsset === "OP"
+    ){
 
-  }
+        networkHelper.textContent =
+            "This asset is currently unavailable for withdrawals.";
 
+    }else{
 
-  if(
-    !data ||
-    data.length === 0
-  ){
+        networkHelper.textContent =
+            "Choose the network that matches your destination address.";
 
-    withdrawalList.innerHTML =
-      `
-        <div class="empty">
-          No withdrawals yet.
-        </div>
-      `;
-
-
-    return;
-
-  }
-
-
-  withdrawalList.innerHTML =
-    "";
-
-
-  data.forEach(item => {
-
-    const wrapper =
-      document.createElement(
-        "div"
-      );
-
-
-    wrapper.className =
-      "withdrawal-item";
-
-
-    const statusClass =
-      String(
-        item.status
-      ).toLowerCase();
-
-
-    const date =
-      new Date(
-        item.created_at
-      ).toLocaleString();
-
-
-    wrapper.innerHTML = `
-
-      <div class="withdrawal-top">
-
-        <div class="withdrawal-asset">
-
-          <img
-            src="${coinLogo(item.asset)}"
-            alt="${item.asset}"
-          >
-
-          <div>
-
-            <div class="withdrawal-symbol">
-              ${item.asset}
-            </div>
-
-            <div class="withdrawal-network">
-              ${item.network}
-            </div>
-
-          </div>
-
-        </div>
-
-
-        <span
-          class="status ${statusClass}"
-        >
-          ${item.status}
-        </span>
-
-      </div>
-
-
-      <div class="withdrawal-bottom">
-
-        <span>
-          ${item.amount} ${item.asset}
-        </span>
-
-        <span>
-          ${date}
-        </span>
-
-      </div>
-
-    `;
-
-
-    withdrawalList.appendChild(
-      wrapper
-    );
-
-  });
-
+    }
 }
 
 
-/* =====================================================
-   REQUEST WITHDRAWAL
-===================================================== */
+/* SELECT ASSET */
 
-withdrawBtn.addEventListener(
-  "click",
-  async () => {
+function selectAsset(symbol){
 
-    clearAlerts();
+    selectedAsset =
+        symbol;
 
 
-    if(!currentUser){
+    const availableNetworks =
+        networks[symbol] || [];
 
-      showError(
-        "Please sign in again."
-      );
 
-      return;
+    const usableNetworks =
+        availableNetworks.filter(
+            network =>
+                network !== "Coming Soon"
+        );
 
+
+    selectedNetwork =
+        usableNetworks[0] || null;
+
+
+    amountInput.value = "";
+
+    addressInput.value = "";
+
+    memoInput.value = "";
+
+    hideAlert();
+
+
+    renderAssets();
+
+    renderNetworks();
+
+    updateForm();
+}
+
+
+/* UPDATE FORM */
+
+function updateForm(){
+
+    const wallet =
+        wallets[selectedAsset];
+
+
+    currentBalance =
+        wallet
+            ? Number(wallet.available || 0)
+            : 0;
+
+
+    availableBalance.textContent =
+        `${formatBalance(currentBalance)} ${selectedAsset}`;
+
+
+    if(currentBalance > 0){
+
+        balanceStatus.textContent =
+            "Available";
+
+        balanceStatus.style.color =
+            "var(--success)";
+
+    }else{
+
+        balanceStatus.textContent =
+            "No available balance";
+
+        balanceStatus.style.color =
+            "var(--danger)";
     }
 
 
-    if(!selectedAsset){
+    if(selectedAsset === "XRP"){
 
-      showError(
-        "Please select an asset."
-      );
+        memoField.style.display =
+            "block";
 
-      return;
+    }else{
 
-    }
+        memoField.style.display =
+            "none";
 
-
-    if(!selectedNetwork){
-
-      showError(
-        "Please select a network."
-      );
-
-      return;
-
-    }
-
-
-    const address =
-      addressInput.value.trim();
-
-
-    const memo =
-      memoInput.value.trim();
-
-
-    const amount =
-      parseFloat(
-        amountInput.value
-      );
-
-
-    if(!address){
-
-      showError(
-        "Please enter a destination address."
-      );
-
-      return;
-
+        memoInput.value = "";
     }
 
 
     if(
-      !Number.isFinite(amount) ||
-      amount <= 0
+        selectedAsset === "ARB" ||
+        selectedAsset === "OP"
     ){
 
-      showError(
-        "Enter a valid withdrawal amount."
-      );
+        amountHelper.textContent =
+            "Withdrawals for this asset are currently unavailable.";
 
-      return;
+    }else{
 
-    }
-
-
-    withdrawBtn.disabled =
-      true;
-
-
-    withdrawBtn.textContent =
-      "Submitting...";
-
-
-    try{
-
-      const {
-        data,
-        error
-      } =
-        await db.rpc(
-          "request_withdrawal",
-          {
-            p_asset:
-              selectedAsset.symbol,
-
-            p_network:
-              selectedNetwork,
-
-            p_address:
-              address,
-
-            p_memo_tag:
-              memo || null,
-
-            p_amount:
-              amount
-          }
-        );
-
-
-      if(error){
-
-        throw error;
-
-      }
-
-
-      showSuccess(
-        "Your withdrawal request has been submitted successfully."
-      );
-
-
-      addressInput.value =
-        "";
-
-      memoInput.value =
-        "";
-
-      amountInput.value =
-        "";
-
-
-      selectedNetwork =
-        null;
-
-
-      document
-        .querySelectorAll(
-          ".network-btn"
-        )
-        .forEach(btn => {
-
-          btn.classList.remove(
-            "selected"
-          );
-
-        });
-
-
-      updateSummary();
-
-      updateButton();
-
-
-      await loadWithdrawals();
+        amountHelper.textContent =
+            `Available: ${formatBalance(currentBalance)} ${selectedAsset}.`;
 
     }
 
-    catch(error){
 
-      console.error(
-        "Withdrawal error:",
-        error
-      );
+    updateSummary();
 
-
-      showError(
-        error.message ||
-        "Unable to submit withdrawal request."
-      );
+    validateForm();
+}
 
 
-      updateButton();
+/* SUMMARY */
 
+function updateSummary(){
+
+    const amount =
+        Number(amountInput.value || 0);
+
+
+    feeValue.textContent =
+        `0 ${selectedAsset}`;
+
+
+    if(
+        amount > 0 &&
+        Number.isFinite(amount)
+    ){
+
+        receiveValue.textContent =
+            `${formatBalance(amount)} ${selectedAsset}`;
+
+    }else{
+
+        receiveValue.textContent =
+            "—";
+    }
+}
+
+
+/* VALIDATE */
+
+function validateForm(){
+
+    const amount =
+        Number(amountInput.value || 0);
+
+
+    const validAmount =
+        Number.isFinite(amount) &&
+        amount > 0;
+
+
+    const validBalance =
+        validAmount &&
+        amount <= currentBalance;
+
+
+    const validAddress =
+        addressInput.value.trim().length > 0;
+
+
+    const validNetwork =
+        Boolean(selectedNetwork) &&
+        selectedNetwork !== "Coming Soon";
+
+
+    const disabledAsset =
+        selectedAsset === "ARB" ||
+        selectedAsset === "OP";
+
+
+    if(
+        validAmount &&
+        amount > currentBalance
+    ){
+
+        amountHelper.textContent =
+            `Insufficient available balance. You have ${formatBalance(currentBalance)} ${selectedAsset}.`;
+
+        amountHelper.style.color =
+            "var(--danger)";
+
+    }else{
+
+        amountHelper.textContent =
+            `Available: ${formatBalance(currentBalance)} ${selectedAsset}.`;
+
+        amountHelper.style.color =
+            "var(--muted)";
     }
 
-    finally{
 
-      withdrawBtn.textContent =
-        "Request Withdrawal";
+    requestBtn.disabled =
+        submitting ||
+        disabledAsset ||
+        !validAmount ||
+        !validBalance ||
+        !validAddress ||
+        !validNetwork;
 
 
-      updateButton();
+    updateSummary();
+}
+
+
+amountInput.addEventListener(
+    "input",
+    () => {
+
+        hideAlert();
+
+        validateForm();
 
     }
-
-  }
 );
 
 
-/* =====================================================
-   DRAWER
-===================================================== */
+addressInput.addEventListener(
+    "input",
+    () => {
+
+        hideAlert();
+
+        validateForm();
+
+    }
+);
+
+
+memoInput.addEventListener(
+    "input",
+    () => {
+
+        hideAlert();
+
+        validateForm();
+
+    }
+);
+
+
+/* REQUEST */
+
+requestBtn.addEventListener(
+    "click",
+    async () => {
+
+        if(submitting){
+            return;
+        }
+
+
+        hideAlert();
+
+
+        const amount =
+            Number(amountInput.value || 0);
+
+
+        const address =
+            addressInput.value.trim();
+
+
+        const memoTag =
+            memoInput.value.trim() || null;
+
+
+        if(
+            !Number.isFinite(amount) ||
+            amount <= 0
+        ){
+
+            showAlert(
+                "Enter a valid withdrawal amount."
+            );
+
+            return;
+        }
+
+
+        if(amount > currentBalance){
+
+            showAlert(
+                `Insufficient available balance. You have ${formatBalance(currentBalance)} ${selectedAsset}.`
+            );
+
+            validateForm();
+
+            return;
+        }
+
+
+        if(!selectedNetwork){
+
+            showAlert(
+                "Please select a network."
+            );
+
+            return;
+        }
+
+
+        if(
+            selectedNetwork === "Coming Soon"
+        ){
+
+            showAlert(
+                "Withdrawals for this asset are currently unavailable."
+            );
+
+            return;
+        }
+
+
+        if(!address){
+
+            showAlert(
+                "Enter the destination address."
+            );
+
+            return;
+        }
+
+
+        submitting = true;
+
+        requestBtn.disabled = true;
+
+        requestBtn.textContent =
+            "Submitting...";
+
+
+        try{
+
+            const {
+                data,
+                error
+            } = await db.rpc(
+                "request_withdrawal",
+                {
+                    p_asset:selectedAsset,
+                    p_network:selectedNetwork,
+                    p_address:address,
+                    p_memo_tag:memoTag,
+                    p_amount:amount
+                }
+            );
+
+
+            if(error){
+
+                console.error(error);
+
+                throw new Error(
+                    error.message ||
+                    "Withdrawal request failed."
+                );
+            }
+
+
+            if(!data){
+
+                throw new Error(
+                    "Withdrawal request could not be created."
+                );
+            }
+
+
+            showAlert(
+                "Withdrawal request submitted successfully."
+            );
+
+
+            alertBox.style.borderColor =
+                "rgba(99,212,154,.3)";
+
+            alertBox.style.background =
+                "rgba(99,212,154,.08)";
+
+            alertBox.style.color =
+                "#a7efc8";
+
+
+            amountInput.value = "";
+
+            addressInput.value = "";
+
+            memoInput.value = "";
+
+
+            await loadWallets();
+
+            updateForm();
+
+            await loadRecentWithdrawals();
+
+
+        }catch(error){
+
+            console.error(error);
+
+
+            showAlert(
+                error.message ||
+                "Unable to submit withdrawal request."
+            );
+
+
+        }finally{
+
+            submitting = false;
+
+            requestBtn.textContent =
+                "Request Withdrawal";
+
+            validateForm();
+
+        }
+
+    }
+);
+
+
+/* RECENT WITHDRAWALS */
+
+async function loadRecentWithdrawals(){
+
+    withdrawalList.innerHTML =
+        `<div class="empty">Loading...</div>`;
+
+
+    const {
+        data,
+        error
+    } = await db
+        .from("withdrawals")
+        .select(`
+            id,
+            asset,
+            network,
+            amount,
+            fee,
+            net_amount,
+            status,
+            created_at
+        `)
+        .eq("user_id",currentUser.id)
+        .order(
+            "created_at",
+            {ascending:false}
+        )
+        .limit(20);
+
+
+    if(error){
+
+        console.error(error);
+
+        withdrawalList.innerHTML =
+            `<div class="empty">Unable to load withdrawals.</div>`;
+
+        return;
+    }
+
+
+    if(!data || data.length === 0){
+
+        withdrawalList.innerHTML =
+            `<div class="empty">No withdrawals yet.</div>`;
+
+        return;
+    }
+
+
+    withdrawalList.innerHTML = "";
+
+
+    for(const withdrawal of data){
+
+        const item =
+            document.createElement("div");
+
+
+        item.className =
+            "withdrawal-item";
+
+
+        const symbol =
+            withdrawal.asset;
+
+
+        item.innerHTML = `
+
+            <div class="withdrawal-top">
+
+                <div class="withdrawal-asset">
+
+                    <img
+                        src="${LOGO_BASE}${logoFiles[symbol] || ""}"
+                        alt="${escapeHtml(symbol)}"
+                    >
+
+                    <span>
+                        ${escapeHtml(symbol)}
+                    </span>
+
+                </div>
+
+                <div class="status">
+                    ${escapeHtml(withdrawal.status)}
+                </div>
+
+            </div>
+
+
+            <div class="withdrawal-meta">
+
+                ${escapeHtml(withdrawal.network)}
+                ·
+                ${escapeHtml(formatBalance(withdrawal.amount))}
+                ${escapeHtml(withdrawal.asset)}
+
+                <br>
+
+                ${escapeHtml(
+                    formatDate(withdrawal.created_at)
+                )}
+
+            </div>
+
+        `;
+
+
+        withdrawalList.appendChild(item);
+    }
+}
+
+
+/* DRAWER */
 
 const menuBtn =
-  document.getElementById(
-    "menuBtn"
-  );
+    document.getElementById("menuBtn");
 
 const drawer =
-  document.getElementById(
-    "drawer"
-  );
+    document.getElementById("drawer");
 
 const drawerOverlay =
-  document.getElementById(
-    "drawerOverlay"
-  );
+    document.getElementById("drawerOverlay");
 
-const drawerClose =
-  document.getElementById(
-    "drawerClose"
-  );
+const closeDrawer =
+    document.getElementById("closeDrawer");
 
 
 function openDrawer(){
 
-  drawer.classList.add(
-    "show"
-  );
+    drawer.classList.add("open");
 
-  drawerOverlay.classList.add(
-    "show"
-  );
-
-  document.body.style.overflow =
-    "hidden";
-
+    drawerOverlay.classList.add("open");
 }
 
 
-function closeDrawer(){
+function closeDrawerMenu(){
 
-  drawer.classList.remove(
-    "show"
-  );
+    drawer.classList.remove("open");
 
-  drawerOverlay.classList.remove(
-    "show"
-  );
-
-  document.body.style.overflow =
-    "";
-
+    drawerOverlay.classList.remove("open");
 }
 
 
 menuBtn.addEventListener(
-  "click",
-  openDrawer
+    "click",
+    openDrawer
 );
 
 
-drawerClose.addEventListener(
-  "click",
-  closeDrawer
+closeDrawer.addEventListener(
+    "click",
+    closeDrawerMenu
 );
 
 
 drawerOverlay.addEventListener(
-  "click",
-  closeDrawer
+    "click",
+    closeDrawerMenu
 );
 
 
-/* =====================================================
-   LOGOUT
-===================================================== */
+/* PROFILE */
 
 document
-  .getElementById(
-    "logoutBtn"
-  )
-  .addEventListener(
-    "click",
-    async event => {
+    .getElementById("avatarBtn")
+    .addEventListener(
+        "click",
+        () => {
 
-      event.preventDefault();
+            window.location.href =
+                "profile.html";
 
-
-      await db.auth.signOut();
-
-
-      window.location.href =
-        "signin.html";
-
-    }
-  );
+        }
+    );
 
 
-/* =====================================================
-   INIT
-===================================================== */
+/* LOGOUT */
+
+document
+    .getElementById("logoutBtn")
+    .addEventListener(
+        "click",
+        async event => {
+
+            event.preventDefault();
+
+            await db.auth.signOut();
+
+            window.location.href =
+                "signin.html";
+
+        }
+    );
+
+
+/* INITIALIZE */
 
 async function init(){
 
-  const authenticated =
-    await loadUser();
+    const authenticated =
+        await loadUser();
 
 
-  if(!authenticated){
-
-    return;
-
-  }
+    if(!authenticated){
+        return;
+    }
 
 
-  renderAssets();
+    const walletsLoaded =
+        await loadWallets();
 
-  await loadWithdrawals();
 
+    if(!walletsLoaded){
+        return;
+    }
+
+
+    renderAssets();
+
+    renderNetworks();
+
+    updateForm();
+
+    await loadRecentWithdrawals();
 }
 
 
