@@ -12,8 +12,6 @@
 <title>NEXORA — Deposit</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<!-- QR generator -->
 <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
 
 <style>
@@ -57,7 +55,6 @@ html{
 body{
     margin:0;
     min-height:100vh;
-
     background:var(--bg);
     color:var(--text);
 
@@ -93,7 +90,6 @@ a{
 .loading-screen{
     position:fixed;
     inset:0;
-
     z-index:9999;
 
     background:var(--navy);
@@ -116,10 +112,8 @@ a{
 
 .loading-logo{
     color:var(--gold2);
-
     font-size:25px;
     font-weight:900;
-
     letter-spacing:4px;
 }
 
@@ -129,9 +123,7 @@ a{
 
     margin:20px auto 0;
 
-    border:3px solid
-        rgba(214,177,94,.18);
-
+    border:3px solid rgba(214,177,94,.18);
     border-top-color:var(--gold);
 
     border-radius:50%;
@@ -140,16 +132,14 @@ a{
 }
 
 @keyframes spin{
-
     to{
         transform:rotate(360deg);
     }
-
 }
 
 
 /* =========================================================
-   HEADER
+   DASHBOARD TOPBAR
 ========================================================= */
 
 .topbar{
@@ -180,6 +170,8 @@ a{
     display:flex;
     align-items:center;
     justify-content:space-between;
+
+    position:relative;
 }
 
 .icon-btn{
@@ -199,17 +191,21 @@ a{
     justify-content:center;
 
     font-size:22px;
+
+    flex-shrink:0;
 }
 
 .icon-btn:active{
     transform:scale(.96);
 }
 
+
+/* EXACT DASHBOARD LOGO */
+
 .logo{
     position:absolute;
 
     left:50%;
-
     transform:translateX(-50%);
 
     color:var(--gold2);
@@ -219,6 +215,13 @@ a{
 
     letter-spacing:3px;
 }
+
+.logo span{
+    color:var(--gold);
+}
+
+
+/* ACCOUNT CIRCLE */
 
 .account-circle{
     width:40px;
@@ -241,6 +244,8 @@ a{
 
     font-size:13px;
     font-weight:900;
+
+    flex-shrink:0;
 }
 
 
@@ -388,7 +393,6 @@ a{
 .drawer-link:hover,
 .drawer-link.active{
     background:rgba(214,177,94,.09);
-
     color:var(--gold2);
 }
 
@@ -478,7 +482,6 @@ main{
     margin:0;
 
     font-size:15px;
-
     font-weight:800;
 }
 
@@ -539,8 +542,7 @@ main{
 }
 
 .asset-btn.selected{
-    border-color:
-        rgba(214,177,94,.8);
+    border-color:rgba(214,177,94,.8);
 
     background:
         linear-gradient(
@@ -563,13 +565,11 @@ main{
 
 .asset-name{
     font-size:11px;
-
     font-weight:800;
 }
 
 .asset-network-count{
     color:var(--muted2);
-
     font-size:9px;
 }
 
@@ -583,18 +583,15 @@ main{
 
     padding:22px 12px;
 
-    border:1px dashed
-        rgba(214,177,94,.25);
+    border:1px dashed rgba(214,177,94,.25);
 
     border-radius:14px;
 
-    background:
-        rgba(214,177,94,.025);
+    background:rgba(214,177,94,.025);
 }
 
 .coming-soon-icon{
     font-size:28px;
-
     margin-bottom:9px;
 }
 
@@ -656,16 +653,13 @@ main{
 }
 
 .network-btn.selected{
-    border-color:
-        rgba(214,177,94,.75);
+    border-color:rgba(214,177,94,.75);
 
-    background:
-        rgba(214,177,94,.08);
+    background:rgba(214,177,94,.08);
 }
 
 .network-left{
     display:flex;
-
     align-items:center;
 
     gap:11px;
@@ -677,8 +671,7 @@ main{
 
     border-radius:11px;
 
-    background:
-        rgba(214,177,94,.08);
+    background:rgba(214,177,94,.08);
 
     display:flex;
     align-items:center;
@@ -687,13 +680,11 @@ main{
     color:var(--gold2);
 
     font-size:15px;
-
     font-weight:900;
 }
 
 .network-name{
     font-size:13px;
-
     font-weight:750;
 }
 
@@ -758,7 +749,6 @@ main{
 
 .address-text{
     flex:1;
-
     min-width:0;
 
     padding:12px;
@@ -767,8 +757,7 @@ main{
 
     background:#070c17;
 
-    border:1px solid
-        rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.06);
 
     color:var(--text);
 
@@ -782,11 +771,9 @@ main{
 .copy-btn{
     flex:0 0 auto;
 
-    border:1px solid
-        rgba(214,177,94,.35);
+    border:1px solid rgba(214,177,94,.35);
 
-    background:
-        rgba(214,177,94,.08);
+    background:rgba(214,177,94,.08);
 
     color:var(--gold2);
 
@@ -810,11 +797,9 @@ main{
 
     border-radius:11px;
 
-    background:
-        rgba(214,177,94,.06);
+    background:rgba(214,177,94,.06);
 
-    border:1px solid
-        rgba(214,177,94,.14);
+    border:1px solid rgba(214,177,94,.14);
 
     color:var(--gold2);
 
@@ -830,7 +815,6 @@ main{
 
 .qr-section{
     margin-top:18px;
-
     text-align:center;
 }
 
@@ -903,11 +887,9 @@ main{
 
     border-radius:13px;
 
-    background:
-        rgba(239,109,120,.06);
+    background:rgba(239,109,120,.06);
 
-    border:1px solid
-        rgba(239,109,120,.16);
+    border:1px solid rgba(239,109,120,.16);
 
     color:#dca0a6;
 
@@ -946,21 +928,17 @@ main{
 .status-message.success{
     color:#75d9ae;
 
-    background:
-        rgba(53,201,138,.07);
+    background:rgba(53,201,138,.07);
 
-    border:1px solid
-        rgba(53,201,138,.15);
+    border:1px solid rgba(53,201,138,.15);
 }
 
 .status-message.error{
     color:#ef9aa2;
 
-    background:
-        rgba(239,109,120,.07);
+    background:rgba(239,109,120,.07);
 
-    border:1px solid
-        rgba(239,109,120,.15);
+    border:1px solid rgba(239,109,120,.15);
 }
 
 
@@ -990,7 +968,6 @@ main{
     display:flex;
 
     align-items:center;
-
     justify-content:space-between;
 
     gap:10px;
@@ -998,7 +975,6 @@ main{
 
 .history-asset{
     font-size:13px;
-
     font-weight:800;
 }
 
@@ -1009,8 +985,7 @@ main{
 
     border-radius:20px;
 
-    background:
-        rgba(214,177,94,.08);
+    background:rgba(214,177,94,.08);
 
     color:var(--gold2);
 
@@ -1020,15 +995,13 @@ main{
 .history-status.confirmed{
     color:#72dcae;
 
-    background:
-        rgba(53,201,138,.08);
+    background:rgba(53,201,138,.08);
 }
 
 .history-status.rejected{
     color:#ef9aa2;
 
-    background:
-        rgba(239,109,120,.08);
+    background:rgba(239,109,120,.08);
 }
 
 .history-details{
@@ -1047,7 +1020,6 @@ main{
 
 .history-amount{
     color:var(--text);
-
     font-weight:750;
 }
 
@@ -1063,7 +1035,7 @@ main{
 
 
 /* =========================================================
-   BOTTOM NAV
+   EXACT DASHBOARD BOTTOM NAV
 ========================================================= */
 
 .bottom-nav{
@@ -1075,10 +1047,9 @@ main{
 
     z-index:900;
 
-    height:76px;
+    height:70px;
 
-    background:
-        rgba(5,9,20,.97);
+    background:rgba(5,9,20,.97);
 
     border-top:1px solid var(--border);
 
@@ -1106,7 +1077,7 @@ main{
     align-items:center;
     justify-content:center;
 
-    gap:5px;
+    gap:4px;
 
     color:var(--muted2);
 
@@ -1285,8 +1256,6 @@ main{
         </a>
 
 
-    
-
         <a
             class="drawer-link"
             href="referrals.html"
@@ -1342,7 +1311,7 @@ main{
 
 
 <!-- =====================================================
-     HEADER
+     DASHBOARD HEADER
 ====================================================== -->
 
 <header class="topbar">
@@ -1358,9 +1327,12 @@ main{
         </button>
 
 
-        <div class="logo">
-            NEXORA
-        </div>
+        <a
+            href="dashboard.html"
+            class="logo"
+        >
+            NEX<span>ORA</span>
+        </a>
 
 
         <div
@@ -1381,7 +1353,6 @@ main{
 
 <main>
 
-
     <section class="page-heading">
 
         <h1>
@@ -1395,10 +1366,6 @@ main{
 
     </section>
 
-
-    <!-- =================================================
-         ASSET
-    ================================================== -->
 
     <section class="card">
 
@@ -1418,10 +1385,6 @@ main{
 
     </section>
 
-
-    <!-- =================================================
-         NETWORK
-    ================================================== -->
 
     <section
         class="card"
@@ -1449,10 +1412,6 @@ main{
     </section>
 
 
-    <!-- =================================================
-         ADDRESS
-    ================================================== -->
-
     <section
         class="card"
         id="addressCard"
@@ -1470,7 +1429,6 @@ main{
 
 
         <div class="address-box">
-
 
             <div class="address-label">
                 Deposit address
@@ -1505,10 +1463,6 @@ main{
                 —
             </div>
 
-
-            <!-- =========================================
-                 QR
-            ========================================== -->
 
             <div class="qr-section">
 
@@ -1556,10 +1510,6 @@ main{
     </section>
 
 
-    <!-- =================================================
-         HISTORY
-    ================================================== -->
-
     <section class="card">
 
         <h2 class="card-title">
@@ -1588,7 +1538,7 @@ main{
 
 
 <!-- =====================================================
-     BOTTOM NAV
+     EXACT DASHBOARD BOTTOM NAV
 ====================================================== -->
 
 <nav class="bottom-nav">
@@ -1617,7 +1567,7 @@ main{
             class="bottom-link"
             href="transactions.html"
         >
-            <span class="bottom-icon">↔</span>
+            <span class="bottom-icon">≡</span>
             <span>History</span>
         </a>
 
@@ -1626,7 +1576,7 @@ main{
             class="bottom-link"
             href="profile.html"
         >
-            <span class="bottom-icon">◯</span>
+            <span class="bottom-icon">○</span>
             <span>Account</span>
         </a>
 
@@ -1662,10 +1612,6 @@ const supabaseClient =
     );
 
 
-/* =========================================================
-   HELPER
-========================================================= */
-
 const $ = id =>
     document.getElementById(id);
 
@@ -1676,7 +1622,6 @@ const $ = id =>
 
 const LOGO_BASE =
     "https://cdn.jsdelivr.net/gh/madenix/Crypto-logo-cdn@main/Logos/";
-
 
 const logoFiles = {
 
@@ -1803,13 +1748,8 @@ async function loadProfile(){
     } =
         await supabaseClient
             .from("profiles")
-            .select(
-                "full_name,email"
-            )
-            .eq(
-                "id",
-                currentUser.id
-            )
+            .select("full_name,email")
+            .eq("id",currentUser.id)
             .maybeSingle();
 
 
@@ -1871,14 +1811,8 @@ async function loadAssets(){
             .select(
                 "id,asset,network,address,memo_tag,is_active"
             )
-            .eq(
-                "user_id",
-                currentUser.id
-            )
-            .eq(
-                "is_active",
-                true
-            )
+            .eq("user_id",currentUser.id)
+            .eq("is_active",true)
             .order("asset")
             .order("network");
 
@@ -1975,9 +1909,7 @@ function renderAssetList(){
 
 
             const button =
-                document.createElement(
-                    "button"
-                );
+                document.createElement("button");
 
 
             button.type =
@@ -1988,9 +1920,7 @@ function renderAssetList(){
                 "asset-btn";
 
 
-            if(
-                selectedAsset === asset
-            ){
+            if(selectedAsset === asset){
 
                 button.classList.add(
                     "selected"
@@ -2034,11 +1964,9 @@ function renderAssetList(){
                     `
                 }
 
-
                 <span class="asset-name">
                     ${asset}
                 </span>
-
 
                 ${
                     networkCount
@@ -2175,9 +2103,7 @@ function renderNetworks(rows){
         row => {
 
             const button =
-                document.createElement(
-                    "button"
-                );
+                document.createElement("button");
 
 
             button.type =
@@ -2208,7 +2134,6 @@ function renderNetworks(rows){
                         ⛓
                     </div>
 
-
                     <div>
 
                         <div class="network-name">
@@ -2223,7 +2148,6 @@ function renderNetworks(rows){
                     </div>
 
                 </div>
-
 
                 <div class="check">
                     ✓
@@ -2266,9 +2190,7 @@ function selectNetwork(
 
 
     document
-        .querySelectorAll(
-            ".network-btn"
-        )
+        .querySelectorAll(".network-btn")
         .forEach(
             element =>
                 element.classList.remove(
@@ -2322,10 +2244,7 @@ function showAddress(row){
     }
 
 
-    generateQR(
-        row.address
-    );
-
+    generateQR(row.address);
 
     clearStatus();
 
@@ -2340,7 +2259,7 @@ function showAddress(row){
 
 
 /* =========================================================
-   QR GENERATION
+   QR
 ========================================================= */
 
 function generateQR(address){
@@ -2350,13 +2269,7 @@ function generateQR(address){
 
 
     if(!canvas){
-
-        console.error(
-            "QR canvas not found."
-        );
-
         return;
-
     }
 
 
@@ -2394,39 +2307,21 @@ function generateQR(address){
             184;
 
 
-        const qr =
-            new QRious({
+        new QRious({
 
-                element:canvas,
+            element:canvas,
 
-                value:String(
-                    address
-                ),
+            value:String(address),
 
-                size:184,
+            size:184,
 
-                level:"M",
+            level:"M",
 
-                background:"#ffffff",
+            background:"#ffffff",
 
-                foreground:"#000000"
+            foreground:"#000000"
 
-            });
-
-
-        if(!qr){
-
-            throw new Error(
-                "QR generation returned no result."
-            );
-
-        }
-
-
-        console.log(
-            "QR generated successfully:",
-            address
-        );
+        });
 
 
     }catch(error){
@@ -2460,9 +2355,7 @@ function clearQR(){
 
 
     const context =
-        canvas.getContext(
-            "2d"
-        );
+        canvas.getContext("2d");
 
 
     context.clearRect(
@@ -2546,9 +2439,7 @@ $("copyAddressBtn")
 
             }catch(error){
 
-                console.error(
-                    error
-                );
+                console.error(error);
 
 
                 showStatus(
@@ -2705,10 +2596,7 @@ async function loadHistory(){
                 "";
 
 
-            if(
-                status ===
-                "CONFIRMED"
-            ){
+            if(status === "CONFIRMED"){
 
                 statusClass =
                     "confirmed";
@@ -2752,7 +2640,6 @@ async function loadHistory(){
                         )}
                     </div>
 
-
                     <div
                         class="
                             history-status
@@ -2773,7 +2660,6 @@ async function loadHistory(){
                         )}
                     </span>
 
-
                     <span class="history-amount">
                         ${escapeHtml(
                             String(amount)
@@ -2788,7 +2674,6 @@ async function loadHistory(){
                     <span>
                         ${escapeHtml(date)}
                     </span>
-
 
                     <span>
                         Deposit
@@ -2817,30 +2702,11 @@ function escapeHtml(value){
 
     return String(value)
 
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-
-        .replace(
-            /</g,
-            "&lt;"
-        )
-
-        .replace(
-            />/g,
-            "&gt;"
-        )
-
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-
-        .replace(
-            /'/g,
-            "&#039;"
-        );
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
 
 }
 
@@ -2852,15 +2718,11 @@ function escapeHtml(value){
 function openDrawer(){
 
     $("drawer")
-        .classList.add(
-            "show"
-        );
+        .classList.add("show");
 
 
     $("overlay")
-        .classList.add(
-            "show"
-        );
+        .classList.add("show");
 
 }
 
@@ -2868,15 +2730,11 @@ function openDrawer(){
 function closeDrawer(){
 
     $("drawer")
-        .classList.remove(
-            "show"
-        );
+        .classList.remove("show");
 
 
     $("overlay")
-        .classList.remove(
-            "show"
-        );
+        .classList.remove("show");
 
 }
 
@@ -2922,7 +2780,7 @@ $("logoutBtn")
 ========================================================= */
 
 supabaseClient.auth.onAuthStateChange(
-    (event, session) => {
+    (event,session) => {
 
         if(
             event ===
@@ -2951,9 +2809,7 @@ async function init(){
 
 
         if(!authenticated){
-
             return;
-
         }
 
 
@@ -2978,9 +2834,7 @@ async function init(){
             () => {
 
                 $("loadingScreen")
-                    .classList.add(
-                        "hidden"
-                    );
+                    .classList.add("hidden");
 
             },
             250
