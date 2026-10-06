@@ -949,7 +949,10 @@ a{
     </div>
 
     <div class="portfolio-value">
-      —
+      <span id="portfolioValue">
+        $0.00
+      </span>
+
       <span class="portfolio-currency">
         USD
       </span>
@@ -964,8 +967,11 @@ a{
           Available
         </div>
 
-        <div class="portfolio-stat-value">
-          —
+        <div
+          class="portfolio-stat-value"
+          id="portfolioAvailable"
+        >
+          $0.00
         </div>
 
       </div>
@@ -977,8 +983,11 @@ a{
           Invested
         </div>
 
-        <div class="portfolio-stat-value">
-          —
+        <div
+          class="portfolio-stat-value"
+          id="portfolioInvested"
+        >
+          $0.00
         </div>
 
       </div>
@@ -990,8 +999,11 @@ a{
           Partners
         </div>
 
-        <div class="portfolio-stat-value">
-          —
+        <div
+          class="portfolio-stat-value"
+          id="portfolioPartners"
+        >
+          0
         </div>
 
       </div>
@@ -1066,8 +1078,11 @@ a{
       </div>
 
 
-      <div class="selected-value">
-        —
+      <div
+        class="selected-value"
+        id="selectedValue"
+      >
+        0 BTC
       </div>
 
 
@@ -1079,8 +1094,8 @@ a{
             Available
           </label>
 
-          <strong>
-            —
+          <strong id="selectedAvailable">
+            0 BTC
           </strong>
 
         </div>
@@ -1092,8 +1107,8 @@ a{
             Invested
           </label>
 
-          <strong>
-            —
+          <strong id="selectedInvested">
+            0 BTC
           </strong>
 
         </div>
@@ -1105,7 +1120,7 @@ a{
             Asset value
           </label>
 
-          <strong>
+          <strong id="selectedAssetValue">
             —
           </strong>
 
@@ -1118,7 +1133,7 @@ a{
             Current price
           </label>
 
-          <strong>
+          <strong id="selectedPrice">
             —
           </strong>
 
@@ -1206,8 +1221,11 @@ a{
           Total Deposits
         </div>
 
-        <div class="stat-value">
-          —
+        <div
+          class="stat-value"
+          id="totalDeposits"
+        >
+          $0.00
         </div>
 
       </div>
@@ -1219,8 +1237,11 @@ a{
           Total Withdrawals
         </div>
 
-        <div class="stat-value">
-          —
+        <div
+          class="stat-value"
+          id="totalWithdrawals"
+        >
+          $0.00
         </div>
 
       </div>
@@ -1232,8 +1253,11 @@ a{
           Total Profit
         </div>
 
-        <div class="stat-value">
-          —
+        <div
+          class="stat-value"
+          id="totalProfit"
+        >
+          $0.00
         </div>
 
       </div>
@@ -1245,8 +1269,11 @@ a{
           Referral Earnings
         </div>
 
-        <div class="stat-value">
-          —
+        <div
+          class="stat-value"
+          id="referralEarnings"
+        >
+          $0.00
         </div>
 
       </div>
@@ -1258,8 +1285,11 @@ a{
           Investments
         </div>
 
-        <div class="stat-value">
-          —
+        <div
+          class="stat-value"
+          id="investments"
+        >
+          $0.00
         </div>
 
       </div>
@@ -1303,8 +1333,6 @@ a{
     <div class="actions">
 
 
-      <!-- CURRENCY EXCHANGE -->
-
       <a
         href="swap.html"
         class="action"
@@ -1321,8 +1349,6 @@ a{
       </a>
 
 
-      <!-- ADD FUNDS -->
-
       <a
         href="deposit.html"
         class="action"
@@ -1338,8 +1364,6 @@ a{
 
       </a>
 
-
-      <!-- WITHDRAW -->
 
       <a
         href="withdraw.html"
@@ -1477,6 +1501,7 @@ const logoFiles = {
   BTC:"BTC.svg",
   ETH:"ETH.svg",
   USDT:"USDT.svg",
+  USDC:"USDC.svg",
   BNB:"BNB.svg",
   SOL:"SOL.svg",
   XRP:"XRP.svg",
@@ -1510,6 +1535,7 @@ const assets = [
   ["BTC","Bitcoin"],
   ["ETH","Ethereum"],
   ["USDT","Tether"],
+  ["USDC","USD Coin"],
   ["BNB","BNB"],
   ["SOL","Solana"],
   ["XRP","XRP"],
@@ -1538,6 +1564,93 @@ let selectedAsset = "BTC";
 
 
 /* =========================================================
+   REAL WALLET DATA
+========================================================= */
+
+let walletData = {};
+
+let usdtWallet = {
+  available_balance:0,
+  locked_balance:0,
+  principal_balance:0,
+  profit_balance:0
+};
+
+
+/* =========================================================
+   NUMBER FORMAT
+========================================================= */
+
+function numberValue(value){
+
+  const n =
+    Number(value);
+
+  if(!Number.isFinite(n)){
+    return 0;
+  }
+
+  return n;
+
+}
+
+
+function formatAmount(
+  value,
+  decimals = 2
+){
+
+  const n =
+    numberValue(value);
+
+  return n.toLocaleString(
+    "en-US",
+    {
+      minimumFractionDigits:decimals,
+      maximumFractionDigits:decimals
+    }
+  );
+
+}
+
+
+function formatUSD(value){
+
+  return "$" +
+    formatAmount(value,2);
+
+}
+
+
+function formatCrypto(value){
+
+  const n =
+    numberValue(value);
+
+  if(n === 0){
+    return "0";
+  }
+
+  if(n >= 1000){
+    return n.toLocaleString(
+      "en-US",
+      {
+        maximumFractionDigits:6
+      }
+    );
+  }
+
+  return n.toLocaleString(
+    "en-US",
+    {
+      maximumFractionDigits:8
+    }
+  );
+
+}
+
+
+/* =========================================================
    LOGO URL
 ========================================================= */
 
@@ -1556,6 +1669,149 @@ function logoFor(symbol){
 
 
 /* =========================================================
+   LOAD REAL WALLETS
+========================================================= */
+
+async function loadWallets(userId){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("wallets")
+      .select(`
+        id,
+        user_id,
+        asset,
+        available_balance,
+        locked_balance,
+        principal_balance,
+        profit_balance
+      `)
+      .eq(
+        "user_id",
+        userId
+      );
+
+
+  if(error){
+
+    console.error(
+      "Wallet loading error:",
+      error
+    );
+
+    return;
+
+  }
+
+
+  walletData = {};
+
+
+  (data || [])
+    .forEach(wallet => {
+
+      walletData[
+        wallet.asset
+      ] = wallet;
+
+    });
+
+
+  const usdt =
+    walletData.USDT;
+
+
+  if(usdt){
+
+    usdtWallet = {
+
+      available_balance:
+        numberValue(
+          usdt.available_balance
+        ),
+
+      locked_balance:
+        numberValue(
+          usdt.locked_balance
+        ),
+
+      principal_balance:
+        numberValue(
+          usdt.principal_balance
+        ),
+
+      profit_balance:
+        numberValue(
+          usdt.profit_balance
+        )
+
+    };
+
+  }else{
+
+    usdtWallet = {
+
+      available_balance:0,
+      locked_balance:0,
+      principal_balance:0,
+      profit_balance:0
+
+    };
+
+  }
+
+
+  updatePortfolio();
+
+  updateSelectedAsset();
+
+  renderAssets(
+    $("assetSearch").value
+  );
+
+}
+
+
+/* =========================================================
+   UPDATE PORTFOLIO
+========================================================= */
+
+function updatePortfolio(){
+
+  const available =
+    usdtWallet.available_balance;
+
+  const locked =
+    usdtWallet.locked_balance;
+
+  const total =
+    available + locked;
+
+  const invested =
+    usdtWallet.principal_balance;
+
+
+  $("portfolioValue")
+    .textContent =
+    formatUSD(total);
+
+
+  $("portfolioAvailable")
+    .textContent =
+    formatUSD(available);
+
+
+  $("portfolioInvested")
+    .textContent =
+    formatUSD(invested);
+
+}
+
+
+/* =========================================================
    RENDER ASSETS
 ========================================================= */
 
@@ -1567,6 +1823,7 @@ function renderAssets(filter = ""){
   if(!list){
     return;
   }
+
 
   const query =
     String(filter)
@@ -1614,6 +1871,23 @@ function renderAssets(filter = ""){
       const name =
         asset[1];
 
+      const wallet =
+        walletData[symbol];
+
+
+      const available =
+        wallet
+          ? numberValue(
+              wallet.available_balance
+            )
+          : 0;
+
+
+      const price =
+        symbol === "USDT"
+          ? "$1.00"
+          : "—";
+
 
       return `
 
@@ -1653,11 +1927,11 @@ function renderAssets(filter = ""){
           <div class="asset-right">
 
             <div class="asset-price">
-              —
+              ${price}
             </div>
 
             <div class="asset-balance">
-              —
+              ${formatCrypto(available)} ${symbol}
             </div>
 
           </div>
@@ -1712,17 +1986,103 @@ function updateSelectedAsset(){
   }
 
 
+  const symbol =
+    asset[0];
+
+  const name =
+    asset[1];
+
+
+  const wallet =
+    walletData[symbol];
+
+
+  const available =
+    wallet
+      ? numberValue(
+          wallet.available_balance
+        )
+      : 0;
+
+
+  const locked =
+    wallet
+      ? numberValue(
+          wallet.locked_balance
+        )
+      : 0;
+
+
+  const principal =
+    wallet
+      ? numberValue(
+          wallet.principal_balance
+        )
+      : 0;
+
+
+  const total =
+    available + locked;
+
+
   $("selectedLogo").src =
-    logoFor(asset[0]);
+    logoFor(symbol);
 
   $("selectedLogo").alt =
-    asset[1];
+    name;
 
   $("selectedName").textContent =
-    asset[1];
+    name;
 
   $("selectedSymbol").textContent =
-    asset[0];
+    symbol;
+
+
+  $("selectedValue")
+    .textContent =
+    `${formatCrypto(total)} ${symbol}`;
+
+
+  $("selectedAvailable")
+    .textContent =
+    `${formatCrypto(available)} ${symbol}`;
+
+
+  $("selectedInvested")
+    .textContent =
+    `${formatCrypto(principal)} ${symbol}`;
+
+
+  /*
+     Only show a USD asset value where
+     we have a trusted price available.
+
+     Currently USDT is treated as $1.
+     Other assets remain unpriced instead
+     of showing a fake value.
+  */
+
+  if(symbol === "USDT"){
+
+    $("selectedAssetValue")
+      .textContent =
+      formatUSD(total);
+
+    $("selectedPrice")
+      .textContent =
+      "$1.00";
+
+  }else{
+
+    $("selectedAssetValue")
+      .textContent =
+      "—";
+
+    $("selectedPrice")
+      .textContent =
+      "—";
+
+  }
 
 }
 
@@ -1762,7 +2122,7 @@ function getInitials(name){
 
 
 /* =========================================================
-   DISPLAY PROFILE IMMEDIATELY
+   DISPLAY PROFILE
 ========================================================= */
 
 function displayUserProfile(
@@ -1774,14 +2134,6 @@ function displayUserProfile(
     return;
   }
 
-
-  /*
-     First use the information Supabase Auth
-     already gives us.
-
-     This prevents the dashboard from staying
-     blank while the profiles table is loading.
-  */
 
   const metadataName =
     user.user_metadata?.full_name ||
@@ -1807,11 +2159,6 @@ function displayUserProfile(
   let accountStatus =
     "PENDING";
 
-
-  /*
-     If the profiles table returned data,
-     use the database values.
-  */
 
   if(profile){
 
@@ -1850,11 +2197,6 @@ function displayUserProfile(
   }
 
 
-  /*
-     Final fallback if full name somehow
-     does not exist.
-  */
-
   if(!fullName){
 
     if(email){
@@ -1887,79 +2229,29 @@ function displayUserProfile(
   }
 
 
-  /*
-     Update welcome name.
-  */
-
-  const welcomeName =
-    $("welcomeName");
-
-  if(welcomeName){
-
-    welcomeName.textContent =
-      fullName;
-
-  }
+  $("welcomeName")
+    .textContent =
+    fullName;
 
 
-  /*
-     Update drawer name.
-  */
-
-  const drawerName =
-    $("drawerName");
-
-  if(drawerName){
-
-    drawerName.textContent =
-      fullName;
-
-  }
+  $("drawerName")
+    .textContent =
+    fullName;
 
 
-  /*
-     Update drawer email.
-  */
-
-  const drawerEmail =
-    $("drawerEmail");
-
-  if(drawerEmail){
-
-    drawerEmail.textContent =
-      email || "—";
-
-  }
+  $("drawerEmail")
+    .textContent =
+    email || "—";
 
 
-  /*
-     Update account initials.
-  */
-
-  const accountInitials =
-    $("accountInitials");
-
-  if(accountInitials){
-
-    accountInitials.textContent =
-      getInitials(fullName);
-
-  }
+  $("accountInitials")
+    .textContent =
+    getInitials(fullName);
 
 
-  /*
-     Update account status.
-  */
-
-  const status =
-    $("accountStatus");
-
-  if(status){
-
-    status.textContent =
-      accountStatus || "PENDING";
-
-  }
+  $("accountStatus")
+    .textContent =
+    accountStatus || "PENDING";
 
 }
 
@@ -1975,18 +2267,10 @@ async function loadProfile(user){
   }
 
 
-  /*
-     STEP 1:
-     Immediately display Supabase Auth data.
-  */
+  displayUserProfile(
+    user
+  );
 
-  displayUserProfile(user);
-
-
-  /*
-     STEP 2:
-     Load the user's real profile row.
-  */
 
   try{
 
@@ -2005,7 +2289,10 @@ async function loadProfile(user){
           created_at,
           updated_at
         `)
-        .eq("id",user.id)
+        .eq(
+          "id",
+          user.id
+        )
         .maybeSingle();
 
 
@@ -2016,19 +2303,10 @@ async function loadProfile(user){
         error
       );
 
-      /*
-         Auth fallback remains visible.
-      */
-
       return;
 
     }
 
-
-    /*
-       STEP 3:
-       Replace fallback data with database data.
-    */
 
     if(data){
 
@@ -2037,26 +2315,7 @@ async function loadProfile(user){
         data
       );
 
-      console.log(
-        "NEXORA profile loaded:",
-        data
-      );
-
-      return;
-
     }
-
-
-    /*
-       If no profile row exists, keep Auth data
-       visible rather than showing blank fields.
-    */
-
-    console.warn(
-      "No profile row found for user:",
-      user.id
-    );
-
 
   }catch(error){
 
@@ -2071,11 +2330,397 @@ async function loadProfile(user){
 
 
 /* =========================================================
+   LOAD ACCOUNT STATISTICS
+========================================================= */
+
+async function loadStatistics(userId){
+
+  /*
+     TOTAL DEPOSITS
+  */
+
+  let totalDeposits =
+    0;
+
+
+  const {
+    data:depositRows,
+    error:depositError
+  } =
+    await supabaseClient
+      .from("deposits")
+      .select(`
+        asset,
+        credited_amount,
+        amount,
+        status
+      `)
+      .eq(
+        "user_id",
+        userId
+      )
+      .eq(
+        "status",
+        "CONFIRMED"
+      );
+
+
+  if(depositError){
+
+    console.error(
+      "Deposit statistics error:",
+      depositError
+    );
+
+  }else{
+
+    (depositRows || [])
+      .forEach(row => {
+
+        /*
+           Dashboard USD statistics currently
+           use USDT because no live conversion
+           provider is connected here.
+        */
+
+        if(row.asset === "USDT"){
+
+          totalDeposits +=
+            numberValue(
+              row.credited_amount ??
+              row.amount
+            );
+
+        }
+
+      });
+
+  }
+
+
+  $("totalDeposits")
+    .textContent =
+    formatUSD(totalDeposits);
+
+
+  /*
+     TOTAL WITHDRAWALS
+  */
+
+  let totalWithdrawals =
+    0;
+
+
+  const {
+    data:withdrawalRows,
+    error:withdrawalError
+  } =
+    await supabaseClient
+      .from("withdrawals")
+      .select(`
+        asset,
+        net_amount,
+        amount,
+        status
+      `)
+      .eq(
+        "user_id",
+        userId
+      )
+      .eq(
+        "status",
+        "COMPLETED"
+      );
+
+
+  if(withdrawalError){
+
+    console.error(
+      "Withdrawal statistics error:",
+      withdrawalError
+    );
+
+  }else{
+
+    (withdrawalRows || [])
+      .forEach(row => {
+
+        if(row.asset === "USDT"){
+
+          totalWithdrawals +=
+            numberValue(
+              row.net_amount ??
+              row.amount
+            );
+
+        }
+
+      });
+
+  }
+
+
+  $("totalWithdrawals")
+    .textContent =
+    formatUSD(totalWithdrawals);
+
+
+  /*
+     TOTAL PROFIT
+
+     This uses actual credited earning
+     records, not a calculated fake amount.
+  */
+
+  let totalProfit =
+    0;
+
+
+  const {
+    data:earningRows,
+    error:earningError
+  } =
+    await supabaseClient
+      .from("earning_records")
+      .select(`
+        asset,
+        earning_amount,
+        status
+      `)
+      .eq(
+        "user_id",
+        userId
+      )
+      .eq(
+        "status",
+        "CREDITED"
+      );
+
+
+  if(earningError){
+
+    console.error(
+      "Earning statistics error:",
+      earningError
+    );
+
+  }else{
+
+    (earningRows || [])
+      .forEach(row => {
+
+        if(row.asset === "USDT"){
+
+          totalProfit +=
+            numberValue(
+              row.earning_amount
+            );
+
+        }
+
+      });
+
+  }
+
+
+  $("totalProfit")
+    .textContent =
+    formatUSD(totalProfit);
+
+
+  /*
+     REFERRAL EARNINGS
+
+     Referral rewards are read from the
+     real wallet transaction ledger.
+  */
+
+  let referralEarnings =
+    0;
+
+
+  const {
+    data:referralRows,
+    error:referralError
+  } =
+    await supabaseClient
+      .from("wallet_transactions")
+      .select(`
+        asset,
+        amount,
+        type
+      `)
+      .eq(
+        "user_id",
+        userId
+      )
+      .eq(
+        "type",
+        "REFERRAL_REWARD"
+      );
+
+
+  if(referralError){
+
+    console.error(
+      "Referral statistics error:",
+      referralError
+    );
+
+  }else{
+
+    (referralRows || [])
+      .forEach(row => {
+
+        if(row.asset === "USDT"){
+
+          referralEarnings +=
+            numberValue(
+              row.amount
+            );
+
+        }
+
+      });
+
+  }
+
+
+  $("referralEarnings")
+    .textContent =
+    formatUSD(referralEarnings);
+
+
+  /*
+     INVESTMENTS
+
+     This is the actual principal balance
+     currently recorded in the USDT wallet.
+  */
+
+  $("investments")
+    .textContent =
+    formatUSD(
+      usdtWallet.principal_balance
+    );
+
+
+  /*
+     PARTNERS
+
+     We deliberately do not query the referrals
+     table yet because the final referral schema/
+     qualification rules have not been finalized.
+  */
+
+  $("portfolioPartners")
+    .textContent =
+    "0";
+
+}
+
+
+/* =========================================================
    PROFIT TIMER
 ========================================================= */
 
-let profitInterval = null;
+let profitInterval =
+  null;
 
+
+async function loadProfitTimer(userId){
+
+  /*
+     Find the oldest active confirmed earning
+     deposit. The timer is informational only.
+  */
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("deposits")
+      .select(`
+        earning_started_at,
+        earning_principal,
+        status
+      `)
+      .eq(
+        "user_id",
+        userId
+      )
+      .eq(
+        "status",
+        "CONFIRMED"
+      )
+      .gt(
+        "earning_principal",
+        0
+      )
+      .not(
+        "earning_started_at",
+        "is",
+        null
+      )
+      .order(
+        "earning_started_at",
+        {
+          ascending:true
+        }
+      )
+      .limit(1);
+
+
+  if(error){
+
+    console.error(
+      "Profit timer query error:",
+      error
+    );
+
+    $("profitTimer")
+      .textContent =
+      "—";
+
+    $("profitStatus")
+      .textContent =
+      "Awaiting confirmed deposit";
+
+    return;
+
+  }
+
+
+  const row =
+    data?.[0];
+
+
+  if(!row){
+
+    $("profitTimer")
+      .textContent =
+      "—";
+
+    $("profitStatus")
+      .textContent =
+      "Awaiting confirmed deposit";
+
+    return;
+
+  }
+
+
+  startProfitTimer(
+    row.earning_started_at
+  );
+
+}
+
+
+/* =========================================================
+   PROFIT TIMER
+========================================================= */
 
 function startProfitTimer(
   confirmedAt
@@ -2083,10 +2728,12 @@ function startProfitTimer(
 
   if(!confirmedAt){
 
-    $("profitTimer").textContent =
+    $("profitTimer")
+      .textContent =
       "—";
 
-    $("profitStatus").textContent =
+    $("profitStatus")
+      .textContent =
       "Awaiting confirmed deposit";
 
     return;
@@ -2100,6 +2747,17 @@ function startProfitTimer(
       new Date(
         confirmedAt
       ).getTime();
+
+
+    if(!Number.isFinite(start)){
+
+      $("profitTimer")
+        .textContent =
+        "—";
+
+      return;
+
+    }
 
 
     const now =
@@ -2149,13 +2807,15 @@ function startProfitTimer(
       );
 
 
-    $("profitTimer").textContent =
+    $("profitTimer")
+      .textContent =
       `${String(hours).padStart(2,"0")}:` +
       `${String(minutes).padStart(2,"0")}:` +
       `${String(seconds).padStart(2,"0")}`;
 
 
-    $("profitStatus").textContent =
+    $("profitStatus")
+      .textContent =
       "Profit calculation cycle";
 
   }
@@ -2221,11 +2881,6 @@ $("drawerOverlay")
     closeDrawer
   );
 
-
-/*
-   Close drawer when a navigation link
-   is selected on mobile.
-*/
 
 document
   .querySelectorAll(
@@ -2300,11 +2955,6 @@ supabaseClient.auth
   .onAuthStateChange(
     async (event,session) => {
 
-      /*
-         If the user logs in, refresh the
-         displayed profile information.
-      */
-
       if(
         session &&
         session.user
@@ -2316,10 +2966,6 @@ supabaseClient.auth
 
       }
 
-
-      /*
-         If the session is gone, return to login.
-      */
 
       if(
         event === "SIGNED_OUT"
@@ -2335,6 +2981,42 @@ supabaseClient.auth
 
 
 /* =========================================================
+   REFRESH DASHBOARD DATA
+========================================================= */
+
+async function refreshDashboard(
+  userId
+){
+
+  try{
+
+    await loadWallets(
+      userId
+    );
+
+
+    await loadStatistics(
+      userId
+    );
+
+
+    await loadProfitTimer(
+      userId
+    );
+
+  }catch(error){
+
+    console.error(
+      "Dashboard financial data error:",
+      error
+    );
+
+  }
+
+}
+
+
+/* =========================================================
    INITIALIZATION
 ========================================================= */
 
@@ -2343,7 +3025,7 @@ async function init(){
   try{
 
     /*
-       Get the currently authenticated user.
+       Get currently authenticated user.
     */
 
     const {
@@ -2369,10 +3051,6 @@ async function init(){
       data?.user;
 
 
-    /*
-       No logged-in user.
-    */
-
     if(!user){
 
       window.location.href =
@@ -2384,7 +3062,7 @@ async function init(){
 
 
     /*
-       Display Auth information immediately.
+       Show profile immediately.
     */
 
     displayUserProfile(
@@ -2393,7 +3071,7 @@ async function init(){
 
 
     /*
-       Then load the real profile.
+       Load database profile.
     */
 
     await loadProfile(
@@ -2402,24 +3080,23 @@ async function init(){
 
 
     /*
-       Render crypto assets.
+       Render assets immediately with
+       zero balances while real data loads.
     */
 
     renderAssets();
-
 
     updateSelectedAsset();
 
 
     /*
-       Profit timer deliberately remains inactive
-       until a legitimate confirmed deposit timestamp
-       comes from the backend.
-
-       Later:
-
-       startProfitTimer(confirmedAt);
+       Load real financial data.
     */
+
+    await refreshDashboard(
+      user.id
+    );
+
 
   }catch(error){
 
@@ -2429,11 +3106,6 @@ async function init(){
     );
 
   }finally{
-
-    /*
-       Always remove the loading screen,
-       even if the profile query has an error.
-    */
 
     setTimeout(
       () => {
