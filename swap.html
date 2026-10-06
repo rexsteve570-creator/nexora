@@ -55,8 +55,7 @@ body{
 }
 
 button,
-input,
-select{
+input{
   font:inherit;
 }
 
@@ -347,22 +346,179 @@ a{
   color:#465166;
 }
 
-.asset-select{
-  min-width:112px;
-  height:42px;
-  padding:0 10px;
-  border-radius:11px;
+/* =========================
+   COIN PICKER
+========================= */
+
+.coin-picker{
+  position:relative;
+  min-width:145px;
+}
+
+.coin-picker-button{
+  width:100%;
+  min-height:46px;
+  padding:5px 9px;
+  border-radius:12px;
   border:1px solid rgba(214,177,94,.20);
   background:#101a2b;
   color:#fff;
-  outline:none;
-  font-weight:800;
-  cursor:pointer;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  text-align:left;
+  transition:.2s;
 }
 
-.asset-select option{
-  background:#0b1221;
+.coin-picker-button:hover,
+.coin-picker-button.open{
+  border-color:rgba(214,177,94,.48);
+  background:#132038;
+}
+
+.coin-logo{
+  width:30px;
+  height:30px;
+  flex:0 0 30px;
+  border-radius:50%;
+  object-fit:contain;
+  background:#182338;
+}
+
+.coin-info{
+  min-width:0;
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+
+.coin-symbol{
+  font-size:12px;
+  font-weight:900;
+  line-height:1.1;
   color:#fff;
+}
+
+.coin-name{
+  margin-top:2px;
+  color:var(--muted);
+  font-size:9px;
+  line-height:1.1;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.coin-chevron{
+  color:var(--muted);
+  font-size:12px;
+  transition:.2s;
+}
+
+.coin-picker-button.open .coin-chevron{
+  transform:rotate(180deg);
+  color:var(--gold2);
+}
+
+.coin-menu{
+  position:absolute;
+  top:calc(100% + 7px);
+  right:0;
+  width:260px;
+  max-width:75vw;
+  max-height:320px;
+  overflow-y:auto;
+  background:#0b1221;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:15px;
+  box-shadow:0 18px 45px rgba(0,0,0,.55);
+  z-index:3000;
+  padding:7px;
+  display:none;
+}
+
+.coin-menu.open{
+  display:block;
+}
+
+.coin-search{
+  width:100%;
+  height:38px;
+  margin-bottom:6px;
+  padding:0 11px;
+  border-radius:10px;
+  border:1px solid var(--border);
+  background:#080e1a;
+  color:#fff;
+  outline:none;
+  font-size:11px;
+}
+
+.coin-search:focus{
+  border-color:rgba(214,177,94,.4);
+}
+
+.coin-search::placeholder{
+  color:#596579;
+}
+
+.coin-option{
+  width:100%;
+  min-height:48px;
+  padding:7px 8px;
+  border:0;
+  border-radius:11px;
+  background:transparent;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  text-align:left;
+  transition:.15s;
+}
+
+.coin-option:hover{
+  background:#111d31;
+}
+
+.coin-option.selected{
+  background:rgba(214,177,94,.09);
+}
+
+.coin-option .coin-logo{
+  width:31px;
+  height:31px;
+  flex-basis:31px;
+}
+
+.coin-option-info{
+  flex:1;
+  min-width:0;
+}
+
+.coin-option-symbol{
+  font-size:12px;
+  font-weight:900;
+}
+
+.coin-option-name{
+  margin-top:2px;
+  color:var(--muted);
+  font-size:9px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.coin-check{
+  color:var(--gold2);
+  font-size:14px;
+  display:none;
+}
+
+.coin-option.selected .coin-check{
+  display:block;
 }
 
 .asset-balance{
@@ -371,18 +527,8 @@ a{
   font-size:10px;
 }
 
-.max-btn{
-  border:1px solid rgba(214,177,94,.22);
-  background:rgba(214,177,94,.07);
-  color:var(--gold2);
-  border-radius:8px;
-  padding:4px 8px;
-  font-size:10px;
-  font-weight:800;
-}
-
-.max-btn:hover{
-  border-color:rgba(214,177,94,.45);
+.asset-balance strong{
+  color:#dbe1ea;
 }
 
 /* =========================
@@ -867,8 +1013,44 @@ a{
     font-size:22px;
   }
 
-  .asset-select{
-    min-width:100px;
+  .coin-picker{
+    min-width:130px;
+  }
+
+  .coin-picker-button{
+    min-height:44px;
+  }
+
+  .coin-name{
+    max-width:70px;
+  }
+
+  .coin-menu{
+    width:245px;
+  }
+
+}
+
+@media(max-width:370px){
+
+  .coin-picker{
+    min-width:112px;
+  }
+
+  .coin-picker-button{
+    padding-left:6px;
+    padding-right:6px;
+    gap:5px;
+  }
+
+  .coin-logo{
+    width:27px;
+    height:27px;
+    flex-basis:27px;
+  }
+
+  .coin-menu{
+    width:225px;
   }
 
 }
@@ -1012,7 +1194,6 @@ a{
 
 <main class="main">
 
-
   <section class="page-title">
 
     <div class="page-title-small">
@@ -1054,13 +1235,73 @@ a{
           autocomplete="off"
         >
 
-        <select
-          id="fromAsset"
-          class="asset-select"
+
+        <!-- FROM COIN PICKER -->
+
+        <div
+          class="coin-picker"
+          id="fromPicker"
         >
-        </select>
+
+          <button
+            type="button"
+            class="coin-picker-button"
+            id="fromPickerButton"
+          >
+
+            <img
+              class="coin-logo"
+              id="fromLogo"
+              src=""
+              alt=""
+            >
+
+            <span class="coin-info">
+
+              <span
+                class="coin-symbol"
+                id="fromSymbol"
+              >
+                USDT
+              </span>
+
+              <span
+                class="coin-name"
+                id="fromName"
+              >
+                Tether
+              </span>
+
+            </span>
+
+            <span class="coin-chevron">
+              ▾
+            </span>
+
+          </button>
+
+
+          <div
+            class="coin-menu"
+            id="fromMenu"
+          >
+
+            <input
+              type="search"
+              class="coin-search"
+              id="fromSearch"
+              placeholder="Search coin..."
+              autocomplete="off"
+            >
+
+            <div id="fromOptions"></div>
+
+          </div>
+
+        </div>
 
       </div>
+
 
       <div class="asset-balance">
         Available balance:
@@ -1104,13 +1345,73 @@ a{
           readonly
         >
 
-        <select
-          id="toAsset"
-          class="asset-select"
+
+        <!-- TO COIN PICKER -->
+
+        <div
+          class="coin-picker"
+          id="toPicker"
         >
-        </select>
+
+          <button
+            type="button"
+            class="coin-picker-button"
+            id="toPickerButton"
+          >
+
+            <img
+              class="coin-logo"
+              id="toLogo"
+              src=""
+              alt=""
+            >
+
+            <span class="coin-info">
+
+              <span
+                class="coin-symbol"
+                id="toSymbol"
+              >
+                USDC
+              </span>
+
+              <span
+                class="coin-name"
+                id="toName"
+              >
+                USD Coin
+              </span>
+
+            </span>
+
+            <span class="coin-chevron">
+              ▾
+            </span>
+
+          </button>
+
+
+          <div
+            class="coin-menu"
+            id="toMenu"
+          >
+
+            <input
+              type="search"
+              class="coin-search"
+              id="toSearch"
+              placeholder="Search coin..."
+              autocomplete="off"
+            >
+
+            <div id="toOptions"></div>
+
+          </div>
+
+        </div>
 
       </div>
+
 
       <div class="asset-balance">
         Estimated received amount
@@ -1594,6 +1895,57 @@ const $ = id =>
 
 
 /* =========================================================
+   REAL CRYPTO LOGOS
+========================================================= */
+
+const LOGO_BASE =
+  "https://cdn.jsdelivr.net/gh/madenix/Crypto-logo-cdn@main/Logos/";
+
+
+const logoFiles = {
+
+  BTC:"BTC.svg",
+  ETH:"ETH.svg",
+  USDT:"USDT.svg",
+  USDC:"USDC.svg",
+  BNB:"BNB.svg",
+  SOL:"SOL.svg",
+  XRP:"XRP.svg",
+  TON:"TON.svg",
+  DOGE:"DOGE.svg",
+  ADA:"ADA.svg",
+  TRX:"TRON.svg",
+  LTC:"LTC.svg",
+  AVAX:"AVAX.svg",
+  DOT:"DOT.svg",
+  LINK:"LINK.svg",
+  POL:"MATIC.svg",
+  SHIB:"SHIB.svg",
+  BCH:"BCH.svg",
+  XLM:"XLM.svg",
+  ATOM:"ATOM.svg",
+  NEAR:"NEAR.svg",
+  APT:"APT.svg",
+  ARB:"ARB.svg",
+  OP:"OP.svg"
+
+};
+
+
+function getLogo(symbol){
+
+  return (
+    LOGO_BASE +
+    (
+      logoFiles[symbol] ||
+      "BTC.svg"
+    )
+  );
+
+}
+
+
+/* =========================================================
    ASSETS
 ========================================================= */
 
@@ -1631,21 +1983,110 @@ let currentUser = null;
 let currentSwapId = null;
 let currentQuote = null;
 
+let fromAssetValue = "USDT";
+let toAssetValue = "USDC";
+
 
 /* =========================================================
-   POPULATE ASSET SELECTS
+   ASSET HELPERS
 ========================================================= */
 
-function populateAssets(){
+function getAsset(symbol){
 
-  const from =
-    $("fromAsset");
+  return assets.find(
+    asset => asset[0] === symbol
+  );
 
-  const to =
-    $("toAsset");
+}
 
 
-  assets.forEach(asset => {
+function getAssetName(symbol){
+
+  const asset =
+    getAsset(symbol);
+
+  return asset
+    ? asset[1]
+    : symbol;
+
+}
+
+
+/* =========================================================
+   COIN PICKER RENDER
+========================================================= */
+
+function renderCoinOptions(
+  type,
+  searchTerm = ""
+){
+
+  const container =
+    type === "from"
+      ? $("fromOptions")
+      : $("toOptions");
+
+  const selected =
+    type === "from"
+      ? fromAssetValue
+      : toAssetValue;
+
+
+  const query =
+    String(searchTerm)
+      .trim()
+      .toLowerCase();
+
+
+  container.innerHTML =
+    "";
+
+
+  const filtered =
+    assets.filter(asset => {
+
+      const symbol =
+        asset[0].toLowerCase();
+
+      const name =
+        asset[1].toLowerCase();
+
+      return (
+        !query ||
+        symbol.includes(query) ||
+        name.includes(query)
+      );
+
+    });
+
+
+  if(!filtered.length){
+
+    const empty =
+      document.createElement("div");
+
+    empty.style.padding =
+      "15px 10px";
+
+    empty.style.color =
+      "#8c96a8";
+
+    empty.style.fontSize =
+      "11px";
+
+    empty.textContent =
+      "No coin found.";
+
+    container.appendChild(
+      empty
+    );
+
+    return;
+
+  }
+
+
+  filtered.forEach(asset => {
 
     const symbol =
       asset[0];
@@ -1654,41 +2095,380 @@ function populateAssets(){
       asset[1];
 
 
-    const option1 =
-      document.createElement("option");
+    const button =
+      document.createElement("button");
 
-    option1.value =
-      symbol;
+    button.type =
+      "button";
 
-    option1.textContent =
-      `${symbol} — ${name}`;
+    button.className =
+      "coin-option" +
+      (
+        selected === symbol
+          ? " selected"
+          : ""
+      );
 
-    from.appendChild(
-      option1
+
+    button.innerHTML = `
+
+      <img
+        class="coin-logo"
+        src="${getLogo(symbol)}"
+        alt="${symbol}"
+      >
+
+      <span class="coin-option-info">
+
+        <span class="coin-option-symbol">
+          ${symbol}
+        </span>
+
+        <span class="coin-option-name">
+          ${name}
+        </span>
+
+      </span>
+
+      <span class="coin-check">
+        ✓
+      </span>
+
+    `;
+
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        selectAsset(
+          type,
+          symbol
+        );
+
+      }
     );
 
 
-    const option2 =
-      document.createElement("option");
-
-    option2.value =
-      symbol;
-
-    option2.textContent =
-      `${symbol} — ${name}`;
-
-    to.appendChild(
-      option2
+    container.appendChild(
+      button
     );
 
   });
 
+}
 
-  from.value =
-    "USDT";
 
-  to.value =
-    "USDC";
+/* =========================================================
+   UPDATE PICKER DISPLAY
+========================================================= */
+
+function updatePickerDisplay(
+  type,
+  symbol
+){
+
+  const asset =
+    getAsset(symbol);
+
+
+  if(!asset){
+    return;
+  }
+
+
+  if(type === "from"){
+
+    $("fromLogo").src =
+      getLogo(symbol);
+
+    $("fromLogo").alt =
+      symbol;
+
+    $("fromSymbol").textContent =
+      symbol;
+
+    $("fromName").textContent =
+      asset[1];
+
+  }else{
+
+    $("toLogo").src =
+      getLogo(symbol);
+
+    $("toLogo").alt =
+      symbol;
+
+    $("toSymbol").textContent =
+      symbol;
+
+    $("toName").textContent =
+      asset[1];
+
+  }
+
+}
+
+
+/* =========================================================
+   SELECT ASSET
+========================================================= */
+
+function selectAsset(
+  type,
+  symbol
+){
+
+  if(type === "from"){
+
+    fromAssetValue =
+      symbol;
+
+    updatePickerDisplay(
+      "from",
+      symbol
+    );
+
+    closeCoinMenus();
+
+    resetQuoteDisplay();
+
+    loadFromBalance();
+
+    return;
+
+  }
+
+
+  toAssetValue =
+    symbol;
+
+  updatePickerDisplay(
+    "to",
+    symbol
+  );
+
+  closeCoinMenus();
+
+  resetQuoteDisplay();
+
+}
+
+
+/* =========================================================
+   OPEN COIN MENU
+========================================================= */
+
+function openCoinMenu(type){
+
+  closeCoinMenus(
+    type
+  );
+
+
+  const menu =
+    type === "from"
+      ? $("fromMenu")
+      : $("toMenu");
+
+  const button =
+    type === "from"
+      ? $("fromPickerButton")
+      : $("toPickerButton");
+
+
+  menu.classList.add(
+    "open"
+  );
+
+  button.classList.add(
+    "open"
+  );
+
+
+  const search =
+    type === "from"
+      ? $("fromSearch")
+      : $("toSearch");
+
+
+  search.value =
+    "";
+
+
+  renderCoinOptions(
+    type
+  );
+
+
+  setTimeout(
+    () => search.focus(),
+    50
+  );
+
+}
+
+
+/* =========================================================
+   CLOSE COIN MENUS
+========================================================= */
+
+function closeCoinMenus(
+  except = null
+){
+
+  const menus = [
+    ["fromMenu","fromPickerButton","from"],
+    ["toMenu","toPickerButton","to"]
+  ];
+
+
+  menus.forEach(item => {
+
+    const menu =
+      $(item[0]);
+
+    const button =
+      $(item[1]);
+
+    if(item[2] !== except){
+
+      menu.classList.remove(
+        "open"
+      );
+
+      button.classList.remove(
+        "open"
+      );
+
+    }
+
+  });
+
+}
+
+
+/* =========================================================
+   COIN PICKER EVENTS
+========================================================= */
+
+$("fromPickerButton")
+  .addEventListener(
+    "click",
+    event => {
+
+      event.stopPropagation();
+
+      const isOpen =
+        $("fromMenu")
+          .classList
+          .contains("open");
+
+      if(isOpen){
+
+        closeCoinMenus();
+
+      }else{
+
+        openCoinMenu(
+          "from"
+        );
+
+      }
+
+    }
+  );
+
+
+$("toPickerButton")
+  .addEventListener(
+    "click",
+    event => {
+
+      event.stopPropagation();
+
+      const isOpen =
+        $("toMenu")
+          .classList
+          .contains("open");
+
+      if(isOpen){
+
+        closeCoinMenus();
+
+      }else{
+
+        openCoinMenu(
+          "to"
+        );
+
+      }
+
+    }
+  );
+
+
+$("fromSearch")
+  .addEventListener(
+    "input",
+    event => {
+
+      renderCoinOptions(
+        "from",
+        event.target.value
+      );
+
+    }
+  );
+
+
+$("toSearch")
+  .addEventListener(
+    "input",
+    event => {
+
+      renderCoinOptions(
+        "to",
+        event.target.value
+      );
+
+    }
+  );
+
+
+document.addEventListener(
+  "click",
+  event => {
+
+    if(
+      !event.target.closest(
+        ".coin-picker"
+      )
+    ){
+
+      closeCoinMenus();
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   INITIALIZE COIN PICKERS
+========================================================= */
+
+function initializeCoinPickers(){
+
+  updatePickerDisplay(
+    "from",
+    fromAssetValue
+  );
+
+  updatePickerDisplay(
+    "to",
+    toAssetValue
+  );
 
 }
 
@@ -1839,7 +2619,9 @@ async function loadProfile(user){
   }
 
 
-  displayUserProfile(user);
+  displayUserProfile(
+    user
+  );
 
 
   try{
@@ -1857,7 +2639,10 @@ async function loadProfile(user){
           account_status,
           kyc_status
         `)
-        .eq("id",user.id)
+        .eq(
+          "id",
+          user.id
+        )
         .maybeSingle();
 
 
@@ -1918,7 +2703,9 @@ function showMessage(
 }
 
 
-function hideMessage(element){
+function hideMessage(
+  element
+){
 
   if(!element){
     return;
@@ -1977,10 +2764,10 @@ function resetQuoteDisplay(){
 function validateSwapInputs(){
 
   const fromAsset =
-    $("fromAsset").value;
+    fromAssetValue;
 
   const toAsset =
-    $("toAsset").value;
+    toAssetValue;
 
   const amount =
     Number(
@@ -2013,7 +2800,10 @@ function validateSwapInputs(){
   }
 
 
-  if(!Number.isFinite(amount) || amount <= 0){
+  if(
+    !Number.isFinite(amount) ||
+    amount <= 0
+  ){
 
     return {
       valid:false,
@@ -2056,7 +2846,7 @@ async function loadFromBalance(){
 
 
   const asset =
-    $("fromAsset").value;
+    fromAssetValue;
 
 
   $("fromBalance").textContent =
@@ -2104,7 +2894,10 @@ async function loadFromBalance(){
       data?.available_balance;
 
 
-    if(balance === null || balance === undefined){
+    if(
+      balance === null ||
+      balance === undefined
+    ){
 
       $("fromBalance").textContent =
         "0";
@@ -2115,7 +2908,9 @@ async function loadFromBalance(){
 
 
     $("fromBalance").textContent =
-      formatAmount(balance);
+      formatAmount(
+        balance
+      );
 
   }catch(error){
 
@@ -2185,7 +2980,7 @@ async function useMax(){
         )
         .eq(
           "asset",
-          $("fromAsset").value
+          fromAssetValue
         )
         .maybeSingle();
 
@@ -2267,10 +3062,10 @@ async function requestQuote(){
 
 
   const fromAsset =
-    $("fromAsset").value;
+    fromAssetValue;
 
   const toAsset =
-    $("toAsset").value;
+    toAssetValue;
 
   const amount =
     Number(
@@ -2434,11 +3229,6 @@ function openReview(){
   }
 
 
-  /*
-     The modal is only useful when a verified quote
-     has been returned by the trusted backend.
-  */
-
   if(!currentQuote){
 
     showMessage(
@@ -2453,10 +3243,10 @@ function openReview(){
 
 
   const fromAsset =
-    $("fromAsset").value;
+    fromAssetValue;
 
   const toAsset =
-    $("toAsset").value;
+    toAssetValue;
 
   const amount =
     Number(
@@ -2518,7 +3308,10 @@ function closeReview(){
 
 async function confirmSwap(){
 
-  if(!currentSwapId || !currentQuote){
+  if(
+    !currentSwapId ||
+    !currentQuote
+  ){
 
     showMessage(
       $("modalMessage"),
@@ -2580,17 +3373,28 @@ async function confirmSwap(){
 function switchAssets(){
 
   const from =
-    $("fromAsset").value;
+    fromAssetValue;
 
   const to =
-    $("toAsset").value;
+    toAssetValue;
 
 
-  $("fromAsset").value =
+  fromAssetValue =
     to;
 
-  $("toAsset").value =
+  toAssetValue =
     from;
+
+
+  updatePickerDisplay(
+    "from",
+    fromAssetValue
+  );
+
+  updatePickerDisplay(
+    "to",
+    toAssetValue
+  );
 
 
   resetQuoteDisplay();
@@ -2693,30 +3497,6 @@ $("logoutBtn")
    EVENT LISTENERS
 ========================================================= */
 
-$("fromAsset")
-  .addEventListener(
-    "change",
-    () => {
-
-      resetQuoteDisplay();
-
-      loadFromBalance();
-
-    }
-  );
-
-
-$("toAsset")
-  .addEventListener(
-    "change",
-    () => {
-
-      resetQuoteDisplay();
-
-    }
-  );
-
-
 $("fromAmount")
   .addEventListener(
     "input",
@@ -2798,7 +3578,10 @@ $("reviewModal")
 
 supabaseClient.auth
   .onAuthStateChange(
-    async (event,session) => {
+    async (
+      event,
+      session
+    ) => {
 
       if(
         session &&
@@ -2837,7 +3620,7 @@ async function init(){
 
   try{
 
-    populateAssets();
+    initializeCoinPickers();
 
 
     const {
