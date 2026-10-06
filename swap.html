@@ -3,742 +3,501 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Swap — NEXORA</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 :root{
-  --bg:#07111f;
-  --card:#0d1b2d;
-  --card2:#102238;
-  --border:rgba(255,255,255,.08);
-  --text:#f5f7fa;
-  --muted:#91a0b5;
-  --gold:#d8ad4c;
-  --gold2:#f0cf78;
-  --danger:#ef6b73;
-  --success:#4fd18b;
+    --bg:#07111f;
+    --card:#0d1b2a;
+    --card2:#102235;
+    --gold:#d4af37;
+    --gold2:#f0d77b;
+    --text:#f5f7fa;
+    --muted:#91a0b2;
+    --border:rgba(255,255,255,.08);
+    --danger:#ef4444;
+    --success:#22c55e;
 }
 
 *{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-}
-
-html,body{
-  min-height:100%;
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
 }
 
 body{
-  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  background:var(--bg);
-  color:var(--text);
-  padding-bottom:82px;
+    font-family:Arial,Helvetica,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    min-height:100vh;
+    padding-bottom:90px;
 }
 
-button,input{
-  font:inherit;
+button,
+input{
+    font:inherit;
 }
 
 button{
-  cursor:pointer;
+    cursor:pointer;
 }
-
-a{
-  color:inherit;
-  text-decoration:none;
-}
-
-/* =========================================================
-   TOPBAR
-========================================================= */
 
 .topbar{
-  height:68px;
-  position:sticky;
-  top:0;
-  z-index:50;
-  background:rgba(7,17,31,.96);
-  border-bottom:1px solid var(--border);
-  backdrop-filter:blur(16px);
+    height:68px;
+    position:sticky;
+    top:0;
+    z-index:100;
+    background:rgba(7,17,31,.96);
+    border-bottom:1px solid var(--border);
 }
 
 .topbar-inner{
-  max-width:760px;
-  height:68px;
-  margin:auto;
-  padding:0 18px;
-  display:grid;
-  grid-template-columns:44px 1fr 44px;
-  align-items:center;
-}
-
-.menu-btn,
-.profile-mini{
-  width:40px;
-  height:40px;
-  border:0;
-  border-radius:50%;
-  background:transparent;
-  color:var(--text);
-  display:flex;
-  align-items:center;
-  justify-content:center;
+    max-width:760px;
+    height:100%;
+    margin:auto;
+    padding:0 18px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    position:relative;
 }
 
 .menu-btn{
-  font-size:25px;
+    width:42px;
+    height:42px;
+    border:0;
+    background:transparent;
+    color:var(--text);
+    font-size:25px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
 }
 
 .logo{
-  justify-self:center;
-  font-size:22px;
-  font-weight:800;
-  letter-spacing:1.5px;
+    position:absolute;
+    left:50%;
+    transform:translateX(-50%);
+    text-decoration:none;
+    color:#fff;
+    font-weight:800;
+    font-size:21px;
+    letter-spacing:.5px;
 }
 
 .logo span{
-  color:var(--gold);
+    color:var(--gold);
 }
 
-.profile-mini{
-  background:rgba(216,173,76,.14);
-  color:var(--gold2);
-  font-size:13px;
-  font-weight:800;
-}
-
-/* =========================================================
-   PAGE
-========================================================= */
-
-.page{
-  width:100%;
-  max-width:760px;
-  margin:auto;
-  padding:24px 18px 30px;
-}
-
-.page-head{
-  margin-bottom:22px;
-}
-
-.page-head h1{
-  font-size:28px;
-  line-height:1.15;
-  margin-bottom:7px;
-}
-
-.page-head p{
-  color:var(--muted);
-  font-size:14px;
-  line-height:1.55;
-}
-
-/* =========================================================
-   DRAWER
-========================================================= */
-
-.drawer-overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.62);
-  z-index:90;
-  display:none;
-}
-
-.drawer-overlay.show{
-  display:block;
+.avatar{
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    background:var(--gold);
+    color:#07111f;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:800;
+    font-size:13px;
 }
 
 .drawer{
-  position:fixed;
-  left:0;
-  top:0;
-  bottom:0;
-  width:min(310px,86vw);
-  background:#091522;
-  border-right:1px solid var(--border);
-  z-index:100;
-  transform:translateX(-105%);
-  transition:.25s ease;
-  overflow-y:auto;
-  padding:22px 16px;
+    position:fixed;
+    top:0;
+    left:-290px;
+    width:275px;
+    height:100vh;
+    background:#091625;
+    z-index:300;
+    transition:left .25s ease;
+    border-right:1px solid var(--border);
+    padding:78px 16px 20px;
+    overflow-y:auto;
 }
 
-.drawer.show{
-  transform:translateX(0);
+.drawer.open{
+    left:0;
 }
 
-.drawer-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:25px;
+.drawer-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.55);
+    z-index:250;
+    display:none;
 }
 
-.drawer-logo{
-  font-size:22px;
-  font-weight:800;
-  letter-spacing:1.5px;
+.drawer-overlay.show{
+    display:block;
 }
 
-.drawer-logo span{
-  color:var(--gold);
+.drawer a,
+.drawer button{
+    width:100%;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:14px 13px;
+    margin-bottom:5px;
+    border:0;
+    border-radius:10px;
+    background:transparent;
+    color:var(--text);
+    text-decoration:none;
+    text-align:left;
 }
 
-.close-drawer{
-  width:38px;
-  height:38px;
-  border:1px solid var(--border);
-  border-radius:50%;
-  background:var(--card);
-  color:var(--text);
-  font-size:20px;
+.drawer a:hover,
+.drawer button:hover{
+    background:rgba(212,175,55,.08);
 }
 
-.drawer-user{
-  padding:15px;
-  border:1px solid var(--border);
-  background:var(--card);
-  border-radius:15px;
-  margin-bottom:18px;
+.drawer .active{
+    background:rgba(212,175,55,.12);
+    color:var(--gold2);
 }
 
-.drawer-user-name{
-  font-weight:700;
-  margin-bottom:4px;
+.drawer .logout{
+    color:#f87171;
+    margin-top:12px;
 }
 
-.drawer-user-email{
-  color:var(--muted);
-  font-size:12px;
-  overflow:hidden;
-  text-overflow:ellipsis;
+.container{
+    max-width:760px;
+    margin:auto;
+    padding:22px 18px;
 }
 
-.drawer-link{
-  display:flex;
-  align-items:center;
-  gap:13px;
-  padding:13px 12px;
-  border-radius:12px;
-  color:#d9e0e9;
-  margin-bottom:4px;
-  font-size:14px;
+.page-title{
+    font-size:25px;
+    font-weight:800;
+    margin-bottom:5px;
 }
 
-.drawer-link:hover{
-  background:rgba(216,173,76,.08);
-  color:var(--gold2);
+.page-subtitle{
+    color:var(--muted);
+    font-size:14px;
+    line-height:1.5;
+    margin-bottom:22px;
 }
 
-.drawer-link.active{
-  background:rgba(216,173,76,.12);
-  color:var(--gold2);
+.swap-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:16px;
 }
 
-.drawer-icon{
-  width:23px;
-  text-align:center;
-  font-size:17px;
+.field-label{
+    color:var(--muted);
+    font-size:12px;
+    margin-bottom:8px;
 }
 
-.logout-link{
-  margin-top:15px;
-  border-top:1px solid var(--border);
-  padding-top:18px;
-  color:#f09a9f;
-}
-
-/* =========================================================
-   CARDS
-========================================================= */
-
-.card{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:18px;
-  padding:18px;
-  margin-bottom:16px;
-}
-
-.card-title{
-  font-size:15px;
-  font-weight:750;
-  margin-bottom:5px;
-}
-
-.card-subtitle{
-  color:var(--muted);
-  font-size:12px;
-  line-height:1.5;
-}
-
-/* =========================================================
-   SWAP BOX
-========================================================= */
-
-.swap-box{
-  position:relative;
-}
-
-.asset-box{
-  border:1px solid var(--border);
-  background:var(--card2);
-  border-radius:16px;
-  padding:14px;
-}
-
-.asset-box + .asset-box{
-  margin-top:10px;
-}
-
-.asset-top{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:9px;
-}
-
-.asset-label{
-  color:var(--muted);
-  font-size:11px;
-}
-
-.balance-small{
-  color:var(--muted);
-  font-size:11px;
-}
-
-.asset-select-row{
-  display:flex;
-  align-items:center;
-  gap:10px;
+.asset-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    background:var(--card2);
+    border:1px solid var(--border);
+    border-radius:13px;
+    padding:12px;
+    margin-bottom:12px;
 }
 
 .asset-select{
-  flex:0 0 auto;
-  min-width:126px;
-  height:43px;
-  padding:0 11px;
-  border:1px solid var(--border);
-  border-radius:12px;
-  background:#091625;
-  color:var(--text);
-  display:flex;
-  align-items:center;
-  gap:8px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    border:0;
+    background:transparent;
+    color:var(--text);
+    font-weight:700;
 }
 
-.asset-select img{
-  width:25px;
-  height:25px;
-  object-fit:contain;
+.asset-icon{
+    width:30px;
+    height:30px;
+    object-fit:contain;
 }
 
-.asset-select-text{
-  text-align:left;
+.asset-arrow{
+    color:var(--muted);
 }
 
-.asset-symbol{
-  display:block;
-  font-size:13px;
-  font-weight:800;
-}
-
-.asset-name{
-  display:block;
-  font-size:9px;
-  color:var(--muted);
-  margin-top:2px;
+.amount-box{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    background:var(--card2);
+    border:1px solid var(--border);
+    border-radius:13px;
+    padding:12px;
 }
 
 .amount-input{
-  min-width:0;
-  flex:1;
-  height:43px;
-  border:0;
-  outline:0;
-  background:transparent;
-  color:var(--text);
-  font-size:22px;
-  font-weight:700;
-  text-align:right;
+    width:100%;
+    border:0;
+    outline:0;
+    background:transparent;
+    color:var(--text);
+    font-size:20px;
+    font-weight:700;
 }
 
 .amount-input::placeholder{
-  color:#536176;
+    color:#59687a;
+}
+
+.max-btn{
+    border:1px solid rgba(212,175,55,.35);
+    background:rgba(212,175,55,.08);
+    color:var(--gold2);
+    border-radius:8px;
+    padding:7px 9px;
+    font-size:11px;
+    font-weight:700;
+}
+
+.balance{
+    color:var(--muted);
+    font-size:12px;
+    margin-top:7px;
+    text-align:right;
 }
 
 .flip-wrap{
-  height:0;
-  position:relative;
-  z-index:5;
+    display:flex;
+    justify-content:center;
+    margin:-1px 0;
+    position:relative;
+    z-index:2;
 }
 
 .flip-btn{
-  position:absolute;
-  left:50%;
-  top:-19px;
-  transform:translateX(-50%);
-  width:40px;
-  height:40px;
-  border-radius:50%;
-  border:1px solid var(--gold);
-  background:#0c1a2b;
-  color:var(--gold2);
-  font-size:19px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    border:1px solid rgba(212,175,55,.35);
+    background:var(--card);
+    color:var(--gold2);
+    font-size:19px;
 }
 
-/* =========================================================
-   INFO
-========================================================= */
-
-.info-list{
-  margin-top:17px;
-  border-top:1px solid var(--border);
+.quote-box{
+    margin-top:18px;
+    background:rgba(255,255,255,.025);
+    border:1px solid var(--border);
+    border-radius:14px;
+    overflow:hidden;
 }
 
-.info-row{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:15px;
-  padding:12px 0;
-  border-bottom:1px solid var(--border);
-  font-size:12px;
+.quote-row{
+    display:flex;
+    justify-content:space-between;
+    gap:15px;
+    padding:12px 13px;
+    border-bottom:1px solid var(--border);
+    font-size:13px;
 }
 
-.info-row:last-child{
-  border-bottom:0;
+.quote-row:last-child{
+    border-bottom:0;
 }
 
-.info-row span:first-child{
-  color:var(--muted);
+.quote-row span:first-child{
+    color:var(--muted);
 }
 
-.info-row span:last-child{
-  text-align:right;
-  color:#dfe5ec;
+.quote-value{
+    font-weight:700;
 }
-
-.pending-value{
-  color:var(--muted)!important;
-}
-
-/* =========================================================
-   NOTICE
-========================================================= */
 
 .notice{
-  padding:13px;
-  border-radius:13px;
-  border:1px solid rgba(216,173,76,.22);
-  background:rgba(216,173,76,.07);
-  color:#d8c999;
-  font-size:11px;
-  line-height:1.55;
-  margin-top:16px;
+    margin-top:15px;
+    padding:13px;
+    border-radius:12px;
+    background:rgba(212,175,55,.06);
+    border:1px solid rgba(212,175,55,.16);
+    color:#c6ced8;
+    font-size:12px;
+    line-height:1.55;
 }
 
-/* =========================================================
-   BUTTON
-========================================================= */
-
-.primary-btn{
-  width:100%;
-  height:50px;
-  border:0;
-  border-radius:14px;
-  background:var(--gold);
-  color:#101722;
-  font-weight:800;
-  margin-top:17px;
+.review-btn{
+    width:100%;
+    margin-top:16px;
+    padding:14px;
+    border:0;
+    border-radius:12px;
+    background:var(--gold);
+    color:#07111f;
+    font-weight:800;
 }
 
-.primary-btn:disabled{
-  opacity:.45;
-  cursor:not-allowed;
-}
-
-/* =========================================================
-   ERROR
-========================================================= */
-
-.message{
-  display:none;
-  margin-top:13px;
-  padding:12px;
-  border-radius:12px;
-  font-size:12px;
-  line-height:1.5;
-}
-
-.message.show{
-  display:block;
-}
-
-.message.error{
-  color:#f3a4aa;
-  border:1px solid rgba(239,107,115,.25);
-  background:rgba(239,107,115,.08);
-}
-
-/* =========================================================
-   ASSET MODAL
-========================================================= */
-
-.modal-overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.68);
-  z-index:150;
-  display:none;
-  align-items:flex-end;
-  justify-content:center;
-}
-
-.modal-overlay.show{
-  display:flex;
+.review-btn:disabled{
+    opacity:.45;
+    cursor:not-allowed;
 }
 
 .modal{
-  width:min(760px,100%);
-  max-height:82vh;
-  background:#091522;
-  border:1px solid var(--border);
-  border-radius:22px 22px 0 0;
-  padding:18px;
-  overflow-y:auto;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.7);
+    z-index:500;
+    display:none;
+    align-items:flex-end;
+    justify-content:center;
+}
+
+.modal.show{
+    display:flex;
+}
+
+.modal-card{
+    width:100%;
+    max-width:760px;
+    max-height:85vh;
+    overflow:auto;
+    background:#0b1928;
+    border:1px solid var(--border);
+    border-radius:22px 22px 0 0;
+    padding:18px;
 }
 
 .modal-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:14px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:15px;
 }
 
 .modal-title{
-  font-size:17px;
-  font-weight:800;
+    font-size:18px;
+    font-weight:800;
 }
 
-.modal-close{
-  width:36px;
-  height:36px;
-  border-radius:50%;
-  border:1px solid var(--border);
-  background:var(--card);
-  color:var(--text);
-  font-size:19px;
+.close-btn{
+    width:36px;
+    height:36px;
+    border:0;
+    border-radius:50%;
+    background:rgba(255,255,255,.06);
+    color:var(--text);
 }
 
 .search{
-  width:100%;
-  height:45px;
-  border-radius:12px;
-  border:1px solid var(--border);
-  background:#0d1b2d;
-  color:var(--text);
-  padding:0 13px;
-  outline:none;
-  margin-bottom:13px;
+    width:100%;
+    border:1px solid var(--border);
+    background:var(--card2);
+    color:var(--text);
+    border-radius:11px;
+    padding:12px;
+    outline:none;
+    margin-bottom:12px;
 }
 
-.search:focus{
-  border-color:var(--gold);
+.asset-list{
+    display:grid;
+    gap:7px;
 }
 
-.modal-assets{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:8px;
+.asset-option{
+    width:100%;
+    display:flex;
+    align-items:center;
+    gap:11px;
+    border:1px solid var(--border);
+    background:var(--card2);
+    color:var(--text);
+    border-radius:11px;
+    padding:11px;
+    text-align:left;
 }
 
-.modal-asset{
-  border:1px solid var(--border);
-  background:var(--card);
-  border-radius:13px;
-  padding:11px;
-  color:var(--text);
-  display:flex;
-  align-items:center;
-  gap:9px;
-  text-align:left;
+.asset-option small{
+    display:block;
+    color:var(--muted);
+    margin-top:2px;
 }
 
-.modal-asset img{
-  width:30px;
-  height:30px;
-  object-fit:contain;
+.coming-soon{
+    margin-left:auto;
+    color:var(--muted);
+    font-size:10px;
 }
 
-.modal-asset strong{
-  display:block;
-  font-size:12px;
+.status-message{
+    display:none;
+    margin-top:12px;
+    padding:11px;
+    border-radius:10px;
+    font-size:12px;
+    line-height:1.5;
 }
 
-.modal-asset small{
-  display:block;
-  color:var(--muted);
-  font-size:9px;
-  margin-top:2px;
+.status-message.show{
+    display:block;
 }
 
-.modal-asset:disabled{
-  opacity:.4;
-  cursor:not-allowed;
+.status-error{
+    background:rgba(239,68,68,.08);
+    border:1px solid rgba(239,68,68,.2);
+    color:#fca5a5;
 }
 
-/* =========================================================
-   REVIEW MODAL
-========================================================= */
-
-.review-card{
-  border:1px solid var(--border);
-  border-radius:15px;
-  background:var(--card);
-  padding:15px;
-  margin-top:10px;
+.status-success{
+    background:rgba(34,197,94,.08);
+    border:1px solid rgba(34,197,94,.2);
+    color:#86efac;
 }
-
-.review-line{
-  display:flex;
-  justify-content:space-between;
-  gap:15px;
-  padding:10px 0;
-  border-bottom:1px solid var(--border);
-  font-size:12px;
-}
-
-.review-line:last-child{
-  border-bottom:0;
-}
-
-.review-line span:first-child{
-  color:var(--muted);
-}
-
-.review-line span:last-child{
-  text-align:right;
-}
-
-.review-actions{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:9px;
-  margin-top:15px;
-}
-
-.secondary-btn{
-  height:48px;
-  border-radius:13px;
-  border:1px solid var(--border);
-  background:var(--card2);
-  color:var(--text);
-  font-weight:700;
-}
-
-.confirm-btn{
-  height:48px;
-  border-radius:13px;
-  border:0;
-  background:var(--gold);
-  color:#101722;
-  font-weight:800;
-}
-
-/* =========================================================
-   BOTTOM NAV
-========================================================= */
 
 .bottom-nav{
-  position:fixed;
-  left:0;
-  right:0;
-  bottom:0;
-  height:70px;
-  z-index:60;
-  background:rgba(7,17,31,.97);
-  border-top:1px solid var(--border);
-  backdrop-filter:blur(15px);
+    position:fixed;
+    bottom:0;
+    left:0;
+    right:0;
+    height:70px;
+    z-index:150;
+    background:#091625;
+    border-top:1px solid var(--border);
 }
 
 .bottom-inner{
-  max-width:760px;
-  height:70px;
-  margin:auto;
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
+    max-width:760px;
+    height:100%;
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
 }
 
-.bottom-link{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:4px;
-  color:#7f8da1;
-  font-size:10px;
+.bottom-nav a{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:4px;
+    color:var(--muted);
+    text-decoration:none;
+    font-size:11px;
+}
+
+.bottom-nav a.active{
+    color:var(--gold2);
 }
 
 .bottom-icon{
-  font-size:19px;
-  line-height:1;
-}
-
-.bottom-link.active{
-  color:var(--gold2);
-}
-
-/* =========================================================
-   TOAST
-========================================================= */
-
-.toast{
-  position:fixed;
-  left:50%;
-  bottom:88px;
-  transform:translateX(-50%) translateY(20px);
-  background:#132238;
-  border:1px solid var(--border);
-  color:var(--text);
-  padding:11px 15px;
-  border-radius:12px;
-  font-size:12px;
-  z-index:200;
-  opacity:0;
-  pointer-events:none;
-  transition:.2s ease;
-  max-width:90%;
-  text-align:center;
-}
-
-.toast.show{
-  opacity:1;
-  transform:translateX(-50%) translateY(0);
-}
-
-@media(max-width:430px){
-
-  .modal-assets{
-    grid-template-columns:1fr 1fr;
-  }
-
-  .asset-select{
-    min-width:112px;
-  }
-
-  .amount-input{
     font-size:19px;
-  }
+}
+
+.empty{
+    text-align:center;
+    color:var(--muted);
+    padding:20px;
 }
 </style>
 </head>
@@ -746,1526 +505,745 @@ a{
 <body>
 
 <header class="topbar">
+    <div class="topbar-inner">
 
-  <div class="topbar-inner">
+        <button class="menu-btn" id="menuBtn">☰</button>
 
-    <button
-      class="menu-btn"
-      id="menuBtn"
-      aria-label="Open menu"
-    >
-      ☰
-    </button>
+        <a href="dashboard.html" class="logo">
+            NEX<span>ORA</span>
+        </a>
 
-    <a href="dashboard.html" class="logo">
-      NEX<span>ORA</span>
-    </a>
+        <div class="avatar" id="avatar">--</div>
 
-    <div class="profile-mini" id="profileInitials">
-      —
     </div>
-
-  </div>
-
 </header>
-
-
-<!-- =======================================================
-     DRAWER
-======================================================= -->
 
 <div class="drawer-overlay" id="drawerOverlay"></div>
 
 <aside class="drawer" id="drawer">
 
-  <div class="drawer-head">
+    <a href="dashboard.html">
+        <span>⌂</span>
+        <span>Portfolio</span>
+    </a>
 
-    <div class="drawer-logo">
-      NEX<span>ORA</span>
-    </div>
+    <a href="deposit.html">
+        <span>＋</span>
+        <span>Deposit</span>
+    </a>
 
-    <button
-      class="close-drawer"
-      id="closeDrawer"
-    >
-      ×
+    <a href="withdraw.html">
+        <span>↓</span>
+        <span>Withdraw</span>
+    </a>
+
+    <a href="transactions.html">
+        <span>≡</span>
+        <span>Transactions</span>
+    </a>
+
+    <a href="referrals.html">
+        <span>♧</span>
+        <span>Referrals</span>
+    </a>
+
+    <a href="profile.html">
+        <span>○</span>
+        <span>Profile</span>
+    </a>
+
+    <a href="support.html">
+        <span>?</span>
+        <span>Support</span>
+    </a>
+
+    <a href="notifications.html">
+        <span>●</span>
+        <span>Notifications</span>
+    </a>
+
+    <button class="logout" id="logoutBtn">
+        <span>↪</span>
+        <span>Logout</span>
     </button>
-
-  </div>
-
-  <div class="drawer-user">
-
-    <div
-      class="drawer-user-name"
-      id="drawerName"
-    >
-      Account
-    </div>
-
-    <div
-      class="drawer-user-email"
-      id="drawerEmail"
-    >
-      —
-    </div>
-
-  </div>
-
-  <a class="drawer-link" href="dashboard.html">
-    <span class="drawer-icon">⌂</span>
-    <span>Portfolio</span>
-  </a>
-
-  <a class="drawer-link" href="deposit.html">
-    <span class="drawer-icon">＋</span>
-    <span>Deposit</span>
-  </a>
-
-  <a class="drawer-link" href="withdraw.html">
-    <span class="drawer-icon">↓</span>
-    <span>Withdraw</span>
-  </a>
-
-  <a class="drawer-link" href="transactions.html">
-    <span class="drawer-icon">≡</span>
-    <span>Transactions</span>
-  </a>
-
-  <a class="drawer-link" href="referrals.html">
-    <span class="drawer-icon">♧</span>
-    <span>Referrals</span>
-  </a>
-
-  <a class="drawer-link" href="profile.html">
-    <span class="drawer-icon">○</span>
-    <span>Profile</span>
-  </a>
-
-  <a class="drawer-link" href="support.html">
-    <span class="drawer-icon">?</span>
-    <span>Support</span>
-  </a>
-
-  <a class="drawer-link" href="notifications.html">
-    <span class="drawer-icon">◌</span>
-    <span>Notifications</span>
-  </a>
-
-  <a
-    class="drawer-link logout-link"
-    href="#"
-    id="logoutBtn"
-  >
-    <span class="drawer-icon">↪</span>
-    <span>Logout</span>
-  </a>
 
 </aside>
 
+<main class="container">
 
-<!-- =======================================================
-     MAIN
-======================================================= -->
+    <h1 class="page-title">Swap</h1>
 
-<main class="page">
-
-  <section class="page-head">
-
-    <h1>Swap</h1>
-
-    <p>
-      Exchange one supported digital asset for another.
+    <p class="page-subtitle">
+        Exchange supported digital assets through a verified quote and execution route.
     </p>
 
-  </section>
+    <section class="swap-card">
 
+        <div class="field-label">You pay</div>
 
-  <!-- =====================================================
-       SWAP
-  ====================================================== -->
+        <div class="asset-row">
 
-  <section class="card swap-box">
+            <button class="asset-select" id="fromAssetBtn">
+                <img class="asset-icon" id="fromLogo" alt="">
+                <span id="fromAsset">USDT</span>
+            </button>
 
-    <div class="card-title">
-      Swap assets
-    </div>
+            <span class="asset-arrow">⌄</span>
 
-    <div class="card-subtitle">
-      Select the assets and amount you want to exchange.
-    </div>
+        </div>
 
+        <div class="amount-box">
 
-    <!-- YOU PAY -->
-
-    <div class="asset-box" style="margin-top:16px;">
-
-      <div class="asset-top">
-
-        <span class="asset-label">
-          You pay
-        </span>
-
-        <span
-          class="balance-small"
-          id="payBalance"
-        >
-          Balance: —
-        </span>
-
-      </div>
-
-      <div class="asset-select-row">
-
-        <button
-          class="asset-select"
-          id="payAssetBtn"
-          type="button"
-        >
-
-          <img
-            id="payLogo"
-            src=""
-            alt=""
-          >
-
-          <span class="asset-select-text">
-
-            <span
-              class="asset-symbol"
-              id="paySymbol"
+            <input
+                id="fromAmount"
+                class="amount-input"
+                type="number"
+                inputmode="decimal"
+                min="0"
+                step="any"
+                placeholder="0.00"
             >
-              USDT
-            </span>
 
-            <span
-              class="asset-name"
-              id="payName"
+            <button class="max-btn" id="maxBtn">
+                MAX
+            </button>
+
+        </div>
+
+        <div class="balance">
+            Balance: <span id="fromBalance">—</span>
+        </div>
+
+        <div class="flip-wrap">
+            <button class="flip-btn" id="flipBtn">↕</button>
+        </div>
+
+        <div class="field-label">You receive</div>
+
+        <div class="asset-row">
+
+            <button class="asset-select" id="toAssetBtn">
+                <img class="asset-icon" id="toLogo" alt="">
+                <span id="toAsset">USDC</span>
+            </button>
+
+            <span class="asset-arrow">⌄</span>
+
+        </div>
+
+        <div class="amount-box">
+
+            <input
+                id="toAmount"
+                class="amount-input"
+                type="text"
+                placeholder="—"
+                readonly
             >
-              Tether
-            </span>
 
-          </span>
+        </div>
 
+        <div class="quote-box">
+
+            <div class="quote-row">
+                <span>Exchange rate</span>
+                <span class="quote-value">—</span>
+            </div>
+
+            <div class="quote-row">
+                <span>Network fee</span>
+                <span class="quote-value">—</span>
+            </div>
+
+            <div class="quote-row">
+                <span>NEXORA fee</span>
+                <span class="quote-value">—</span>
+            </div>
+
+            <div class="quote-row">
+                <span>Minimum received</span>
+                <span class="quote-value">—</span>
+            </div>
+
+            <div class="quote-row">
+                <span>Slippage</span>
+                <span class="quote-value">0.50%</span>
+            </div>
+
+        </div>
+
+        <div class="notice">
+            Live swap quotes are not available yet. No swap will be executed
+            until a verified quote and transaction route are available.
+        </div>
+
+        <button class="review-btn" id="reviewBtn" disabled>
+            Review Swap
         </button>
 
-        <input
-          class="amount-input"
-          id="payAmount"
-          type="number"
-          inputmode="decimal"
-          min="0"
-          step="any"
-          placeholder="0.00"
-        >
+        <div class="status-message" id="statusMessage"></div>
 
-      </div>
-
-    </div>
-
-
-    <div class="flip-wrap">
-
-      <button
-        class="flip-btn"
-        id="flipBtn"
-        type="button"
-        aria-label="Switch assets"
-      >
-        ⇅
-      </button>
-
-    </div>
-
-
-    <!-- YOU RECEIVE -->
-
-    <div class="asset-box">
-
-      <div class="asset-top">
-
-        <span class="asset-label">
-          You receive
-        </span>
-
-        <span class="balance-small">
-          Estimated amount
-        </span>
-
-      </div>
-
-      <div class="asset-select-row">
-
-        <button
-          class="asset-select"
-          id="receiveAssetBtn"
-          type="button"
-        >
-
-          <img
-            id="receiveLogo"
-            src=""
-            alt=""
-          >
-
-          <span class="asset-select-text">
-
-            <span
-              class="asset-symbol"
-              id="receiveSymbol"
-            >
-              USDC
-            </span>
-
-            <span
-              class="asset-name"
-              id="receiveName"
-            >
-              USD Coin
-            </span>
-
-          </span>
-
-        </button>
-
-        <input
-          class="amount-input"
-          id="receiveAmount"
-          type="text"
-          placeholder="—"
-          readonly
-        >
-
-      </div>
-
-    </div>
-
-
-    <!-- QUOTE -->
-
-    <div class="info-list">
-
-      <div class="info-row">
-
-        <span>
-          Exchange rate
-        </span>
-
-        <span
-          class="pending-value"
-          id="rateValue"
-        >
-          —
-        </span>
-
-      </div>
-
-      <div class="info-row">
-
-        <span>
-          Network fee
-        </span>
-
-        <span
-          class="pending-value"
-          id="networkFee"
-        >
-          —
-        </span>
-
-      </div>
-
-      <div class="info-row">
-
-        <span>
-          NEXORA fee
-        </span>
-
-        <span
-          class="pending-value"
-          id="nexoraFee"
-        >
-          —
-        </span>
-
-      </div>
-
-      <div class="info-row">
-
-        <span>
-          Minimum received
-        </span>
-
-        <span
-          class="pending-value"
-          id="minimumReceived"
-        >
-          —
-        </span>
-
-      </div>
-
-      <div class="info-row">
-
-        <span>
-          Slippage
-        </span>
-
-        <span>
-          0.50%
-        </span>
-
-      </div>
-
-    </div>
-
-
-    <div class="notice">
-
-      Live swap quotes are not available yet.
-      No swap will be executed until a verified quote
-      and transaction route are available.
-
-    </div>
-
-
-    <div
-      class="message error"
-      id="errorMessage"
-    ></div>
-
-
-    <button
-      class="primary-btn"
-      id="reviewBtn"
-      type="button"
-      disabled
-    >
-      Review Swap
-    </button>
-
-  </section>
-
-
-  <!-- =====================================================
-       INFORMATION
-  ====================================================== -->
-
-  <section class="card">
-
-    <div class="card-title">
-      About swaps
-    </div>
-
-    <div class="card-subtitle">
-
-      NEXORA will only display a final swap amount after
-      a real quote source is connected. Balances and
-      transaction status are never simulated.
-
-    </div>
-
-    <div class="info-list">
-
-      <div class="info-row">
-        <span>Supported assets</span>
-        <span>24</span>
-      </div>
-
-      <div class="info-row">
-        <span>Quote status</span>
-        <span class="pending-value">Not connected</span>
-      </div>
-
-      <div class="info-row">
-        <span>Execution status</span>
-        <span class="pending-value">Not connected</span>
-      </div>
-
-    </div>
-
-  </section>
+    </section>
 
 </main>
 
-
-<!-- =======================================================
-     ASSET MODAL
-======================================================= -->
-
-<div
-  class="modal-overlay"
-  id="assetModal"
->
-
-  <div class="modal">
-
-    <div class="modal-head">
-
-      <div
-        class="modal-title"
-        id="assetModalTitle"
-      >
-        Select asset
-      </div>
-
-      <button
-        class="modal-close"
-        id="closeAssetModal"
-      >
-        ×
-      </button>
-
-    </div>
-
-    <input
-      class="search"
-      id="assetSearch"
-      type="search"
-      placeholder="Search asset..."
-      autocomplete="off"
-    >
-
-    <div
-      class="modal-assets"
-      id="modalAssets"
-    ></div>
-
-  </div>
-
-</div>
-
-
-<!-- =======================================================
-     REVIEW MODAL
-======================================================= -->
-
-<div
-  class="modal-overlay"
-  id="reviewModal"
->
-
-  <div class="modal">
-
-    <div class="modal-head">
-
-      <div class="modal-title">
-        Review swap
-      </div>
-
-      <button
-        class="modal-close"
-        id="closeReviewModal"
-      >
-        ×
-      </button>
-
-    </div>
-
-    <div class="review-card">
-
-      <div class="review-line">
-        <span>You pay</span>
-        <span id="reviewPay">—</span>
-      </div>
-
-      <div class="review-line">
-        <span>You receive</span>
-        <span id="reviewReceive">—</span>
-      </div>
-
-      <div class="review-line">
-        <span>Exchange rate</span>
-        <span id="reviewRate">—</span>
-      </div>
-
-      <div class="review-line">
-        <span>Network fee</span>
-        <span id="reviewNetworkFee">—</span>
-      </div>
-
-      <div class="review-line">
-        <span>NEXORA fee</span>
-        <span id="reviewNexoraFee">—</span>
-      </div>
-
-      <div class="review-line">
-        <span>Minimum received</span>
-        <span id="reviewMinimum">—</span>
-      </div>
-
-      <div class="review-line">
-        <span>Slippage</span>
-        <span>0.50%</span>
-      </div>
-
-    </div>
-
-    <div class="notice">
-
-      This review is informational only.
-      Swap execution is disabled until a verified
-      live quote and transaction execution system
-      is connected.
-
-    </div>
-
-    <div class="review-actions">
-
-      <button
-        class="secondary-btn"
-        id="cancelReview"
-        type="button"
-      >
-        Cancel
-      </button>
-
-      <button
-        class="confirm-btn"
-        id="confirmSwap"
-        type="button"
-      >
-        Not Available
-      </button>
-
-    </div>
-
-  </div>
-
-</div>
-
-
-<!-- =======================================================
-     BOTTOM NAV
-======================================================= -->
-
 <nav class="bottom-nav">
+    <div class="bottom-inner">
 
-  <div class="bottom-inner">
+        <a href="dashboard.html">
+            <span class="bottom-icon">⌂</span>
+            <span>Portfolio</span>
+        </a>
 
-    <a
-      class="bottom-link"
-      href="dashboard.html"
-    >
-      <span class="bottom-icon">⌂</span>
-      <span>Portfolio</span>
-    </a>
+        <a href="deposit.html">
+            <span class="bottom-icon">＋</span>
+            <span>Deposit</span>
+        </a>
 
-    <a
-      class="bottom-link"
-      href="deposit.html"
-    >
-      <span class="bottom-icon">＋</span>
-      <span>Deposit</span>
-    </a>
+        <a href="transactions.html">
+            <span class="bottom-icon">≡</span>
+            <span>History</span>
+        </a>
 
-    <a
-      class="bottom-link"
-      href="transactions.html"
-    >
-      <span class="bottom-icon">≡</span>
-      <span>History</span>
-    </a>
+        <a href="profile.html">
+            <span class="bottom-icon">○</span>
+            <span>Account</span>
+        </a>
 
-    <a
-      class="bottom-link active"
-      href="profile.html"
-    >
-      <span class="bottom-icon">○</span>
-      <span>Account</span>
-    </a>
-
-  </div>
-
+    </div>
 </nav>
 
+<!-- ASSET MODAL -->
 
-<div
-  class="toast"
-  id="toast"
-></div>
+<div class="modal" id="assetModal">
 
+    <div class="modal-card">
+
+        <div class="modal-head">
+
+            <div class="modal-title">
+                Select asset
+            </div>
+
+            <button class="close-btn" id="closeAssetModal">
+                ×
+            </button>
+
+        </div>
+
+        <input
+            class="search"
+            id="assetSearch"
+            placeholder="Search asset..."
+        >
+
+        <div class="asset-list" id="assetList"></div>
+
+    </div>
+
+</div>
 
 <script>
-
-/* =========================================================
-   SUPABASE
-========================================================= */
-
 const SUPABASE_URL =
-  "https://rihvvwktvgytbqzazage.supabase.co";
+    "https://rihvvwktvgytbqzazage.supabase.co";
 
 const SUPABASE_KEY =
-  "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
+    "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
 
 const db =
-  supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
-
-
-/* =========================================================
-   LOGOS
-========================================================= */
-
-const LOGO_BASE =
-  "https://cdn.jsdelivr.net/gh/madenix/Crypto-logo-cdn@main/Logos/";
-
-const logoFiles = {
-
-  BTC:"BTC.svg",
-  ETH:"ETH.svg",
-  USDT:"USDT.svg",
-  USDC:"USDC.svg",
-  BNB:"BNB.svg",
-  SOL:"SOL.svg",
-  XRP:"XRP.svg",
-  TON:"TON.svg",
-  DOGE:"DOGE.svg",
-  ADA:"ADA.svg",
-  TRX:"TRON.svg",
-  LTC:"LTC.svg",
-  AVAX:"AVAX.svg",
-  DOT:"DOT.svg",
-  LINK:"LINK.svg",
-  POL:"MATIC.svg",
-  SHIB:"SHIB.svg",
-  BCH:"BCH.svg",
-  XLM:"XLM.svg",
-  ATOM:"ATOM.svg",
-  NEAR:"NEAR.svg",
-  APT:"APT.svg",
-  ARB:"ARB.svg",
-  OP:"OP.svg"
-
-};
-
-
-/* =========================================================
-   ASSETS
-========================================================= */
-
-const assets = [
-
-  {symbol:"USDT",name:"Tether"},
-  {symbol:"USDC",name:"USD Coin"},
-  {symbol:"BTC",name:"Bitcoin"},
-  {symbol:"ETH",name:"Ethereum"},
-  {symbol:"BNB",name:"BNB"},
-  {symbol:"SOL",name:"Solana"},
-  {symbol:"XRP",name:"XRP"},
-  {symbol:"TON",name:"Toncoin"},
-  {symbol:"DOGE",name:"Dogecoin"},
-  {symbol:"ADA",name:"Cardano"},
-  {symbol:"TRX",name:"TRON"},
-  {symbol:"LTC",name:"Litecoin"},
-  {symbol:"AVAX",name:"Avalanche"},
-  {symbol:"DOT",name:"Polkadot"},
-  {symbol:"LINK",name:"Chainlink"},
-  {symbol:"POL",name:"Polygon"},
-  {symbol:"SHIB",name:"Shiba Inu"},
-  {symbol:"BCH",name:"Bitcoin Cash"},
-  {symbol:"XLM",name:"Stellar"},
-  {symbol:"ATOM",name:"Cosmos"},
-  {symbol:"NEAR",name:"NEAR Protocol"},
-  {symbol:"APT",name:"Aptos"},
-  {symbol:"ARB",name:"Arbitrum"},
-  {symbol:"OP",name:"Optimism"}
-
-];
-
-
-/* =========================================================
-   STATE
-========================================================= */
-
-let currentUser = null;
-
-let wallets = {};
-
-let payAsset = "USDT";
-
-let receiveAsset = "USDC";
-
-let selectingSide = null;
-
-
-/* =========================================================
-   HELPERS
-========================================================= */
-
-function $(id){
-  return document.getElementById(id);
-}
-
-function escapeHtml(value){
-
-  return String(value ?? "")
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
-
-}
-
-function showToast(message){
-
-  const toast = $("toast");
-
-  toast.textContent = message;
-
-  toast.classList.add("show");
-
-  clearTimeout(showToast.timer);
-
-  showToast.timer =
-    setTimeout(
-      () => toast.classList.remove("show"),
-      3000
+    supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
     );
 
+const LOGO_BASE =
+    "https://cdn.jsdelivr.net/gh/madenix/Crypto-logo-cdn@main/Logos/";
+
+const logoFiles = {
+    BTC:"BTC.svg",
+    ETH:"ETH.svg",
+    USDT:"USDT.svg",
+    USDC:"USDC.svg",
+    BNB:"BNB.svg",
+    SOL:"SOL.svg",
+    XRP:"XRP.svg",
+    TON:"TON.svg",
+    DOGE:"DOGE.svg",
+    ADA:"ADA.svg",
+    TRX:"TRON.svg",
+    LTC:"LTC.svg",
+    AVAX:"AVAX.svg",
+    DOT:"DOT.svg",
+    LINK:"LINK.svg",
+    POL:"MATIC.svg",
+    SHIB:"SHIB.svg",
+    BCH:"BCH.svg",
+    XLM:"XLM.svg",
+    ATOM:"ATOM.svg",
+    NEAR:"NEAR.svg",
+    APT:"APT.svg",
+    ARB:"ARB.svg",
+    OP:"OP.svg"
+};
+
+const assets = [
+    "BTC","ETH","USDT","USDC","BNB","SOL","XRP","TON",
+    "DOGE","ADA","TRX","LTC","AVAX","DOT","LINK","POL",
+    "SHIB","BCH","XLM","ATOM","NEAR","APT","ARB","OP"
+];
+
+let currentUser = null;
+let selectedFrom = "USDT";
+let selectedTo = "USDC";
+let selectingSide = "from";
+
+const $ = id => document.getElementById(id);
+
+function logo(asset){
+    return LOGO_BASE + (logoFiles[asset] || "");
 }
 
-function formatAmount(value){
+function showStatus(message, type){
 
-  if(
-    value === null ||
-    value === undefined ||
-    value === ""
-  ){
-    return "—";
-  }
+    const box = $("statusMessage");
 
-  const number = Number(value);
+    box.textContent = message;
 
-  if(!Number.isFinite(number)){
-    return "—";
-  }
-
-  return number.toLocaleString(
-    undefined,
-    {
-      minimumFractionDigits:0,
-      maximumFractionDigits:8
-    }
-  );
-
+    box.className =
+        "status-message show " +
+        (type === "error"
+            ? "status-error"
+            : "status-success");
 }
 
+function clearStatus(){
 
-/* =========================================================
-   DRAWER
-========================================================= */
+    const box = $("statusMessage");
 
-function openDrawer(){
+    box.textContent = "";
 
-  $("drawer").classList.add("show");
-
-  $("drawerOverlay").classList.add("show");
-
+    box.className = "status-message";
 }
-
-function closeDrawer(){
-
-  $("drawer").classList.remove("show");
-
-  $("drawerOverlay").classList.remove("show");
-
-}
-
-$("menuBtn")
-  .addEventListener(
-    "click",
-    openDrawer
-  );
-
-$("closeDrawer")
-  .addEventListener(
-    "click",
-    closeDrawer
-  );
-
-$("drawerOverlay")
-  .addEventListener(
-    "click",
-    closeDrawer
-  );
-
-
-/* =========================================================
-   LOGOUT
-========================================================= */
-
-$("logoutBtn")
-  .addEventListener(
-    "click",
-    async event => {
-
-      event.preventDefault();
-
-      await db.auth.signOut();
-
-      window.location.href =
-        "signin.html";
-
-    }
-  );
-
-
-/* =========================================================
-   PROFILE
-========================================================= */
-
-async function loadProfile(){
-
-  const {
-    data,
-    error
-  } = await db
-    .from("profiles")
-    .select("full_name")
-    .eq("id",currentUser.id)
-    .maybeSingle();
-
-  if(error){
-
-    console.error(error);
-
-    return;
-
-  }
-
-  const name =
-    data?.full_name ||
-    currentUser.user_metadata?.full_name ||
-    "Account";
-
-  const initials =
-    name
-      .trim()
-      .split(/\s+/)
-      .slice(0,2)
-      .map(
-        word =>
-          word.charAt(0)
-      )
-      .join("")
-      .toUpperCase() ||
-    "A";
-
-  $("profileInitials")
-    .textContent = initials;
-
-  $("drawerName")
-    .textContent = name;
-
-  $("drawerEmail")
-    .textContent =
-      currentUser.email || "—";
-
-}
-
-
-/* =========================================================
-   ASSET DETAILS
-========================================================= */
-
-function getAsset(symbol){
-
-  return assets.find(
-    asset => asset.symbol === symbol
-  );
-
-}
-
-
-/* =========================================================
-   UPDATE SELECTED ASSET UI
-========================================================= */
 
 function updateAssetUI(){
 
-  const pay =
-    getAsset(payAsset);
+    $("fromAsset").textContent = selectedFrom;
+    $("toAsset").textContent = selectedTo;
 
-  const receive =
-    getAsset(receiveAsset);
+    $("fromLogo").src = logo(selectedFrom);
+    $("toLogo").src = logo(selectedTo);
 
-  if(pay){
+    $("fromBalance").textContent = "—";
 
-    $("payLogo").src =
-      LOGO_BASE +
-      logoFiles[pay.symbol];
+    $("toAmount").value = "";
 
-    $("payLogo").alt =
-      pay.symbol;
-
-    $("paySymbol").textContent =
-      pay.symbol;
-
-    $("payName").textContent =
-      pay.name;
-
-  }
-
-  if(receive){
-
-    $("receiveLogo").src =
-      LOGO_BASE +
-      logoFiles[receive.symbol];
-
-    $("receiveLogo").alt =
-      receive.symbol;
-
-    $("receiveSymbol").textContent =
-      receive.symbol;
-
-    $("receiveName").textContent =
-      receive.name;
-
-  }
-
-  updatePayBalance();
-
-  clearQuote();
-
+    loadFromBalance();
 }
 
+async function loadFromBalance(){
 
-/* =========================================================
-   BALANCE
-========================================================= */
+    if(!currentUser){
+        $("fromBalance").textContent = "—";
+        return;
+    }
 
-function updatePayBalance(){
+    const { data, error } = await db
+        .from("wallets")
+        .select("available_balance")
+        .eq("user_id", currentUser.id)
+        .eq("asset", selectedFrom)
+        .maybeSingle();
 
-  const wallet =
-    wallets[payAsset];
+    if(error){
+        $("fromBalance").textContent = "—";
+        return;
+    }
 
-  const balance =
-    Number(
-      wallet?.available_balance || 0
-    );
-
-  $("payBalance").textContent =
-    `Balance: ${formatAmount(balance)} ${payAsset}`;
-
+    $("fromBalance").textContent =
+        data?.available_balance != null
+            ? Number(data.available_balance).toString()
+            : "0";
 }
-
-
-/* =========================================================
-   CLEAR QUOTE
-========================================================= */
-
-function clearQuote(){
-
-  $("receiveAmount").value = "—";
-
-  $("rateValue").textContent = "—";
-
-  $("networkFee").textContent = "—";
-
-  $("nexoraFee").textContent = "—";
-
-  $("minimumReceived").textContent = "—";
-
-  $("reviewBtn").disabled = true;
-
-}
-
-
-/* =========================================================
-   ASSET MODAL
-========================================================= */
 
 function openAssetModal(side){
 
-  selectingSide = side;
+    selectingSide = side;
 
-  $("assetModalTitle").textContent =
-    side === "PAY"
-      ? "Select payment asset"
-      : "Select receiving asset";
+    $("assetModal").classList.add("show");
 
-  $("assetSearch").value = "";
+    $("assetSearch").value = "";
 
-  renderModalAssets();
+    renderAssets();
 
-  $("assetModal")
-    .classList.add("show");
-
-  setTimeout(
-    () => $("assetSearch").focus(),
-    100
-  );
-
+    setTimeout(() => {
+        $("assetSearch").focus();
+    }, 100);
 }
 
 function closeAssetModal(){
 
-  $("assetModal")
-    .classList.remove("show");
-
-  selectingSide = null;
-
+    $("assetModal").classList.remove("show");
 }
 
-$("payAssetBtn")
-  .addEventListener(
-    "click",
-    () => openAssetModal("PAY")
-  );
+function renderAssets(){
 
-$("receiveAssetBtn")
-  .addEventListener(
-    "click",
-    () => openAssetModal("RECEIVE")
-  );
+    const query =
+        $("assetSearch").value
+            .trim()
+            .toUpperCase();
 
-$("closeAssetModal")
-  .addEventListener(
-    "click",
-    closeAssetModal
-  );
+    const list = $("assetList");
 
+    list.innerHTML = "";
 
-/* =========================================================
-   MODAL ASSETS
-========================================================= */
+    assets
+        .filter(asset => asset.includes(query))
+        .forEach(asset => {
 
-function renderModalAssets(){
+            const button =
+                document.createElement("button");
 
-  const search =
-    $("assetSearch")
-      .value
-      .trim()
-      .toLowerCase();
+            button.className = "asset-option";
 
-  const container =
-    $("modalAssets");
+            const comingSoon =
+                asset === "ARB" ||
+                asset === "OP";
 
-  const filtered =
-    assets.filter(asset => {
+            button.innerHTML = `
+                <img
+                    class="asset-icon"
+                    src="${logo(asset)}"
+                    alt=""
+                >
 
-      if(!search){
-        return true;
-      }
+                <span>
+                    <strong>${asset}</strong>
+                    <small>
+                        ${comingSoon
+                            ? "Coming Soon"
+                            : "Supported asset"}
+                    </small>
+                </span>
 
-      return (
-        asset.symbol
-          .toLowerCase()
-          .includes(search) ||
-        asset.name
-          .toLowerCase()
-          .includes(search)
-      );
+                ${
+                    comingSoon
+                        ? '<span class="coming-soon">Soon</span>'
+                        : ''
+                }
+            `;
 
-    });
+            if(comingSoon){
+                button.disabled = true;
+                button.style.opacity = ".5";
+            }
 
-  container.innerHTML =
-    filtered.map(asset => {
+            button.addEventListener(
+                "click",
+                () => {
 
-      const disabled =
-        selectingSide === "PAY"
-          ? asset.symbol === receiveAsset
-          : asset.symbol === payAsset;
+                    if(selectingSide === "from"){
 
-      const comingSoon =
-        asset.symbol === "ARB" ||
-        asset.symbol === "OP";
+                        if(asset === selectedTo){
+                            showStatus(
+                                "Choose a different receive asset.",
+                                "error"
+                            );
+                            return;
+                        }
 
-      return `
-        <button
-          class="modal-asset"
-          type="button"
-          data-symbol="${escapeHtml(asset.symbol)}"
-          ${disabled || comingSoon ? "disabled" : ""}
-        >
+                        selectedFrom = asset;
 
-          <img
-            src="${LOGO_BASE}${logoFiles[asset.symbol]}"
-            alt="${escapeHtml(asset.symbol)}"
-          >
+                    }else{
 
-          <span>
+                        if(asset === selectedFrom){
+                            showStatus(
+                                "Choose a different source asset.",
+                                "error"
+                            );
+                            return;
+                        }
 
-            <strong>
-              ${escapeHtml(asset.symbol)}
-            </strong>
+                        selectedTo = asset;
+                    }
 
-            <small>
-              ${
-                comingSoon
-                  ? "Coming Soon"
-                  : escapeHtml(asset.name)
-              }
-            </small>
+                    closeAssetModal();
 
-          </span>
+                    clearStatus();
 
-        </button>
-      `;
+                    updateAssetUI();
+                }
+            );
 
-    }).join("");
+            list.appendChild(button);
+        });
 
-  container
-    .querySelectorAll(".modal-asset:not([disabled])")
-    .forEach(button => {
+    if(!list.children.length){
 
-      button.addEventListener(
-        "click",
-        () => {
-
-          const symbol =
-            button.dataset.symbol;
-
-          if(selectingSide === "PAY"){
-            payAsset = symbol;
-          }else{
-            receiveAsset = symbol;
-          }
-
-          closeAssetModal();
-
-          updateAssetUI();
-
-        }
-      );
-
-    });
-
-}
-
-$("assetSearch")
-  .addEventListener(
-    "input",
-    renderModalAssets
-  );
-
-
-/* =========================================================
-   FLIP
-========================================================= */
-
-$("flipBtn")
-  .addEventListener(
-    "click",
-    () => {
-
-      const oldPay =
-        payAsset;
-
-      payAsset =
-        receiveAsset;
-
-      receiveAsset =
-        oldPay;
-
-      updateAssetUI();
-
+        list.innerHTML =
+            '<div class="empty">No matching assets.</div>';
     }
-  );
-
-
-/* =========================================================
-   AMOUNT INPUT
-========================================================= */
-
-$("payAmount")
-  .addEventListener(
-    "input",
-    () => {
-
-      /*
-       * No fake quote is calculated here.
-       * The receive amount remains unavailable
-       * until a real quote provider is connected.
-       */
-
-      clearQuote();
-
-    }
-  );
-
-
-/* =========================================================
-   LOAD WALLETS
-========================================================= */
-
-async function loadWallets(){
-
-  const {
-    data,
-    error
-  } = await db
-    .from("wallets")
-    .select(`
-      id,
-      asset,
-      available_balance,
-      principal_balance,
-      profit_balance,
-      locked_balance
-    `)
-    .eq(
-      "user_id",
-      currentUser.id
-    );
-
-  if(error){
-
-    console.error(error);
-
-    return;
-
-  }
-
-  wallets = {};
-
-  for(const wallet of data || []){
-
-    wallets[wallet.asset] =
-      wallet;
-
-  }
-
-  updatePayBalance();
-
 }
 
+function swapSides(){
 
-/* =========================================================
-   REVIEW
-========================================================= */
-
-function validateSwap(){
-
-  const amount =
-    Number(
-      $("payAmount").value
-    );
-
-  if(
-    !Number.isFinite(amount) ||
-    amount <= 0
-  ){
-
-    $("errorMessage").textContent =
-      "Enter a valid amount.";
-
-    $("errorMessage")
-      .classList.add("show");
-
-    return false;
-
-  }
-
-  const wallet =
-    wallets[payAsset];
-
-  const balance =
-    Number(
-      wallet?.available_balance || 0
-    );
-
-  if(amount > balance){
-
-    $("errorMessage").textContent =
-      `Insufficient ${payAsset} balance.`;
-
-    $("errorMessage")
-      .classList.add("show");
-
-    return false;
-
-  }
-
-  if(payAsset === receiveAsset){
-
-    $("errorMessage").textContent =
-      "Select two different assets.";
-
-    $("errorMessage")
-      .classList.add("show");
-
-    return false;
-
-  }
-
-  return true;
-
-}
-
-$("reviewBtn")
-  .addEventListener(
-    "click",
-    () => {
-
-      $("errorMessage")
-        .classList.remove("show");
-
-      if(!validateSwap()){
+    if(
+        selectedFrom === "ARB" ||
+        selectedFrom === "OP" ||
+        selectedTo === "ARB" ||
+        selectedTo === "OP"
+    ){
         return;
-      }
+    }
 
-      const amount =
+    const oldFrom = selectedFrom;
+
+    selectedFrom = selectedTo;
+    selectedTo = oldFrom;
+
+    $("fromAmount").value = "";
+
+    clearStatus();
+
+    updateAssetUI();
+}
+
+async function requestQuote(){
+
+    clearStatus();
+
+    const amount =
         Number(
-          $("payAmount").value
+            $("fromAmount").value
         );
 
-      $("reviewPay").textContent =
-        `${formatAmount(amount)} ${payAsset}`;
+    if(!Number.isFinite(amount) || amount <= 0){
 
-      $("reviewReceive").textContent =
-        "—";
+        showStatus(
+            "Enter a valid swap amount.",
+            "error"
+        );
 
-      $("reviewRate").textContent =
-        "—";
-
-      $("reviewNetworkFee").textContent =
-        "—";
-
-      $("reviewNexoraFee").textContent =
-        "—";
-
-      $("reviewMinimum").textContent =
-        "—";
-
-      $("reviewModal")
-        .classList.add("show");
-
+        return;
     }
-  );
 
+    if(selectedFrom === selectedTo){
 
-/* =========================================================
-   REVIEW MODAL
-========================================================= */
+        showStatus(
+            "Source and receive assets must be different.",
+            "error"
+        );
 
-function closeReview(){
+        return;
+    }
 
-  $("reviewModal")
-    .classList.remove("show");
+    if(!currentUser){
 
+        window.location.href =
+            "signin.html";
+
+        return;
+    }
+
+    const button = $("reviewBtn");
+
+    button.disabled = true;
+
+    button.textContent =
+        "Requesting quote...";
+
+    const { data, error } =
+        await db.rpc(
+            "request_swap_quote",
+            {
+                p_from_asset: selectedFrom,
+                p_to_asset: selectedTo,
+                p_from_amount: amount,
+                p_slippage_percent: 0.50
+            }
+        );
+
+    if(error){
+
+        button.disabled = false;
+
+        button.textContent =
+            "Review Swap";
+
+        showStatus(
+            error.message ||
+            "Unable to create swap request.",
+            "error"
+        );
+
+        return;
+    }
+
+    button.disabled = true;
+
+    button.textContent =
+        "Quote Pending";
+
+    showStatus(
+        "Swap request created. A verified quote is required before execution.",
+        "success"
+    );
+
+    console.log(
+        "Swap quote request:",
+        data
+    );
 }
-
-$("closeReviewModal")
-  .addEventListener(
-    "click",
-    closeReview
-  );
-
-$("cancelReview")
-  .addEventListener(
-    "click",
-    closeReview
-  );
-
-
-$("confirmSwap")
-  .addEventListener(
-    "click",
-    () => {
-
-      showToast(
-        "Swap execution is not available yet."
-      );
-
-    }
-  );
-
-
-/* =========================================================
-   OUTSIDE MODAL CLICK
-========================================================= */
-
-$("assetModal")
-  .addEventListener(
-    "click",
-    event => {
-
-      if(
-        event.target ===
-        $("assetModal")
-      ){
-        closeAssetModal();
-      }
-
-    }
-  );
-
-$("reviewModal")
-  .addEventListener(
-    "click",
-    event => {
-
-      if(
-        event.target ===
-        $("reviewModal")
-      ){
-        closeReview();
-      }
-
-    }
-  );
-
-
-/* =========================================================
-   AUTH
-========================================================= */
 
 async function init(){
 
-  const {
-    data,
-    error
-  } = await db.auth.getSession();
-
-  if(error){
-    console.error(error);
-  }
-
-  currentUser =
-    data?.session?.user || null;
-
-  if(!currentUser){
-
-    window.location.href =
-      "signin.html";
-
-    return;
-
-  }
-
-  await loadProfile();
-
-  await loadWallets();
-
-  updateAssetUI();
-
-}
-
-
-db.auth.onAuthStateChange(
-  (_event,session) => {
+    const {
+        data: {
+            session
+        }
+    } = await db.auth.getSession();
 
     if(!session){
 
-      window.location.href =
-        "signin.html";
+        window.location.href =
+            "signin.html";
 
+        return;
     }
 
-  }
+    currentUser =
+        session.user;
+
+    const name =
+        currentUser.user_metadata?.full_name ||
+        currentUser.email ||
+        "";
+
+    $("avatar").textContent =
+        name
+            .split(/\s+/)
+            .filter(Boolean)
+            .slice(0,2)
+            .map(x => x[0])
+            .join("")
+            .toUpperCase() || "--";
+
+    updateAssetUI();
+}
+
+$("menuBtn").addEventListener(
+    "click",
+    () => {
+
+        $("drawer").classList.add("open");
+
+        $("drawerOverlay").classList.add("show");
+    }
 );
 
+$("drawerOverlay").addEventListener(
+    "click",
+    () => {
 
-/* =========================================================
-   START
-========================================================= */
+        $("drawer").classList.remove("open");
+
+        $("drawerOverlay").classList.remove("show");
+    }
+);
+
+$("logoutBtn").addEventListener(
+    "click",
+    async () => {
+
+        await db.auth.signOut();
+
+        window.location.href =
+            "signin.html";
+    }
+);
+
+$("fromAssetBtn").addEventListener(
+    "click",
+    () => openAssetModal("from")
+);
+
+$("toAssetBtn").addEventListener(
+    "click",
+    () => openAssetModal("to")
+);
+
+$("closeAssetModal").addEventListener(
+    "click",
+    closeAssetModal
+);
+
+$("assetModal").addEventListener(
+    "click",
+    event => {
+
+        if(event.target === $("assetModal")){
+            closeAssetModal();
+        }
+    }
+);
+
+$("assetSearch").addEventListener(
+    "input",
+    renderAssets
+);
+
+$("flipBtn").addEventListener(
+    "click",
+    swapSides
+);
+
+$("maxBtn").addEventListener(
+    "click",
+    async () => {
+
+        if(!currentUser) return;
+
+        const { data, error } =
+            await db
+                .from("wallets")
+                .select("available_balance")
+                .eq("user_id", currentUser.id)
+                .eq("asset", selectedFrom)
+                .maybeSingle();
+
+        if(error || !data){
+            return;
+        }
+
+        $("fromAmount").value =
+            data.available_balance || "";
+    }
+);
+
+/*
+   The Review button is intentionally enabled only
+   after the user enters an amount.
+*/
+$("fromAmount").addEventListener(
+    "input",
+    () => {
+
+        const amount =
+            Number(
+                $("fromAmount").value
+            );
+
+        $("reviewBtn").disabled =
+            !Number.isFinite(amount) ||
+            amount <= 0;
+    }
+);
+
+$("reviewBtn").addEventListener(
+    "click",
+    requestQuote
+);
 
 init();
-
 </script>
 
 </body>
