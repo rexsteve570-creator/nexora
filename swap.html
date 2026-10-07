@@ -1341,6 +1341,7 @@ a{
           type="text"
           id="toAmount"
           class="amount-input"
+          value="—"
           placeholder="—"
           readonly
         >
@@ -2221,6 +2222,19 @@ function selectAsset(
 
   if(type === "from"){
 
+    if(symbol === toAssetValue){
+
+      showMessage(
+        $("pageMessage"),
+        "You cannot exchange an asset for itself.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
     fromAssetValue =
       symbol;
 
@@ -2234,6 +2248,19 @@ function selectAsset(
     resetQuoteDisplay();
 
     loadFromBalance();
+
+    return;
+
+  }
+
+
+  if(symbol === fromAssetValue){
+
+    showMessage(
+      $("pageMessage"),
+      "You cannot exchange an asset for itself.",
+      "error"
+    );
 
     return;
 
@@ -2722,13 +2749,25 @@ function hideMessage(
 
 
 /* =========================================================
-   SWAP VALUES RESET
+   RESET QUOTE DISPLAY
 ========================================================= */
 
 function resetQuoteDisplay(){
 
+  /*
+     IMPORTANT:
+
+     No server-side verified quote exists here.
+
+     Therefore the receive amount and all quote
+     information MUST remain unavailable.
+
+     We intentionally use "—" rather than calculating
+     anything in the browser.
+  */
+
   $("toAmount").value =
-    "";
+    "—";
 
   $("rateValue").textContent =
     "—";
@@ -2742,11 +2781,13 @@ function resetQuoteDisplay(){
   $("minimumReceivedValue").textContent =
     "—";
 
+
   currentSwapId =
     null;
 
   currentQuote =
     null;
+
 
   $("confirmSwap").disabled =
     true;
@@ -3008,6 +3049,14 @@ async function useMax(){
         ? balance
         : "";
 
+
+    /*
+       Changing the amount invalidates any
+       previous quote.
+    */
+
+    resetQuoteDisplay();
+
   }catch(error){
 
     console.error(
@@ -3078,6 +3127,36 @@ async function requestQuote(){
     );
 
 
+  const availableBalance =
+    Number(
+      $("fromBalance").textContent
+        .replace(/,/g,"")
+    );
+
+
+  /*
+     Client-side balance check for a better
+     user experience.
+
+     The secure RPC remains the final authority.
+  */
+
+  if(
+    Number.isFinite(availableBalance) &&
+    amount > availableBalance
+  ){
+
+    showMessage(
+      $("pageMessage"),
+      `Insufficient ${fromAsset} balance.`,
+      "error"
+    );
+
+    return;
+
+  }
+
+
   const button =
     $("reviewBtn");
 
@@ -3095,11 +3174,18 @@ async function requestQuote(){
   try{
 
     /*
-       This RPC only creates the secure
+       This RPC ONLY creates the secure
        QUOTE_PENDING swap record.
 
-       It does NOT fabricate a price and
-       does NOT execute a swap.
+       It does NOT fabricate:
+       - exchange rate
+       - received amount
+       - network fee
+       - NEXORA fee
+       - minimum received
+
+       Those values must come from the
+       trusted server-side quote process.
     */
 
     const {
@@ -3158,16 +3244,34 @@ async function requestQuote(){
 
 
     /*
-       No verified quote exists yet.
+       IMPORTANT:
 
-       record_swap_quote is intentionally
-       server-only, so the browser must not
-       invent exchange-rate information.
+       At this point there is still NO verified
+       price.
+
+       Therefore the page intentionally continues
+       showing "—" for all quote values.
     */
+
+    $("toAmount").value =
+      "—";
+
+    $("rateValue").textContent =
+      "—";
+
+    $("networkFeeValue").textContent =
+      "—";
+
+    $("nexoraFeeValue").textContent =
+      "—";
+
+    $("minimumReceivedValue").textContent =
+      "—";
+
 
     showMessage(
       $("pageMessage"),
-      "Swap request created. A verified quote is required before this swap can be executed.",
+      "Swap request created. Waiting for a verified server-side quote.",
       "info"
     );
 
@@ -3202,6 +3306,110 @@ async function requestQuote(){
       "Review Swap";
 
   }
+
+}
+
+
+/* =========================================================
+   APPLY VERIFIED QUOTE
+========================================================= */
+
+function applyVerifiedQuote(quote){
+
+  if(!quote){
+    return false;
+  }
+
+
+  /*
+     Only accept an actual server-side quote
+     containing the required values.
+  */
+
+  const quotedToAmount =
+    Number(
+      quote.quoted_to_amount
+    );
+
+  const rate =
+    Number(
+      quote.rate
+    );
+
+  const networkFee =
+    Number(
+      quote.network_fee
+    );
+
+  const nexoraFee =
+    Number(
+      quote.nexora_fee
+    );
+
+  const minimumReceived =
+    Number(
+      quote.min_received
+    );
+
+
+  if(
+    !Number.isFinite(quotedToAmount) ||
+    quotedToAmount < 0 ||
+
+    !Number.isFinite(rate) ||
+    rate <= 0 ||
+
+    !Number.isFinite(networkFee) ||
+    networkFee < 0 ||
+
+    !Number.isFinite(nexoraFee) ||
+    nexoraFee < 0 ||
+
+    !Number.isFinite(minimumReceived) ||
+    minimumReceived < 0
+  ){
+
+    return false;
+
+  }
+
+
+  currentQuote =
+    quote;
+
+
+  $("toAmount").value =
+    formatAmount(
+      quotedToAmount
+    );
+
+
+  $("rateValue").textContent =
+    formatAmount(
+      rate
+    );
+
+
+  $("networkFeeValue").textContent =
+    `${formatAmount(networkFee)} ${fromAssetValue}`;
+
+
+  $("nexoraFeeValue").textContent =
+    `${formatAmount(nexoraFee)} ${fromAssetValue}`;
+
+
+  $("minimumReceivedValue").textContent =
+    `${formatAmount(minimumReceived)} ${toAssetValue}`;
+
+
+  $("confirmSwap").disabled =
+    false;
+
+  $("confirmSwap").textContent =
+    "Confirm Swap";
+
+
+  return true;
 
 }
 
@@ -3341,13 +3549,15 @@ async function confirmSwap(){
 
 
   /*
-     Important:
-     The browser does not call complete_swap
-     directly because that function is intentionally
-     server-only.
+     IMPORTANT:
 
-     Real execution must happen through a trusted
-     backend/provider route.
+     complete_swap is server-only.
+
+     The browser intentionally does NOT call
+     complete_swap directly.
+
+     Until a trusted server-side execution route
+     is connected, the swap cannot be executed.
   */
 
   showMessage(
@@ -3398,6 +3608,10 @@ function switchAssets(){
 
 
   resetQuoteDisplay();
+
+  hideMessage(
+    $("pageMessage")
+  );
 
   loadFromBalance();
 
@@ -3502,7 +3716,18 @@ $("fromAmount")
     "input",
     () => {
 
+      /*
+         Every amount change invalidates any
+         previous quote.
+
+         No local calculation is performed.
+      */
+
       resetQuoteDisplay();
+
+      hideMessage(
+        $("pageMessage")
+      );
 
     }
   );
@@ -3514,6 +3739,10 @@ $("slippage")
     () => {
 
       resetQuoteDisplay();
+
+      hideMessage(
+        $("pageMessage")
+      );
 
     }
   );
@@ -3621,6 +3850,13 @@ async function init(){
   try{
 
     initializeCoinPickers();
+
+    /*
+       Make sure the page starts with no
+       fabricated quote information.
+    */
+
+    resetQuoteDisplay();
 
 
     const {
