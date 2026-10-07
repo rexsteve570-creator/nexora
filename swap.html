@@ -744,10 +744,6 @@ main{
   font-weight:700;
 }
 
-.bottom-nav a.active{
-  color:var(--gold2);
-}
-
 .nav-icon{
   font-size:18px;
   line-height:1;
@@ -759,13 +755,10 @@ main{
 ========================================================= */
 
 .pulse{
-  animation:
-    pulse 1.3s infinite
-    ease-in-out;
+  animation:pulse 1.3s infinite ease-in-out;
 }
 
 @keyframes pulse{
-
   0%,100%{
     opacity:.45;
   }
@@ -773,7 +766,6 @@ main{
   50%{
     opacity:1;
   }
-
 }
 
 
@@ -1247,6 +1239,14 @@ const supabaseClient =
 
 
 /* =========================================================
+   SECURE SWAP EXECUTION ENDPOINT
+========================================================= */
+
+const SWAP_EXECUTION_FUNCTION =
+  "swap-execute";
+
+
+/* =========================================================
    LOGOS
 ========================================================= */
 
@@ -1279,7 +1279,6 @@ const logoFiles = {
   ARB:"ARB.svg",
   OP:"OP.svg"
 };
-
 
 function getLogo(asset){
 
@@ -1331,23 +1330,17 @@ const assets = [
 ========================================================= */
 
 let currentUser = null;
-
 let currentSwapId = null;
-
 let currentQuote = null;
 
 let quotePollTimer = null;
-
 let quotePollDeadline = 0;
-
 let quoteRequestToken = 0;
-
 let inputQuoteTimer = null;
 
 let pickerTarget = null;
 
 let fromAssetValue = "USDT";
-
 let toAssetValue = "USDC";
 
 let availableBalanceValue = 0;
@@ -1754,6 +1747,45 @@ function applyVerifiedQuote(quote){
     return false;
   }
 
+
+  /*
+   * Prevent a stale quote for another pair/user
+   * from being displayed or executed.
+   */
+
+  if(
+    quote.user_id &&
+    currentUser &&
+    quote.user_id !== currentUser.id
+  ){
+
+    return false;
+
+  }
+
+
+  if(
+    quote.from_asset &&
+    String(quote.from_asset).toUpperCase() !==
+      String(fromAssetValue).toUpperCase()
+  ){
+
+    return false;
+
+  }
+
+
+  if(
+    quote.to_asset &&
+    String(quote.to_asset).toUpperCase() !==
+      String(toAssetValue).toUpperCase()
+  ){
+
+    return false;
+
+  }
+
+
   const quotedToAmount =
     Number(
       quote.quoted_to_amount
@@ -1778,6 +1810,7 @@ function applyVerifiedQuote(quote){
     Number(
       quote.min_received
     );
+
 
   if(
 
@@ -1817,49 +1850,62 @@ function applyVerifiedQuote(quote){
 
   }
 
+
   currentQuote = {
     ...quote,
+
     quoted_to_amount:
       quotedToAmount,
+
     rate,
+
     network_fee:
       networkFee,
+
     nexora_fee:
       nexoraFee,
+
     min_received:
       minimumReceived
   };
+
 
   $("toAmount").value =
     formatAmount(
       quotedToAmount
     );
 
+
   $("rateValue").textContent =
     `1 ${fromAssetValue} = ${formatAmount(
       rate
     )} ${toAssetValue}`;
+
 
   $("networkFeeValue").textContent =
     `${formatAmount(
       networkFee
     )} ${fromAssetValue}`;
 
+
   $("nexoraFeeValue").textContent =
     `${formatAmount(
       nexoraFee
     )} ${fromAssetValue}`;
+
 
   $("minimumReceivedValue").textContent =
     `${formatAmount(
       minimumReceived
     )} ${toAssetValue}`;
 
+
   $("quoteStatus").textContent =
     "Verified quote ready";
 
   $("quoteStatus").className =
     "quote-status ready";
+
 
   if(!executingSwap){
 
@@ -1870,6 +1916,7 @@ function applyVerifiedQuote(quote){
       "Swap";
 
   }
+
 
   return true;
 
@@ -1890,6 +1937,7 @@ async function pollForQuote(){
     return false;
 
   }
+
 
   const {
     data,
@@ -1921,6 +1969,7 @@ async function pollForQuote(){
       )
       .maybeSingle();
 
+
   if(error){
 
     console.error(
@@ -1932,14 +1981,17 @@ async function pollForQuote(){
 
   }
 
+
   if(!data){
     return false;
   }
+
 
   const status =
     String(
       data.status || ""
     ).toUpperCase();
+
 
   if(
     status === "REJECTED" ||
@@ -1957,17 +2009,23 @@ async function pollForQuote(){
 
   }
 
+
   const ready =
     data.quoted_to_amount !== null &&
     data.quoted_to_amount !== undefined &&
+
     data.rate !== null &&
     data.rate !== undefined &&
+
     data.network_fee !== null &&
     data.network_fee !== undefined &&
+
     data.nexora_fee !== null &&
     data.nexora_fee !== undefined &&
+
     data.min_received !== null &&
     data.min_received !== undefined;
+
 
   if(ready){
 
@@ -1975,6 +2033,7 @@ async function pollForQuote(){
       applyVerifiedQuote(
         data
       );
+
 
     if(success){
 
@@ -1992,6 +2051,7 @@ async function pollForQuote(){
 
   }
 
+
   return false;
 
 }
@@ -2008,12 +2068,15 @@ async function startQuotePolling(){
   quotePollDeadline =
     Date.now() + 30000;
 
+
   const first =
     await pollForQuote();
+
 
   if(first){
     return true;
   }
+
 
   quotePollTimer =
     setInterval(
@@ -2038,11 +2101,13 @@ async function startQuotePolling(){
 
         }
 
+
         await pollForQuote();
 
       },
       1200
     );
+
 
   return false;
 
@@ -2058,9 +2123,11 @@ async function requestQuote(){
   const requestToken =
     ++quoteRequestToken;
 
+
   clearMessage(
     $("pageMessage")
   );
+
 
   if(!currentUser){
 
@@ -2072,8 +2139,10 @@ async function requestQuote(){
 
   }
 
+
   const validation =
     validateSwapInputs();
+
 
   if(!validation.valid){
 
@@ -2087,12 +2156,15 @@ async function requestQuote(){
 
   }
 
+
   resetQuoteDisplay();
 
   showQuoteLoading();
 
+
   const amount =
     validation.amount;
+
 
   const {
     data,
@@ -2115,6 +2187,7 @@ async function requestQuote(){
       }
     );
 
+
   if(
     requestToken !==
     quoteRequestToken
@@ -2123,6 +2196,7 @@ async function requestQuote(){
     return;
 
   }
+
 
   if(error){
 
@@ -2140,8 +2214,10 @@ async function requestQuote(){
 
   }
 
+
   let returnedQuote =
     null;
+
 
   if(
     Array.isArray(data)
@@ -2161,6 +2237,7 @@ async function requestQuote(){
 
   }
 
+
   if(
 
     returnedQuote &&
@@ -2178,6 +2255,7 @@ async function requestQuote(){
       returnedQuote.swap_id ||
       returnedQuote.swapId ||
       null;
+
 
     if(
       applyVerifiedQuote(
@@ -2197,6 +2275,7 @@ async function requestQuote(){
 
   }
 
+
   if(
     typeof data === "string"
   ){
@@ -2205,6 +2284,7 @@ async function requestQuote(){
       data;
 
   }
+
 
   if(
     data &&
@@ -2223,6 +2303,7 @@ async function requestQuote(){
 
   }
 
+
   if(
     Array.isArray(data) &&
     data.length === 1 &&
@@ -2231,6 +2312,7 @@ async function requestQuote(){
 
     const first =
       data[0];
+
 
     if(
       typeof first === "string"
@@ -2255,6 +2337,7 @@ async function requestQuote(){
 
   }
 
+
   if(!currentSwapId){
 
     console.error(
@@ -2270,10 +2353,133 @@ async function requestQuote(){
 
   }
 
+
   $("quoteStatus").textContent =
     "Waiting for verified rate…";
 
+
   await startQuotePolling();
+
+}
+
+
+/* =========================================================
+   EXTRACT EDGE FUNCTION ERROR
+========================================================= */
+
+async function getEdgeFunctionErrorMessage(error){
+
+  let message =
+    "Swap execution failed.";
+
+
+  if(
+    error?.message &&
+    !/failed to send a request/i.test(
+      error.message
+    )
+  ){
+
+    message =
+      error.message;
+
+  }
+
+
+  try{
+
+    const context =
+      error?.context;
+
+
+    if(
+      context &&
+      typeof context.json ===
+        "function"
+    ){
+
+      const body =
+        await context.json();
+
+
+      if(
+        body?.error
+      ){
+
+        message =
+          String(
+            body.error
+          );
+
+      }
+      else if(
+        body?.message
+      ){
+
+        message =
+          String(
+            body.message
+          );
+
+      }
+
+    }
+
+  }
+  catch(parseError){
+
+    console.warn(
+      "Unable to parse Edge Function error:",
+      parseError
+    );
+
+  }
+
+
+  return message;
+
+}
+
+
+/* =========================================================
+   EXECUTION RESPONSE VALIDATION
+========================================================= */
+
+function isSuccessfulExecutionResponse(data){
+
+  if(!data){
+    return false;
+  }
+
+
+  if(
+    data.success === true
+  ){
+
+    return true;
+
+  }
+
+
+  const result =
+    data.swap ||
+    data.result ||
+    data.data ||
+    data;
+
+
+  const status =
+    String(
+      result?.status ||
+      ""
+    ).toUpperCase();
+
+
+  return (
+    status === "COMPLETED" ||
+    status === "SUCCESS" ||
+    status === "EXECUTED"
+  );
 
 }
 
@@ -2288,6 +2494,7 @@ async function executeSwap(){
     return;
   }
 
+
   if(!currentUser){
 
     showMessage(
@@ -2300,6 +2507,7 @@ async function executeSwap(){
 
   }
 
+
   if(!currentQuote){
 
     showMessage(
@@ -2311,6 +2519,7 @@ async function executeSwap(){
     return;
 
   }
+
 
   if(!currentSwapId){
 
@@ -2325,14 +2534,29 @@ async function executeSwap(){
   }
 
 
-  /*
-   * Immediately disable the button so the user cannot
-   * accidentally submit the same swap twice.
-   */
+  const validation =
+    validateSwapInputs();
+
+
+  if(!validation.valid){
+
+    showMessage(
+      $("pageMessage"),
+      validation.message,
+      "error"
+    );
+
+    return;
+
+  }
+
+
   executingSwap =
     true;
 
+
   stopQuotePolling();
+
 
   $("swapBtn").disabled =
     true;
@@ -2340,8 +2564,9 @@ async function executeSwap(){
   $("swapBtn").textContent =
     "Swapping…";
 
+
   $("quoteStatus").textContent =
-    "Verifying swap and updating balances…";
+    "Verifying quote and updating balances…";
 
   $("quoteStatus").className =
     "quote-status loading pulse";
@@ -2350,8 +2575,11 @@ async function executeSwap(){
   try{
 
     /*
-     * Re-read the swap immediately before execution.
+     * -------------------------------------------------------
+     * STEP 1 — RE-READ THE QUOTE
+     * -------------------------------------------------------
      */
+
     const {
       data:latestQuote,
       error:quoteError
@@ -2384,16 +2612,123 @@ async function executeSwap(){
 
 
     if(quoteError){
+
       throw new Error(
         "Unable to verify the swap quote."
       );
+
     }
 
 
     if(!latestQuote){
+
       throw new Error(
         "Swap quote not found."
       );
+
+    }
+
+
+    /*
+     * Make sure this is still the same pair.
+     */
+
+    if(
+      String(
+        latestQuote.from_asset || ""
+      ).toUpperCase() !==
+        String(
+          fromAssetValue
+        ).toUpperCase()
+    ){
+
+      throw new Error(
+        "The payment asset changed. Please request a new quote."
+      );
+
+    }
+
+
+    if(
+      String(
+        latestQuote.to_asset || ""
+      ).toUpperCase() !==
+        String(
+          toAssetValue
+        ).toUpperCase()
+    ){
+
+      throw new Error(
+        "The receiving asset changed. Please request a new quote."
+      );
+
+    }
+
+
+    /*
+     * Make sure the amount quoted is still
+     * the amount the user entered.
+     */
+
+    const quotedFromAmount =
+      Number(
+        latestQuote.from_amount
+      );
+
+    const enteredAmount =
+      Number(
+        $("fromAmount").value
+      );
+
+
+    if(
+      !Number.isFinite(
+        quotedFromAmount
+      ) ||
+      !Number.isFinite(
+        enteredAmount
+      )
+    ){
+
+      throw new Error(
+        "Invalid swap amount."
+      );
+
+    }
+
+
+    /*
+     * Small floating-point tolerance only for
+     * browser-side UX validation.
+     *
+     * The backend remains authoritative.
+     */
+
+    const amountDifference =
+      Math.abs(
+        quotedFromAmount -
+        enteredAmount
+      );
+
+
+    const amountTolerance =
+      Math.max(
+        0.00000001,
+        Math.abs(
+          quotedFromAmount
+        ) * 0.00000001
+      );
+
+
+    if(
+      amountDifference >
+      amountTolerance
+    ){
+
+      throw new Error(
+        "The quote no longer matches the entered amount. Please request a new quote."
+      );
+
     }
 
 
@@ -2417,8 +2752,9 @@ async function executeSwap(){
 
 
     /*
-     * Do not execute an already completed swap.
+     * Prevent duplicate execution.
      */
+
     if(
       status === "COMPLETED" ||
       status === "SUCCESS" ||
@@ -2427,19 +2763,31 @@ async function executeSwap(){
 
       await loadFromBalance();
 
+
+      $("quoteStatus").textContent =
+        "Swap already completed";
+
+      $("quoteStatus").className =
+        "quote-status ready";
+
+
       showMessage(
         $("pageMessage"),
         "This swap has already been completed.",
         "success"
       );
 
-      $("quoteStatus").textContent =
-        "Swap completed";
 
-      $("quoteStatus").className =
-        "quote-status ready";
+      $("fromAmount").value =
+        "";
 
-      resetQuoteDisplay();
+
+      currentQuote =
+        null;
+
+      currentSwapId =
+        null;
+
 
       return;
 
@@ -2447,8 +2795,9 @@ async function executeSwap(){
 
 
     /*
-     * Check expiry one final time.
+     * Final expiry check.
      */
+
     if(
       latestQuote.quote_expires_at
     ){
@@ -2458,9 +2807,13 @@ async function executeSwap(){
           latestQuote.quote_expires_at
         ).getTime();
 
+
       if(
-        !Number.isFinite(expiresAt) ||
-        Date.now() >= expiresAt
+        !Number.isFinite(
+          expiresAt
+        ) ||
+        Date.now() >=
+          expiresAt
       ){
 
         throw new Error(
@@ -2473,8 +2826,9 @@ async function executeSwap(){
 
 
     /*
-     * Confirm the quote returned by the server is complete.
+     * Confirm the server quote is complete.
      */
+
     if(
       !applyVerifiedQuote(
         latestQuote
@@ -2490,30 +2844,34 @@ async function executeSwap(){
 
     /*
      * -------------------------------------------------------
-     * SECURE EXECUTION
+     * STEP 2 — SECURE SERVER EXECUTION
      * -------------------------------------------------------
      *
-     * The browser does NOT:
+     * Only the swap ID is sent.
      *
-     * - calculate the received amount
-     * - calculate fees
-     * - update wallet balances
-     * - call complete_swap directly
-     * - use a service-role key
+     * No amount.
+     * No fee.
+     * No exchange rate.
+     * No wallet balance.
+     * No service-role key.
      *
-     * Instead it sends ONLY the swap ID to the deployed
-     * trusted Edge Function.
+     * The trusted Edge Function is responsible for
+     * validating the authenticated user and calling
+     * complete_swap securely.
      */
+
     const {
       data:executionData,
       error:executionError
     } =
       await supabaseClient.functions.invoke(
-        "swap-execute",
+        SWAP_EXECUTION_FUNCTION,
         {
           body:{
             swap_id:
-              String(currentSwapId)
+              String(
+                currentSwapId
+              )
           }
         }
       );
@@ -2522,48 +2880,16 @@ async function executeSwap(){
     if(executionError){
 
       console.error(
-        "swap-execute error:",
+        "Secure swap execution error:",
         executionError
       );
 
-      let serverMessage =
-        "Swap execution failed.";
 
-      /*
-       * Supabase can sometimes put the Edge Function
-       * response inside the error context.
-       */
-      try{
-
-        if(
-          executionError.context &&
-          typeof executionError.context.json ===
-            "function"
-        ){
-
-          const errorBody =
-            await executionError.context.json();
-
-          if(
-            errorBody?.error
-          ){
-
-            serverMessage =
-              errorBody.error;
-
-          }
-
-        }
-
-      }
-      catch(parseError){
-
-        console.warn(
-          "Could not parse execution error response:",
-          parseError
+      const serverMessage =
+        await getEdgeFunctionErrorMessage(
+          executionError
         );
 
-      }
 
       throw new Error(
         serverMessage
@@ -2572,36 +2898,74 @@ async function executeSwap(){
     }
 
 
+    /*
+     * The Edge Function must explicitly confirm
+     * that the swap was completed.
+     */
+
     if(
-      !executionData ||
-      executionData.success !== true
+      !isSuccessfulExecutionResponse(
+        executionData
+      )
     ){
 
       console.error(
-        "Unexpected swap-execute response:",
+        "Unexpected swap execution response:",
         executionData
       );
 
+
       throw new Error(
         executionData?.error ||
-        "Swap execution was not confirmed."
+        executionData?.message ||
+        "Swap execution was not confirmed by the server."
       );
 
     }
 
 
     /*
-     * The trusted Edge Function has now called
-     * complete_swap.
-     *
-     * Reload the source balance from the database.
+     * -------------------------------------------------------
+     * STEP 3 — RELOAD BALANCE
+     * -------------------------------------------------------
      */
+
     await loadFromBalance();
 
 
     /*
-     * Clear the completed swap from the form.
+     * Give the database a short moment to settle
+     * and then reload once more.
      */
+
+    setTimeout(
+      async () => {
+
+        try{
+
+          await loadFromBalance();
+
+        }
+        catch(error){
+
+          console.warn(
+            "Post-swap balance refresh failed:",
+            error
+          );
+
+        }
+
+      },
+      500
+    );
+
+
+    /*
+     * -------------------------------------------------------
+     * STEP 4 — CLEAR COMPLETED SWAP
+     * -------------------------------------------------------
+     */
+
     $("fromAmount").value =
       "";
 
@@ -2641,21 +3005,6 @@ async function executeSwap(){
       "success"
     );
 
-
-    /*
-     * Give the wallet/accounting layer a moment to settle
-     * before enabling a fresh quote.
-     */
-    setTimeout(
-      async () => {
-
-        await loadFromBalance();
-
-      },
-      500
-    );
-
-
   }
   catch(error){
 
@@ -2666,14 +3015,14 @@ async function executeSwap(){
 
 
     /*
-     * Important:
-     * We do NOT pretend that a swap succeeded when the
-     * server did not confirm it.
+     * Never display success unless the trusted
+     * server confirmed completion.
      */
+
     showMessage(
       $("pageMessage"),
       error?.message ||
-      "Swap execution failed. Your balance was not confirmed as changed.",
+      "Swap execution failed. Please try again.",
       "error"
     );
 
@@ -2684,7 +3033,6 @@ async function executeSwap(){
     $("quoteStatus").className =
       "quote-status error";
 
-
   }
   finally{
 
@@ -2692,10 +3040,6 @@ async function executeSwap(){
       false;
 
 
-    /*
-     * If the quote is still valid, allow the user to
-     * try the same swap again.
-     */
     if(currentQuote){
 
       $("swapBtn").disabled =
@@ -2729,19 +3073,24 @@ function openCoinPicker(target){
   pickerTarget =
     target;
 
+
   $("coinModalTitle").textContent =
     target === "from"
       ? "Select asset to pay"
       : "Select asset to receive";
 
+
   $("coinSearch").value =
     "";
 
+
   renderCoinList();
+
 
   $("coinModal")
     .classList
     .add("open");
+
 
   setTimeout(
     () => {
@@ -2772,6 +3121,7 @@ function renderCoinList(){
       .trim()
       .toLowerCase();
 
+
   const filtered =
     assets.filter(
       item => {
@@ -2781,6 +3131,7 @@ function renderCoinList(){
 
         const name =
           item[1].toLowerCase();
+
 
         return (
           symbol.includes(search) ||
@@ -2801,6 +3152,7 @@ function renderCoinList(){
 
           const name =
             item[1];
+
 
           return `
 
@@ -2887,6 +3239,7 @@ function selectAsset(symbol){
 
     }
 
+
     fromAssetValue =
       symbol;
 
@@ -2908,6 +3261,7 @@ function selectAsset(symbol){
 
     }
 
+
     toAssetValue =
       symbol;
 
@@ -2916,16 +3270,21 @@ function selectAsset(symbol){
 
   renderSelectedAssets();
 
+
   $("fromAmount").value =
     "";
 
+
   resetQuoteDisplay();
+
 
   clearMessage(
     $("pageMessage")
   );
 
+
   closeCoinPicker();
+
 
   loadFromBalance();
 
@@ -2942,25 +3301,33 @@ async function switchAssets(){
     return;
   }
 
+
   const oldFrom =
     fromAssetValue;
+
 
   fromAssetValue =
     toAssetValue;
 
+
   toAssetValue =
     oldFrom;
+
 
   $("fromAmount").value =
     "";
 
+
   renderSelectedAssets();
 
+
   resetQuoteDisplay();
+
 
   clearMessage(
     $("pageMessage")
   );
+
 
   await loadFromBalance();
 
@@ -2977,16 +3344,20 @@ function scheduleQuote(){
     return;
   }
 
+
   clearTimeout(
     inputQuoteTimer
   );
 
+
   resetQuoteDisplay();
+
 
   const amount =
     Number(
       $("fromAmount").value
     );
+
 
   if(
     !Number.isFinite(amount) ||
@@ -2996,6 +3367,7 @@ function scheduleQuote(){
     return;
 
   }
+
 
   if(
     amount >
@@ -3012,11 +3384,13 @@ function scheduleQuote(){
 
   }
 
+
   $("quoteStatus").textContent =
     "Preparing quote…";
 
   $("quoteStatus").className =
     "quote-status loading";
+
 
   inputQuoteTimer =
     setTimeout(
@@ -3037,13 +3411,16 @@ async function logout(){
 
   stopQuotePolling();
 
+
   clearTimeout(
     inputQuoteTimer
   );
 
+
   await supabaseClient
     .auth
     .signOut();
+
 
   window.location.href =
     "index.html";
@@ -3061,6 +3438,7 @@ async function loadProfile(){
     return;
   }
 
+
   const {
     data
   } =
@@ -3075,10 +3453,12 @@ async function loadProfile(){
       )
       .maybeSingle();
 
+
   const name =
     data?.full_name ||
     currentUser.email ||
     "";
+
 
   const parts =
     name
@@ -3086,8 +3466,10 @@ async function loadProfile(){
       .split(/\s+/)
       .filter(Boolean);
 
+
   let initials =
     "";
+
 
   if(
     parts.length >= 2
@@ -3116,6 +3498,7 @@ async function loadProfile(){
 
   }
 
+
   $("profileBtn").textContent =
     initials.toUpperCase();
 
@@ -3137,6 +3520,7 @@ async function init(){
       .auth
       .getSession();
 
+
   if(!session){
 
     window.location.href =
@@ -3146,14 +3530,19 @@ async function init(){
 
   }
 
+
   currentUser =
     session.user;
 
+
   renderSelectedAssets();
+
 
   await loadProfile();
 
+
   await loadFromBalance();
+
 
   resetQuoteDisplay();
 
@@ -3274,6 +3663,7 @@ $("swapBtn")
         return;
       }
 
+
       if(!currentQuote){
 
         await requestQuote();
@@ -3281,6 +3671,7 @@ $("swapBtn")
         return;
 
       }
+
 
       await executeSwap();
 
