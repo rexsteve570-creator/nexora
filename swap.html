@@ -14,24 +14,19 @@
   --navy2:#080e1d;
   --navy3:#0d1629;
   --navy4:#111d33;
-
   --gold:#d6b15e;
   --gold2:#f0d58a;
   --gold3:#a98535;
-
-  --white:#ffffff;
+  --white:#fff;
   --text:#f4f6fa;
   --muted:#8c96a8;
   --muted2:#626d80;
-
   --bg:#050914;
   --card:#0b1222;
   --card2:#0e1729;
   --border:rgba(255,255,255,.08);
-
   --success:#35c98a;
   --danger:#ef6d78;
-
   --shadow:0 18px 45px rgba(0,0,0,.28);
 }
 
@@ -54,8 +49,7 @@ body{
   font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
 }
 
-button,
-input{
+button,input{
   font:inherit;
 }
 
@@ -68,9 +62,7 @@ a{
   text-decoration:none;
 }
 
-/* =========================
-   HEADER
-========================= */
+/* HEADER */
 
 .topbar{
   position:sticky;
@@ -148,9 +140,7 @@ a{
   color:var(--gold2);
 }
 
-/* =========================
-   DRAWER
-========================= */
+/* DRAWER */
 
 .drawer-overlay{
   position:fixed;
@@ -266,9 +256,7 @@ a{
   color:#ef8991;
 }
 
-/* =========================
-   MAIN
-========================= */
+/* MAIN */
 
 .main{
   width:100%;
@@ -293,9 +281,7 @@ a{
   font-weight:850;
 }
 
-/* =========================
-   SWAP CARD
-========================= */
+/* SWAP CARD */
 
 .swap-card{
   background:linear-gradient(145deg,#0b1221,#080e1a);
@@ -346,9 +332,7 @@ a{
   color:#465166;
 }
 
-/* =========================
-   COIN PICKER
-========================= */
+/* COIN PICKER */
 
 .coin-picker{
   position:relative;
@@ -531,9 +515,7 @@ a{
   color:#dbe1ea;
 }
 
-/* =========================
-   SWAP ARROW
-========================= */
+/* ARROW */
 
 .swap-arrow-wrap{
   display:flex;
@@ -563,9 +545,7 @@ a{
   transition:.2s;
 }
 
-/* =========================
-   QUOTE
-========================= */
+/* QUOTE */
 
 .quote-card{
   margin-top:15px;
@@ -605,9 +585,7 @@ a{
   color:var(--gold2);
 }
 
-/* =========================
-   SLIPPAGE
-========================= */
+/* SLIPPAGE */
 
 .slippage-row{
   margin-top:13px;
@@ -650,9 +628,7 @@ a{
   font-size:11px;
 }
 
-/* =========================
-   REVIEW BUTTON
-========================= */
+/* BUTTON */
 
 .review-btn{
   width:100%;
@@ -680,9 +656,7 @@ a{
   box-shadow:none;
 }
 
-/* =========================
-   NOTICE
-========================= */
+/* NOTICE */
 
 .notice{
   margin-top:15px;
@@ -699,9 +673,7 @@ a{
   color:var(--gold2);
 }
 
-/* =========================
-   ABOUT
-========================= */
+/* ABOUT */
 
 .card{
   background:linear-gradient(145deg,#0b1221,#080e1a);
@@ -750,9 +722,7 @@ a{
   line-height:1.55;
 }
 
-/* =========================
-   MODAL
-========================= */
+/* MODAL */
 
 .modal-overlay{
   position:fixed;
@@ -880,9 +850,7 @@ a{
   cursor:not-allowed;
 }
 
-/* =========================
-   MESSAGE
-========================= */
+/* MESSAGE */
 
 .message{
   display:none;
@@ -915,9 +883,7 @@ a{
   color:var(--gold2);
 }
 
-/* =========================
-   BOTTOM NAV
-========================= */
+/* BOTTOM NAV */
 
 .bottom-nav{
   position:fixed;
@@ -959,9 +925,7 @@ a{
   color:var(--gold2);
 }
 
-/* =========================
-   LOADING
-========================= */
+/* LOADING */
 
 .loading{
   position:fixed;
@@ -993,10 +957,6 @@ a{
     transform:rotate(360deg);
   }
 }
-
-/* =========================
-   RESPONSIVE
-========================= */
 
 @media(max-width:500px){
 
@@ -1063,11 +1023,6 @@ a{
   <div class="loader"></div>
 </div>
 
-
-<!-- =========================
-     DRAWER
-========================= -->
-
 <div class="drawer-overlay" id="drawerOverlay"></div>
 
 <aside class="drawer" id="drawer">
@@ -1091,7 +1046,6 @@ a{
     </div>
 
   </div>
-
 
   <nav class="drawer-nav">
 
@@ -1146,11 +1100,6 @@ a{
 
 </aside>
 
-
-<!-- =========================
-     HEADER
-========================= -->
-
 <header class="topbar">
 
   <div class="topbar-inner">
@@ -1160,20 +1109,16 @@ a{
       id="menuBtn"
       aria-label="Open menu"
     >
-
       <div class="hamburger">
         <span></span>
         <span></span>
         <span></span>
       </div>
-
     </button>
-
 
     <a href="dashboard.html" class="logo">
       NEX<span>ORA</span>
     </a>
-
 
     <a
       href="profile.html"
@@ -1186,11 +1131,6 @@ a{
   </div>
 
 </header>
-
-
-<!-- =========================
-     MAIN
-========================= -->
 
 <main class="main">
 
@@ -1206,15 +1146,7 @@ a{
 
   </section>
 
-
-  <!-- =========================
-       SWAP
-  ========================= -->
-
   <section class="swap-card">
-
-
-    <!-- YOU PAY -->
 
     <div class="field-label">
       You pay
@@ -1235,13 +1167,7 @@ a{
           autocomplete="off"
         >
 
-
-        <!-- FROM COIN PICKER -->
-
-        <div
-          class="coin-picker"
-          id="fromPicker"
-        >
+        <div class="coin-picker" id="fromPicker">
 
           <button
             type="button"
@@ -1280,7 +1206,6 @@ a{
 
           </button>
 
-
           <div
             class="coin-menu"
             id="fromMenu"
@@ -1302,16 +1227,12 @@ a{
 
       </div>
 
-
       <div class="asset-balance">
         Available balance:
         <strong id="fromBalance">—</strong>
       </div>
 
     </div>
-
-
-    <!-- SWAP ARROW -->
 
     <div class="swap-arrow-wrap">
 
@@ -1325,9 +1246,6 @@ a{
       </button>
 
     </div>
-
-
-    <!-- YOU RECEIVE -->
 
     <div class="field-label">
       You receive
@@ -1346,13 +1264,7 @@ a{
           readonly
         >
 
-
-        <!-- TO COIN PICKER -->
-
-        <div
-          class="coin-picker"
-          id="toPicker"
-        >
+        <div class="coin-picker" id="toPicker">
 
           <button
             type="button"
@@ -1391,7 +1303,6 @@ a{
 
           </button>
 
-
           <div
             class="coin-menu"
             id="toMenu"
@@ -1413,15 +1324,11 @@ a{
 
       </div>
 
-
       <div class="asset-balance">
         Estimated received amount
       </div>
 
     </div>
-
-
-    <!-- QUOTE -->
 
     <div class="quote-card">
 
@@ -1440,7 +1347,6 @@ a{
 
       </div>
 
-
       <div class="quote-row">
 
         <span class="quote-label">
@@ -1456,7 +1362,6 @@ a{
 
       </div>
 
-
       <div class="quote-row">
 
         <span class="quote-label">
@@ -1471,7 +1376,6 @@ a{
         </span>
 
       </div>
-
 
       <div class="quote-row">
 
@@ -1489,9 +1393,6 @@ a{
       </div>
 
     </div>
-
-
-    <!-- SLIPPAGE -->
 
     <div class="slippage-row">
 
@@ -1519,39 +1420,30 @@ a{
 
     </div>
 
-
-    <!-- REVIEW -->
-
     <button
       type="button"
       class="review-btn"
       id="reviewBtn"
     >
-      Review Swap
+      Get Live Quote
     </button>
-
 
     <div
       class="message"
       id="pageMessage"
     ></div>
 
-
     <div class="notice">
 
-      <strong>Swap protection:</strong>
-      NEXORA will not execute a swap using a fabricated
-      price or unverified route. A valid server-side quote
-      must be available before any swap can be executed.
+      <strong>Live quote protection:</strong>
+      Exchange amounts are returned by the secure
+      NEXORA server through the connected quote provider.
+      Prices are never calculated or fabricated inside
+      the browser.
 
     </div>
 
   </section>
-
-
-  <!-- =========================
-       ABOUT SWAPS
-  ========================= -->
 
   <section class="card">
 
@@ -1571,7 +1463,6 @@ a{
 
     </div>
 
-
     <div class="about-body">
 
       <div class="about-item">
@@ -1587,7 +1478,6 @@ a{
 
       </div>
 
-
       <div class="about-item">
 
         <strong>
@@ -1597,36 +1487,33 @@ a{
         <span>
           Enter the amount you want to exchange.
           Your available wallet balance is checked
-          before a quote request is created.
+          before requesting the quote.
         </span>
 
       </div>
 
-
       <div class="about-item">
 
         <strong>
-          3. Receive a verified quote
+          3. Receive a live quote
         </strong>
 
         <span>
-          A valid exchange rate, fees and minimum
-          received amount must be supplied by the
-          trusted swap backend.
+          NEXORA requests the current conversion amount
+          from the secure swap backend.
         </span>
 
       </div>
 
-
       <div class="about-item">
 
         <strong>
-          4. Confirm execution
+          4. Review before execution
         </strong>
 
         <span>
-          Quotes are time-limited. Execution can only
-          proceed while the verified quote is still valid.
+          Review the returned amount before any execution
+          route is enabled.
         </span>
 
       </div>
@@ -1636,11 +1523,6 @@ a{
   </section>
 
 </main>
-
-
-<!-- =========================
-     REVIEW MODAL
-========================= -->
 
 <div
   class="modal-overlay"
@@ -1665,105 +1547,54 @@ a{
 
     </div>
 
-
     <div class="modal-body">
 
       <div class="modal-summary">
 
         <div class="summary-row">
-
-          <span>
-            You pay
-          </span>
-
-          <span id="summaryFrom">
-            —
-          </span>
-
+          <span>You pay</span>
+          <span id="summaryFrom">—</span>
         </div>
 
-
         <div class="summary-row">
-
-          <span>
-            You receive
-          </span>
-
-          <span id="summaryTo">
-            —
-          </span>
-
+          <span>You receive</span>
+          <span id="summaryTo">—</span>
         </div>
 
-
         <div class="summary-row">
-
-          <span>
-            Exchange rate
-          </span>
-
-          <span id="summaryRate">
-            —
-          </span>
-
+          <span>Exchange rate</span>
+          <span id="summaryRate">—</span>
         </div>
 
-
         <div class="summary-row">
-
-          <span>
-            Network fee
-          </span>
-
-          <span id="summaryNetworkFee">
-            —
-          </span>
-
+          <span>Network fee</span>
+          <span id="summaryNetworkFee">—</span>
         </div>
 
-
         <div class="summary-row">
-
-          <span>
-            NEXORA fee
-          </span>
-
-          <span id="summaryNexoraFee">
-            —
-          </span>
-
+          <span>NEXORA fee</span>
+          <span id="summaryNexoraFee">—</span>
         </div>
 
-
         <div class="summary-row">
-
-          <span>
-            Minimum received
-          </span>
-
-          <span id="summaryMinimum">
-            —
-          </span>
-
+          <span>Minimum received</span>
+          <span id="summaryMinimum">—</span>
         </div>
 
       </div>
-
 
       <div class="modal-warning">
 
-        This review does not guarantee execution.
-        The quote must remain valid and execution must
-        be completed by the trusted swap backend.
+        This is a quote review only.
+        Swap execution remains disabled until a trusted
+        server-side execution route is connected.
 
       </div>
-
 
       <div
         class="message"
         id="modalMessage"
       ></div>
-
 
       <div class="modal-actions">
 
@@ -1781,7 +1612,7 @@ a{
           id="confirmSwap"
           disabled
         >
-          Awaiting Quote
+          Execution Unavailable
         </button>
 
       </div>
@@ -1792,11 +1623,6 @@ a{
 
 </div>
 
-
-<!-- =========================
-     BOTTOM NAV
-========================= -->
-
 <nav class="bottom-nav">
 
   <div class="bottom-inner">
@@ -1805,61 +1631,37 @@ a{
       href="dashboard.html"
       class="bottom-link"
     >
-
-      <strong>
-        ⌂
-      </strong>
-
+      <strong>⌂</strong>
       Portfolio
-
     </a>
-
 
     <a
       href="deposit.html"
       class="bottom-link"
     >
-
-      <strong>
-        ＋
-      </strong>
-
+      <strong>＋</strong>
       Deposit
-
     </a>
-
 
     <a
       href="transactions.html"
       class="bottom-link"
     >
-
-      <strong>
-        ≡
-      </strong>
-
+      <strong>≡</strong>
       History
-
     </a>
-
 
     <a
       href="profile.html"
       class="bottom-link"
     >
-
-      <strong>
-        ○
-      </strong>
-
+      <strong>○</strong>
       Account
-
     </a>
 
   </div>
 
 </nav>
-
 
 <script>
 
@@ -1888,7 +1690,7 @@ const supabaseClient =
 
 
 /* =========================================================
-   ELEMENT HELPER
+   HELPER
 ========================================================= */
 
 const $ = id =>
@@ -1896,12 +1698,11 @@ const $ = id =>
 
 
 /* =========================================================
-   REAL CRYPTO LOGOS
+   LOGOS
 ========================================================= */
 
 const LOGO_BASE =
   "https://cdn.jsdelivr.net/gh/madenix/Crypto-logo-cdn@main/Logos/";
-
 
 const logoFiles = {
 
@@ -1932,16 +1733,13 @@ const logoFiles = {
 
 };
 
-
 function getLogo(symbol){
 
-  return (
-    LOGO_BASE +
+  return LOGO_BASE +
     (
       logoFiles[symbol] ||
       "BTC.svg"
-    )
-  );
+    );
 
 }
 
@@ -1981,10 +1779,13 @@ const assets = [
 
 
 let currentUser = null;
-let currentSwapId = null;
+
 let currentQuote = null;
 
+let currentSwapId = null;
+
 let fromAssetValue = "USDT";
+
 let toAssetValue = "USDC";
 
 
@@ -2000,7 +1801,6 @@ function getAsset(symbol){
 
 }
 
-
 function getAssetName(symbol){
 
   const asset =
@@ -2014,7 +1814,7 @@ function getAssetName(symbol){
 
 
 /* =========================================================
-   COIN PICKER RENDER
+   COIN OPTIONS
 ========================================================= */
 
 function renderCoinOptions(
@@ -2032,16 +1832,12 @@ function renderCoinOptions(
       ? fromAssetValue
       : toAssetValue;
 
-
   const query =
     String(searchTerm)
       .trim()
       .toLowerCase();
 
-
-  container.innerHTML =
-    "";
-
+  container.innerHTML = "";
 
   const filtered =
     assets.filter(asset => {
@@ -2059,7 +1855,6 @@ function renderCoinOptions(
       );
 
     });
-
 
   if(!filtered.length){
 
@@ -2086,7 +1881,6 @@ function renderCoinOptions(
 
   }
 
-
   filtered.forEach(asset => {
 
     const symbol =
@@ -2094,7 +1888,6 @@ function renderCoinOptions(
 
     const name =
       asset[1];
-
 
     const button =
       document.createElement("button");
@@ -2109,7 +1902,6 @@ function renderCoinOptions(
           ? " selected"
           : ""
       );
-
 
     button.innerHTML = `
 
@@ -2137,7 +1929,6 @@ function renderCoinOptions(
 
     `;
 
-
     button.addEventListener(
       "click",
       () => {
@@ -2150,7 +1941,6 @@ function renderCoinOptions(
       }
     );
 
-
     container.appendChild(
       button
     );
@@ -2161,7 +1951,7 @@ function renderCoinOptions(
 
 
 /* =========================================================
-   UPDATE PICKER DISPLAY
+   PICKER DISPLAY
 ========================================================= */
 
 function updatePickerDisplay(
@@ -2172,11 +1962,9 @@ function updatePickerDisplay(
   const asset =
     getAsset(symbol);
 
-
   if(!asset){
     return;
   }
-
 
   if(type === "from"){
 
@@ -2234,7 +2022,6 @@ function selectAsset(
 
     }
 
-
     fromAssetValue =
       symbol;
 
@@ -2253,7 +2040,6 @@ function selectAsset(
 
   }
 
-
   if(symbol === fromAssetValue){
 
     showMessage(
@@ -2265,7 +2051,6 @@ function selectAsset(
     return;
 
   }
-
 
   toAssetValue =
     symbol;
@@ -2283,15 +2068,12 @@ function selectAsset(
 
 
 /* =========================================================
-   OPEN COIN MENU
+   COIN MENUS
 ========================================================= */
 
 function openCoinMenu(type){
 
-  closeCoinMenus(
-    type
-  );
-
+  closeCoinMenus(type);
 
   const menu =
     type === "from"
@@ -2303,30 +2085,18 @@ function openCoinMenu(type){
       ? $("fromPickerButton")
       : $("toPickerButton");
 
-
-  menu.classList.add(
-    "open"
-  );
-
-  button.classList.add(
-    "open"
-  );
-
-
   const search =
     type === "from"
       ? $("fromSearch")
       : $("toSearch");
 
+  menu.classList.add("open");
 
-  search.value =
-    "";
+  button.classList.add("open");
 
+  search.value = "";
 
-  renderCoinOptions(
-    type
-  );
-
+  renderCoinOptions(type);
 
   setTimeout(
     () => search.focus(),
@@ -2334,11 +2104,6 @@ function openCoinMenu(type){
   );
 
 }
-
-
-/* =========================================================
-   CLOSE COIN MENUS
-========================================================= */
 
 function closeCoinMenus(
   except = null
@@ -2348,7 +2113,6 @@ function closeCoinMenus(
     ["fromMenu","fromPickerButton","from"],
     ["toMenu","toPickerButton","to"]
   ];
-
 
   menus.forEach(item => {
 
@@ -2360,13 +2124,9 @@ function closeCoinMenus(
 
     if(item[2] !== except){
 
-      menu.classList.remove(
-        "open"
-      );
+      menu.classList.remove("open");
 
-      button.classList.remove(
-        "open"
-      );
+      button.classList.remove("open");
 
     }
 
@@ -2376,7 +2136,7 @@ function closeCoinMenus(
 
 
 /* =========================================================
-   COIN PICKER EVENTS
+   PICKER EVENTS
 ========================================================= */
 
 $("fromPickerButton")
@@ -2386,20 +2146,17 @@ $("fromPickerButton")
 
       event.stopPropagation();
 
-      const isOpen =
+      if(
         $("fromMenu")
           .classList
-          .contains("open");
-
-      if(isOpen){
+          .contains("open")
+      ){
 
         closeCoinMenus();
 
       }else{
 
-        openCoinMenu(
-          "from"
-        );
+        openCoinMenu("from");
 
       }
 
@@ -2414,20 +2171,17 @@ $("toPickerButton")
 
       event.stopPropagation();
 
-      const isOpen =
+      if(
         $("toMenu")
           .classList
-          .contains("open");
-
-      if(isOpen){
+          .contains("open")
+      ){
 
         closeCoinMenus();
 
       }else{
 
-        openCoinMenu(
-          "to"
-        );
+        openCoinMenu("to");
 
       }
 
@@ -2482,7 +2236,7 @@ document.addEventListener(
 
 
 /* =========================================================
-   INITIALIZE COIN PICKERS
+   INITIALIZE PICKERS
 ========================================================= */
 
 function initializeCoinPickers(){
@@ -2501,7 +2255,7 @@ function initializeCoinPickers(){
 
 
 /* =========================================================
-   INITIAL PROFILE DISPLAY
+   PROFILE
 ========================================================= */
 
 function getInitials(name){
@@ -2510,18 +2264,15 @@ function getInitials(name){
     return "—";
   }
 
-
   const parts =
     String(name)
       .trim()
       .split(/\s+/)
       .filter(Boolean);
 
-
   if(!parts.length){
     return "—";
   }
-
 
   return parts
     .slice(0,2)
@@ -2543,27 +2294,20 @@ function displayUserProfile(
     return;
   }
 
-
   const metadataName =
     user.user_metadata?.full_name ||
     user.user_metadata?.name ||
     "";
 
-
   const authEmail =
     user.email ||
     "";
 
-
   let fullName =
-    metadataName ||
-    "";
-
+    metadataName;
 
   let email =
-    authEmail ||
-    "";
-
+    authEmail;
 
   if(profile){
 
@@ -2577,7 +2321,6 @@ function displayUserProfile(
 
     }
 
-
     if(
       profile.email &&
       String(profile.email).trim()
@@ -2590,7 +2333,6 @@ function displayUserProfile(
 
   }
 
-
   if(!fullName){
 
     if(email){
@@ -2600,7 +2342,6 @@ function displayUserProfile(
           .split("@")[0]
           .replace(/[._-]+/g," ")
           .trim();
-
 
       fullName =
         emailName
@@ -2622,7 +2363,6 @@ function displayUserProfile(
 
   }
 
-
   $("drawerName").textContent =
     fullName;
 
@@ -2635,21 +2375,13 @@ function displayUserProfile(
 }
 
 
-/* =========================================================
-   LOAD PROFILE
-========================================================= */
-
 async function loadProfile(user){
 
   if(!user){
     return;
   }
 
-
-  displayUserProfile(
-    user
-  );
-
+  displayUserProfile(user);
 
   try{
 
@@ -2672,18 +2404,16 @@ async function loadProfile(user){
         )
         .maybeSingle();
 
-
     if(error){
 
       console.error(
-        "NEXORA profile query error:",
+        "Profile query error:",
         error
       );
 
       return;
 
     }
-
 
     if(data){
 
@@ -2707,7 +2437,7 @@ async function loadProfile(user){
 
 
 /* =========================================================
-   SHOW MESSAGE
+   MESSAGES
 ========================================================= */
 
 function showMessage(
@@ -2720,7 +2450,6 @@ function showMessage(
     return;
   }
 
-
   element.textContent =
     message;
 
@@ -2730,14 +2459,11 @@ function showMessage(
 }
 
 
-function hideMessage(
-  element
-){
+function hideMessage(element){
 
   if(!element){
     return;
   }
-
 
   element.textContent =
     "";
@@ -2749,22 +2475,39 @@ function hideMessage(
 
 
 /* =========================================================
-   RESET QUOTE DISPLAY
+   FORMAT
+========================================================= */
+
+function formatAmount(value){
+
+  const number =
+    Number(value);
+
+  if(!Number.isFinite(number)){
+    return "—";
+  }
+
+  return number.toLocaleString(
+    undefined,
+    {
+      maximumFractionDigits:18
+    }
+  );
+
+}
+
+
+/* =========================================================
+   RESET QUOTE
 ========================================================= */
 
 function resetQuoteDisplay(){
 
-  /*
-     IMPORTANT:
+  currentQuote =
+    null;
 
-     No server-side verified quote exists here.
-
-     Therefore the receive amount and all quote
-     information MUST remain unavailable.
-
-     We intentionally use "—" rather than calculating
-     anything in the browser.
-  */
+  currentSwapId =
+    null;
 
   $("toAmount").value =
     "—";
@@ -2781,34 +2524,20 @@ function resetQuoteDisplay(){
   $("minimumReceivedValue").textContent =
     "—";
 
-
-  currentSwapId =
-    null;
-
-  currentQuote =
-    null;
-
-
   $("confirmSwap").disabled =
     true;
 
   $("confirmSwap").textContent =
-    "Awaiting Quote";
+    "Execution Unavailable";
 
 }
 
 
 /* =========================================================
-   VALIDATE ASSETS
+   VALIDATION
 ========================================================= */
 
 function validateSwapInputs(){
-
-  const fromAsset =
-    fromAssetValue;
-
-  const toAsset =
-    toAssetValue;
 
   const amount =
     Number(
@@ -2820,8 +2549,7 @@ function validateSwapInputs(){
       $("slippage").value
     );
 
-
-  if(!fromAsset || !toAsset){
+  if(!fromAssetValue || !toAssetValue){
 
     return {
       valid:false,
@@ -2830,8 +2558,7 @@ function validateSwapInputs(){
 
   }
 
-
-  if(fromAsset === toAsset){
+  if(fromAssetValue === toAssetValue){
 
     return {
       valid:false,
@@ -2839,7 +2566,6 @@ function validateSwapInputs(){
     };
 
   }
-
 
   if(
     !Number.isFinite(amount) ||
@@ -2853,7 +2579,6 @@ function validateSwapInputs(){
 
   }
 
-
   if(
     !Number.isFinite(slippage) ||
     slippage < 0 ||
@@ -2862,21 +2587,23 @@ function validateSwapInputs(){
 
     return {
       valid:false,
-      message:"Slippage must be between 0% and 100%."
+      message:
+        "Slippage must be between 0% and 100%."
     };
 
   }
 
-
   return {
-    valid:true
+    valid:true,
+    amount,
+    slippage
   };
 
 }
 
 
 /* =========================================================
-   GET WALLET BALANCE
+   WALLET BALANCE
 ========================================================= */
 
 async function loadFromBalance(){
@@ -2885,124 +2612,8 @@ async function loadFromBalance(){
     return;
   }
 
-
-  const asset =
-    fromAssetValue;
-
-
   $("fromBalance").textContent =
     "Loading...";
-
-
-  try{
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .from("wallets")
-        .select(`
-          available_balance
-        `)
-        .eq(
-          "user_id",
-          currentUser.id
-        )
-        .eq(
-          "asset",
-          asset
-        )
-        .maybeSingle();
-
-
-    if(error){
-
-      console.error(
-        "Wallet balance error:",
-        error
-      );
-
-      $("fromBalance").textContent =
-        "—";
-
-      return;
-
-    }
-
-
-    const balance =
-      data?.available_balance;
-
-
-    if(
-      balance === null ||
-      balance === undefined
-    ){
-
-      $("fromBalance").textContent =
-        "0";
-
-      return;
-
-    }
-
-
-    $("fromBalance").textContent =
-      formatAmount(
-        balance
-      );
-
-  }catch(error){
-
-    console.error(
-      "Unexpected wallet error:",
-      error
-    );
-
-    $("fromBalance").textContent =
-      "—";
-
-  }
-
-}
-
-
-/* =========================================================
-   FORMAT AMOUNT
-========================================================= */
-
-function formatAmount(value){
-
-  const number =
-    Number(value);
-
-
-  if(!Number.isFinite(number)){
-    return "—";
-  }
-
-
-  return number.toLocaleString(
-    undefined,
-    {
-      maximumFractionDigits:18
-    }
-  );
-
-}
-
-
-/* =========================================================
-   MAX
-========================================================= */
-
-async function useMax(){
-
-  if(!currentUser){
-    return;
-  }
-
 
   try{
 
@@ -3025,44 +2636,47 @@ async function useMax(){
         )
         .maybeSingle();
 
-
     if(error){
 
       console.error(
-        "MAX balance error:",
+        "Wallet balance error:",
         error
       );
+
+      $("fromBalance").textContent =
+        "—";
 
       return;
 
     }
 
-
     const balance =
-      Number(
-        data?.available_balance || 0
-      );
+      data?.available_balance;
 
+    if(
+      balance === null ||
+      balance === undefined
+    ){
 
-    $("fromAmount").value =
-      balance > 0
-        ? balance
-        : "";
+      $("fromBalance").textContent =
+        "0";
 
+      return;
 
-    /*
-       Changing the amount invalidates any
-       previous quote.
-    */
+    }
 
-    resetQuoteDisplay();
+    $("fromBalance").textContent =
+      formatAmount(balance);
 
   }catch(error){
 
     console.error(
-      "MAX error:",
+      "Wallet error:",
       error
     );
+
+    $("fromBalance").textContent =
+      "—";
 
   }
 
@@ -3070,7 +2684,7 @@ async function useMax(){
 
 
 /* =========================================================
-   REQUEST SWAP QUOTE
+   REQUEST LIVE QUOTE
 ========================================================= */
 
 async function requestQuote(){
@@ -3079,10 +2693,8 @@ async function requestQuote(){
     $("pageMessage")
   );
 
-
   const validation =
     validateSwapInputs();
-
 
   if(!validation.valid){
 
@@ -3095,7 +2707,6 @@ async function requestQuote(){
     return;
 
   }
-
 
   if(!currentUser){
 
@@ -3109,37 +2720,18 @@ async function requestQuote(){
 
   }
 
-
-  const fromAsset =
-    fromAssetValue;
-
-  const toAsset =
-    toAssetValue;
-
   const amount =
-    Number(
-      $("fromAmount").value
-    );
+    validation.amount;
 
   const slippage =
-    Number(
-      $("slippage").value
-    );
-
+    validation.slippage;
 
   const availableBalance =
     Number(
-      $("fromBalance").textContent
+      $("fromBalance")
+        .textContent
         .replace(/,/g,"")
     );
-
-
-  /*
-     Client-side balance check for a better
-     user experience.
-
-     The secure RPC remains the final authority.
-  */
 
   if(
     Number.isFinite(availableBalance) &&
@@ -3148,7 +2740,7 @@ async function requestQuote(){
 
     showMessage(
       $("pageMessage"),
-      `Insufficient ${fromAsset} balance.`,
+      `Insufficient ${fromAssetValue} balance.`,
       "error"
     );
 
@@ -3156,144 +2748,112 @@ async function requestQuote(){
 
   }
 
-
   const button =
     $("reviewBtn");
-
 
   button.disabled =
     true;
 
   button.textContent =
-    "Requesting Quote...";
-
+    "Getting Live Quote...";
 
   resetQuoteDisplay();
-
 
   try{
 
     /*
-       This RPC ONLY creates the secure
-       QUOTE_PENDING swap record.
+      IMPORTANT:
 
-       It does NOT fabricate:
-       - exchange rate
-       - received amount
-       - network fee
-       - NEXORA fee
-       - minimum received
+      The browser never receives the 0x API key.
 
-       Those values must come from the
-       trusted server-side quote process.
+      It calls our deployed Supabase Edge Function:
+
+      swap.html
+          ↓
+      swap-quote
+          ↓
+      0x
+          ↓
+      live quote
+          ↓
+      swap.html
     */
 
     const {
       data,
       error
     } =
-      await supabaseClient
-        .rpc(
-          "request_swap_quote",
-          {
-            p_from_asset:
-              fromAsset,
+      await supabaseClient.functions.invoke(
+        "swap-quote",
+        {
+          body:{
+            from_asset:
+              fromAssetValue,
 
-            p_to_asset:
-              toAsset,
+            to_asset:
+              toAssetValue,
 
-            p_from_amount:
+            amount:
               amount,
 
-            p_slippage_percent:
+            slippage_percent:
               slippage
           }
-        );
-
+        }
+      );
 
     if(error){
 
       console.error(
-        "Swap quote request error:",
+        "Edge Function error:",
         error
       );
 
-
-      showMessage(
-        $("pageMessage"),
+      throw new Error(
         error.message ||
-          "Unable to create swap quote request.",
-        "error"
+        "Unable to get live quote."
       );
-
-
-      return;
 
     }
 
+    if(!data){
 
-    /*
-       The RPC returns the newly-created
-       swap ID.
-    */
+      throw new Error(
+        "No response was returned by the quote server."
+      );
 
-    currentSwapId =
-      Array.isArray(data)
-        ? data[0]?.id
-        : data?.id || data;
+    }
 
+    if(!data.success){
 
-    /*
-       IMPORTANT:
+      throw new Error(
+        data.error ||
+        "The quote provider did not return a quote."
+      );
 
-       At this point there is still NO verified
-       price.
+    }
 
-       Therefore the page intentionally continues
-       showing "—" for all quote values.
-    */
-
-    $("toAmount").value =
-      "—";
-
-    $("rateValue").textContent =
-      "—";
-
-    $("networkFeeValue").textContent =
-      "—";
-
-    $("nexoraFeeValue").textContent =
-      "—";
-
-    $("minimumReceivedValue").textContent =
-      "—";
-
+    applyLiveQuote(data);
 
     showMessage(
       $("pageMessage"),
-      "Swap request created. Waiting for a verified server-side quote.",
-      "info"
+      "Live quote received successfully.",
+      "success"
     );
 
-
-    $("confirmSwap").disabled =
-      true;
-
-    $("confirmSwap").textContent =
-      "Awaiting Verified Quote";
-
+    openReview();
 
   }catch(error){
 
     console.error(
-      "Unexpected quote request error:",
+      "Live quote error:",
       error
     );
 
-
     showMessage(
       $("pageMessage"),
-      "Something went wrong while requesting the swap quote.",
+      error?.message ||
+      "Unable to get live quote.",
       "error"
     );
 
@@ -3303,7 +2863,7 @@ async function requestQuote(){
       false;
 
     button.textContent =
-      "Review Swap";
+      "Get Live Quote";
 
   }
 
@@ -3311,22 +2871,12 @@ async function requestQuote(){
 
 
 /* =========================================================
-   APPLY VERIFIED QUOTE
+   APPLY LIVE QUOTE
 ========================================================= */
 
-function applyVerifiedQuote(quote){
+function applyLiveQuote(quote){
 
-  if(!quote){
-    return false;
-  }
-
-
-  /*
-     Only accept an actual server-side quote
-     containing the required values.
-  */
-
-  const quotedToAmount =
+  const received =
     Number(
       quote.quoted_to_amount
     );
@@ -3336,80 +2886,104 @@ function applyVerifiedQuote(quote){
       quote.rate
     );
 
-  const networkFee =
-    Number(
-      quote.network_fee
-    );
-
-  const nexoraFee =
-    Number(
-      quote.nexora_fee
-    );
-
-  const minimumReceived =
-    Number(
-      quote.min_received
-    );
-
-
   if(
-    !Number.isFinite(quotedToAmount) ||
-    quotedToAmount < 0 ||
-
-    !Number.isFinite(rate) ||
-    rate <= 0 ||
-
-    !Number.isFinite(networkFee) ||
-    networkFee < 0 ||
-
-    !Number.isFinite(nexoraFee) ||
-    nexoraFee < 0 ||
-
-    !Number.isFinite(minimumReceived) ||
-    minimumReceived < 0
+    !Number.isFinite(received) ||
+    received < 0
   ){
 
-    return false;
+    throw new Error(
+      "The quote server returned an invalid received amount."
+    );
 
   }
 
+  if(
+    !Number.isFinite(rate) ||
+    rate <= 0
+  ){
 
-  currentQuote =
-    quote;
+    throw new Error(
+      "The quote server returned an invalid exchange rate."
+    );
 
+  }
+
+  currentQuote = {
+
+    quoted_to_amount:
+      received,
+
+    rate:
+      rate,
+
+    provider:
+      quote.provider ||
+      "0x",
+
+    chain:
+      quote.chain ||
+      "Ethereum",
+
+    raw_buy_amount:
+      quote.raw_buy_amount ||
+      null,
+
+    raw_sell_amount:
+      quote.raw_sell_amount ||
+      null,
+
+    gas:
+      quote.gas ||
+      null,
+
+    gas_price:
+      quote.gas_price ||
+      null
+
+  };
+
+  /*
+    ACTUAL LIVE RECEIVED AMOUNT
+  */
 
   $("toAmount").value =
-    formatAmount(
-      quotedToAmount
-    );
+    formatAmount(received);
 
+
+  /*
+    ACTUAL LIVE EXCHANGE RATE
+  */
 
   $("rateValue").textContent =
-    formatAmount(
-      rate
-    );
+    `1 ${fromAssetValue} = ${formatAmount(rate)} ${toAssetValue}`;
 
+
+  /*
+    We do NOT invent a USD/network fee.
+
+    The current Edge Function returns the live token
+    conversion from 0x, while execution gas/fees need
+    the actual execution transaction.
+  */
 
   $("networkFeeValue").textContent =
-    `${formatAmount(networkFee)} ${fromAssetValue}`;
+    "Calculated at execution";
 
 
   $("nexoraFeeValue").textContent =
-    `${formatAmount(nexoraFee)} ${fromAssetValue}`;
+    "Calculated at execution";
 
+
+  /*
+    Until NEXORA's execution route applies slippage
+    and fees server-side, the quoted receive amount is
+    the only verified amount we can safely display.
+  */
 
   $("minimumReceivedValue").textContent =
-    `${formatAmount(minimumReceived)} ${toAssetValue}`;
-
-
-  $("confirmSwap").disabled =
-    false;
-
-  $("confirmSwap").textContent =
-    "Confirm Swap";
-
-
-  return true;
+    formatAmount(received) +
+    " " +
+    toAssetValue;
 
 }
 
@@ -3420,28 +2994,11 @@ function applyVerifiedQuote(quote){
 
 function openReview(){
 
-  const validation =
-    validateSwapInputs();
-
-
-  if(!validation.valid){
-
-    showMessage(
-      $("pageMessage"),
-      validation.message,
-      "error"
-    );
-
-    return;
-
-  }
-
-
   if(!currentQuote){
 
     showMessage(
       $("pageMessage"),
-      "A verified swap quote is not available yet.",
+      "A live quote is not available yet.",
       "info"
     );
 
@@ -3449,44 +3006,34 @@ function openReview(){
 
   }
 
-
-  const fromAsset =
-    fromAssetValue;
-
-  const toAsset =
-    toAssetValue;
-
   const amount =
     Number(
       $("fromAmount").value
     );
 
-
   $("summaryFrom").textContent =
-    `${formatAmount(amount)} ${fromAsset}`;
+    `${formatAmount(amount)} ${fromAssetValue}`;
 
   $("summaryTo").textContent =
-    `${formatAmount(currentQuote.quoted_to_amount)} ${toAsset}`;
+    `${formatAmount(currentQuote.quoted_to_amount)} ${toAssetValue}`;
 
   $("summaryRate").textContent =
-    `${formatAmount(currentQuote.rate)}`;
+    `1 ${fromAssetValue} = ${formatAmount(currentQuote.rate)} ${toAssetValue}`;
 
   $("summaryNetworkFee").textContent =
-    `${formatAmount(currentQuote.network_fee)} ${fromAsset}`;
+    "Calculated at execution";
 
   $("summaryNexoraFee").textContent =
-    `${formatAmount(currentQuote.nexora_fee)} ${fromAsset}`;
+    "Calculated at execution";
 
   $("summaryMinimum").textContent =
-    `${formatAmount(currentQuote.min_received)} ${toAsset}`;
-
+    `${formatAmount(currentQuote.quoted_to_amount)} ${toAssetValue}`;
 
   $("confirmSwap").disabled =
-    false;
+    true;
 
   $("confirmSwap").textContent =
-    "Confirm Swap";
-
+    "Execution Unavailable";
 
   $("reviewModal")
     .classList.add("open");
@@ -3511,67 +3058,16 @@ function closeReview(){
 
 
 /* =========================================================
-   CONFIRM SWAP
+   CONFIRM
 ========================================================= */
 
 async function confirmSwap(){
 
-  if(
-    !currentSwapId ||
-    !currentQuote
-  ){
-
-    showMessage(
-      $("modalMessage"),
-      "No verified quote is available for execution.",
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  const button =
-    $("confirmSwap");
-
-
-  button.disabled =
-    true;
-
-  button.textContent =
-    "Checking Quote...";
-
-
-  hideMessage(
-    $("modalMessage")
-  );
-
-
-  /*
-     IMPORTANT:
-
-     complete_swap is server-only.
-
-     The browser intentionally does NOT call
-     complete_swap directly.
-
-     Until a trusted server-side execution route
-     is connected, the swap cannot be executed.
-  */
-
   showMessage(
     $("modalMessage"),
-    "Execution is not enabled from the browser until a trusted server-side swap route is connected.",
+    "Swap execution is not enabled yet. The live quote is working, but execution still needs the trusted server-side execution route.",
     "info"
   );
-
-
-  button.disabled =
-    true;
-
-  button.textContent =
-    "Execution Unavailable";
 
 }
 
@@ -3582,19 +3078,14 @@ async function confirmSwap(){
 
 function switchAssets(){
 
-  const from =
+  const oldFrom =
     fromAssetValue;
 
-  const to =
+  fromAssetValue =
     toAssetValue;
 
-
-  fromAssetValue =
-    to;
-
   toAssetValue =
-    from;
-
+    oldFrom;
 
   updatePickerDisplay(
     "from",
@@ -3605,7 +3096,6 @@ function switchAssets(){
     "to",
     toAssetValue
   );
-
 
   resetQuoteDisplay();
 
@@ -3632,7 +3122,6 @@ function openDrawer(){
 
 }
 
-
 function closeDrawer(){
 
   $("drawer")
@@ -3643,20 +3132,17 @@ function closeDrawer(){
 
 }
 
-
 $("menuBtn")
   .addEventListener(
     "click",
     openDrawer
   );
 
-
 $("drawerOverlay")
   .addEventListener(
     "click",
     closeDrawer
   );
-
 
 document
   .querySelectorAll(
@@ -3683,7 +3169,6 @@ $("logoutBtn")
 
       event.preventDefault();
 
-
       try{
 
         await supabaseClient
@@ -3699,7 +3184,6 @@ $("logoutBtn")
 
       }
 
-
       window.location.href =
         "signin.html";
 
@@ -3708,20 +3192,13 @@ $("logoutBtn")
 
 
 /* =========================================================
-   EVENT LISTENERS
+   INPUT EVENTS
 ========================================================= */
 
 $("fromAmount")
   .addEventListener(
     "input",
     () => {
-
-      /*
-         Every amount change invalidates any
-         previous quote.
-
-         No local calculation is performed.
-      */
 
       resetQuoteDisplay();
 
@@ -3802,7 +3279,7 @@ $("reviewModal")
 
 
 /* =========================================================
-   AUTH STATE
+   AUTH
 ========================================================= */
 
 supabaseClient.auth
@@ -3825,7 +3302,6 @@ supabaseClient.auth
         );
 
       }
-
 
       if(
         event ===
@@ -3851,13 +3327,7 @@ async function init(){
 
     initializeCoinPickers();
 
-    /*
-       Make sure the page starts with no
-       fabricated quote information.
-    */
-
     resetQuoteDisplay();
-
 
     const {
       data,
@@ -3866,7 +3336,6 @@ async function init(){
       await supabaseClient
         .auth
         .getUser();
-
 
     if(error){
 
@@ -3877,10 +3346,8 @@ async function init(){
 
     }
 
-
     const user =
       data?.user;
-
 
     if(!user){
 
@@ -3891,23 +3358,18 @@ async function init(){
 
     }
 
-
     currentUser =
       user;
-
 
     displayUserProfile(
       user
     );
 
-
     await loadProfile(
       user
     );
 
-
     await loadFromBalance();
-
 
   }catch(error){
 
@@ -3922,9 +3384,8 @@ async function init(){
       () => {
 
         $("loading")
-          .classList.add(
-            "hidden"
-          );
+          .classList
+          .add("hidden");
 
       },
       300
