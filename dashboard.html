@@ -3,33 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NEXORA — Portfolio</title>
+<title>NEXORA — Dashboard</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 :root{
-  --bg:#07111f;
-  --card:#0d1a2b;
-  --card2:#101f32;
-  --border:#1c3047;
-  --text:#f5f7fa;
-  --muted:#8d9caf;
+  --bg:#f5f7fb;
+  --card:#ffffff;
+  --text:#101828;
+  --muted:#667085;
+  --border:#e4e7ec;
+  --navy:#071426;
+  --navy2:#0b1d33;
   --gold:#d7ad4b;
   --gold2:#f0c75e;
-  --green:#21c77a;
-  --red:#ef6262;
-  --shadow:0 12px 35px rgba(0,0,0,.22);
+  --green:#12b76a;
+  --red:#f04438;
+  --shadow:0 10px 30px rgba(16,24,40,.07);
 }
 
 *{
   box-sizing:border-box;
   margin:0;
   padding:0;
-}
-
-html{
-  scroll-behavior:smooth;
 }
 
 body{
@@ -59,9 +56,8 @@ a{
 }
 
 .app{
-  width:100%;
   min-height:100vh;
-  padding-bottom:88px;
+  padding-bottom:86px;
 }
 
 /* =========================================================
@@ -73,9 +69,8 @@ a{
   position:sticky;
   top:0;
   z-index:100;
-  background:rgba(7,17,31,.94);
-  backdrop-filter:blur(16px);
-  border-bottom:1px solid rgba(215,173,75,.10);
+  background:rgba(7,20,38,.98);
+  box-shadow:0 3px 15px rgba(0,0,0,.10);
 }
 
 .topbar-inner{
@@ -91,10 +86,10 @@ a{
 .menu-btn{
   width:42px;
   height:42px;
-  border:1px solid var(--border);
+  border:0;
   border-radius:12px;
-  background:var(--card);
-  color:var(--text);
+  background:rgba(255,255,255,.08);
+  color:#fff;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -102,27 +97,28 @@ a{
 }
 
 .logo{
+  color:#fff;
   text-align:center;
   font-size:20px;
-  font-weight:800;
+  font-weight:850;
   letter-spacing:2.5px;
 }
 
 .logo span{
-  color:var(--gold);
+  color:var(--gold2);
 }
 
 .profile-mini{
   width:40px;
   height:40px;
   border-radius:50%;
+  background:rgba(215,173,75,.13);
   border:1px solid rgba(215,173,75,.35);
-  background:var(--card);
+  color:var(--gold2);
   display:flex;
   align-items:center;
   justify-content:center;
-  color:var(--gold2);
-  font-size:13px;
+  font-size:12px;
   font-weight:800;
   justify-self:end;
 }
@@ -134,11 +130,11 @@ a{
 .drawer-overlay{
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.58);
+  background:rgba(0,0,0,.55);
   z-index:200;
   opacity:0;
   visibility:hidden;
-  transition:.2s ease;
+  transition:.22s ease;
 }
 
 .drawer-overlay.show{
@@ -152,8 +148,8 @@ a{
   left:0;
   width:min(310px,86vw);
   height:100vh;
-  background:#091626;
-  border-right:1px solid var(--border);
+  background:#071426;
+  color:#fff;
   z-index:210;
   transform:translateX(-100%);
   transition:.25s ease;
@@ -174,40 +170,41 @@ a{
 
 .drawer-logo{
   font-size:21px;
-  font-weight:800;
+  font-weight:850;
   letter-spacing:2px;
 }
 
 .drawer-logo span{
-  color:var(--gold);
+  color:var(--gold2);
 }
 
 .close-btn{
   width:38px;
   height:38px;
-  border:1px solid var(--border);
+  border:1px solid rgba(255,255,255,.10);
   border-radius:11px;
-  background:var(--card);
-  color:var(--text);
+  background:rgba(255,255,255,.06);
+  color:#fff;
   font-size:21px;
 }
 
 .drawer-profile{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:16px;
   padding:15px;
-  margin-bottom:18px;
+  background:rgba(255,255,255,.055);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:16px;
+  margin-bottom:17px;
 }
 
 .drawer-profile-name{
-  font-weight:700;
+  font-size:14px;
+  font-weight:750;
   margin-bottom:5px;
 }
 
 .drawer-profile-email{
+  color:#98a7ba;
   font-size:12px;
-  color:var(--muted);
   word-break:break-word;
 }
 
@@ -217,17 +214,13 @@ a{
   align-items:center;
   gap:13px;
   padding:13px 12px;
-  border-radius:12px;
   margin-bottom:4px;
-  color:#d8e0ea;
+  border-radius:12px;
+  color:#dce4ed;
   font-size:14px;
 }
 
-.drawer-link:hover{
-  background:var(--card);
-  color:var(--gold2);
-}
-
+.drawer-link:hover,
 .drawer-link.active{
   background:rgba(215,173,75,.10);
   color:var(--gold2);
@@ -241,12 +234,12 @@ a{
 
 .drawer-divider{
   height:1px;
-  background:var(--border);
+  background:rgba(255,255,255,.08);
   margin:15px 5px;
 }
 
 .logout-link{
-  color:#ef7777;
+  color:#ff8c8c;
 }
 
 /* =========================================================
@@ -257,11 +250,11 @@ a{
   width:100%;
   max-width:760px;
   margin:auto;
-  padding:24px 18px 30px;
+  padding:23px 18px 30px;
 }
 
 .welcome{
-  margin-bottom:20px;
+  margin-bottom:18px;
 }
 
 .welcome-small{
@@ -277,7 +270,7 @@ a{
 }
 
 .welcome h1 span{
-  color:var(--gold2);
+  color:#8d6a18;
 }
 
 /* =========================================================
@@ -285,20 +278,15 @@ a{
 ========================================================= */
 
 .card{
-  background:linear-gradient(
-    145deg,
-    rgba(13,26,43,.98),
-    rgba(10,21,35,.98)
-  );
+  background:var(--card);
   border:1px solid var(--border);
   border-radius:18px;
   box-shadow:var(--shadow);
   margin-bottom:16px;
-  overflow:hidden;
 }
 
 .card-head{
-  padding:17px 17px 12px;
+  padding:17px 17px 13px;
   display:flex;
   align-items:center;
   justify-content:space-between;
@@ -306,10 +294,11 @@ a{
 
 .card-title{
   font-size:15px;
-  font-weight:750;
+  font-weight:800;
 }
 
 .card-subtitle{
+  margin-top:3px;
   color:var(--muted);
   font-size:11px;
 }
@@ -318,20 +307,41 @@ a{
    PORTFOLIO
 ========================================================= */
 
-.portfolio-card{
-  padding:20px;
+.portfolio{
+  background:
+    linear-gradient(
+      135deg,
+      #071426 0%,
+      #0d2740 100%
+    );
+  color:#fff;
+  border:0;
+  padding:21px;
   position:relative;
+  overflow:hidden;
+}
+
+.portfolio:after{
+  content:"";
+  position:absolute;
+  width:150px;
+  height:150px;
+  right:-65px;
+  top:-65px;
+  border-radius:50%;
+  border:1px solid rgba(215,173,75,.15);
 }
 
 .portfolio-label{
-  color:var(--muted);
+  color:#aebdcd;
   font-size:12px;
   margin-bottom:8px;
 }
 
 .portfolio-value{
   font-size:34px;
-  font-weight:800;
+  line-height:1.1;
+  font-weight:850;
   letter-spacing:-.8px;
   margin-bottom:20px;
 }
@@ -343,28 +353,31 @@ a{
 }
 
 .portfolio-stat{
-  background:rgba(255,255,255,.025);
-  border:1px solid rgba(255,255,255,.05);
+  background:rgba(255,255,255,.065);
+  border:1px solid rgba(255,255,255,.07);
   border-radius:13px;
-  padding:12px 10px;
+  padding:11px 10px;
 }
 
 .portfolio-stat-label{
-  color:var(--muted);
+  color:#9eafc2;
   font-size:10px;
   margin-bottom:6px;
 }
 
 .portfolio-stat-value{
-  font-size:14px;
+  font-size:13px;
   font-weight:750;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
 
 .status{
-  display:inline-flex;
+  display:flex;
   align-items:center;
   gap:5px;
-  color:var(--green);
+  color:#32d583;
 }
 
 .status-dot{
@@ -375,186 +388,256 @@ a{
 }
 
 /* =========================================================
-   WALLET SEARCH
+   CRYPTO DROPDOWN
 ========================================================= */
 
-.wallet-search-wrap{
-  padding:0 16px 13px;
+.crypto-card{
+  padding-bottom:16px;
 }
 
-.wallet-search{
+.crypto-picker-wrap{
+  padding:0 16px;
+}
+
+.crypto-picker{
+  position:relative;
+}
+
+.crypto-picker-btn{
   width:100%;
-  height:43px;
-  border-radius:12px;
+  min-height:64px;
   border:1px solid var(--border);
-  background:#091726;
-  color:var(--text);
-  outline:none;
-  padding:0 13px;
-  font-size:13px;
-}
-
-.wallet-search::placeholder{
-  color:#68788d;
-}
-
-.wallet-search:focus{
-  border-color:rgba(215,173,75,.55);
-}
-
-/* =========================================================
-   WALLET LIST
-========================================================= */
-
-.wallet-list{
-  border-top:1px solid rgba(255,255,255,.04);
-}
-
-.wallet-row{
-  width:100%;
-  border:0;
-  border-bottom:1px solid rgba(255,255,255,.045);
-  background:transparent;
-  color:var(--text);
-  padding:13px 16px;
+  background:#fff;
+  border-radius:14px;
+  padding:10px 13px;
   display:flex;
   align-items:center;
-  gap:12px;
+  gap:11px;
   text-align:left;
+  color:var(--text);
 }
 
-.wallet-row:last-child{
-  border-bottom:0;
+.crypto-picker-btn:hover{
+  border-color:rgba(215,173,75,.65);
 }
 
-.wallet-row:hover{
-  background:rgba(255,255,255,.025);
+.picker-arrow{
+  margin-left:auto;
+  color:var(--muted);
+  font-size:17px;
+  transition:.2s ease;
 }
 
-.wallet-row.selected{
-  background:rgba(215,173,75,.07);
+.crypto-picker.open .picker-arrow{
+  transform:rotate(180deg);
 }
 
-.coin-logo{
+.selected-coin-logo{
   width:38px;
   height:38px;
-  flex:0 0 38px;
   object-fit:contain;
-  border-radius:50%;
+  flex:0 0 38px;
 }
 
-.coin-fallback{
+.selected-coin-fallback{
   width:38px;
   height:38px;
-  flex:0 0 38px;
   border-radius:50%;
-  background:#17283d;
-  color:var(--gold2);
-  display:flex;
+  background:#edf2f7;
+  color:#8d6a18;
+  display:none;
   align-items:center;
   justify-content:center;
-  font-size:11px;
+  font-size:10px;
   font-weight:800;
+  flex:0 0 38px;
 }
 
-.wallet-info{
+.selected-coin-info{
   min-width:0;
   flex:1;
 }
 
-.wallet-name{
+.selected-coin-name{
   font-size:13px;
-  font-weight:700;
+  font-weight:800;
   margin-bottom:3px;
 }
 
-.wallet-symbol{
-  font-size:11px;
+.selected-coin-symbol{
   color:var(--muted);
+  font-size:11px;
 }
 
-.wallet-balance{
-  text-align:right;
-  font-size:13px;
-  font-weight:700;
-  white-space:nowrap;
+.crypto-menu{
+  position:absolute;
+  left:0;
+  right:0;
+  top:calc(100% + 7px);
+  z-index:50;
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:15px;
+  box-shadow:0 18px 45px rgba(16,24,40,.16);
+  padding:9px;
+  display:none;
+  max-height:310px;
+  overflow-y:auto;
 }
 
-.wallet-balance small{
+.crypto-picker.open .crypto-menu{
   display:block;
+}
+
+.coin-search{
+  width:100%;
+  height:40px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  outline:none;
+  padding:0 11px;
+  color:var(--text);
+  margin-bottom:7px;
+  background:#fafbfc;
+  font-size:12px;
+}
+
+.coin-search:focus{
+  border-color:rgba(215,173,75,.65);
+}
+
+.coin-option{
+  width:100%;
+  min-height:53px;
+  border:0;
+  border-radius:11px;
+  background:transparent;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:7px 8px;
+  text-align:left;
+  color:var(--text);
+}
+
+.coin-option:hover{
+  background:#f6f7f9;
+}
+
+.coin-option.active{
+  background:rgba(215,173,75,.10);
+}
+
+.coin-option-logo{
+  width:32px;
+  height:32px;
+  object-fit:contain;
+  flex:0 0 32px;
+}
+
+.coin-option-info{
+  flex:1;
+  min-width:0;
+}
+
+.coin-option-name{
+  font-size:12px;
+  font-weight:750;
+}
+
+.coin-option-symbol{
+  font-size:10px;
+  color:var(--muted);
+  margin-top:2px;
+}
+
+.coin-option-balance{
   color:var(--muted);
   font-size:10px;
-  font-weight:500;
-  margin-top:3px;
+  text-align:right;
 }
 
-.no-results{
-  padding:25px 16px;
+.coin-check{
+  color:#9a741d;
+  font-size:15px;
+  display:none;
+}
+
+.coin-option.active .coin-check{
+  display:block;
+}
+
+.no-coins{
+  padding:20px;
   text-align:center;
   color:var(--muted);
-  font-size:13px;
+  font-size:12px;
 }
 
 /* =========================================================
-   SELECTED WALLET
+   SELECTED ASSET DETAILS
 ========================================================= */
 
-.selected-wallet{
-  padding:18px;
+.asset-details{
+  margin:16px 16px 0;
+  padding:17px;
+  border-radius:15px;
+  background:#f8fafc;
+  border:1px solid #edf0f4;
 }
 
-.selected-top{
+.asset-details-top{
   display:flex;
   align-items:center;
-  gap:12px;
-  margin-bottom:20px;
+  gap:11px;
+  margin-bottom:16px;
 }
 
-.selected-logo{
-  width:48px;
-  height:48px;
+.asset-logo{
+  width:43px;
+  height:43px;
   object-fit:contain;
 }
 
-.selected-name{
-  font-size:17px;
+.asset-name{
+  font-size:14px;
   font-weight:800;
 }
 
-.selected-symbol{
+.asset-symbol{
   color:var(--muted);
-  font-size:12px;
+  font-size:11px;
   margin-top:3px;
 }
 
-.selected-balance{
-  font-size:27px;
-  font-weight:800;
-  margin-bottom:18px;
+.asset-balance{
+  font-size:25px;
+  font-weight:850;
+  margin-bottom:15px;
 }
 
-.detail-grid{
+.asset-grid{
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:9px;
+  gap:8px;
 }
 
-.detail-item{
-  background:rgba(255,255,255,.025);
-  border:1px solid rgba(255,255,255,.05);
-  border-radius:12px;
-  padding:11px 9px;
+.asset-stat{
+  background:#fff;
+  border:1px solid #edf0f4;
+  border-radius:11px;
+  padding:10px 8px;
 }
 
-.detail-label{
+.asset-stat-label{
   color:var(--muted);
-  font-size:10px;
+  font-size:9px;
   margin-bottom:5px;
 }
 
-.detail-value{
-  font-size:12px;
-  font-weight:700;
+.asset-stat-value{
+  font-size:11px;
+  font-weight:750;
   overflow:hidden;
   text-overflow:ellipsis;
   white-space:nowrap;
@@ -567,44 +650,43 @@ a{
 .quick-grid{
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:10px;
+  gap:9px;
   padding:0 16px 16px;
 }
 
 .quick-action{
-  min-height:92px;
+  min-height:91px;
   border:1px solid var(--border);
-  border-radius:15px;
-  background:#0a1727;
+  background:#fff;
+  border-radius:14px;
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
   gap:8px;
   text-align:center;
-  color:var(--text);
 }
 
 .quick-action:hover{
-  border-color:rgba(215,173,75,.45);
-  background:rgba(215,173,75,.05);
+  border-color:rgba(215,173,75,.65);
+  background:#fffdf7;
 }
 
 .quick-icon{
   width:35px;
   height:35px;
-  border-radius:11px;
+  border-radius:10px;
+  background:rgba(215,173,75,.12);
+  color:#8d6a18;
   display:flex;
   align-items:center;
   justify-content:center;
-  background:rgba(215,173,75,.10);
-  color:var(--gold2);
   font-size:18px;
 }
 
 .quick-label{
-  font-size:11px;
-  font-weight:650;
+  font-size:10px;
+  font-weight:700;
 }
 
 /* =========================================================
@@ -617,10 +699,10 @@ a{
   right:0;
   bottom:0;
   height:70px;
-  background:rgba(7,17,31,.97);
-  backdrop-filter:blur(16px);
-  border-top:1px solid var(--border);
   z-index:150;
+  background:#fff;
+  border-top:1px solid var(--border);
+  box-shadow:0 -5px 20px rgba(16,24,40,.06);
 }
 
 .bottom-inner{
@@ -637,12 +719,12 @@ a{
   align-items:center;
   justify-content:center;
   gap:4px;
-  color:#718197;
+  color:#98a2b3;
   font-size:10px;
 }
 
 .bottom-link.active{
-  color:var(--gold2);
+  color:#8d6a18;
 }
 
 .bottom-icon{
@@ -658,29 +740,30 @@ a{
   position:fixed;
   inset:0;
   z-index:500;
-  background:var(--bg);
+  background:#071426;
+  color:#fff;
   display:flex;
   align-items:center;
   justify-content:center;
   flex-direction:column;
-  gap:12px;
+  gap:13px;
 }
 
 .loading-logo{
   font-size:22px;
-  font-weight:800;
+  font-weight:850;
   letter-spacing:2px;
 }
 
 .loading-logo span{
-  color:var(--gold);
+  color:var(--gold2);
 }
 
 .spinner{
   width:25px;
   height:25px;
-  border:2px solid rgba(215,173,75,.20);
-  border-top-color:var(--gold);
+  border:2px solid rgba(215,173,75,.22);
+  border-top-color:var(--gold2);
   border-radius:50%;
   animation:spin .8s linear infinite;
 }
@@ -692,14 +775,14 @@ a{
 }
 
 .error-box{
-  padding:15px 16px;
-  margin:0 16px 16px;
-  border:1px solid rgba(239,98,98,.25);
-  background:rgba(239,98,98,.06);
-  color:#ff9c9c;
-  border-radius:13px;
-  font-size:12px;
   display:none;
+  margin:0 16px 16px;
+  padding:13px;
+  border-radius:12px;
+  border:1px solid rgba(240,68,56,.20);
+  background:#fff5f4;
+  color:#c43228;
+  font-size:12px;
 }
 
 @media(max-width:430px){
@@ -709,12 +792,20 @@ a{
     padding-right:14px;
   }
 
+  .portfolio{
+    padding:18px;
+  }
+
+  .portfolio-value{
+    font-size:31px;
+  }
+
   .portfolio-grid{
     gap:7px;
   }
 
   .portfolio-stat{
-    padding:10px 8px;
+    padding:10px 7px;
   }
 
   .portfolio-stat-value{
@@ -722,34 +813,26 @@ a{
   }
 
   .quick-grid{
-    gap:7px;
     padding-left:14px;
     padding-right:14px;
   }
 
-  .quick-action{
-    min-height:87px;
-  }
-
-  .detail-grid{
-    gap:7px;
-  }
 }
 
 @media(max-width:350px){
 
-  .portfolio-value{
-    font-size:29px;
+  .portfolio-grid{
+    grid-template-columns:1fr 1fr;
   }
 
-  .wallet-row{
-    padding-left:12px;
-    padding-right:12px;
+  .portfolio-stat:last-child{
+    grid-column:span 2;
   }
 
-  .wallet-balance{
-    font-size:11px;
+  .asset-grid{
+    grid-template-columns:1fr 1fr;
   }
+
 }
 </style>
 </head>
@@ -761,7 +844,9 @@ a{
 ========================================================= -->
 
 <div class="loading-screen" id="loadingScreen">
-  <div class="loading-logo">NEX<span>ORA</span></div>
+  <div class="loading-logo">
+    NEX<span>ORA</span>
+  </div>
   <div class="spinner"></div>
 </div>
 
@@ -772,9 +857,14 @@ a{
 ========================================================= -->
 
 <header class="topbar">
+
   <div class="topbar-inner">
 
-    <button class="menu-btn" id="menuBtn" aria-label="Open menu">
+    <button
+      class="menu-btn"
+      id="menuBtn"
+      aria-label="Open menu"
+    >
       ☰
     </button>
 
@@ -782,89 +872,153 @@ a{
       NEX<span>ORA</span>
     </a>
 
-    <div class="profile-mini" id="profileInitials">
+    <div
+      class="profile-mini"
+      id="profileInitials"
+    >
       U
     </div>
 
   </div>
+
 </header>
+
 
 <!-- =========================================================
      DRAWER
 ========================================================= -->
 
-<div class="drawer-overlay" id="drawerOverlay"></div>
+<div
+  class="drawer-overlay"
+  id="drawerOverlay"
+></div>
 
-<aside class="drawer" id="drawer">
+<aside
+  class="drawer"
+  id="drawer"
+>
 
   <div class="drawer-head">
+
     <div class="drawer-logo">
       NEX<span>ORA</span>
     </div>
 
-    <button class="close-btn" id="closeDrawer">
+    <button
+      class="close-btn"
+      id="closeDrawer"
+    >
       ×
     </button>
+
   </div>
 
+
   <div class="drawer-profile">
-    <div class="drawer-profile-name" id="drawerName">
+
+    <div
+      class="drawer-profile-name"
+      id="drawerName"
+    >
       User
     </div>
 
-    <div class="drawer-profile-email" id="drawerEmail">
-      —
+    <div
+      class="drawer-profile-email"
+      id="drawerEmail"
+    >
+      Loading...
     </div>
+
   </div>
 
-  <a href="dashboard.html" class="drawer-link active">
+
+  <a
+    href="dashboard.html"
+    class="drawer-link active"
+  >
     <span class="drawer-icon">⌂</span>
     <span>Portfolio</span>
   </a>
 
-  <a href="deposit.html" class="drawer-link">
+
+  <a
+    href="deposit.html"
+    class="drawer-link"
+  >
     <span class="drawer-icon">＋</span>
     <span>Deposit</span>
   </a>
 
-  <a href="withdraw.html" class="drawer-link">
+
+  <a
+    href="withdraw.html"
+    class="drawer-link"
+  >
     <span class="drawer-icon">↗</span>
     <span>Withdraw</span>
   </a>
 
-  <a href="transactions.html" class="drawer-link">
+
+  <a
+    href="transactions.html"
+    class="drawer-link"
+  >
     <span class="drawer-icon">≡</span>
     <span>Transactions</span>
   </a>
 
-  <a href="referrals.html" class="drawer-link">
+
+  <a
+    href="referrals.html"
+    class="drawer-link"
+  >
     <span class="drawer-icon">♧</span>
     <span>Referrals</span>
   </a>
 
-  <a href="profile.html" class="drawer-link">
+
+  <a
+    href="profile.html"
+    class="drawer-link"
+  >
     <span class="drawer-icon">◉</span>
     <span>Profile</span>
   </a>
 
-  <a href="support.html" class="drawer-link">
+
+  <a
+    href="support.html"
+    class="drawer-link"
+  >
     <span class="drawer-icon">?</span>
     <span>Support</span>
   </a>
 
-  <a href="notifications.html" class="drawer-link">
+
+  <a
+    href="notifications.html"
+    class="drawer-link"
+  >
     <span class="drawer-icon">♢</span>
     <span>Notifications</span>
   </a>
 
+
   <div class="drawer-divider"></div>
 
-  <a href="#" class="drawer-link logout-link" id="logoutBtn">
+
+  <a
+    href="#"
+    class="drawer-link logout-link"
+    id="logoutBtn"
+  >
     <span class="drawer-icon">↪</span>
     <span>Logout</span>
   </a>
 
 </aside>
+
 
 <!-- =========================================================
      MAIN
@@ -873,173 +1027,284 @@ a{
 <main class="main">
 
   <section class="welcome">
+
     <div class="welcome-small">
       Welcome back
     </div>
 
     <h1>
-      <span id="welcomeName">User</span>
+      <span id="welcomeName">
+        User
+      </span>
     </h1>
+
   </section>
+
 
   <!-- =======================================================
        PORTFOLIO
   ======================================================== -->
 
-  <section class="card portfolio-card">
+  <section class="card portfolio">
 
     <div class="portfolio-label">
       Total Portfolio Value
     </div>
 
-    <div class="portfolio-value" id="portfolioValue">
+    <div
+      class="portfolio-value"
+      id="portfolioValue"
+    >
       $0.00
     </div>
+
 
     <div class="portfolio-grid">
 
       <div class="portfolio-stat">
+
         <div class="portfolio-stat-label">
           Available
         </div>
 
-        <div class="portfolio-stat-value" id="availableValue">
+        <div
+          class="portfolio-stat-value"
+          id="availableValue"
+        >
           $0.00
         </div>
+
       </div>
 
+
       <div class="portfolio-stat">
+
         <div class="portfolio-stat-label">
           Invested
         </div>
 
-        <div class="portfolio-stat-value" id="investedValue">
+        <div
+          class="portfolio-stat-value"
+          id="investedValue"
+        >
           $0.00
         </div>
+
       </div>
 
+
       <div class="portfolio-stat">
+
         <div class="portfolio-stat-label">
           Account
         </div>
 
-        <div class="portfolio-stat-value status" id="accountStatus">
+        <div
+          class="portfolio-stat-value status"
+          id="accountStatus"
+        >
           <span class="status-dot"></span>
           ACTIVE
         </div>
+
       </div>
 
     </div>
 
   </section>
 
+
   <!-- =======================================================
-       REAL WALLETS
+       CRYPTO ASSETS
   ======================================================== -->
 
-  <section class="card">
+  <section class="card crypto-card">
 
     <div class="card-head">
 
       <div>
+
         <div class="card-title">
           Crypto Assets
         </div>
 
         <div class="card-subtitle">
-          Your wallet balances
+          Select a wallet
         </div>
+
       </div>
 
     </div>
 
-    <div class="wallet-search-wrap">
 
-      <input
-        type="search"
-        id="walletSearch"
-        class="wallet-search"
-        placeholder="Search crypto..."
-        autocomplete="off"
+    <div class="crypto-picker-wrap">
+
+      <div
+        class="crypto-picker"
+        id="cryptoPicker"
       >
+
+        <button
+          type="button"
+          class="crypto-picker-btn"
+          id="cryptoPickerBtn"
+        >
+
+          <img
+            src=""
+            class="selected-coin-logo"
+            id="selectedCoinLogo"
+            alt=""
+          >
+
+          <div
+            class="selected-coin-fallback"
+            id="selectedCoinFallback"
+          >
+            USDT
+          </div>
+
+          <div class="selected-coin-info">
+
+            <div
+              class="selected-coin-name"
+              id="selectedCoinName"
+            >
+              Tether
+            </div>
+
+            <div
+              class="selected-coin-symbol"
+              id="selectedCoinSymbol"
+            >
+              USDT
+            </div>
+
+          </div>
+
+          <div class="picker-arrow">
+            ▾
+          </div>
+
+        </button>
+
+
+        <div class="crypto-menu">
+
+          <input
+            type="search"
+            id="coinSearch"
+            class="coin-search"
+            placeholder="Search crypto..."
+            autocomplete="off"
+          >
+
+          <div id="coinOptions"></div>
+
+        </div>
+
+      </div>
 
     </div>
 
-    <div class="wallet-list" id="walletList"></div>
+
+    <!-- SELECTED WALLET -->
+
+    <div class="asset-details">
+
+      <div class="asset-details-top">
+
+        <img
+          id="assetLogo"
+          class="asset-logo"
+          src=""
+          alt=""
+        >
+
+        <div>
+
+          <div
+            class="asset-name"
+            id="assetName"
+          >
+            Tether
+          </div>
+
+          <div
+            class="asset-symbol"
+            id="assetSymbol"
+          >
+            USDT
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div
+        class="asset-balance"
+        id="assetBalance"
+      >
+        0 USDT
+      </div>
+
+
+      <div class="asset-grid">
+
+        <div class="asset-stat">
+
+          <div class="asset-stat-label">
+            Available
+          </div>
+
+          <div
+            class="asset-stat-value"
+            id="assetAvailable"
+          >
+            0 USDT
+          </div>
+
+        </div>
+
+
+        <div class="asset-stat">
+
+          <div class="asset-stat-label">
+            Principal
+          </div>
+
+          <div
+            class="asset-stat-value"
+            id="assetPrincipal"
+          >
+            0 USDT
+          </div>
+
+        </div>
+
+
+        <div class="asset-stat">
+
+          <div class="asset-stat-label">
+            Locked
+          </div>
+
+          <div
+            class="asset-stat-value"
+            id="assetLocked"
+          >
+            0 USDT
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
 
   </section>
 
-  <!-- =======================================================
-       SELECTED WALLET
-  ======================================================== -->
-
-  <section class="card selected-wallet">
-
-    <div class="selected-top">
-
-      <img
-        id="selectedLogo"
-        class="selected-logo"
-        alt=""
-      >
-
-      <div>
-        <div class="selected-name" id="selectedName">
-          USDT
-        </div>
-
-        <div class="selected-symbol" id="selectedSymbol">
-          Tether
-        </div>
-      </div>
-
-    </div>
-
-    <div class="selected-balance" id="selectedBalance">
-      0 USDT
-    </div>
-
-    <div class="detail-grid">
-
-      <div class="detail-item">
-
-        <div class="detail-label">
-          Available
-        </div>
-
-        <div class="detail-value" id="selectedAvailable">
-          0
-        </div>
-
-      </div>
-
-      <div class="detail-item">
-
-        <div class="detail-label">
-          Principal
-        </div>
-
-        <div class="detail-value" id="selectedPrincipal">
-          0
-        </div>
-
-      </div>
-
-      <div class="detail-item">
-
-        <div class="detail-label">
-          Locked
-        </div>
-
-        <div class="detail-value" id="selectedLocked">
-          0
-        </div>
-
-      </div>
-
-    </div>
-
-  </section>
 
   <!-- =======================================================
        QUICK ACTIONS
@@ -1048,14 +1313,20 @@ a{
   <section class="card">
 
     <div class="card-head">
+
       <div class="card-title">
         Quick Actions
       </div>
+
     </div>
+
 
     <div class="quick-grid">
 
-      <a href="swap.html" class="quick-action">
+      <a
+        href="swap.html"
+        class="quick-action"
+      >
 
         <div class="quick-icon">
           ⇄
@@ -1067,7 +1338,11 @@ a{
 
       </a>
 
-      <a href="deposit.html" class="quick-action">
+
+      <a
+        href="deposit.html"
+        class="quick-action"
+      >
 
         <div class="quick-icon">
           ＋
@@ -1079,7 +1354,11 @@ a{
 
       </a>
 
-      <a href="withdraw.html" class="quick-action">
+
+      <a
+        href="withdraw.html"
+        class="quick-action"
+      >
 
         <div class="quick-icon">
           ↗
@@ -1095,9 +1374,14 @@ a{
 
   </section>
 
-  <div class="error-box" id="errorBox"></div>
+
+  <div
+    class="error-box"
+    id="errorBox"
+  ></div>
 
 </main>
+
 
 <!-- =========================================================
      BOTTOM NAV
@@ -1107,22 +1391,37 @@ a{
 
   <div class="bottom-inner">
 
-    <a href="dashboard.html" class="bottom-link active">
+    <a
+      href="dashboard.html"
+      class="bottom-link active"
+    >
       <span class="bottom-icon">⌂</span>
       <span>Portfolio</span>
     </a>
 
-    <a href="deposit.html" class="bottom-link">
+
+    <a
+      href="deposit.html"
+      class="bottom-link"
+    >
       <span class="bottom-icon">＋</span>
       <span>Deposit</span>
     </a>
 
-    <a href="transactions.html" class="bottom-link">
+
+    <a
+      href="transactions.html"
+      class="bottom-link"
+    >
       <span class="bottom-icon">≡</span>
       <span>History</span>
     </a>
 
-    <a href="profile.html" class="bottom-link">
+
+    <a
+      href="profile.html"
+      class="bottom-link"
+    >
       <span class="bottom-icon">○</span>
       <span>Account</span>
     </a>
@@ -1132,6 +1431,7 @@ a{
 </nav>
 
 </div>
+
 
 <script>
 /* =========================================================
@@ -1144,10 +1444,11 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
   "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
 
-const db = supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
+const db =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
 
 
 /* =========================================================
@@ -1226,8 +1527,8 @@ const assets = [
 ========================================================= */
 
 let currentUser = null;
-let profileData = null;
-let walletData = {};
+let profile = null;
+let wallets = {};
 let selectedAsset = "USDT";
 
 
@@ -1237,6 +1538,16 @@ let selectedAsset = "USDT";
 
 function $(id){
   return document.getElementById(id);
+}
+
+
+function logoURL(asset){
+
+  return (
+    LOGO_BASE +
+    (logoFiles[asset] || `${asset}.svg`)
+  );
+
 }
 
 
@@ -1254,6 +1565,7 @@ function formatNumber(value){
       maximumFractionDigits:18
     }
   );
+
 }
 
 
@@ -1274,14 +1586,6 @@ function formatUSD(value){
       maximumFractionDigits:2
     }
   );
-}
-
-
-function getLogo(asset){
-
-  return LOGO_BASE + (
-    logoFiles[asset] || `${asset}.svg`
-  );
 
 }
 
@@ -1292,13 +1596,18 @@ function initials(name){
     return "U";
   }
 
-  const parts = name
-    .trim()
-    .split(/\s+/)
-    .filter(Boolean);
+  const parts =
+    String(name)
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean);
 
   if(parts.length === 1){
-    return parts[0].slice(0,2).toUpperCase();
+
+    return parts[0]
+      .slice(0,2)
+      .toUpperCase();
+
   }
 
   return (
@@ -1309,21 +1618,19 @@ function initials(name){
 }
 
 
-function escapeHTML(value){
+function walletFor(asset){
 
-  return String(value ?? "")
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
+  return wallets[asset] || {
+
+    available:0,
+    locked:0,
+    principal:0,
+    profit:0
+
+  };
 
 }
 
-
-/* =========================================================
-   ERROR
-========================================================= */
 
 function showError(message){
 
@@ -1339,7 +1646,7 @@ function showError(message){
    AUTH
 ========================================================= */
 
-async function loadUser(){
+async function getAuthenticatedUser(){
 
   const {
     data,
@@ -1352,12 +1659,15 @@ async function loadUser(){
 
   if(!data.session){
 
-    window.location.href = "signin.html";
+    window.location.href =
+      "signin.html";
+
     return false;
 
   }
 
-  currentUser = data.session.user;
+  currentUser =
+    data.session.user;
 
   return true;
 
@@ -1365,7 +1675,7 @@ async function loadUser(){
 
 
 /* =========================================================
-   PROFILE
+   LOAD PROFILE
 ========================================================= */
 
 async function loadProfile(){
@@ -1375,69 +1685,91 @@ async function loadProfile(){
     error
   } = await db
     .from("profiles")
-    .select(`
-      id,
-      full_name,
-      email,
-      account_status
-    `)
-    .eq("id", currentUser.id)
+    .select(
+      "id,full_name,email,account_status"
+    )
+    .eq(
+      "id",
+      currentUser.id
+    )
     .maybeSingle();
 
   if(error){
     throw error;
   }
 
-  profileData = data || {};
+  profile = data || {};
 
   const name =
-    profileData.full_name ||
+    profile.full_name ||
     currentUser.user_metadata?.full_name ||
     "User";
 
   const email =
-    profileData.email ||
+    profile.email ||
     currentUser.email ||
     "";
 
-  $("welcomeName").textContent = name;
-  $("drawerName").textContent = name;
-  $("drawerEmail").textContent = email;
-  $("profileInitials").textContent = initials(name);
+  $("welcomeName").textContent =
+    name;
 
-  const status =
-    profileData.account_status ||
-    "ACTIVE";
+  $("drawerName").textContent =
+    name;
 
-  setAccountStatus(status);
+  $("drawerEmail").textContent =
+    email;
+
+  $("profileInitials").textContent =
+    initials(name);
+
+
+  /*
+    Real account status from Supabase.
+    ACTIVE is only the fallback when no
+    profile status is returned.
+  */
+
+  setAccountStatus(
+    profile.account_status ||
+    "ACTIVE"
+  );
 
 }
 
 
+/* =========================================================
+   ACCOUNT STATUS
+========================================================= */
+
 function setAccountStatus(status){
 
-  const element = $("accountStatus");
+  const element =
+    $("accountStatus");
 
-  const normalized =
-    String(status || "ACTIVE").toUpperCase();
+  const value =
+    String(status || "ACTIVE")
+      .toUpperCase();
 
   element.innerHTML =
-    `<span class="status-dot"></span>${escapeHTML(normalized)}`;
+    `<span class="status-dot"></span>${value}`;
 
-  if(normalized === "ACTIVE"){
+  if(value === "ACTIVE"){
 
-    element.style.color = "var(--green)";
+    element.style.color =
+      "#32d583";
 
   }else if(
-    normalized === "SUSPENDED" ||
-    normalized === "CLOSED"
+    value === "SUSPENDED" ||
+    value === "CLOSED"
   ){
 
-    element.style.color = "var(--red)";
+    element.style.color =
+      "#ff7777";
 
   }else{
 
-    element.style.color = "var(--gold2)";
+    element.style.color =
+      "#f0c75e";
 
   }
 
@@ -1445,7 +1777,7 @@ function setAccountStatus(status){
 
 
 /* =========================================================
-   WALLETS
+   LOAD REAL WALLETS
 ========================================================= */
 
 async function loadWallets(){
@@ -1462,263 +1794,79 @@ async function loadWallets(){
       principal_balance,
       profit_balance
     `)
-    .eq("user_id", currentUser.id);
+    .eq(
+      "user_id",
+      currentUser.id
+    );
 
   if(error){
     throw error;
   }
 
-  walletData = {};
+  wallets = {};
 
-  for(const row of (data || [])){
+  for(
+    const row of (data || [])
+  ){
 
-    walletData[row.asset] = {
-
-      asset: row.asset,
+    wallets[row.asset] = {
 
       available:
-        Number(row.available_balance || 0),
+        Number(
+          row.available_balance || 0
+        ),
 
       locked:
-        Number(row.locked_balance || 0),
+        Number(
+          row.locked_balance || 0
+        ),
 
       principal:
-        Number(row.principal_balance || 0),
+        Number(
+          row.principal_balance || 0
+        ),
 
       profit:
-        Number(row.profit_balance || 0)
+        Number(
+          row.profit_balance || 0
+        )
 
     };
 
   }
-
-  renderWallets();
-  updatePortfolio();
-  renderSelectedWallet();
-
-}
-
-
-/* =========================================================
-   GET WALLET
-========================================================= */
-
-function getWallet(asset){
-
-  return walletData[asset] || {
-
-    asset,
-
-    available:0,
-    locked:0,
-    principal:0,
-    profit:0
-
-  };
-
-}
-
-
-/* =========================================================
-   WALLET LIST
-========================================================= */
-
-function renderWallets(){
-
-  const list = $("walletList");
-
-  const search =
-    $("walletSearch")
-      .value
-      .trim()
-      .toLowerCase();
-
-  const filtered =
-    assets.filter(([symbol,name]) => {
-
-      if(!search){
-        return true;
-      }
-
-      return (
-        symbol.toLowerCase().includes(search) ||
-        name.toLowerCase().includes(search)
-      );
-
-    });
-
-  if(filtered.length === 0){
-
-    list.innerHTML =
-      `<div class="no-results">
-        No wallet found.
-      </div>`;
-
-    return;
-
-  }
-
-  list.innerHTML = filtered
-    .map(([symbol,name]) => {
-
-      const wallet = getWallet(symbol);
-
-      const total =
-        wallet.available +
-        wallet.locked;
-
-      return `
-        <button
-          class="wallet-row ${selectedAsset === symbol ? "selected" : ""}"
-          data-asset="${escapeHTML(symbol)}"
-        >
-
-          <img
-            class="coin-logo"
-            src="${getLogo(symbol)}"
-            alt="${escapeHTML(symbol)}"
-            onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
-          >
-
-          <div
-            class="coin-fallback"
-            style="display:none"
-          >
-            ${escapeHTML(symbol.slice(0,3))}
-          </div>
-
-          <div class="wallet-info">
-
-            <div class="wallet-name">
-              ${escapeHTML(name)}
-            </div>
-
-            <div class="wallet-symbol">
-              ${escapeHTML(symbol)}
-            </div>
-
-          </div>
-
-          <div class="wallet-balance">
-
-            ${formatNumber(total)} ${escapeHTML(symbol)}
-
-            <small>
-              Available ${formatNumber(wallet.available)}
-            </small>
-
-          </div>
-
-        </button>
-      `;
-
-    })
-    .join("");
-
-  list
-    .querySelectorAll(".wallet-row")
-    .forEach(button => {
-
-      button.addEventListener(
-        "click",
-        () => {
-
-          selectedAsset =
-            button.dataset.asset;
-
-          renderWallets();
-          renderSelectedWallet();
-
-        }
-      );
-
-    });
-
-}
-
-
-/* =========================================================
-   SELECTED WALLET
-========================================================= */
-
-function renderSelectedWallet(){
-
-  const asset =
-    assets.find(
-      item => item[0] === selectedAsset
-    );
-
-  if(!asset){
-    return;
-  }
-
-  const symbol = asset[0];
-  const name = asset[1];
-
-  const wallet =
-    getWallet(symbol);
-
-  const logo =
-    $("selectedLogo");
-
-  logo.src = getLogo(symbol);
-  logo.alt = symbol;
-
-  logo.onerror = function(){
-
-    this.onerror = null;
-
-    this.style.display = "none";
-
-  };
-
-  $("selectedName").textContent =
-    name;
-
-  $("selectedSymbol").textContent =
-    symbol;
-
-  const total =
-    wallet.available +
-    wallet.locked;
-
-  $("selectedBalance").textContent =
-    `${formatNumber(total)} ${symbol}`;
-
-  $("selectedAvailable").textContent =
-    `${formatNumber(wallet.available)} ${symbol}`;
-
-  $("selectedPrincipal").textContent =
-    `${formatNumber(wallet.principal)} ${symbol}`;
-
-  $("selectedLocked").textContent =
-    `${formatNumber(wallet.locked)} ${symbol}`;
 
 }
 
 
 /* =========================================================
    PORTFOLIO
-=========================================================
-
-   Only USDT has a direct USD-equivalent value here.
-   Other crypto balances are NOT converted using fake prices.
 ========================================================= */
 
-function updatePortfolio(){
+function renderPortfolio(){
+
+  /*
+    USDT is already USD-denominated,
+    so its actual wallet amount can be
+    represented directly in USD.
+
+    No fake prices are used for other
+    cryptocurrencies.
+  */
 
   const usdt =
-    getWallet("USDT");
+    walletFor("USDT");
 
   const available =
     usdt.available;
 
-  const principal =
-    usdt.principal;
+  const locked =
+    usdt.locked;
 
   const total =
-    usdt.available +
-    usdt.locked;
+    available + locked;
+
+  const invested =
+    usdt.principal;
 
   $("portfolioValue").textContent =
     formatUSD(total);
@@ -1727,9 +1875,332 @@ function updatePortfolio(){
     formatUSD(available);
 
   $("investedValue").textContent =
-    formatUSD(principal);
+    formatUSD(invested);
 
 }
+
+
+/* =========================================================
+   CRYPTO PICKER
+========================================================= */
+
+function renderCoinOptions(){
+
+  const container =
+    $("coinOptions");
+
+  const query =
+    $("coinSearch")
+      .value
+      .trim()
+      .toLowerCase();
+
+  const filtered =
+    assets.filter(
+      ([symbol,name]) => {
+
+        if(!query){
+          return true;
+        }
+
+        return (
+          symbol
+            .toLowerCase()
+            .includes(query) ||
+
+          name
+            .toLowerCase()
+            .includes(query)
+        );
+
+      }
+    );
+
+
+  if(filtered.length === 0){
+
+    container.innerHTML =
+      `<div class="no-coins">
+        No cryptocurrency found.
+      </div>`;
+
+    return;
+
+  }
+
+
+  container.innerHTML =
+    filtered
+      .map(
+        ([symbol,name]) => {
+
+          const wallet =
+            walletFor(symbol);
+
+          const total =
+            wallet.available +
+            wallet.locked;
+
+          return `
+            <button
+              type="button"
+              class="coin-option ${
+                selectedAsset === symbol
+                  ? "active"
+                  : ""
+              }"
+              data-asset="${symbol}"
+            >
+
+              <img
+                class="coin-option-logo"
+                src="${logoURL(symbol)}"
+                alt="${symbol}"
+                onerror="this.style.display='none'"
+              >
+
+              <div class="coin-option-info">
+
+                <div class="coin-option-name">
+                  ${name}
+                </div>
+
+                <div class="coin-option-symbol">
+                  ${symbol}
+                </div>
+
+              </div>
+
+              <div class="coin-option-balance">
+                ${formatNumber(total)} ${symbol}
+              </div>
+
+              <div class="coin-check">
+                ✓
+              </div>
+
+            </button>
+          `;
+
+        }
+      )
+      .join("");
+
+
+  container
+    .querySelectorAll(".coin-option")
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            selectedAsset =
+              button.dataset.asset;
+
+            renderSelectedAsset();
+            renderCoinOptions();
+
+            closePicker();
+
+          }
+        );
+
+      }
+    );
+
+}
+
+
+/* =========================================================
+   SELECTED ASSET
+========================================================= */
+
+function renderSelectedAsset(){
+
+  const item =
+    assets.find(
+      ([symbol]) =>
+        symbol === selectedAsset
+    );
+
+  if(!item){
+    return;
+  }
+
+  const symbol =
+    item[0];
+
+  const name =
+    item[1];
+
+  const wallet =
+    walletFor(symbol);
+
+  const total =
+    wallet.available +
+    wallet.locked;
+
+
+  $("selectedCoinName").textContent =
+    name;
+
+  $("selectedCoinSymbol").textContent =
+    symbol;
+
+
+  const selectedLogo =
+    $("selectedCoinLogo");
+
+  selectedLogo.src =
+    logoURL(symbol);
+
+  selectedLogo.alt =
+    symbol;
+
+  selectedLogo.style.display =
+    "block";
+
+
+  selectedLogo.onerror =
+    function(){
+
+      this.style.display =
+        "none";
+
+      $("selectedCoinFallback")
+        .style.display =
+        "flex";
+
+    };
+
+
+  $("selectedCoinFallback")
+    .textContent =
+    symbol.slice(0,3);
+
+
+  const assetLogo =
+    $("assetLogo");
+
+  assetLogo.src =
+    logoURL(symbol);
+
+  assetLogo.alt =
+    symbol;
+
+  assetLogo.style.display =
+    "block";
+
+
+  assetLogo.onerror =
+    function(){
+
+      this.style.display =
+        "none";
+
+    };
+
+
+  $("assetName").textContent =
+    name;
+
+  $("assetSymbol").textContent =
+    symbol;
+
+  $("assetBalance").textContent =
+    `${formatNumber(total)} ${symbol}`;
+
+  $("assetAvailable").textContent =
+    `${formatNumber(wallet.available)} ${symbol}`;
+
+  $("assetPrincipal").textContent =
+    `${formatNumber(wallet.principal)} ${symbol}`;
+
+  $("assetLocked").textContent =
+    `${formatNumber(wallet.locked)} ${symbol}`;
+
+}
+
+
+/* =========================================================
+   PICKER OPEN/CLOSE
+========================================================= */
+
+function openPicker(){
+
+  $("cryptoPicker")
+    .classList.add("open");
+
+  renderCoinOptions();
+
+  setTimeout(
+    () => $("coinSearch").focus(),
+    30
+  );
+
+}
+
+
+function closePicker(){
+
+  $("cryptoPicker")
+    .classList.remove("open");
+
+}
+
+
+$("cryptoPickerBtn")
+  .addEventListener(
+    "click",
+    event => {
+
+      event.stopPropagation();
+
+      const picker =
+        $("cryptoPicker");
+
+      if(
+        picker.classList.contains("open")
+      ){
+
+        closePicker();
+
+      }else{
+
+        openPicker();
+
+      }
+
+    }
+  );
+
+
+$("coinSearch")
+  .addEventListener(
+    "input",
+    renderCoinOptions
+  );
+
+
+document.addEventListener(
+  "click",
+  event => {
+
+    const picker =
+      $("cryptoPicker");
+
+    if(
+      !picker.contains(event.target)
+    ){
+
+      closePicker();
+
+    }
+
+  }
+);
 
 
 /* =========================================================
@@ -1738,67 +2209,101 @@ function updatePortfolio(){
 
 function openDrawer(){
 
-  $("drawer").classList.add("show");
-  $("drawerOverlay").classList.add("show");
+  $("drawer")
+    .classList.add("show");
+
+  $("drawerOverlay")
+    .classList.add("show");
 
 }
 
 
 function closeDrawer(){
 
-  $("drawer").classList.remove("show");
-  $("drawerOverlay").classList.remove("show");
+  $("drawer")
+    .classList.remove("show");
+
+  $("drawerOverlay")
+    .classList.remove("show");
 
 }
 
 
-$("menuBtn").addEventListener(
-  "click",
-  openDrawer
-);
+$("menuBtn")
+  .addEventListener(
+    "click",
+    openDrawer
+  );
 
 
-$("closeDrawer").addEventListener(
-  "click",
-  closeDrawer
-);
+$("closeDrawer")
+  .addEventListener(
+    "click",
+    closeDrawer
+  );
 
 
-$("drawerOverlay").addEventListener(
-  "click",
-  closeDrawer
-);
+$("drawerOverlay")
+  .addEventListener(
+    "click",
+    closeDrawer
+  );
 
 
 /* =========================================================
    LOGOUT
 ========================================================= */
 
-$("logoutBtn").addEventListener(
-  "click",
-  async event => {
+$("logoutBtn")
+  .addEventListener(
+    "click",
+    async event => {
 
-    event.preventDefault();
+      event.preventDefault();
 
-    closeDrawer();
+      try{
 
-    await db.auth.signOut();
+        await db.auth.signOut();
 
-    window.location.href =
-      "signin.html";
+      }finally{
 
-  }
-);
+        window.location.href =
+          "signin.html";
+
+      }
+
+    }
+  );
 
 
 /* =========================================================
-   SEARCH
+   REFRESH WALLET DATA
 ========================================================= */
 
-$("walletSearch").addEventListener(
-  "input",
-  renderWallets
-);
+async function refreshWalletData(){
+
+  if(!currentUser){
+    return;
+  }
+
+  try{
+
+    await loadWallets();
+
+    renderPortfolio();
+    renderSelectedAsset();
+    renderCoinOptions();
+
+  }catch(error){
+
+    console.error(
+      "Wallet refresh error:",
+      error
+    );
+
+  }
+
+}
 
 
 /* =========================================================
@@ -1809,8 +2314,7 @@ db.auth.onAuthStateChange(
   (event, session) => {
 
     if(
-      event === "SIGNED_OUT" &&
-      window.location.pathname.includes("dashboard")
+      event === "SIGNED_OUT"
     ){
 
       window.location.href =
@@ -1823,34 +2327,7 @@ db.auth.onAuthStateChange(
 
 
 /* =========================================================
-   REFRESH
-========================================================= */
-
-async function refreshWallets(){
-
-  if(!currentUser){
-    return;
-  }
-
-  try{
-
-    await loadWallets();
-
-  }catch(error){
-
-    console.error(error);
-
-    showError(
-      "Unable to refresh your wallet balances."
-    );
-
-  }
-
-}
-
-
-/* =========================================================
-   INIT
+   INITIALIZE
 ========================================================= */
 
 async function init(){
@@ -1858,29 +2335,57 @@ async function init(){
   try{
 
     const authenticated =
-      await loadUser();
+      await getAuthenticatedUser();
 
     if(!authenticated){
       return;
     }
 
+
     /*
-      Load the real profile before removing
-      the loading screen so the dashboard
-      does not briefly show the wrong status.
+      Profile first so ACTIVE status
+      is loaded from Supabase before
+      the dashboard becomes visible.
     */
+
     await loadProfile();
+
+
+    /*
+      Load actual wallet rows.
+    */
 
     await loadWallets();
 
-    $("loadingScreen").style.display =
+
+    /*
+      Render everything.
+    */
+
+    renderPortfolio();
+    renderSelectedAsset();
+    renderCoinOptions();
+
+
+    /*
+      Remove loading screen only after
+      Supabase data has been loaded.
+    */
+
+    $("loadingScreen")
+      .style.display =
       "none";
+
 
   }catch(error){
 
-    console.error(error);
+    console.error(
+      "Dashboard initialization error:",
+      error
+    );
 
-    $("loadingScreen").style.display =
+    $("loadingScreen")
+      .style.display =
       "none";
 
     showError(
@@ -1893,25 +2398,25 @@ async function init(){
 
 
 /* =========================================================
-   PERIODIC WALLET REFRESH
+   AUTO REFRESH
 ========================================================= */
 
 setInterval(
-  refreshWallets,
+  refreshWalletData,
   30000
 );
 
 
-/* Refresh when returning to the page */
 document.addEventListener(
   "visibilitychange",
   () => {
 
     if(
-      document.visibilityState === "visible"
+      document.visibilityState ===
+      "visible"
     ){
 
-      refreshWallets();
+      refreshWalletData();
 
     }
 
@@ -1919,7 +2424,10 @@ document.addEventListener(
 );
 
 
-/* START */
+/* =========================================================
+   START
+========================================================= */
+
 init();
 
 </script>
