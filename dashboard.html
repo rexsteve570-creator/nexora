@@ -10,17 +10,17 @@
 <style>
 :root{
   --bg:#07111f;
-  --bg2:#0a1626;
+  --bg2:#091626;
   --card:#0d1b2d;
-  --card2:#101f33;
+  --card2:#112238;
   --border:rgba(255,255,255,.08);
   --text:#f5f7fa;
-  --muted:#8e9aaa;
+  --muted:#8d9aaa;
   --gold:#d9a441;
   --gold2:#f0c866;
-  --green:#31c48d;
+  --green:#32c48d;
   --red:#ef6b73;
-  --shadow:0 18px 50px rgba(0,0,0,.25);
+  --shadow:0 18px 50px rgba(0,0,0,.28);
 }
 
 *{
@@ -35,19 +35,14 @@ html,body{
 
 body{
   background:
-    radial-gradient(circle at top right,rgba(217,164,65,.07),transparent 30%),
-    linear-gradient(180deg,var(--bg),#050c16);
+    radial-gradient(circle at 90% 0%,rgba(217,164,65,.09),transparent 30%),
+    linear-gradient(180deg,#07111f,#050c15);
   color:var(--text);
   font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
 }
 
-button,
-select,
-input{
-  font:inherit;
-}
-
 button{
+  font:inherit;
   cursor:pointer;
 }
 
@@ -78,10 +73,9 @@ button{
 }
 
 .loading-logo{
-  font-size:28px;
-  font-weight:800;
+  font-size:29px;
+  font-weight:850;
   letter-spacing:2px;
-  color:#fff;
 }
 
 .loading-logo span{
@@ -91,15 +85,17 @@ button{
 .spinner{
   width:28px;
   height:28px;
-  border:3px solid rgba(217,164,65,.2);
+  border:3px solid rgba(217,164,65,.18);
   border-top-color:var(--gold);
   border-radius:50%;
-  animation:spin .8s linear infinite;
   margin:20px auto 0;
+  animation:spin .8s linear infinite;
 }
 
 @keyframes spin{
-  to{transform:rotate(360deg)}
+  to{
+    transform:rotate(360deg);
+  }
 }
 
 /* =========================
@@ -111,8 +107,8 @@ button{
   position:sticky;
   top:0;
   z-index:100;
-  background:rgba(7,17,31,.92);
-  backdrop-filter:blur(16px);
+  background:rgba(7,17,31,.94);
+  backdrop-filter:blur(18px);
   border-bottom:1px solid var(--border);
 }
 
@@ -132,9 +128,6 @@ button{
   background:transparent;
   color:#fff;
   font-size:25px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
 }
 
 .logo{
@@ -154,10 +147,10 @@ button{
   width:38px;
   height:38px;
   border-radius:50%;
-  background:linear-gradient(145deg,#d9a441,#8f6820);
+  background:linear-gradient(145deg,#efc25e,#987021);
   color:#07111f;
-  font-size:13px;
-  font-weight:800;
+  font-size:12px;
+  font-weight:850;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -170,7 +163,7 @@ button{
 .overlay{
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.62);
+  background:rgba(0,0,0,.64);
   z-index:190;
   display:none;
 }
@@ -181,8 +174,8 @@ button{
 
 .drawer{
   position:fixed;
-  top:0;
   left:-310px;
+  top:0;
   width:290px;
   max-width:86%;
   height:100vh;
@@ -207,7 +200,7 @@ button{
 
 .drawer-brand{
   font-size:20px;
-  font-weight:800;
+  font-weight:850;
   letter-spacing:2px;
 }
 
@@ -219,7 +212,7 @@ button{
   border:0;
   background:none;
   color:#fff;
-  font-size:25px;
+  font-size:27px;
 }
 
 .drawer-nav{
@@ -232,10 +225,10 @@ button{
   background:transparent;
   color:#d7dce4;
   padding:14px 13px;
+  border-radius:11px;
   display:flex;
   align-items:center;
   gap:13px;
-  border-radius:11px;
   text-align:left;
   margin-bottom:4px;
 }
@@ -276,7 +269,7 @@ button{
 .greeting h1{
   margin-top:4px;
   font-size:24px;
-  font-weight:750;
+  font-weight:760;
 }
 
 /* =========================
@@ -300,24 +293,24 @@ button{
 
 .portfolio-value{
   font-size:34px;
-  font-weight:780;
+  font-weight:800;
   margin-top:7px;
   letter-spacing:-1px;
 }
 
 .portfolio-sub{
-  margin-top:9px;
+  margin-top:8px;
   color:var(--muted);
   font-size:12px;
 }
 
 .status-row{
   margin-top:20px;
+  border-top:1px solid var(--border);
+  padding-top:15px;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  border-top:1px solid var(--border);
-  padding-top:15px;
 }
 
 .status-label{
@@ -341,7 +334,7 @@ button{
 }
 
 /* =========================
-   SECTION
+   SECTIONS
 ========================= */
 
 .section{
@@ -357,7 +350,7 @@ button{
 
 .section-title h2{
   font-size:16px;
-  font-weight:700;
+  font-weight:720;
 }
 
 .section-title span{
@@ -366,38 +359,152 @@ button{
 }
 
 /* =========================
-   CRYPTO DROPDOWN
+   CUSTOM CRYPTO PICKER
 ========================= */
 
-.asset-picker{
+.crypto-picker{
   position:relative;
 }
 
-.asset-select{
+.crypto-selected{
   width:100%;
   min-height:70px;
-  padding:10px 15px;
+  padding:12px 15px;
+  background:var(--card);
   border:1px solid var(--border);
   border-radius:16px;
-  background:var(--card);
   color:#fff;
-  appearance:none;
-  outline:none;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.crypto-selected:hover{
+  border-color:rgba(217,164,65,.35);
+}
+
+.selected-left{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  min-width:0;
+}
+
+.selected-logo{
+  width:40px;
+  height:40px;
+  flex:none;
+  object-fit:contain;
+}
+
+.selected-info{
+  min-width:0;
+  text-align:left;
+}
+
+.selected-symbol{
   font-size:14px;
+  font-weight:800;
 }
 
-.asset-select:focus{
-  border-color:rgba(217,164,65,.5);
+.selected-name{
+  margin-top:3px;
+  color:var(--muted);
+  font-size:11px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
 
-.asset-arrow{
+.selected-arrow{
+  color:var(--gold2);
+  font-size:20px;
+  margin-left:10px;
+  transition:transform .2s;
+}
+
+.crypto-picker.open .selected-arrow{
+  transform:rotate(180deg);
+}
+
+.crypto-menu{
   position:absolute;
-  right:18px;
-  top:50%;
-  transform:translateY(-50%);
-  pointer-events:none;
-  color:var(--gold);
+  left:0;
+  right:0;
+  top:calc(100% + 7px);
+  background:#0b192a;
+  border:1px solid rgba(217,164,65,.16);
+  border-radius:16px;
+  box-shadow:0 25px 65px rgba(0,0,0,.48);
+  padding:8px;
+  z-index:80;
+  display:none;
+  max-height:390px;
+  overflow-y:auto;
 }
+
+.crypto-picker.open .crypto-menu{
+  display:block;
+}
+
+.crypto-option{
+  width:100%;
+  border:0;
+  background:transparent;
+  color:#fff;
+  min-height:58px;
+  border-radius:11px;
+  padding:9px 10px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  text-align:left;
+}
+
+.crypto-option:hover{
+  background:rgba(217,164,65,.08);
+}
+
+.crypto-option.active{
+  background:rgba(217,164,65,.11);
+}
+
+.crypto-logo{
+  width:36px;
+  height:36px;
+  flex:none;
+  object-fit:contain;
+}
+
+.crypto-details{
+  min-width:0;
+}
+
+.crypto-symbol{
+  font-size:13px;
+  font-weight:800;
+}
+
+.crypto-name{
+  color:var(--muted);
+  font-size:10px;
+  margin-top:2px;
+}
+
+.crypto-option-check{
+  margin-left:auto;
+  color:var(--gold2);
+  font-size:15px;
+  opacity:0;
+}
+
+.crypto-option.active .crypto-option-check{
+  opacity:1;
+}
+
+/* =========================
+   ASSET BALANCE
+========================= */
 
 .asset-preview{
   margin-top:10px;
@@ -416,17 +523,14 @@ button{
   gap:12px;
 }
 
-.coin-logo{
+.preview-logo{
   width:38px;
   height:38px;
-  border-radius:50%;
   object-fit:contain;
-  background:#fff;
-  padding:2px;
 }
 
 .asset-name{
-  font-weight:700;
+  font-weight:750;
   font-size:14px;
 }
 
@@ -477,7 +581,7 @@ button{
 
 .countdown-title{
   font-size:14px;
-  font-weight:700;
+  font-weight:750;
 }
 
 .countdown-state{
@@ -490,7 +594,7 @@ button{
   margin-top:16px;
   font-size:31px;
   letter-spacing:3px;
-  font-weight:800;
+  font-weight:850;
   color:var(--gold2);
   font-variant-numeric:tabular-nums;
 }
@@ -563,7 +667,7 @@ button{
   width:100%;
   max-width:760px;
   height:70px;
-  background:rgba(8,18,31,.96);
+  background:rgba(8,18,31,.97);
   backdrop-filter:blur(18px);
   border-top:1px solid var(--border);
   z-index:120;
@@ -640,283 +744,385 @@ button{
 
 <div class="app">
 
-  <!-- TOPBAR -->
-  <header class="topbar">
-    <div class="topbar-inner">
+<header class="topbar">
+  <div class="topbar-inner">
 
-      <button class="menu-btn" id="menuBtn" aria-label="Open menu">
-        ☰
-      </button>
+    <button class="menu-btn" id="menuBtn">☰</button>
 
-      <div class="logo">
-        NEX<span>ORA</span>
-      </div>
-
-      <div class="profile-initial" id="profileInitial">
-        —
-      </div>
-
-    </div>
-  </header>
-
-  <!-- DRAWER -->
-  <div class="overlay" id="overlay"></div>
-
-  <aside class="drawer" id="drawer">
-
-    <div class="drawer-head">
-      <div class="drawer-brand">
-        NEX<span>ORA</span>
-      </div>
-
-      <button class="close-drawer" id="closeDrawer">
-        ×
-      </button>
+    <div class="logo">
+      NEX<span>ORA</span>
     </div>
 
-    <nav class="drawer-nav">
-
-      <button class="drawer-link" onclick="go('dashboard.html')">
-        <span class="drawer-icon">⌂</span>
-        <span>Portfolio</span>
-      </button>
-
-      <button class="drawer-link" onclick="go('deposit.html')">
-        <span class="drawer-icon">＋</span>
-        <span>Deposit</span>
-      </button>
-
-      <button class="drawer-link" onclick="go('withdraw.html')">
-        <span class="drawer-icon">↗</span>
-        <span>Withdraw</span>
-      </button>
-
-      <button class="drawer-link" onclick="go('transactions.html')">
-        <span class="drawer-icon">≡</span>
-        <span>Transactions</span>
-      </button>
-
-      <button class="drawer-link" onclick="go('referrals.html')">
-        <span class="drawer-icon">♧</span>
-        <span>Referrals</span>
-      </button>
-
-      <button class="drawer-link" onclick="go('profile.html')">
-        <span class="drawer-icon">○</span>
-        <span>Profile</span>
-      </button>
-
-      <button class="drawer-link" onclick="go('support.html')">
-        <span class="drawer-icon">?</span>
-        <span>Support</span>
-      </button>
-
-      <button class="drawer-link" onclick="go('notifications.html')">
-        <span class="drawer-icon">♢</span>
-        <span>Notifications</span>
-      </button>
-
-      <button class="drawer-link logout" id="logoutBtn">
-        <span class="drawer-icon">↪</span>
-        <span>Logout</span>
-      </button>
-
-    </nav>
-  </aside>
-
-  <!-- MAIN -->
-  <main class="content">
-
-    <div class="greeting">
-      <small id="greetingText">Welcome back</small>
-      <h1 id="userName">Welcome</h1>
+    <div class="profile-initial" id="profileInitial">
+      —
     </div>
 
-    <!-- PORTFOLIO -->
-    <section class="portfolio-card">
+  </div>
+</header>
 
-      <div class="card-label">
-        Portfolio
-      </div>
 
-      <div class="portfolio-value" id="portfolioValue">
-        $0.00
-      </div>
+<div class="overlay" id="overlay"></div>
 
-      <div class="portfolio-sub">
-        Available USDT balance
-      </div>
+<aside class="drawer" id="drawer">
 
-      <div class="status-row">
+  <div class="drawer-head">
 
-        <div>
-          <div class="status-label">
-            Account status
-          </div>
-        </div>
+    <div class="drawer-brand">
+      NEX<span>ORA</span>
+    </div>
 
-        <div class="status" id="accountStatus">
-          <span class="status-dot"></span>
-          <span>Loading...</span>
-        </div>
+    <button class="close-drawer" id="closeDrawer">
+      ×
+    </button>
 
-      </div>
+  </div>
 
-    </section>
+  <nav class="drawer-nav">
 
-    <!-- CRYPTO ASSETS -->
-    <section class="section">
-
-      <div class="section-title">
-        <h2>Crypto Assets</h2>
-        <span>Wallet</span>
-      </div>
-
-      <div class="asset-picker">
-
-        <select id="assetSelect" class="asset-select"></select>
-
-        <span class="asset-arrow">⌄</span>
-
-      </div>
-
-      <div class="asset-preview">
-
-        <div class="asset-left">
-
-          <img
-            id="selectedLogo"
-            class="coin-logo"
-            src=""
-            alt=""
-          >
-
-          <div>
-            <div class="asset-name" id="selectedAssetName">
-              USDT
-            </div>
-
-            <div class="asset-network" id="selectedNetwork">
-              Tether
-            </div>
-          </div>
-
-        </div>
-
-        <div class="asset-balance">
-
-          <strong id="selectedBalance">
-            0
-          </strong>
-
-          <small id="selectedAssetSymbol">
-            USDT
-          </small>
-
-        </div>
-
-      </div>
-
-    </section>
-
-    <!-- PROFIT COUNTDOWN -->
-    <section class="section">
-
-      <div class="section-title">
-        <h2>Profit Countdown</h2>
-        <span id="countdownAsset">—</span>
-      </div>
-
-      <div class="countdown-card">
-
-        <div class="countdown-icon">
-          ◷
-        </div>
-
-        <div class="countdown-title">
-          Next profit calculation
-        </div>
-
-        <div class="countdown-state" id="countdownState">
-          Awaiting confirmed deposit
-        </div>
-
-        <div id="timerBox" class="countdown-hidden">
-
-          <div class="timer" id="timer">
-            24:00:00
-          </div>
-
-          <div class="timer-label">
-            HOURS &nbsp; : &nbsp; MINUTES &nbsp; : &nbsp; SECONDS
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
-
-    <!-- QUICK ACTIONS -->
-    <section class="section">
-
-      <div class="section-title">
-        <h2>Quick Actions</h2>
-      </div>
-
-      <div class="quick-grid">
-
-        <button class="quick-btn" onclick="go('swap.html')">
-          <span class="quick-icon">⇄</span>
-          <span>Currency Exchange</span>
-        </button>
-
-        <button class="quick-btn" onclick="go('deposit.html')">
-          <span class="quick-icon">＋</span>
-          <span>Add Funds</span>
-        </button>
-
-        <button class="quick-btn" onclick="go('withdraw.html')">
-          <span class="quick-icon">↗</span>
-          <span>Withdraw</span>
-        </button>
-
-      </div>
-
-    </section>
-
-  </main>
-
-  <!-- BOTTOM NAV -->
-  <nav class="bottom-nav">
-
-    <button class="bottom-link active" onclick="go('dashboard.html')">
-      <span class="bottom-icon">⌂</span>
+    <button class="drawer-link" onclick="go('dashboard.html')">
+      <span class="drawer-icon">⌂</span>
       <span>Portfolio</span>
     </button>
 
-    <button class="bottom-link" onclick="go('deposit.html')">
-      <span class="bottom-icon">＋</span>
+    <button class="drawer-link" onclick="go('deposit.html')">
+      <span class="drawer-icon">＋</span>
       <span>Deposit</span>
     </button>
 
-    <button class="bottom-link" onclick="go('transactions.html')">
-      <span class="bottom-icon">≡</span>
-      <span>History</span>
+    <button class="drawer-link" onclick="go('withdraw.html')">
+      <span class="drawer-icon">↗</span>
+      <span>Withdraw</span>
     </button>
 
-    <button class="bottom-link" onclick="go('profile.html')">
-      <span class="bottom-icon">○</span>
-      <span>Account</span>
+    <button class="drawer-link" onclick="go('transactions.html')">
+      <span class="drawer-icon">≡</span>
+      <span>Transactions</span>
+    </button>
+
+    <button class="drawer-link" onclick="go('referrals.html')">
+      <span class="drawer-icon">♧</span>
+      <span>Referrals</span>
+    </button>
+
+    <button class="drawer-link" onclick="go('profile.html')">
+      <span class="drawer-icon">○</span>
+      <span>Profile</span>
+    </button>
+
+    <button class="drawer-link" onclick="go('support.html')">
+      <span class="drawer-icon">?</span>
+      <span>Support</span>
+    </button>
+
+    <button class="drawer-link" onclick="go('notifications.html')">
+      <span class="drawer-icon">♢</span>
+      <span>Notifications</span>
+    </button>
+
+    <button class="drawer-link logout" id="logoutBtn">
+      <span class="drawer-icon">↪</span>
+      <span>Logout</span>
     </button>
 
   </nav>
+
+</aside>
+
+
+<main class="content">
+
+  <div class="greeting">
+    <small id="greetingText">Welcome back</small>
+    <h1 id="userName">Welcome</h1>
+  </div>
+
+
+  <!-- PORTFOLIO -->
+
+  <section class="portfolio-card">
+
+    <div class="card-label">
+      Portfolio
+    </div>
+
+    <div class="portfolio-value" id="portfolioValue">
+      $0.00
+    </div>
+
+    <div class="portfolio-sub">
+      Available USDT balance
+    </div>
+
+    <div class="status-row">
+
+      <div class="status-label">
+        Account status
+      </div>
+
+      <div class="status" id="accountStatus">
+        <span class="status-dot"></span>
+        <span>Loading...</span>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- CRYPTO ASSETS -->
+
+  <section class="section">
+
+    <div class="section-title">
+      <h2>Crypto Assets</h2>
+      <span>Wallet</span>
+    </div>
+
+
+    <div class="crypto-picker" id="cryptoPicker">
+
+      <button
+        type="button"
+        class="crypto-selected"
+        id="cryptoSelected"
+      >
+
+        <div class="selected-left">
+
+          <img
+            id="selectedLogo"
+            class="selected-logo"
+            src=""
+            alt="Crypto logo"
+          >
+
+          <div class="selected-info">
+
+            <div
+              class="selected-symbol"
+              id="selectedSymbol"
+            >
+              USDT
+            </div>
+
+            <div
+              class="selected-name"
+              id="selectedName"
+            >
+              Tether
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="selected-arrow">
+         ⌄
+        </div>
+
+      </button>
+
+
+      <div
+        class="crypto-menu"
+        id="cryptoMenu"
+      ></div>
+
+    </div>
+
+
+    <div class="asset-preview">
+
+      <div class="asset-left">
+
+        <img
+          id="previewLogo"
+          class="preview-logo"
+          src=""
+          alt="Crypto logo"
+        >
+
+        <div>
+
+          <div
+            class="asset-name"
+            id="previewName"
+          >
+            Tether
+          </div>
+
+          <div
+            class="asset-network"
+            id="previewNetwork"
+          >
+            Wallet
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="asset-balance">
+
+        <strong id="previewBalance">
+          0
+        </strong>
+
+        <small id="previewSymbol">
+          USDT
+        </small>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- PROFIT COUNTDOWN -->
+
+  <section class="section">
+
+    <div class="section-title">
+
+      <h2>Profit Countdown</h2>
+
+      <span id="countdownAsset">
+        —
+      </span>
+
+    </div>
+
+
+    <div class="countdown-card">
+
+      <div class="countdown-icon">
+        ◷
+      </div>
+
+      <div class="countdown-title">
+        Next profit calculation
+      </div>
+
+      <div
+        class="countdown-state"
+        id="countdownState"
+      >
+        Awaiting confirmed deposit
+      </div>
+
+
+      <div
+        id="timerBox"
+        class="countdown-hidden"
+      >
+
+        <div
+          class="timer"
+          id="timer"
+        >
+          24:00:00
+        </div>
+
+        <div class="timer-label">
+          HOURS &nbsp; : &nbsp; MINUTES &nbsp; : &nbsp; SECONDS
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- QUICK ACTIONS -->
+
+  <section class="section">
+
+    <div class="section-title">
+      <h2>Quick Actions</h2>
+    </div>
+
+
+    <div class="quick-grid">
+
+      <button
+        class="quick-btn"
+        onclick="go('swap.html')"
+      >
+        <span class="quick-icon">⇄</span>
+        <span>Currency Exchange</span>
+      </button>
+
+
+      <button
+        class="quick-btn"
+        onclick="go('deposit.html')"
+      >
+        <span class="quick-icon">＋</span>
+        <span>Add Funds</span>
+      </button>
+
+
+      <button
+        class="quick-btn"
+        onclick="go('withdraw.html')"
+      >
+        <span class="quick-icon">↗</span>
+        <span>Withdraw</span>
+      </button>
+
+    </div>
+
+  </section>
+
+</main>
+
+
+<nav class="bottom-nav">
+
+  <button
+    class="bottom-link active"
+    onclick="go('dashboard.html')"
+  >
+    <span class="bottom-icon">⌂</span>
+    <span>Portfolio</span>
+  </button>
+
+  <button
+    class="bottom-link"
+    onclick="go('deposit.html')"
+  >
+    <span class="bottom-icon">＋</span>
+    <span>Deposit</span>
+  </button>
+
+  <button
+    class="bottom-link"
+    onclick="go('transactions.html')"
+  >
+    <span class="bottom-icon">≡</span>
+    <span>History</span>
+  </button>
+
+  <button
+    class="bottom-link"
+    onclick="go('profile.html')"
+  >
+    <span class="bottom-icon">○</span>
+    <span>Account</span>
+  </button>
+
+</nav>
 
 </div>
 
 <div class="toast" id="toast"></div>
 
+
 <script>
+
 /* =========================================================
    SUPABASE
 ========================================================= */
@@ -927,20 +1133,23 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
   "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
 
-const db = supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
+const db =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
 
 
 /* =========================================================
-   CRYPTO LOGOS
+   REAL CRYPTO LOGOS
+   SVG LOGOS — NO EMOJIS
 ========================================================= */
 
 const LOGO_BASE =
   "https://cdn.jsdelivr.net/gh/madenix/Crypto-logo-cdn@main/Logos/";
 
 const logoFiles = {
+
   BTC:"BTC.svg",
   ETH:"ETH.svg",
   USDT:"USDT.svg",
@@ -965,14 +1174,16 @@ const logoFiles = {
   APT:"APT.svg",
   ARB:"ARB.svg",
   OP:"OP.svg"
+
 };
 
 
 /* =========================================================
-   SUPPORTED ASSETS
+   ASSETS
 ========================================================= */
 
 const assets = [
+
   ["BTC","Bitcoin"],
   ["ETH","Ethereum"],
   ["USDT","Tether"],
@@ -997,6 +1208,7 @@ const assets = [
   ["APT","Aptos"],
   ["ARB","Arbitrum"],
   ["OP","Optimism"]
+
 ];
 
 
@@ -1007,6 +1219,9 @@ const assets = [
 let currentUser = null;
 let wallets = [];
 let activeDeposits = [];
+
+let selectedAsset = "USDT";
+
 let countdownTarget = null;
 let countdownInterval = null;
 
@@ -1023,52 +1238,62 @@ function go(page){
   window.location.href = page;
 }
 
-function formatNumber(value, max = 8){
-  const n = Number(value || 0);
+function logoURL(symbol){
 
-  return n.toLocaleString("en-US", {
-    minimumFractionDigits:0,
-    maximumFractionDigits:max
-  });
+  return (
+    LOGO_BASE +
+    (logoFiles[symbol] || "")
+  );
+
 }
 
-function escapeHtml(value){
-  return String(value ?? "")
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
-}
+function formatNumber(value,max=8){
 
-function showToast(message){
-  const toast = $("toast");
+  return Number(value || 0)
+    .toLocaleString("en-US",{
+      minimumFractionDigits:0,
+      maximumFractionDigits:max
+    });
 
-  toast.textContent = message;
-  toast.classList.add("show");
-
-  setTimeout(()=>{
-    toast.classList.remove("show");
-  },2500);
 }
 
 function initials(name){
-  const value = String(name || "").trim();
+
+  const value =
+    String(name || "").trim();
 
   if(!value){
     return "N";
   }
 
-  const parts = value.split(/\s+/);
+  const parts =
+    value.split(/\s+/);
 
   if(parts.length === 1){
-    return parts[0].slice(0,2).toUpperCase();
+    return parts[0]
+      .slice(0,2)
+      .toUpperCase();
   }
 
   return (
     parts[0][0] +
-    parts[parts.length - 1][0]
+    parts[parts.length-1][0]
   ).toUpperCase();
+
+}
+
+function showToast(message){
+
+  const toast = $("toast");
+
+  toast.textContent = message;
+
+  toast.classList.add("show");
+
+  setTimeout(()=>{
+    toast.classList.remove("show");
+  },2500);
+
 }
 
 
@@ -1077,60 +1302,208 @@ function initials(name){
 ========================================================= */
 
 function openDrawer(){
-  $("drawer").classList.add("open");
-  $("overlay").classList.add("show");
+
+  $("drawer")
+    .classList.add("open");
+
+  $("overlay")
+    .classList.add("show");
+
 }
 
 function closeDrawer(){
-  $("drawer").classList.remove("open");
-  $("overlay").classList.remove("show");
+
+  $("drawer")
+    .classList.remove("open");
+
+  $("overlay")
+    .classList.remove("show");
+
 }
 
-$("menuBtn").addEventListener("click",openDrawer);
-$("closeDrawer").addEventListener("click",closeDrawer);
-$("overlay").addEventListener("click",closeDrawer);
+$("menuBtn")
+  .addEventListener(
+    "click",
+    openDrawer
+  );
+
+$("closeDrawer")
+  .addEventListener(
+    "click",
+    closeDrawer
+  );
+
+$("overlay")
+  .addEventListener(
+    "click",
+    closeDrawer
+  );
 
 
 /* =========================================================
-   LOAD ASSET DROPDOWN
+   CUSTOM CRYPTO MENU
 ========================================================= */
 
-function buildAssetDropdown(){
+function buildCryptoMenu(){
 
-  const select = $("assetSelect");
+  const menu =
+    $("cryptoMenu");
 
-  select.innerHTML = "";
+  menu.innerHTML = "";
 
-  assets.forEach(([symbol,name])=>{
+  assets.forEach(
+    ([symbol,name])=>{
 
-    const option = document.createElement("option");
+      const button =
+        document.createElement("button");
 
-    option.value = symbol;
-    option.textContent = `${symbol} — ${name}`;
+      button.type = "button";
 
-    select.appendChild(option);
+      button.className =
+        "crypto-option";
 
-  });
+      button.dataset.asset =
+        symbol;
 
-  select.value = "USDT";
+      button.innerHTML = `
 
-  select.addEventListener(
-    "change",
-    renderSelectedAsset
+        <img
+          class="crypto-logo"
+          src="${logoURL(symbol)}"
+          alt="${name} logo"
+        >
+
+        <div class="crypto-details">
+
+          <div class="crypto-symbol">
+            ${symbol}
+          </div>
+
+          <div class="crypto-name">
+            ${name}
+          </div>
+
+        </div>
+
+        <div class="crypto-option-check">
+          ✓
+        </div>
+
+      `;
+
+      button.addEventListener(
+        "click",
+        ()=>{
+
+          selectedAsset =
+            symbol;
+
+          renderSelectedAsset();
+
+          closeCryptoPicker();
+
+        }
+      );
+
+      menu.appendChild(button);
+
+    }
   );
+
+  updateActiveCryptoOption();
+
 }
 
 
 /* =========================================================
-   WALLET HELPERS
+   OPEN/CLOSE CRYPTO PICKER
+========================================================= */
+
+function openCryptoPicker(){
+
+  $("cryptoPicker")
+    .classList.add("open");
+
+}
+
+function closeCryptoPicker(){
+
+  $("cryptoPicker")
+    .classList.remove("open");
+
+}
+
+$("cryptoSelected")
+  .addEventListener(
+    "click",
+    (event)=>{
+
+      event.stopPropagation();
+
+      const picker =
+        $("cryptoPicker");
+
+      if(
+        picker.classList.contains("open")
+      ){
+        closeCryptoPicker();
+      }
+      else{
+        openCryptoPicker();
+      }
+
+    }
+  );
+
+document.addEventListener(
+  "click",
+  (event)=>{
+
+    if(
+      !event.target.closest(
+        "#cryptoPicker"
+      )
+    ){
+      closeCryptoPicker();
+    }
+
+  }
+);
+
+
+/* =========================================================
+   ACTIVE COIN
+========================================================= */
+
+function updateActiveCryptoOption(){
+
+  document
+    .querySelectorAll(".crypto-option")
+    .forEach(button=>{
+
+      button.classList.toggle(
+        "active",
+        button.dataset.asset ===
+        selectedAsset
+      );
+
+    });
+
+}
+
+
+/* =========================================================
+   GET WALLET
 ========================================================= */
 
 function getWallet(symbol){
 
   return wallets.find(
     wallet =>
-      String(wallet.asset).toUpperCase() ===
-      String(symbol).toUpperCase()
+      String(wallet.asset)
+        .toUpperCase() ===
+      String(symbol)
+        .toUpperCase()
   ) || null;
 
 }
@@ -1142,83 +1515,80 @@ function getWallet(symbol){
 
 function renderSelectedAsset(){
 
-  const symbol = $("assetSelect").value;
-
-  const asset = assets.find(
-    item => item[0] === symbol
-  );
-
-  const wallet = getWallet(symbol);
+  const asset =
+    assets.find(
+      item =>
+        item[0] === selectedAsset
+    );
 
   if(!asset){
     return;
   }
 
-  const name = asset[1];
+  const symbol =
+    asset[0];
 
-  $("selectedAssetName").textContent = name;
-  $("selectedAssetSymbol").textContent = symbol;
-  $("selectedNetwork").textContent =
-    wallet?.network ||
+  const name =
+    asset[1];
+
+  const wallet =
+    getWallet(symbol);
+
+
+  /* Main selected coin */
+
+  $("selectedLogo").src =
+    logoURL(symbol);
+
+  $("selectedSymbol")
+    .textContent =
+    symbol;
+
+  $("selectedName")
+    .textContent =
+    name;
+
+
+  /* Balance section */
+
+  $("previewLogo").src =
+    logoURL(symbol);
+
+  $("previewName")
+    .textContent =
+    name;
+
+  $("previewNetwork")
+    .textContent =
     "Wallet";
 
-  $("selectedBalance").textContent =
-    formatNumber(wallet?.available_balance || 0,8);
+  $("previewBalance")
+    .textContent =
+    formatNumber(
+      wallet?.available_balance || 0,
+      8
+    );
 
-  const logo =
-    LOGO_BASE +
-    (logoFiles[symbol] || "");
-
-  $("selectedLogo").src = logo;
-
-  $("selectedLogo").onerror = function(){
-    this.style.visibility = "hidden";
-  };
-
-  $("selectedLogo").style.visibility = "visible";
-}
+  $("previewSymbol")
+    .textContent =
+    symbol;
 
 
-/* =========================================================
-   PORTFOLIO
-========================================================= */
-
-function renderPortfolio(){
-
-  /*
-    We do not invent USD prices for BTC, ETH, etc.
-
-    USDT is treated as USD-equivalent.
-  */
-
-  const usdt = getWallet("USDT");
-
-  const available =
-    Number(usdt?.available_balance || 0);
-
-  const locked =
-    Number(usdt?.locked_balance || 0);
-
-  const total =
-    available + locked;
-
-  $("portfolioValue").textContent =
-    "$" +
-    total.toLocaleString("en-US",{
-      minimumFractionDigits:2,
-      maximumFractionDigits:2
-    });
+  updateActiveCryptoOption();
 
 }
 
 
 /* =========================================================
-   PROFILE
+   LOAD PROFILE
 ========================================================= */
 
 async function loadProfile(){
 
-  const { data, error } = await db
+  const {
+    data,
+    error
+  } = await db
     .from("profiles")
     .select(`
       id,
@@ -1226,52 +1596,83 @@ async function loadProfile(){
       email,
       account_status
     `)
-    .eq("id",currentUser.id)
+    .eq(
+      "id",
+      currentUser.id
+    )
     .maybeSingle();
 
   if(error){
-    console.error("Profile error:",error);
+
+    console.error(
+      "Profile error:",
+      error
+    );
+
     return;
   }
 
+
   const name =
     data?.full_name ||
-    currentUser.user_metadata?.full_name ||
+    currentUser
+      .user_metadata
+      ?.full_name ||
     "Welcome";
 
-  $("userName").textContent =
+
+  $("userName")
+    .textContent =
     name;
 
-  $("profileInitial").textContent =
+
+  $("profileInitial")
+    .textContent =
     initials(name);
 
-  const status =
-    String(data?.account_status || "PENDING")
-      .toUpperCase();
 
-  $("accountStatus").innerHTML = `
-    <span class="status-dot"
-      style="background:${
-        status === "ACTIVE"
-        ? "var(--green)"
-        : status === "SUSPENDED"
-        ? "var(--red)"
-        : "var(--gold)"
-      }">
-    </span>
-    <span>${escapeHtml(status)}</span>
-  `;
+  const status =
+    String(
+      data?.account_status ||
+      "PENDING"
+    ).toUpperCase();
+
+
+  const statusColor =
+    status === "ACTIVE"
+      ? "var(--green)"
+      : status === "SUSPENDED"
+      ? "var(--red)"
+      : "var(--gold)";
+
+
+  $("accountStatus")
+    .innerHTML = `
+
+      <span
+        class="status-dot"
+        style="background:${statusColor}"
+      ></span>
+
+      <span>
+        ${status}
+      </span>
+
+    `;
 
 }
 
 
 /* =========================================================
-   WALLETS
+   LOAD WALLETS
 ========================================================= */
 
 async function loadWallets(){
 
-  const { data, error } = await db
+  const {
+    data,
+    error
+  } = await db
     .from("wallets")
     .select(`
       id,
@@ -1281,29 +1682,84 @@ async function loadWallets(){
       principal_balance,
       profit_balance
     `)
-    .eq("user_id",currentUser.id);
+    .eq(
+      "user_id",
+      currentUser.id
+    );
 
   if(error){
-    console.error("Wallet error:",error);
-    showToast("Unable to load wallets");
+
+    console.error(
+      "Wallet error:",
+      error
+    );
+
+    showToast(
+      "Unable to load wallets"
+    );
+
     return;
   }
 
-  wallets = data || [];
+
+  wallets =
+    data || [];
+
 
   renderPortfolio();
+
   renderSelectedAsset();
 
 }
 
 
 /* =========================================================
-   ACTIVE CONFIRMED DEPOSITS
+   PORTFOLIO
+========================================================= */
+
+function renderPortfolio(){
+
+  const usdt =
+    getWallet("USDT");
+
+  const available =
+    Number(
+      usdt?.available_balance || 0
+    );
+
+  const locked =
+    Number(
+      usdt?.locked_balance || 0
+    );
+
+  const total =
+    available + locked;
+
+
+  $("portfolioValue")
+    .textContent =
+    "$" +
+    total.toLocaleString(
+      "en-US",
+      {
+        minimumFractionDigits:2,
+        maximumFractionDigits:2
+      }
+    );
+
+}
+
+
+/* =========================================================
+   LOAD CONFIRMED ACTIVE DEPOSITS
 ========================================================= */
 
 async function loadActiveDeposits(){
 
-  const { data, error } = await db
+  const {
+    data,
+    error
+  } = await db
     .from("deposits")
     .select(`
       id,
@@ -1314,33 +1770,46 @@ async function loadActiveDeposits(){
       earning_ended_at,
       status
     `)
-    .eq("user_id",currentUser.id)
-    .eq("status","CONFIRMED")
-    .gt("earning_principal",0)
-    .not("earning_started_at","is",null)
-    .is("earning_ended_at",null);
+    .eq(
+      "user_id",
+      currentUser.id
+    )
+    .eq(
+      "status",
+      "CONFIRMED"
+    )
+    .gt(
+      "earning_principal",
+      0
+    )
+    .not(
+      "earning_started_at",
+      "is",
+      null
+    )
+    .is(
+      "earning_ended_at",
+      null
+    );
 
   if(error){
-    console.error("Deposit countdown error:",error);
+
+    console.error(
+      "Deposit error:",
+      error
+    );
 
     activeDeposits = [];
 
-    stopCountdown();
-
-    $("countdownState").textContent =
-      "Awaiting confirmed deposit";
-
-    $("countdownAsset").textContent =
-      "—";
-
-    $("timerBox").classList.add(
-      "countdown-hidden"
-    );
+    setupCountdown();
 
     return;
   }
 
-  activeDeposits = data || [];
+
+  activeDeposits =
+    data || [];
+
 
   setupCountdown();
 
@@ -1348,7 +1817,7 @@ async function loadActiveDeposits(){
 
 
 /* =========================================================
-   NEXT 24-HOUR CALCULATION
+   CALCULATE NEXT 24H TARGET
 ========================================================= */
 
 function getNextCalculationTime(
@@ -1357,120 +1826,146 @@ function getNextCalculationTime(
 ){
 
   const start =
-    new Date(startedAt).getTime();
+    new Date(
+      startedAt
+    ).getTime();
 
-  if(!Number.isFinite(start)){
+  if(
+    !Number.isFinite(start)
+  ){
     return null;
   }
 
+
   const cycle =
     24 * 60 * 60 * 1000;
+
 
   if(nowMs < start){
     return start;
   }
 
+
   const elapsed =
     nowMs - start;
 
-  const cyclesCompleted =
+
+  const completed =
     Math.floor(
       elapsed / cycle
     );
 
+
   return (
     start +
-    (cyclesCompleted + 1) * cycle
+    (completed + 1) *
+    cycle
   );
 
 }
 
 
 /* =========================================================
-   COUNTDOWN SETUP
+   COUNTDOWN
 ========================================================= */
 
 function setupCountdown(){
 
   stopCountdown();
 
+
   if(!activeDeposits.length){
 
-    $("countdownState").textContent =
+    $("countdownState")
+      .textContent =
       "Awaiting confirmed deposit";
 
-    $("countdownAsset").textContent =
+    $("countdownAsset")
+      .textContent =
       "—";
 
-    $("timerBox").classList.add(
-      "countdown-hidden"
-    );
+    $("timerBox")
+      .classList.add(
+        "countdown-hidden"
+      );
 
     return;
   }
 
-  const now = Date.now();
 
-  const depositsWithTargets =
+  const now =
+    Date.now();
+
+
+  const prepared =
     activeDeposits
-      .map(deposit => {
+      .map(deposit=>({
 
-        const target =
+        ...deposit,
+
+        target:
           getNextCalculationTime(
             deposit.earning_started_at,
             now
-          );
+          )
 
-        return {
-          ...deposit,
-          target
-        };
-
-      })
+      }))
       .filter(
         item =>
-          Number.isFinite(item.target)
+          Number.isFinite(
+            item.target
+          )
       );
 
-  if(!depositsWithTargets.length){
 
-    $("countdownState").textContent =
+  if(!prepared.length){
+
+    $("countdownState")
+      .textContent =
       "Awaiting confirmed deposit";
 
-    $("timerBox").classList.add(
-      "countdown-hidden"
-    );
+    $("timerBox")
+      .classList.add(
+        "countdown-hidden"
+      );
 
     return;
   }
 
-  /*
-    If there are multiple active deposits,
-    show the nearest upcoming calculation.
-  */
 
-  depositsWithTargets.sort(
-    (a,b) =>
+  prepared.sort(
+    (a,b)=>
       a.target - b.target
   );
 
+
   const next =
-    depositsWithTargets[0];
+    prepared[0];
+
 
   countdownTarget =
     next.target;
 
-  $("countdownAsset").textContent =
-    next.asset || "—";
 
-  $("countdownState").textContent =
+  $("countdownAsset")
+    .textContent =
+    next.asset ||
+    "—";
+
+
+  $("countdownState")
+    .textContent =
     "Active deposit confirmed";
 
-  $("timerBox").classList.remove(
-    "countdown-hidden"
-  );
+
+  $("timerBox")
+    .classList.remove(
+      "countdown-hidden"
+    );
+
 
   updateCountdown();
+
 
   countdownInterval =
     setInterval(
@@ -1491,21 +1986,21 @@ function updateCountdown(){
     return;
   }
 
+
   const remaining =
     Math.max(
       0,
-      countdownTarget - Date.now()
+      countdownTarget -
+      Date.now()
     );
+
 
   if(remaining <= 0){
 
-    $("timer").textContent =
+    $("timer")
+      .textContent =
       "00:00:00";
 
-    /*
-      Refresh Supabase state shortly after
-      reaching the target.
-    */
 
     setTimeout(
       refreshDashboardData,
@@ -1515,30 +2010,39 @@ function updateCountdown(){
     return;
   }
 
-  const totalSeconds =
+
+  const seconds =
     Math.floor(
       remaining / 1000
     );
 
+
   const hours =
     Math.floor(
-      totalSeconds / 3600
+      seconds / 3600
     );
+
 
   const minutes =
     Math.floor(
-      (totalSeconds % 3600) / 60
+      (seconds % 3600) / 60
     );
 
-  const seconds =
-    totalSeconds % 60;
 
-  $("timer").textContent =
-    String(hours).padStart(2,"0") +
+  const secs =
+    seconds % 60;
+
+
+  $("timer")
+    .textContent =
+    String(hours)
+      .padStart(2,"0") +
     ":" +
-    String(minutes).padStart(2,"0") +
+    String(minutes)
+      .padStart(2,"0") +
     ":" +
-    String(seconds).padStart(2,"0");
+    String(secs)
+      .padStart(2,"0");
 
 }
 
@@ -1589,12 +2093,21 @@ async function checkAuth(){
     error
   } = await db.auth.getSession();
 
+
   if(error){
-    console.error(error);
+
+    console.error(
+      "Auth error:",
+      error
+    );
+
   }
 
+
   currentUser =
-    data?.session?.user || null;
+    data?.session?.user ||
+    null;
+
 
   if(!currentUser){
 
@@ -1603,6 +2116,7 @@ async function checkAuth(){
 
     return false;
   }
+
 
   return true;
 
@@ -1613,17 +2127,18 @@ async function checkAuth(){
    LOGOUT
 ========================================================= */
 
-$("logoutBtn").addEventListener(
-  "click",
-  async ()=>{
+$("logoutBtn")
+  .addEventListener(
+    "click",
+    async ()=>{
 
-    await db.auth.signOut();
+      await db.auth.signOut();
 
-    window.location.href =
-      "signin.html";
+      window.location.href =
+        "signin.html";
 
-  }
-);
+    }
+  );
 
 
 /* =========================================================
@@ -1638,17 +2153,29 @@ function setGreeting(){
   let text =
     "Welcome back";
 
+
   if(hour < 12){
-    text = "Good morning";
+
+    text =
+      "Good morning";
+
   }
   else if(hour < 18){
-    text = "Good afternoon";
+
+    text =
+      "Good afternoon";
+
   }
   else{
-    text = "Good evening";
+
+    text =
+      "Good evening";
+
   }
 
-  $("greetingText").textContent =
+
+  $("greetingText")
+    .textContent =
     text;
 
 }
@@ -1695,14 +2222,19 @@ setInterval(
 
     setGreeting();
 
-    buildAssetDropdown();
+    buildCryptoMenu();
+
+    renderSelectedAsset();
+
 
     const authenticated =
       await checkAuth();
 
+
     if(!authenticated){
       return;
     }
+
 
     await refreshDashboardData();
 
@@ -1722,13 +2254,17 @@ setInterval(
   finally{
 
     setTimeout(()=>{
-      $("loadingScreen").style.display =
+
+      $("loadingScreen")
+        .style.display =
         "none";
+
     },250);
 
   }
 
 })();
+
 </script>
 
 </body>
