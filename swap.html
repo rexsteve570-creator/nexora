@@ -1,3764 +1,1295 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-<title>NEXORA — Swap</title>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<style>
-:root{
-  --bg:#07111f;
-  --bg2:#091626;
-  --card:#0d1b2d;
-  --card2:#112238;
-  --border:rgba(255,255,255,.08);
-  --text:#f5f7fa;
-  --muted:#8d9aaa;
-  --muted2:#657184;
-  --gold:#d9a441;
-  --gold2:#f0c866;
-  --green:#32c48d;
-  --red:#ef6b73;
-  --shadow:0 18px 50px rgba(0,0,0,.28);
-}
-
-*{
-  box-sizing:border-box;
-  -webkit-tap-highlight-color:transparent;
-}
-
-html,
-body{
-  margin:0;
-  padding:0;
-  min-height:100%;
-  background:
-    radial-gradient(
-      circle at 90% 0%,
-      rgba(217,164,65,.09),
-      transparent 30%
-    ),
-    linear-gradient(
-      180deg,
-      #07111f,
-      #050c15
-    );
-  color:var(--text);
-  font-family:
-    Inter,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    Roboto,
-    Arial,
-    sans-serif;
-}
-
-body{
-  min-height:100vh;
-  padding-bottom:95px;
-}
-
-button,
-input{
-  font:inherit;
-}
-
-button{
-  cursor:pointer;
-}
-
-.app{
-  width:100%;
-  max-width:760px;
-  min-height:100vh;
-  margin:auto;
-  padding-bottom:95px;
-}
-
-
-/* =========================================================
-   TOPBAR
-========================================================= */
-
-.topbar{
-  height:68px;
-  position:sticky;
-  top:0;
-  z-index:100;
-  background:rgba(7,17,31,.90);
-  backdrop-filter:blur(18px);
-  border-bottom:1px solid var(--border);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 18px;
-}
-
-.menu-btn{
-  width:42px;
-  height:42px;
-  border:0;
-  background:transparent;
-  color:var(--text);
-  border-radius:12px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:22px;
-}
-
-.menu-btn:active{
-  background:var(--card);
-}
-
-.logo{
-  font-size:20px;
-  font-weight:800;
-  letter-spacing:2px;
-  color:#fff;
-}
-
-.logo span{
-  color:var(--gold);
-}
-
-.profile-btn{
-  width:42px;
-  height:42px;
-  border-radius:50%;
-  border:1px solid rgba(217,164,65,.35);
-  background:var(--card);
-  color:var(--gold2);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:13px;
-  font-weight:800;
-}
-
-
-/* =========================================================
-   DRAWER
-========================================================= */
-
-.drawer-overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.65);
-  z-index:190;
-  display:none;
-}
-
-.drawer-overlay.open{
-  display:block;
-}
-
-.drawer{
-  position:fixed;
-  left:0;
-  top:0;
-  bottom:0;
-  width:min(290px,84vw);
-  background:var(--bg2);
-  border-right:1px solid var(--border);
-  z-index:200;
-  transform:translateX(-100%);
-  transition:transform .22s ease;
-  padding:22px 16px;
-  overflow-y:auto;
-}
-
-.drawer.open{
-  transform:translateX(0);
-}
-
-.drawer-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 4px 22px;
-  border-bottom:1px solid var(--border);
-}
-
-.drawer-logo{
-  font-weight:800;
-  letter-spacing:2px;
-}
-
-.drawer-logo span{
-  color:var(--gold);
-}
-
-.drawer-close{
-  width:40px;
-  height:40px;
-  border:0;
-  border-radius:12px;
-  background:var(--card);
-  color:#fff;
-  font-size:20px;
-}
-
-.drawer-nav{
-  padding-top:18px;
-  display:grid;
-  gap:7px;
-}
-
-.drawer-nav a,
-.drawer-nav button{
-  width:100%;
-  border:0;
-  background:transparent;
-  color:var(--muted);
-  text-decoration:none;
-  padding:13px 14px;
-  border-radius:12px;
-  text-align:left;
-  font-size:14px;
-  font-weight:600;
-}
-
-.drawer-nav a:hover,
-.drawer-nav button:hover{
-  background:var(--card);
-  color:#fff;
-}
-
-
-/* =========================================================
-   MAIN
-========================================================= */
-
-main{
-  padding:24px 16px 30px;
-}
-
-.page-title{
-  margin-bottom:20px;
-}
-
-.page-title h1{
-  margin:0 0 6px;
-  font-size:25px;
-  letter-spacing:-.4px;
-}
-
-.page-title p{
-  margin:0;
-  color:var(--muted);
-  font-size:13px;
-  line-height:1.55;
-}
-
-
-/* =========================================================
-   MESSAGE
-========================================================= */
-
-.message{
-  display:none;
-  padding:12px 14px;
-  border-radius:12px;
-  margin-bottom:14px;
-  font-size:13px;
-  line-height:1.45;
-}
-
-.message.show{
-  display:block;
-}
-
-.message.success{
-  background:rgba(50,196,141,.10);
-  border:1px solid rgba(50,196,141,.20);
-  color:#8be7bd;
-}
-
-.message.error{
-  background:rgba(239,107,115,.10);
-  border:1px solid rgba(239,107,115,.20);
-  color:#ffabb3;
-}
-
-.message.info{
-  background:rgba(217,164,65,.08);
-  border:1px solid rgba(217,164,65,.18);
-  color:var(--gold2);
-}
-
-
-/* =========================================================
-   CARD
-========================================================= */
-
-.card{
-  background:
-    linear-gradient(
-      145deg,
-      rgba(13,27,45,.96),
-      rgba(8,14,29,.98)
-    );
-  border:1px solid var(--border);
-  border-radius:20px;
-  box-shadow:var(--shadow);
-}
-
-
-/* =========================================================
-   SWAP CARD
-========================================================= */
-
-.swap-card{
-  padding:16px;
-}
-
-.swap-box{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:16px;
-  padding:15px;
-}
-
-.swap-label-row{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:10px;
-}
-
-.swap-label{
-  color:var(--muted);
-  font-size:12px;
-  font-weight:700;
-  text-transform:uppercase;
-  letter-spacing:.7px;
-}
-
-.available{
-  color:var(--muted2);
-  font-size:11px;
-  text-align:right;
-}
-
-.amount-row{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-
-.amount-input{
-  min-width:0;
-  flex:1;
-  width:100%;
-  border:0;
-  outline:0;
-  background:transparent;
-  color:#fff;
-  font-size:28px;
-  font-weight:700;
-  letter-spacing:-.6px;
-}
-
-.amount-input::placeholder{
-  color:#3f4a5d;
-}
-
-.amount-input:disabled{
-  opacity:.7;
-}
-
-.coin-picker{
-  flex-shrink:0;
-  min-width:126px;
-  border:1px solid rgba(255,255,255,.08);
-  background:var(--card2);
-  color:#fff;
-  border-radius:13px;
-  padding:9px 10px;
-  display:flex;
-  align-items:center;
-  gap:8px;
-  font-size:13px;
-  font-weight:700;
-}
-
-.coin-picker:active{
-  transform:scale(.98);
-}
-
-.coin-logo{
-  width:27px;
-  height:27px;
-  border-radius:50%;
-  object-fit:contain;
-  flex-shrink:0;
-}
-
-.coin-name{
-  min-width:0;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-}
-
-.max-btn{
-  border:0;
-  background:transparent;
-  color:var(--gold);
-  font-size:11px;
-  font-weight:800;
-  padding:5px 0 0;
-}
-
-
-/* =========================================================
-   ARROW
-========================================================= */
-
-.swap-arrow-wrap{
-  height:46px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  position:relative;
-  z-index:2;
-}
-
-.swap-arrow{
-  width:42px;
-  height:42px;
-  border-radius:50%;
-  border:1px solid rgba(217,164,65,.30);
-  background:var(--card2);
-  color:var(--gold2);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:20px;
-  transition:transform .18s ease;
-}
-
-.swap-arrow:active{
-  transform:rotate(180deg) scale(.96);
-}
-
-
-/* =========================================================
-   QUOTE
-========================================================= */
-
-.quote-box{
-  margin-top:15px;
-  border:1px solid var(--border);
-  border-radius:15px;
-  background:rgba(255,255,255,.018);
-  padding:14px;
-}
-
-.quote-row{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:14px;
-  padding:9px 0;
-}
-
-.quote-row:not(:last-child){
-  border-bottom:1px solid rgba(255,255,255,.045);
-}
-
-.quote-name{
-  color:var(--muted);
-  font-size:12px;
-}
-
-.quote-value{
-  color:var(--text);
-  font-size:12px;
-  font-weight:700;
-  text-align:right;
-  word-break:break-word;
-}
-
-.quote-value.gold{
-  color:var(--gold2);
-}
-
-.quote-value.success{
-  color:var(--green);
-}
-
-
-/* =========================================================
-   QUOTE STATUS
-========================================================= */
-
-.quote-status{
-  margin-top:10px;
-  min-height:18px;
-  color:var(--muted2);
-  font-size:11px;
-  text-align:center;
-}
-
-.quote-status.loading{
-  color:var(--gold2);
-}
-
-.quote-status.ready{
-  color:var(--green);
-}
-
-.quote-status.error{
-  color:var(--red);
-}
-
-
-/* =========================================================
-   SLIPPAGE
-========================================================= */
-
-.settings-row{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-top:14px;
-  padding:12px 2px;
-}
-
-.settings-left{
-  color:var(--muted);
-  font-size:12px;
-}
-
-.slippage{
-  color:var(--gold2);
-  font-size:12px;
-  font-weight:800;
-}
-
-
-/* =========================================================
-   BUTTON
-========================================================= */
-
-.primary-btn{
-  width:100%;
-  margin-top:8px;
-  height:54px;
-  border:0;
-  border-radius:15px;
-  background:
-    linear-gradient(
-      135deg,
-      var(--gold2),
-      var(--gold)
-    );
-  color:#111;
-  font-weight:900;
-  font-size:14px;
-  box-shadow:
-    0 10px 30px
-    rgba(217,164,65,.12);
-  transition:
-    transform .15s ease,
-    opacity .15s ease;
-}
-
-.primary-btn:active{
-  transform:scale(.985);
-}
-
-.primary-btn:disabled{
-  opacity:.45;
-  cursor:not-allowed;
-  box-shadow:none;
-}
-
-
-/* =========================================================
-   INFO
-========================================================= */
-
-.info-card{
-  margin-top:16px;
-  padding:18px;
-}
-
-.info-card h3{
-  margin:0 0 8px;
-  font-size:15px;
-}
-
-.info-card p{
-  margin:0;
-  color:var(--muted);
-  font-size:12px;
-  line-height:1.65;
-}
-
-
-/* =========================================================
-   COIN MODAL
-========================================================= */
-
-.modal-backdrop{
-  position:fixed;
-  inset:0;
-  z-index:300;
-  background:rgba(0,0,0,.72);
-  display:none;
-  align-items:flex-end;
-  justify-content:center;
-}
-
-.modal-backdrop.open{
-  display:flex;
-}
-
-.coin-modal{
-  width:100%;
-  max-width:760px;
-  max-height:82vh;
-  background:var(--bg2);
-  border:1px solid var(--border);
-  border-radius:22px 22px 0 0;
-  overflow:hidden;
-  box-shadow:0 -20px 60px rgba(0,0,0,.35);
-}
-
-.modal-head{
-  padding:17px 17px 13px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  border-bottom:1px solid var(--border);
-}
-
-.modal-head h3{
-  margin:0;
-  font-size:16px;
-}
-
-.modal-close{
-  width:38px;
-  height:38px;
-  border:0;
-  border-radius:11px;
-  background:var(--card);
-  color:#fff;
-  font-size:19px;
-}
-
-.coin-search{
-  width:calc(100% - 28px);
-  margin:14px;
-  height:46px;
-  border:1px solid var(--border);
-  border-radius:12px;
-  outline:none;
-  background:var(--card);
-  color:#fff;
-  padding:0 13px;
-}
-
-.coin-search::placeholder{
-  color:var(--muted2);
-}
-
-.coin-list{
-  padding:0 12px 20px;
-  max-height:58vh;
-  overflow-y:auto;
-}
-
-.coin-option{
-  width:100%;
-  border:0;
-  border-radius:13px;
-  background:transparent;
-  color:#fff;
-  padding:11px;
-  display:flex;
-  align-items:center;
-  gap:12px;
-  text-align:left;
-}
-
-.coin-option:active,
-.coin-option:hover{
-  background:var(--card);
-}
-
-.coin-option-info{
-  min-width:0;
-  flex:1;
-}
-
-.coin-option-symbol{
-  font-size:13px;
-  font-weight:800;
-}
-
-.coin-option-name{
-  margin-top:2px;
-  color:var(--muted);
-  font-size:11px;
-}
-
-
-/* =========================================================
-   BOTTOM NAV
-========================================================= */
-
-.bottom-nav{
-  position:fixed;
-  left:50%;
-  bottom:0;
-  transform:translateX(-50%);
-  width:100%;
-  max-width:760px;
-  height:70px;
-  background:rgba(7,17,31,.96);
-  backdrop-filter:blur(18px);
-  border-top:1px solid var(--border);
-  z-index:150;
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-}
-
-.bottom-nav a{
-  text-decoration:none;
-  color:var(--muted);
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:4px;
-  font-size:10px;
-  font-weight:700;
-}
-
-.nav-icon{
-  font-size:18px;
-  line-height:1;
-}
-
-
-/* =========================================================
-   LOADING
-========================================================= */
-
-.pulse{
-  animation:pulse 1.3s infinite ease-in-out;
-}
-
-@keyframes pulse{
-  0%,100%{
-    opacity:.45;
-  }
-
-  50%{
-    opacity:1;
-  }
-}
-
-
-/* =========================================================
-   MOBILE
-========================================================= */
-
-@media(max-width:420px){
-
-  .amount-input{
-    font-size:24px;
-  }
-
-  .coin-picker{
-    min-width:112px;
-  }
-
-  .coin-name{
-    max-width:62px;
-  }
-
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#050b18">
+
+  <title>Swap | NEXORA</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    :root {
+      --navy: #050b18;
+      --navy2: #091426;
+      --navy3: #0d1b31;
+      --gold: #d6ad55;
+      --gold2: #f0cf7a;
+      --text: #f5f7fb;
+      --muted: #9da8ba;
+      --border: rgba(255,255,255,.09);
+      --danger: #ff7373;
+      --success: #48d597;
+      --card: rgba(13,27,49,.92);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 50% -10%, #192844 0, transparent 42%),
+        var(--navy);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    button, input, select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+    }
+
+    .topbar {
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 18px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(5,11,24,.94);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(16px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--gold2);
+      font-weight: 900;
+      font-size: 21px;
+      letter-spacing: 1.5px;
+      text-decoration: none;
+    }
+
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      height: 35px;
+      width: 35px;
+      border: 1px solid var(--gold);
+      border-radius: 11px;
+      background: linear-gradient(135deg,#17243a,#080e1b);
+      color: var(--gold2);
+    }
+
+    .back-btn {
+      color: var(--text);
+      text-decoration: none;
+      padding: 10px 13px;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      font-size: 13px;
+    }
+
+    main {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 28px 16px 110px;
+    }
+
+    .heading {
+      margin-bottom: 23px;
+    }
+
+    .eyebrow {
+      color: var(--gold);
+      text-transform: uppercase;
+      font-size: 11px;
+      letter-spacing: 2px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-size: 30px;
+      margin: 0 0 10px;
+      letter-spacing: -.7px;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.65;
+      margin: 0;
+    }
+
+    .swap-card {
+      border: 1px solid rgba(214,173,85,.19);
+      background: linear-gradient(145deg,rgba(16,31,53,.97),rgba(7,15,29,.98));
+      border-radius: 23px;
+      padding: 20px;
+      box-shadow: 0 20px 70px rgba(0,0,0,.22);
+    }
+
+    .section-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+
+    .balance {
+      color: var(--gold2);
+      font-weight: 700;
+    }
+
+    .asset-box {
+      padding: 16px;
+      border: 1px solid var(--border);
+      background: rgba(4,10,20,.72);
+      border-radius: 17px;
+      margin-bottom: 13px;
+    }
+
+    .asset-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .coin {
+      width: 43px;
+      height: 43px;
+      flex: 0 0 43px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: linear-gradient(145deg,#27354b,#111c2e);
+      border: 1px solid rgba(255,255,255,.1);
+      color: var(--gold2);
+      font-weight: 900;
+      font-size: 13px;
+    }
+
+    .asset-details {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .asset-details select {
+      width: 100%;
+      background: transparent;
+      color: var(--text);
+      border: 0;
+      outline: none;
+      font-weight: 800;
+      font-size: 16px;
+      padding: 5px 0;
+    }
+
+    .asset-details select option {
+      color: #111;
+      background: #fff;
+    }
+
+    .asset-name {
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 2px;
+    }
+
+    .amount-wrap {
+      width: 44%;
+      min-width: 110px;
+      text-align: right;
+    }
+
+    .amount-wrap input {
+      width: 100%;
+      min-width: 0;
+      background: transparent;
+      border: 0;
+      outline: none;
+      text-align: right;
+      color: var(--text);
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .amount-wrap input::placeholder {
+      color: #526075;
+    }
+
+    .amount-wrap input:read-only {
+      color: var(--gold2);
+    }
+
+    .amount-sub {
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 8px;
+    }
+
+    .max-btn {
+      background: rgba(214,173,85,.12);
+      color: var(--gold2);
+      border: 1px solid rgba(214,173,85,.24);
+      border-radius: 7px;
+      padding: 4px 8px;
+      font-size: 10px;
+      font-weight: 800;
+      margin-left: 5px;
+    }
+
+    .switch-row {
+      height: 32px;
+      display: flex;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+      margin: -1px 0;
+    }
+
+    .switch-btn {
+      width: 42px;
+      height: 42px;
+      border: 4px solid #0a1425;
+      border-radius: 13px;
+      background: var(--gold);
+      color: #101521;
+      font-size: 20px;
+      font-weight: 900;
+      box-shadow: 0 4px 15px rgba(0,0,0,.3);
+    }
+
+    .quote-panel {
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      padding: 15px;
+      margin-top: 19px;
+      background: rgba(0,0,0,.14);
+    }
+
+    .quote-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 14px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 8px;
+      border-radius: 20px;
+      font-size: 10px;
+      font-weight: 800;
+      background: rgba(214,173,85,.12);
+      color: var(--gold2);
+    }
+
+    .quote-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 12px;
+      font-size: 12px;
+    }
+
+    .quote-line span:first-child {
+      color: var(--muted);
+    }
+
+    .quote-line span:last-child {
+      text-align: right;
+      overflow-wrap: anywhere;
+    }
+
+    .notice {
+      margin-top: 16px;
+      padding: 12px 13px;
+      border: 1px solid rgba(214,173,85,.17);
+      background: rgba(214,173,85,.055);
+      border-radius: 12px;
+      color: #c1cad8;
+      font-size: 11px;
+      line-height: 1.65;
+    }
+
+    .message {
+      display: none;
+      padding: 12px 14px;
+      margin-top: 15px;
+      border-radius: 11px;
+      font-size: 13px;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    .message.show {
+      display: block;
+    }
+
+    .message.error {
+      color: #ffb0b0;
+      border: 1px solid rgba(255,115,115,.24);
+      background: rgba(255,115,115,.08);
+    }
+
+    .message.success {
+      color: #8ef0bd;
+      border: 1px solid rgba(72,213,151,.23);
+      background: rgba(72,213,151,.07);
+    }
+
+    .message.info {
+      color: #d3ddeb;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.035);
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 11px;
+      margin-top: 18px;
+    }
+
+    .btn {
+      min-height: 49px;
+      padding: 13px 15px;
+      border-radius: 13px;
+      font-weight: 800;
+      font-size: 13px;
+      border: 1px solid transparent;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg,var(--gold2),var(--gold));
+      color: #101521;
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,.035);
+      border-color: var(--border);
+      color: var(--text);
+    }
+
+    .btn-full {
+      grid-column: 1 / -1;
+      width: 100%;
+    }
+
+    .page-links {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .page-links a {
+      text-decoration: none;
+      text-align: center;
+      color: var(--muted);
+      padding: 13px 6px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-size: 11px;
+    }
+
+    .page-links a.active {
+      border-color: rgba(214,173,85,.45);
+      color: var(--gold2);
+    }
+
+    .footer-note {
+      text-align: center;
+      color: #67758b;
+      font-size: 10px;
+      line-height: 1.7;
+      margin-top: 22px;
+    }
+
+    .loader {
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(16,21,33,.3);
+      border-top-color: #101521;
+      border-radius: 50%;
+      display: inline-block;
+      vertical-align: middle;
+      animation: spin .7s linear infinite;
+      margin-right: 6px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 440px) {
+      main {
+        padding: 23px 12px 100px;
+      }
+
+      .swap-card {
+        padding: 14px;
+        border-radius: 19px;
+      }
+
+      .asset-box {
+        padding: 12px;
+      }
+
+      .coin {
+        width: 36px;
+        height: 36px;
+        flex-basis: 36px;
+        font-size: 11px;
+      }
+
+      .amount-wrap {
+        width: 40%;
+        min-width: 90px;
+      }
+
+      .amount-wrap input {
+        font-size: 20px;
+      }
+
+      .asset-details select {
+        font-size: 14px;
+      }
+
+      h1 {
+        font-size: 27px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="app">
-
 <header class="topbar">
+  <a class="brand" href="dashboard.html">
+    <span class="brand-mark">N</span>
+    <span>NEXORA</span>
+  </a>
 
-  <button
-    class="menu-btn"
-    id="menuBtn"
-    type="button"
-    aria-label="Open menu"
-  >
-    ☰
-  </button>
-
-  <div class="logo">
-    NEX<span>ORA</span>
-  </div>
-
-  <button
-    class="profile-btn"
-    id="profileBtn"
-    type="button"
-    aria-label="Profile"
-  >
-    —
-  </button>
-
+  <a class="back-btn" href="dashboard.html">← Dashboard</a>
 </header>
 
+<main>
+  <section class="heading">
+    <div class="eyebrow">Digital Asset Management</div>
+    <h1>Swap Assets</h1>
+    <p class="subtitle">
+      Exchange supported asset balances within your NEXORA account.
+      Review the quoted conversion before confirming.
+    </p>
+  </section>
 
-<div
-  class="drawer-overlay"
-  id="drawerOverlay"
-></div>
+  <section class="swap-card">
 
-<aside
-  class="drawer"
-  id="drawer"
->
-
-  <div class="drawer-head">
-
-    <div class="drawer-logo">
-      NEX<span>ORA</span>
+    <div class="section-label">
+      <span>You pay</span>
+      <span>
+        Available:
+        <strong class="balance" id="fromBalance">Loading…</strong>
+      </span>
     </div>
 
-    <button
-      class="drawer-close"
-      id="drawerClose"
-      type="button"
-    >
-      ×
-    </button>
+    <div class="asset-box">
+      <div class="asset-row">
+        <div class="coin" id="fromIcon">₮</div>
 
-  </div>
+        <div class="asset-details">
+          <select id="fromAsset" aria-label="Asset to swap from">
+            <option value="USDT">USDT</option>
+            <option value="USDC">USDC</option>
+            <option value="WETH">WETH</option>
+          </select>
+          <div class="asset-name" id="fromName">Tether USD</div>
+        </div>
 
-  <nav class="drawer-nav">
+        <div class="amount-wrap">
+          <input
+            id="fromAmount"
+            type="number"
+            inputmode="decimal"
+            min="0"
+            step="any"
+            placeholder="0.00"
+            autocomplete="off"
+          >
 
-    <a href="dashboard.html">Portfolio</a>
+          <div class="amount-sub">
+            <button class="max-btn" id="maxBtn" type="button">MAX</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="switch-row">
+      <button class="switch-btn" id="switchBtn" type="button"
+        aria-label="Switch assets">↕</button>
+    </div>
+
+    <div class="section-label">
+      <span>You receive</span>
+      <span>
+        Available:
+        <strong class="balance" id="toBalance">Loading…</strong>
+      </span>
+    </div>
+
+    <div class="asset-box">
+      <div class="asset-row">
+        <div class="coin" id="toIcon">◎</div>
+
+        <div class="asset-details">
+          <select id="toAsset" aria-label="Asset to swap to">
+            <option value="USDC">USDC</option>
+            <option value="USDT">USDT</option>
+            <option value="WETH">WETH</option>
+          </select>
+          <div class="asset-name" id="toName">USD Coin</div>
+        </div>
+
+        <div class="amount-wrap">
+          <input
+            id="toAmount"
+            type="text"
+            placeholder="0.00"
+            readonly
+            aria-label="Estimated receive amount"
+          >
+          <div class="amount-sub">Estimated receive</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="quote-panel">
+      <div class="quote-title">
+        <span>Quote details</span>
+        <span class="status-pill" id="quoteStatus">No quote</span>
+      </div>
+
+      <div class="quote-line">
+        <span>Indicative exchange rate</span>
+        <span id="rateValue">—</span>
+      </div>
+
+      <div class="quote-line">
+        <span>Network fee</span>
+        <span>Not applicable to internal execution</span>
+      </div>
+
+      <div class="quote-line">
+        <span>NEXORA swap fee</span>
+        <span>Not configured</span>
+      </div>
+
+      <div class="quote-line">
+        <span>Minimum receive</span>
+        <span id="minimumValue">—</span>
+      </div>
+
+      <div class="quote-line">
+        <span>Quote expires</span>
+        <span id="expiryValue">—</span>
+      </div>
+    </div>
+
+    <div class="notice">
+      <strong>Internal swap notice:</strong>
+      Confirming this swap changes balances recorded in your NEXORA account.
+      It does not submit a blockchain transaction. Provider quotes are
+      indicative and do not guarantee that NEXORA can redeem or deliver
+      the displayed assets at the quoted value.
+    </div>
+
+    <div class="message" id="messageBox" role="status"
+      aria-live="polite"></div>
+
+    <div class="actions">
+      <button class="btn btn-secondary" id="quoteBtn" type="button">
+        Get quote
+      </button>
+
+      <button class="btn btn-primary" id="executeBtn" type="button" disabled>
+        Confirm swap
+      </button>
+    </div>
+
+    <div class="actions" style="margin-top:10px">
+      <button class="btn btn-secondary btn-full" id="refreshBtn" type="button">
+        Refresh balances
+      </button>
+    </div>
+
+  </section>
+
+  <nav class="page-links" aria-label="Main navigation">
+    <a href="dashboard.html">Dashboard</a>
     <a href="deposit.html">Deposit</a>
     <a href="withdraw.html">Withdraw</a>
     <a href="transactions.html">Transactions</a>
-    <a href="referrals.html">Referrals</a>
+    <a href="swap.html" class="active">Swap</a>
     <a href="profile.html">Profile</a>
-    <a href="support.html">Support</a>
-    <a href="notifications.html">Notifications</a>
-
-    <button
-      id="logoutBtn"
-      type="button"
-    >
-      Logout
-    </button>
-
   </nav>
 
-</aside>
-
-
-<main>
-
-  <div class="page-title">
-
-    <h1>Swap</h1>
-
-    <p>
-      Exchange one supported digital asset for another using a verified server-side quote.
-    </p>
-
+  <div class="footer-note">
+    NEXORA · Internal account balance exchange<br>
+    Always review the amounts before confirming.
   </div>
-
-
-  <div
-    class="message"
-    id="pageMessage"
-    aria-live="polite"
-  ></div>
-
-
-  <section class="card swap-card">
-
-    <div class="swap-box">
-
-      <div class="swap-label-row">
-
-        <div class="swap-label">
-          You pay
-        </div>
-
-        <div
-          class="available"
-          id="availableBalance"
-        >
-          Available: —
-        </div>
-
-      </div>
-
-
-      <div class="amount-row">
-
-        <input
-          id="fromAmount"
-          class="amount-input"
-          type="number"
-          inputmode="decimal"
-          min="0"
-          step="any"
-          placeholder="0"
-          autocomplete="off"
-        >
-
-        <button
-          class="coin-picker"
-          id="fromPicker"
-          type="button"
-        >
-
-          <img
-            id="fromLogo"
-            class="coin-logo"
-            alt=""
-          >
-
-          <span
-            class="coin-name"
-            id="fromAsset"
-          >
-            USDT
-          </span>
-
-        </button>
-
-      </div>
-
-
-      <button
-        class="max-btn"
-        id="maxBtn"
-        type="button"
-      >
-        MAX
-      </button>
-
-    </div>
-
-
-    <div class="swap-arrow-wrap">
-
-      <button
-        class="swap-arrow"
-        id="switchAssets"
-        type="button"
-        aria-label="Switch assets"
-      >
-        ⇅
-      </button>
-
-    </div>
-
-
-    <div class="swap-box">
-
-      <div class="swap-label-row">
-
-        <div class="swap-label">
-          You receive
-        </div>
-
-        <div class="available">
-          Estimated
-        </div>
-
-      </div>
-
-
-      <div class="amount-row">
-
-        <input
-          id="toAmount"
-          class="amount-input"
-          type="text"
-          value=""
-          placeholder="0"
-          readonly
-        >
-
-        <button
-          class="coin-picker"
-          id="toPicker"
-          type="button"
-        >
-
-          <img
-            id="toLogo"
-            class="coin-logo"
-            alt=""
-          >
-
-          <span
-            class="coin-name"
-            id="toAsset"
-          >
-            USDC
-          </span>
-
-        </button>
-
-      </div>
-
-    </div>
-
-
-    <div class="quote-box">
-
-      <div class="quote-row">
-
-        <span class="quote-name">
-          Exchange rate
-        </span>
-
-        <span
-          class="quote-value gold"
-          id="rateValue"
-        >
-          —
-        </span>
-
-      </div>
-
-
-      <div class="quote-row">
-
-        <span class="quote-name">
-          Network fee
-        </span>
-
-        <span
-          class="quote-value"
-          id="networkFeeValue"
-        >
-          —
-        </span>
-
-      </div>
-
-
-      <div class="quote-row">
-
-        <span class="quote-name">
-          NEXORA fee
-        </span>
-
-        <span
-          class="quote-value"
-          id="nexoraFeeValue"
-        >
-          —
-        </span>
-
-      </div>
-
-
-      <div class="quote-row">
-
-        <span class="quote-name">
-          Minimum received
-        </span>
-
-        <span
-          class="quote-value success"
-          id="minimumReceivedValue"
-        >
-          —
-        </span>
-
-      </div>
-
-    </div>
-
-
-    <div
-      class="quote-status"
-      id="quoteStatus"
-    ></div>
-
-
-    <div class="settings-row">
-
-      <span class="settings-left">
-        Slippage tolerance
-      </span>
-
-      <span
-        class="slippage"
-        id="slippageValue"
-      >
-        0.50%
-      </span>
-
-    </div>
-
-
-    <button
-      class="primary-btn"
-      id="swapBtn"
-      type="button"
-      disabled
-    >
-      Enter amount
-    </button>
-
-  </section>
-
-
-  <section class="card info-card">
-
-    <h3>
-      Instant asset exchange
-    </h3>
-
-    <p>
-      Enter the amount you want to exchange. NEXORA requests a verified server-side quote and displays the actual exchange rate, applicable fees and minimum amount you will receive.
-    </p>
-
-  </section>
-
 </main>
 
-
-<nav class="bottom-nav">
-
-  <a href="dashboard.html">
-    <span class="nav-icon">◇</span>
-    Portfolio
-  </a>
-
-  <a href="deposit.html">
-    <span class="nav-icon">＋</span>
-    Deposit
-  </a>
-
-  <a href="transactions.html">
-    <span class="nav-icon">≡</span>
-    History
-  </a>
-
-  <a href="profile.html">
-    <span class="nav-icon">○</span>
-    Account
-  </a>
-
-</nav>
-
-</div>
-
-
-<div
-  class="modal-backdrop"
-  id="coinModal"
->
-
-  <div class="coin-modal">
-
-    <div class="modal-head">
-
-      <h3 id="coinModalTitle">
-        Select asset
-      </h3>
-
-      <button
-        class="modal-close"
-        id="coinModalClose"
-        type="button"
-      >
-        ×
-      </button>
-
-    </div>
-
-
-    <input
-      class="coin-search"
-      id="coinSearch"
-      type="search"
-      placeholder="Search asset..."
-      autocomplete="off"
-    >
-
-
-    <div
-      class="coin-list"
-      id="coinList"
-    ></div>
-
-  </div>
-
-</div>
-
-
 <script>
+(() => {
+  "use strict";
 
-/* =========================================================
-   SUPABASE
-========================================================= */
+  const SUPABASE_URL =
+    "https://rihvvwktvgytbqzazage.supabase.co";
 
-const SUPABASE_URL =
-  "https://rihvvwktvgytbqzazage.supabase.co";
+  const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
 
-const SUPABASE_PUBLISHABLE_KEY =
-  "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
-
-const supabaseClient =
-  window.supabase.createClient(
+  const supabase = window.supabase.createClient(
     SUPABASE_URL,
-    SUPABASE_PUBLISHABLE_KEY,
-    {
-      auth:{
-        autoRefreshToken:true,
-        persistSession:true,
-        detectSessionInUrl:true
-      }
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+  const $ = id => document.getElementById(id);
+
+  const ASSETS = {
+    USDT: {
+      name: "Tether USD",
+      icon: "₮",
+      decimals: 6
+    },
+    USDC: {
+      name: "USD Coin",
+      icon: "◎",
+      decimals: 6
+    },
+    WETH: {
+      name: "Wrapped Ether",
+      icon: "◆",
+      decimals: 8
     }
-  );
-
-
-/* =========================================================
-   SECURE SWAP EXECUTION ENDPOINT
-========================================================= */
-
-const SWAP_EXECUTION_FUNCTION =
-  "swap-execute";
-
-
-/* =========================================================
-   LOGOS
-========================================================= */
-
-const LOGO_BASE =
-  "https://cdn.jsdelivr.net/gh/madenix/Crypto-logo-cdn@main/Logos/";
-
-const logoFiles = {
-  BTC:"BTC.svg",
-  ETH:"ETH.svg",
-  USDT:"USDT.svg",
-  USDC:"USDC.svg",
-  BNB:"BNB.svg",
-  SOL:"SOL.svg",
-  XRP:"XRP.svg",
-  TON:"TON.svg",
-  DOGE:"DOGE.svg",
-  ADA:"ADA.svg",
-  TRX:"TRON.svg",
-  LTC:"LTC.svg",
-  AVAX:"AVAX.svg",
-  DOT:"DOT.svg",
-  LINK:"LINK.svg",
-  POL:"MATIC.svg",
-  SHIB:"SHIB.svg",
-  BCH:"BCH.svg",
-  XLM:"XLM.svg",
-  ATOM:"ATOM.svg",
-  NEAR:"NEAR.svg",
-  APT:"APT.svg",
-  ARB:"ARB.svg",
-  OP:"OP.svg"
-};
-
-function getLogo(asset){
-
-  return (
-    LOGO_BASE +
-    (
-      logoFiles[asset] ||
-      `${asset}.svg`
-    )
-  );
-
-}
-
-
-/* =========================================================
-   ASSETS
-========================================================= */
-
-const assets = [
-  ["BTC","Bitcoin"],
-  ["ETH","Ethereum"],
-  ["USDT","Tether"],
-  ["USDC","USD Coin"],
-  ["BNB","BNB"],
-  ["SOL","Solana"],
-  ["XRP","XRP"],
-  ["TON","Toncoin"],
-  ["DOGE","Dogecoin"],
-  ["ADA","Cardano"],
-  ["TRX","TRON"],
-  ["LTC","Litecoin"],
-  ["AVAX","Avalanche"],
-  ["DOT","Polkadot"],
-  ["LINK","Chainlink"],
-  ["POL","Polygon"],
-  ["SHIB","Shiba Inu"],
-  ["BCH","Bitcoin Cash"],
-  ["XLM","Stellar"],
-  ["ATOM","Cosmos"],
-  ["NEAR","NEAR Protocol"],
-  ["APT","Aptos"],
-  ["ARB","Arbitrum"],
-  ["OP","Optimism"]
-];
-
-
-/* =========================================================
-   STATE
-========================================================= */
-
-let currentUser = null;
-let currentSwapId = null;
-let currentQuote = null;
-
-let quotePollTimer = null;
-let quotePollDeadline = 0;
-let quoteRequestToken = 0;
-let inputQuoteTimer = null;
-
-let pickerTarget = null;
-
-let fromAssetValue = "USDT";
-let toAssetValue = "USDC";
-
-let availableBalanceValue = 0;
-
-let executingSwap = false;
-
-const slippage = 0.50;
-
-
-/* =========================================================
-   HELPERS
-========================================================= */
-
-function $(id){
-  return document.getElementById(id);
-}
-
-
-function escapeHtml(value){
-
-  return String(value)
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
-
-}
-
-
-function formatAmount(value){
-
-  const n = Number(value);
-
-  if(!Number.isFinite(n)){
-    return "0";
-  }
-
-  if(n === 0){
-    return "0";
-  }
-
-  return n.toLocaleString(
-    undefined,
-    {
-      maximumFractionDigits:8
-    }
-  );
-
-}
-
-
-function showMessage(
-  element,
-  message,
-  type="info"
-){
-
-  if(!element){
-    return;
-  }
-
-  element.textContent =
-    message;
-
-  element.className =
-    `message show ${type}`;
-
-}
-
-
-function clearMessage(element){
-
-  if(!element){
-    return;
-  }
-
-  element.textContent =
-    "";
-
-  element.className =
-    "message";
-
-}
-
-
-/* =========================================================
-   ASSET UI
-========================================================= */
-
-function renderSelectedAssets(){
-
-  $("fromAsset").textContent =
-    fromAssetValue;
-
-  $("toAsset").textContent =
-    toAssetValue;
-
-  $("fromLogo").src =
-    getLogo(fromAssetValue);
-
-  $("toLogo").src =
-    getLogo(toAssetValue);
-
-  $("fromLogo").alt =
-    fromAssetValue;
-
-  $("toLogo").alt =
-    toAssetValue;
-
-}
-
-
-/* =========================================================
-   QUOTE POLLING
-========================================================= */
-
-function stopQuotePolling(){
-
-  if(quotePollTimer){
-
-    clearInterval(
-      quotePollTimer
-    );
-
-    quotePollTimer =
-      null;
-
-  }
-
-  quotePollDeadline =
-    0;
-
-}
-
-
-function resetQuoteDisplay(){
-
-  stopQuotePolling();
-
-  currentQuote =
-    null;
-
-  currentSwapId =
-    null;
-
-  $("toAmount").value =
-    "";
-
-  $("rateValue").textContent =
-    "—";
-
-  $("networkFeeValue").textContent =
-    "—";
-
-  $("nexoraFeeValue").textContent =
-    "—";
-
-  $("minimumReceivedValue").textContent =
-    "—";
-
-  $("quoteStatus").textContent =
-    "";
-
-  $("quoteStatus").className =
-    "quote-status";
-
-  if(!executingSwap){
-
-    $("swapBtn").disabled =
-      true;
-
-    $("swapBtn").textContent =
-      "Enter amount";
-
-  }
-
-}
-
-
-/* =========================================================
-   VALIDATION
-========================================================= */
-
-function validateSwapInputs(){
-
-  const amount =
-    Number(
-      $("fromAmount").value
-    );
-
-  if(
-    !Number.isFinite(amount) ||
-    amount <= 0
-  ){
-
-    return {
-      valid:false,
-      message:"Enter a valid amount."
-    };
-
-  }
-
-  if(
-    fromAssetValue ===
-    toAssetValue
-  ){
-
-    return {
-      valid:false,
-      message:"Choose two different assets."
-    };
-
-  }
-
-  if(
-    amount >
-    availableBalanceValue
-  ){
-
-    return {
-      valid:false,
-      message:
-        `Insufficient ${fromAssetValue} balance.`
-    };
-
-  }
-
-  return {
-    valid:true,
-    amount
   };
 
-}
+  let currentUser = null;
+  let balances = {};
+  let currentSwapId = null;
+  let currentQuote = null;
+  let expiryTimer = null;
+  let busy = false;
 
+  function formatAmount(value, maximum = 8) {
+    const number = Number(value);
 
-/* =========================================================
-   LOAD BALANCE
-========================================================= */
+    if (!Number.isFinite(number)) return "0";
 
-async function loadFromBalance(){
-
-  if(!currentUser){
-    return;
+    return number.toLocaleString("en-US", {
+      maximumFractionDigits: maximum
+    });
   }
 
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .from("wallets")
-      .select("available_balance")
-      .eq(
-        "user_id",
-        currentUser.id
-      )
-      .eq(
-        "asset",
-        fromAssetValue
-      )
-      .maybeSingle();
-
-  if(error){
-
-    console.error(
-      "Wallet balance error:",
-      error
-    );
-
-    availableBalanceValue =
-      0;
-
-    $("availableBalance").textContent =
-      "Available: —";
-
-    return;
-
-  }
-
-  availableBalanceValue =
-    Number(
-      data?.available_balance || 0
-    );
-
-  $("availableBalance").textContent =
-    `Available: ${formatAmount(
-      availableBalanceValue
-    )} ${fromAssetValue}`;
-
-}
-
-
-/* =========================================================
-   MAX
-========================================================= */
-
-function useMax(){
-
-  if(
-    availableBalanceValue <= 0
-  ){
-
-    $("fromAmount").value =
-      "";
-
-    resetQuoteDisplay();
-
-    showMessage(
-      $("pageMessage"),
-      `No ${fromAssetValue} balance available.`,
-      "error"
-    );
-
-    return;
-
-  }
-
-  $("fromAmount").value =
-    String(
-      availableBalanceValue
-    );
-
-  scheduleQuote();
-
-}
-
-
-/* =========================================================
-   QUOTE LOADING
-========================================================= */
-
-function showQuoteLoading(){
-
-  $("toAmount").value =
-    "";
-
-  $("rateValue").textContent =
-    "Getting rate…";
-
-  $("networkFeeValue").textContent =
-    "Calculating…";
-
-  $("nexoraFeeValue").textContent =
-    "Calculating…";
-
-  $("minimumReceivedValue").textContent =
-    "Calculating…";
-
-  $("quoteStatus").textContent =
-    "Requesting verified quote…";
-
-  $("quoteStatus").className =
-    "quote-status loading pulse";
-
-  $("swapBtn").disabled =
-    true;
-
-  $("swapBtn").textContent =
-    "Getting quote…";
-
-}
-
-
-function showQuoteError(message){
-
-  $("toAmount").value =
-    "";
-
-  $("rateValue").textContent =
-    "—";
-
-  $("networkFeeValue").textContent =
-    "—";
-
-  $("nexoraFeeValue").textContent =
-    "—";
-
-  $("minimumReceivedValue").textContent =
-    "—";
-
-  $("quoteStatus").textContent =
-    message;
-
-  $("quoteStatus").className =
-    "quote-status error";
-
-  $("swapBtn").disabled =
-    false;
-
-  $("swapBtn").textContent =
-    "Try again";
-
-}
-
-
-/* =========================================================
-   APPLY SERVER QUOTE
-========================================================= */
-
-function applyVerifiedQuote(quote){
-
-  if(!quote){
-    return false;
-  }
-
-
-  /*
-   * Prevent a stale quote for another pair/user
-   * from being displayed or executed.
-   */
-
-  if(
-    quote.user_id &&
-    currentUser &&
-    quote.user_id !== currentUser.id
-  ){
-
-    return false;
-
-  }
-
-
-  if(
-    quote.from_asset &&
-    String(quote.from_asset).toUpperCase() !==
-      String(fromAssetValue).toUpperCase()
-  ){
-
-    return false;
-
-  }
-
-
-  if(
-    quote.to_asset &&
-    String(quote.to_asset).toUpperCase() !==
-      String(toAssetValue).toUpperCase()
-  ){
-
-    return false;
-
-  }
-
-
-  const quotedToAmount =
-    Number(
-      quote.quoted_to_amount
-    );
-
-  const rate =
-    Number(
-      quote.rate
-    );
-
-  const networkFee =
-    Number(
-      quote.network_fee
-    );
-
-  const nexoraFee =
-    Number(
-      quote.nexora_fee
-    );
-
-  const minimumReceived =
-    Number(
-      quote.min_received
-    );
-
-
-  if(
-
-    !Number.isFinite(
-      quotedToAmount
-    ) ||
-
-    quotedToAmount < 0 ||
-
-    !Number.isFinite(
-      rate
-    ) ||
-
-    rate <= 0 ||
-
-    !Number.isFinite(
-      networkFee
-    ) ||
-
-    networkFee < 0 ||
-
-    !Number.isFinite(
-      nexoraFee
-    ) ||
-
-    nexoraFee < 0 ||
-
-    !Number.isFinite(
-      minimumReceived
-    ) ||
-
-    minimumReceived < 0
-
-  ){
-
-    return false;
-
-  }
-
-
-  currentQuote = {
-    ...quote,
-
-    quoted_to_amount:
-      quotedToAmount,
-
-    rate,
-
-    network_fee:
-      networkFee,
-
-    nexora_fee:
-      nexoraFee,
-
-    min_received:
-      minimumReceived
-  };
-
-
-  $("toAmount").value =
-    formatAmount(
-      quotedToAmount
-    );
-
-
-  $("rateValue").textContent =
-    `1 ${fromAssetValue} = ${formatAmount(
-      rate
-    )} ${toAssetValue}`;
-
-
-  $("networkFeeValue").textContent =
-    `${formatAmount(
-      networkFee
-    )} ${fromAssetValue}`;
-
-
-  $("nexoraFeeValue").textContent =
-    `${formatAmount(
-      nexoraFee
-    )} ${fromAssetValue}`;
-
-
-  $("minimumReceivedValue").textContent =
-    `${formatAmount(
-      minimumReceived
-    )} ${toAssetValue}`;
-
-
-  $("quoteStatus").textContent =
-    "Verified quote ready";
-
-  $("quoteStatus").className =
-    "quote-status ready";
-
-
-  if(!executingSwap){
-
-    $("swapBtn").disabled =
-      false;
-
-    $("swapBtn").textContent =
-      "Swap";
-
-  }
-
-
-  return true;
-
-}
-
-
-/* =========================================================
-   POLL FOR QUOTE
-========================================================= */
-
-async function pollForQuote(){
-
-  if(
-    !currentSwapId ||
-    !currentUser
-  ){
-
-    return false;
-
-  }
-
-
-  const {
-    data,
-    error
-  } =
-    await supabaseClient
-      .from("swaps")
-      .select(`
-        id,
-        user_id,
-        from_asset,
-        to_asset,
-        from_amount,
-        quoted_to_amount,
-        rate,
-        network_fee,
-        nexora_fee,
-        min_received,
-        quote_expires_at,
-        status
-      `)
-      .eq(
-        "id",
-        currentSwapId
-      )
-      .eq(
-        "user_id",
-        currentUser.id
-      )
-      .maybeSingle();
-
-
-  if(error){
-
-    console.error(
-      "Quote polling error:",
-      error
-    );
-
-    return false;
-
-  }
-
-
-  if(!data){
-    return false;
-  }
-
-
-  const status =
-    String(
-      data.status || ""
-    ).toUpperCase();
-
-
-  if(
-    status === "REJECTED" ||
-    status === "EXPIRED" ||
-    status === "CANCELLED"
-  ){
-
-    stopQuotePolling();
-
-    showQuoteError(
-      `Swap quote ${status.toLowerCase()}. Please try again.`
-    );
-
-    return false;
-
-  }
-
-
-  const ready =
-    data.quoted_to_amount !== null &&
-    data.quoted_to_amount !== undefined &&
-
-    data.rate !== null &&
-    data.rate !== undefined &&
-
-    data.network_fee !== null &&
-    data.network_fee !== undefined &&
-
-    data.nexora_fee !== null &&
-    data.nexora_fee !== undefined &&
-
-    data.min_received !== null &&
-    data.min_received !== undefined;
-
-
-  if(ready){
-
-    const success =
-      applyVerifiedQuote(
-        data
-      );
-
-
-    if(success){
-
-      stopQuotePolling();
-
-      showMessage(
-        $("pageMessage"),
-        "Verified exchange quote ready.",
-        "success"
-      );
-
-      return true;
-
+  function parseAmount(value) {
+    if (typeof value !== "string" && typeof value !== "number") {
+      return NaN;
     }
 
+    const text = String(value).trim();
+
+    if (!/^\d+(\.\d+)?$/.test(text)) return NaN;
+
+    const number = Number(text);
+
+    return Number.isFinite(number) ? number : NaN;
   }
 
+  function showMessage(message, type = "info") {
+    const box = $("messageBox");
 
-  return false;
+    box.textContent = message;
+    box.className = "message show " + type;
+  }
 
-}
+  function clearMessage() {
+    const box = $("messageBox");
 
+    box.textContent = "";
+    box.className = "message";
+  }
 
-/* =========================================================
-   START QUOTE POLLING
-========================================================= */
+  function setBusy(value) {
+    busy = value;
 
-async function startQuotePolling(){
+    $("quoteBtn").disabled = value;
+    $("executeBtn").disabled = value || !quoteIsUsable();
+    $("refreshBtn").disabled = value;
+    $("switchBtn").disabled = value;
+    $("fromAsset").disabled = value;
+    $("toAsset").disabled = value;
+    $("fromAmount").disabled = value;
+    $("maxBtn").disabled = value;
 
-  stopQuotePolling();
+    $("quoteBtn").textContent = value
+      ? "Please wait…"
+      : "Get quote";
+  }
 
-  quotePollDeadline =
-    Date.now() + 30000;
+  function quoteIsUsable() {
+    return Boolean(
+      currentQuote &&
+      currentSwapId &&
+      currentQuote.expiresAt > Date.now() &&
+      currentQuote.fromAsset === $("fromAsset").value &&
+      currentQuote.toAsset === $("toAsset").value &&
+      currentQuote.amount === parseAmount($("fromAmount").value)
+    );
+  }
 
+  function updateActionState() {
+    $("executeBtn").disabled = busy || !quoteIsUsable();
+  }
 
-  const first =
-    await pollForQuote();
+  function invalidateQuote() {
+    currentQuote = null;
+    currentSwapId = null;
 
+    clearInterval(expiryTimer);
 
-  if(first){
+    $("toAmount").value = "";
+    $("rateValue").textContent = "—";
+    $("minimumValue").textContent = "—";
+    $("expiryValue").textContent = "—";
+    $("quoteStatus").textContent = "No quote";
+
+    updateActionState();
+  }
+
+  function updateAssetDisplay(side) {
+    const asset = $(side + "Asset").value;
+    const details = ASSETS[asset];
+
+    $(side + "Icon").textContent = details.icon;
+    $(side + "Name").textContent = details.name;
+
+    $(side + "Balance").textContent =
+      formatAmount(balances[asset] || 0) + " " + asset;
+  }
+
+  function updateAssetDisplays() {
+    updateAssetDisplay("from");
+    updateAssetDisplay("to");
+  }
+
+  async function requireSession() {
+    const { data, error } = await supabase.auth.getSession();
+
+    if (error || !data.session) {
+      window.location.replace("index.html");
+      return false;
+    }
+
+    currentUser = data.session.user;
+
+    if (!currentUser) {
+      window.location.replace("index.html");
+      return false;
+    }
+
     return true;
   }
 
-
-  quotePollTimer =
-    setInterval(
-      async () => {
-
-        if(
-          Date.now() >
-          quotePollDeadline
-        ){
-
-          stopQuotePolling();
-
-          if(!currentQuote){
-
-            showQuoteError(
-              "The verified quote is taking too long. Please try again."
-            );
-
-          }
-
-          return;
-
-        }
-
-
-        await pollForQuote();
-
-      },
-      1200
-    );
-
-
-  return false;
-
-}
-
-
-/* =========================================================
-   REQUEST QUOTE
-========================================================= */
-
-async function requestQuote(){
-
-  const requestToken =
-    ++quoteRequestToken;
-
-
-  clearMessage(
-    $("pageMessage")
-  );
-
-
-  if(!currentUser){
-
-    showQuoteError(
-      "Please sign in first."
-    );
-
-    return;
-
-  }
-
-
-  const validation =
-    validateSwapInputs();
-
-
-  if(!validation.valid){
-
-    showMessage(
-      $("pageMessage"),
-      validation.message,
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  resetQuoteDisplay();
-
-  showQuoteLoading();
-
-
-  const amount =
-    validation.amount;
-
-
-  const {
-    data,
-    error
-  } =
-    await supabaseClient.rpc(
-      "request_swap_quote",
-      {
-        p_from_asset:
-          fromAssetValue,
-
-        p_to_asset:
-          toAssetValue,
-
-        p_from_amount:
-          amount,
-
-        p_slippage_percent:
-          slippage
-      }
-    );
-
-
-  if(
-    requestToken !==
-    quoteRequestToken
-  ){
-
-    return;
-
-  }
-
-
-  if(error){
-
-    console.error(
-      "request_swap_quote error:",
-      error
-    );
-
-    showQuoteError(
-      error.message ||
-      "Unable to create swap quote."
-    );
-
-    return;
-
-  }
-
-
-  let returnedQuote =
-    null;
-
-
-  if(
-    Array.isArray(data)
-  ){
-
-    returnedQuote =
-      data[0] || null;
-
-  }
-  else if(
-    data &&
-    typeof data === "object"
-  ){
-
-    returnedQuote =
-      data;
-
-  }
-
-
-  if(
-
-    returnedQuote &&
-
-    returnedQuote.quoted_to_amount !==
-      undefined &&
-
-    returnedQuote.rate !==
-      undefined
-
-  ){
-
-    currentSwapId =
-      returnedQuote.id ||
-      returnedQuote.swap_id ||
-      returnedQuote.swapId ||
-      null;
-
-
-    if(
-      applyVerifiedQuote(
-        returnedQuote
-      )
-    ){
+  async function loadBalances() {
+    if (!currentUser) return;
+
+    const { data, error } = await supabase
+      .from("wallets")
+      .select("asset, available_balance")
+      .eq("user_id", currentUser.id)
+      .in("asset", ["USDT", "USDC", "WETH"]);
+
+    if (error) {
+      console.error("Wallet load failed:", error.message);
 
       showMessage(
-        $("pageMessage"),
-        "Verified exchange quote ready.",
-        "success"
+        "Could not load wallet balances. Please try again.",
+        "error"
       );
 
       return;
-
     }
 
-  }
+    balances = {
+      USDT: 0,
+      USDC: 0,
+      WETH: 0
+    };
 
+    for (const wallet of (data || [])) {
+      const asset = String(wallet.asset).toUpperCase();
 
-  if(
-    typeof data === "string"
-  ){
-
-    currentSwapId =
-      data;
-
-  }
-
-
-  if(
-    data &&
-    typeof data === "object" &&
-    !currentSwapId
-  ){
-
-    currentSwapId =
-      data.id ||
-      data.swap_id ||
-      data.swapId ||
-      data[0]?.id ||
-      data[0]?.swap_id ||
-      data[0]?.swapId ||
-      null;
-
-  }
-
-
-  if(
-    Array.isArray(data) &&
-    data.length === 1 &&
-    !currentSwapId
-  ){
-
-    const first =
-      data[0];
-
-
-    if(
-      typeof first === "string"
-    ){
-
-      currentSwapId =
-        first;
-
-    }
-    else if(
-      first &&
-      typeof first === "object"
-    ){
-
-      currentSwapId =
-        first.id ||
-        first.swap_id ||
-        first.swapId ||
-        null;
-
-    }
-
-  }
-
-
-  if(!currentSwapId){
-
-    console.error(
-      "Unexpected request_swap_quote response:",
-      data
-    );
-
-    showQuoteError(
-      "The quote request was created, but no swap ID was returned."
-    );
-
-    return;
-
-  }
-
-
-  $("quoteStatus").textContent =
-    "Waiting for verified rate…";
-
-
-  await startQuotePolling();
-
-}
-
-
-/* =========================================================
-   EXTRACT EDGE FUNCTION ERROR
-========================================================= */
-
-async function getEdgeFunctionErrorMessage(error){
-
-  let message =
-    "Swap execution failed.";
-
-
-  if(
-    error?.message &&
-    !/failed to send a request/i.test(
-      error.message
-    )
-  ){
-
-    message =
-      error.message;
-
-  }
-
-
-  try{
-
-    const context =
-      error?.context;
-
-
-    if(
-      context &&
-      typeof context.json ===
-        "function"
-    ){
-
-      const body =
-        await context.json();
-
-
-      if(
-        body?.error
-      ){
-
-        message =
-          String(
-            body.error
+      if (Object.prototype.hasOwnProperty.call(balances, asset)) {
+        // Avoid silently choosing one wallet if duplicates exist.
+        if (balances[asset] !== 0) {
+          showMessage(
+            "Multiple wallet records were found for " + asset +
+            ". Please contact support before swapping.",
+            "error"
           );
+          return;
+        }
 
+        balances[asset] = Number(wallet.available_balance || 0);
       }
-      else if(
-        body?.message
-      ){
+    }
 
-        message =
-          String(
-            body.message
-          );
+    updateAssetDisplays();
+  }
 
+  function normalizeRpcRow(data) {
+    if (Array.isArray(data)) return data[0] || null;
+    return data || null;
+  }
+
+  async function getQuote() {
+    clearMessage();
+
+    if (busy) return;
+
+    const fromAsset = $("fromAsset").value;
+    const toAsset = $("toAsset").value;
+    const amount = parseAmount($("fromAmount").value);
+
+    if (fromAsset === toAsset) {
+      showMessage("Choose two different assets.", "error");
+      return;
+    }
+
+    if (!Number.isFinite(amount) || amount <= 0) {
+      showMessage("Enter a valid amount greater than zero.", "error");
+      return;
+    }
+
+    if (amount > Number(balances[fromAsset] || 0)) {
+      showMessage("Your available balance is insufficient.", "error");
+      return;
+    }
+
+    if (!Number.isSafeInteger(Math.round(amount * 10 ** ASSETS[fromAsset].decimals))) {
+      showMessage("The amount is too large or has unsupported precision.", "error");
+      return;
+    }
+
+    invalidateQuote();
+    setBusy(true);
+
+    try {
+      const { data: rpcData, error: rpcError } = await supabase.rpc(
+        "request_swap_quote",
+        {
+          p_from_asset: fromAsset,
+          p_to_asset: toAsset,
+          p_from_amount: amount,
+          p_slippage_percent: 0.5
+        }
+      );
+
+      if (rpcError) {
+        throw new Error(
+          rpcError.message || "Could not create a quote request."
+        );
       }
 
-    }
+      const swap = normalizeRpcRow(rpcData);
 
-  }
-  catch(parseError){
+      if (!swap || !swap.id) {
+        throw new Error(
+          "The database did not return a swap request ID."
+        );
+      }
 
-    console.warn(
-      "Unable to parse Edge Function error:",
-      parseError
-    );
+      currentSwapId = swap.id;
 
-  }
+      const { data: quoteData, error: quoteError } =
+        await supabase.functions.invoke("swap-quote", {
+          body: { swap_id: swap.id }
+        });
 
+      if (quoteError) {
+        let detail = quoteError.message || "Quote request failed.";
 
-  return message;
+        if (quoteData && quoteData.error) {
+          detail = quoteData.error;
+        }
 
-}
+        throw new Error(detail);
+      }
 
+      if (!quoteData || !quoteData.success) {
+        throw new Error(
+          quoteData?.error || "The provider did not return a valid quote."
+        );
+      }
 
-/* =========================================================
-   EXECUTION RESPONSE VALIDATION
-========================================================= */
-
-function isSuccessfulExecutionResponse(data){
-
-  if(!data){
-    return false;
-  }
-
-
-  if(
-    data.success === true
-  ){
-
-    return true;
-
-  }
-
-
-  const result =
-    data.swap ||
-    data.result ||
-    data.data ||
-    data;
-
-
-  const status =
-    String(
-      result?.status ||
-      ""
-    ).toUpperCase();
-
-
-  return (
-    status === "COMPLETED" ||
-    status === "SUCCESS" ||
-    status === "EXECUTED"
-  );
-
-}
-
-
-/* =========================================================
-   EXECUTE SWAP
-========================================================= */
-
-async function executeSwap(){
-
-  if(executingSwap){
-    return;
-  }
-
-
-  if(!currentUser){
-
-    showMessage(
-      $("pageMessage"),
-      "Please sign in first.",
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  if(!currentQuote){
-
-    showMessage(
-      $("pageMessage"),
-      "Please wait for the verified exchange quote.",
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  if(!currentSwapId){
-
-    showMessage(
-      $("pageMessage"),
-      "Swap session is missing. Please request a new quote.",
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  const validation =
-    validateSwapInputs();
-
-
-  if(!validation.valid){
-
-    showMessage(
-      $("pageMessage"),
-      validation.message,
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  executingSwap =
-    true;
-
-
-  stopQuotePolling();
-
-
-  $("swapBtn").disabled =
-    true;
-
-  $("swapBtn").textContent =
-    "Swapping…";
-
-
-  $("quoteStatus").textContent =
-    "Verifying quote and updating balances…";
-
-  $("quoteStatus").className =
-    "quote-status loading pulse";
-
-
-  try{
-
-    /*
-     * -------------------------------------------------------
-     * STEP 1 — RE-READ THE QUOTE
-     * -------------------------------------------------------
-     */
-
-    const {
-      data:latestQuote,
-      error:quoteError
-    } =
-      await supabaseClient
+      // Read the stored record rather than trusting only the HTTP response.
+      const { data: storedSwap, error: storedError } = await supabase
         .from("swaps")
-        .select(`
-          id,
-          user_id,
-          from_asset,
-          to_asset,
-          from_amount,
-          quoted_to_amount,
-          rate,
-          network_fee,
-          nexora_fee,
-          min_received,
-          quote_expires_at,
-          status
-        `)
-        .eq(
-          "id",
-          currentSwapId
+        .select(
+          "id, user_id, from_asset, to_asset, from_amount, " +
+          "quoted_to_amount, rate, min_received, status, quote_expires_at"
         )
-        .eq(
-          "user_id",
-          currentUser.id
-        )
+        .eq("id", swap.id)
+        .eq("user_id", currentUser.id)
         .maybeSingle();
 
+      if (storedError) {
+        throw new Error("Could not verify the stored quote.");
+      }
 
-    if(quoteError){
+      if (!storedSwap || storedSwap.status !== "QUOTED") {
+        throw new Error("The quote was not saved correctly.");
+      }
 
-      throw new Error(
-        "Unable to verify the swap quote."
-      );
+      if (!storedSwap.quote_expires_at) {
+        throw new Error("The quote has no expiry timestamp.");
+      }
 
-    }
+      const expiresAt = Date.parse(storedSwap.quote_expires_at);
 
+      if (!Number.isFinite(expiresAt) || expiresAt <= Date.now()) {
+        throw new Error("The quote has expired. Request another quote.");
+      }
 
-    if(!latestQuote){
+      if (
+        storedSwap.from_asset !== fromAsset ||
+        storedSwap.to_asset !== toAsset ||
+        Number(storedSwap.from_amount) !== amount
+      ) {
+        throw new Error("The stored quote does not match your request.");
+      }
 
-      throw new Error(
-        "Swap quote not found."
-      );
+      const received = Number(storedSwap.quoted_to_amount);
+      const rate = Number(storedSwap.rate);
+      const minimum = Number(storedSwap.min_received);
 
-    }
+      if (
+        !Number.isFinite(received) || received <= 0 ||
+        !Number.isFinite(rate) || rate <= 0 ||
+        !Number.isFinite(minimum) || minimum <= 0 ||
+        minimum > received
+      ) {
+        throw new Error("The saved quote contains invalid amounts.");
+      }
 
+      currentQuote = {
+        id: storedSwap.id,
+        fromAsset,
+        toAsset,
+        amount,
+        received,
+        rate,
+        minimum,
+        expiresAt
+      };
 
-    /*
-     * Make sure this is still the same pair.
-     */
+      $("toAmount").value = formatAmount(received);
+      $("rateValue").textContent =
+        "1 " + fromAsset + " ≈ " + formatAmount(rate) + " " + toAsset;
 
-    if(
-      String(
-        latestQuote.from_asset || ""
-      ).toUpperCase() !==
-        String(
-          fromAssetValue
-        ).toUpperCase()
-    ){
+      $("minimumValue").textContent =
+        formatAmount(minimum) + " " + toAsset;
 
-      throw new Error(
-        "The payment asset changed. Please request a new quote."
-      );
+      $("quoteStatus").textContent = "Quote ready";
 
-    }
-
-
-    if(
-      String(
-        latestQuote.to_asset || ""
-      ).toUpperCase() !==
-        String(
-          toAssetValue
-        ).toUpperCase()
-    ){
-
-      throw new Error(
-        "The receiving asset changed. Please request a new quote."
-      );
-
-    }
-
-
-    /*
-     * Make sure the amount quoted is still
-     * the amount the user entered.
-     */
-
-    const quotedFromAmount =
-      Number(
-        latestQuote.from_amount
-      );
-
-    const enteredAmount =
-      Number(
-        $("fromAmount").value
-      );
-
-
-    if(
-      !Number.isFinite(
-        quotedFromAmount
-      ) ||
-      !Number.isFinite(
-        enteredAmount
-      )
-    ){
-
-      throw new Error(
-        "Invalid swap amount."
-      );
-
-    }
-
-
-    /*
-     * Small floating-point tolerance only for
-     * browser-side UX validation.
-     *
-     * The backend remains authoritative.
-     */
-
-    const amountDifference =
-      Math.abs(
-        quotedFromAmount -
-        enteredAmount
-      );
-
-
-    const amountTolerance =
-      Math.max(
-        0.00000001,
-        Math.abs(
-          quotedFromAmount
-        ) * 0.00000001
-      );
-
-
-    if(
-      amountDifference >
-      amountTolerance
-    ){
-
-      throw new Error(
-        "The quote no longer matches the entered amount. Please request a new quote."
-      );
-
-    }
-
-
-    const status =
-      String(
-        latestQuote.status || ""
-      ).toUpperCase();
-
-
-    if(
-      status === "EXPIRED" ||
-      status === "REJECTED" ||
-      status === "CANCELLED"
-    ){
-
-      throw new Error(
-        `This quote is ${status.toLowerCase()}. Please request a new quote.`
-      );
-
-    }
-
-
-    /*
-     * Prevent duplicate execution.
-     */
-
-    if(
-      status === "COMPLETED" ||
-      status === "SUCCESS" ||
-      status === "EXECUTED"
-    ){
-
-      await loadFromBalance();
-
-
-      $("quoteStatus").textContent =
-        "Swap already completed";
-
-      $("quoteStatus").className =
-        "quote-status ready";
-
+      startExpiryCountdown();
 
       showMessage(
-        $("pageMessage"),
-        "This swap has already been completed.",
+        "Quote retrieved. Review the amounts and confirm before it expires.",
         "success"
       );
 
+    } catch (error) {
+      console.error("Quote request failed:", error);
 
-      $("fromAmount").value =
-        "";
+      invalidateQuote();
 
-
-      currentQuote =
-        null;
-
-      currentSwapId =
-        null;
-
-
-      return;
-
-    }
-
-
-    /*
-     * Final expiry check.
-     */
-
-    if(
-      latestQuote.quote_expires_at
-    ){
-
-      const expiresAt =
-        new Date(
-          latestQuote.quote_expires_at
-        ).getTime();
-
-
-      if(
-        !Number.isFinite(
-          expiresAt
-        ) ||
-        Date.now() >=
-          expiresAt
-      ){
-
-        throw new Error(
-          "This quote has expired. Please request a new quote."
-        );
-
-      }
-
-    }
-
-
-    /*
-     * Confirm the server quote is complete.
-     */
-
-    if(
-      !applyVerifiedQuote(
-        latestQuote
-      )
-    ){
-
-      throw new Error(
-        "The server returned an invalid quote."
+      showMessage(
+        error instanceof Error
+          ? error.message
+          : "Unable to retrieve a quote.",
+        "error"
       );
 
+    } finally {
+      setBusy(false);
+      updateActionState();
+    }
+  }
+
+  function startExpiryCountdown() {
+    clearInterval(expiryTimer);
+
+    function update() {
+      if (!currentQuote) {
+        $("expiryValue").textContent = "—";
+        clearInterval(expiryTimer);
+        return;
+      }
+
+      const remaining = currentQuote.expiresAt - Date.now();
+
+      if (remaining <= 0) {
+        invalidateQuote();
+        $("quoteStatus").textContent = "Expired";
+
+        showMessage(
+          "Your quote has expired. Get a new quote before swapping.",
+          "error"
+        );
+
+        return;
+      }
+
+      $("expiryValue").textContent =
+        Math.ceil(remaining / 1000) + " seconds";
     }
 
+    update();
 
-    /*
-     * -------------------------------------------------------
-     * STEP 2 — SECURE SERVER EXECUTION
-     * -------------------------------------------------------
-     *
-     * Only the swap ID is sent.
-     *
-     * No amount.
-     * No fee.
-     * No exchange rate.
-     * No wallet balance.
-     * No service-role key.
-     *
-     * The trusted Edge Function is responsible for
-     * validating the authenticated user and calling
-     * complete_swap securely.
-     */
+    expiryTimer = setInterval(update, 1000);
+  }
 
-    const {
-      data:executionData,
-      error:executionError
-    } =
-      await supabaseClient.functions.invoke(
-        SWAP_EXECUTION_FUNCTION,
+  async function executeSwap() {
+    clearMessage();
+
+    if (busy) return;
+
+    if (!quoteIsUsable()) {
+      invalidateQuote();
+
+      showMessage(
+        "Your quote is missing or expired. Request a new quote.",
+        "error"
+      );
+
+      return;
+    }
+
+    const quote = currentQuote;
+
+    if (quote.amount > Number(balances[quote.fromAsset] || 0)) {
+      invalidateQuote();
+
+      showMessage(
+        "Your available balance has changed. Refresh balances and request a new quote.",
+        "error"
+      );
+
+      return;
+    }
+
+    const confirmed = window.confirm(
+      "Confirm INTERNAL NEXORA swap?\n\n" +
+      "You pay: " + formatAmount(quote.amount) + " " +
+      quote.fromAsset + "\n" +
+      "Estimated receive: " + formatAmount(quote.received) + " " +
+      quote.toAsset + "\n\n" +
+      "This changes internal NEXORA account balances. " +
+      "It does not send a blockchain transaction."
+    );
+
+    if (!confirmed) return;
+
+    setBusy(true);
+
+    try {
+      const { data, error } = await supabase.functions.invoke(
+        "swap-execute",
         {
-          body:{
-            swap_id:
-              String(
-                currentSwapId
-              )
-          }
+          body: { swap_id: quote.id }
         }
       );
 
+      if (error) {
+        let detail = error.message || "Swap execution failed.";
 
-    if(executionError){
-
-      console.error(
-        "Secure swap execution error:",
-        executionError
-      );
-
-
-      const serverMessage =
-        await getEdgeFunctionErrorMessage(
-          executionError
-        );
-
-
-      throw new Error(
-        serverMessage
-      );
-
-    }
-
-
-    /*
-     * The Edge Function must explicitly confirm
-     * that the swap was completed.
-     */
-
-    if(
-      !isSuccessfulExecutionResponse(
-        executionData
-      )
-    ){
-
-      console.error(
-        "Unexpected swap execution response:",
-        executionData
-      );
-
-
-      throw new Error(
-        executionData?.error ||
-        executionData?.message ||
-        "Swap execution was not confirmed by the server."
-      );
-
-    }
-
-
-    /*
-     * -------------------------------------------------------
-     * STEP 3 — RELOAD BALANCE
-     * -------------------------------------------------------
-     */
-
-    await loadFromBalance();
-
-
-    /*
-     * Give the database a short moment to settle
-     * and then reload once more.
-     */
-
-    setTimeout(
-      async () => {
-
-        try{
-
-          await loadFromBalance();
-
-        }
-        catch(error){
-
-          console.warn(
-            "Post-swap balance refresh failed:",
-            error
-          );
-
+        if (data && data.error) {
+          detail = data.error;
         }
 
-      },
-      500
-    );
-
-
-    /*
-     * -------------------------------------------------------
-     * STEP 4 — CLEAR COMPLETED SWAP
-     * -------------------------------------------------------
-     */
-
-    $("fromAmount").value =
-      "";
-
-    $("toAmount").value =
-      "";
-
-    $("rateValue").textContent =
-      "—";
-
-    $("networkFeeValue").textContent =
-      "—";
-
-    $("nexoraFeeValue").textContent =
-      "—";
-
-    $("minimumReceivedValue").textContent =
-      "—";
-
-
-    currentQuote =
-      null;
-
-    currentSwapId =
-      null;
-
-
-    $("quoteStatus").textContent =
-      "Swap completed successfully";
-
-    $("quoteStatus").className =
-      "quote-status ready";
-
-
-    showMessage(
-      $("pageMessage"),
-      "Swap completed successfully. Your balances have been updated.",
-      "success"
-    );
-
-  }
-  catch(error){
-
-    console.error(
-      "Swap execution failed:",
-      error
-    );
-
-
-    /*
-     * Never display success unless the trusted
-     * server confirmed completion.
-     */
-
-    showMessage(
-      $("pageMessage"),
-      error?.message ||
-      "Swap execution failed. Please try again.",
-      "error"
-    );
-
-
-    $("quoteStatus").textContent =
-      "Swap was not completed";
-
-    $("quoteStatus").className =
-      "quote-status error";
-
-  }
-  finally{
-
-    executingSwap =
-      false;
-
-
-    if(currentQuote){
-
-      $("swapBtn").disabled =
-        false;
-
-      $("swapBtn").textContent =
-        "Swap";
-
-    }
-    else{
-
-      $("swapBtn").disabled =
-        true;
-
-      $("swapBtn").textContent =
-        "Enter amount";
-
-    }
-
-  }
-
-}
-
-
-/* =========================================================
-   PICKER
-========================================================= */
-
-function openCoinPicker(target){
-
-  pickerTarget =
-    target;
-
-
-  $("coinModalTitle").textContent =
-    target === "from"
-      ? "Select asset to pay"
-      : "Select asset to receive";
-
-
-  $("coinSearch").value =
-    "";
-
-
-  renderCoinList();
-
-
-  $("coinModal")
-    .classList
-    .add("open");
-
-
-  setTimeout(
-    () => {
-      $("coinSearch").focus();
-    },
-    50
-  );
-
-}
-
-
-function closeCoinPicker(){
-
-  $("coinModal")
-    .classList
-    .remove("open");
-
-  pickerTarget =
-    null;
-
-}
-
-
-function renderCoinList(){
-
-  const search =
-    $("coinSearch").value
-      .trim()
-      .toLowerCase();
-
-
-  const filtered =
-    assets.filter(
-      item => {
-
-        const symbol =
-          item[0].toLowerCase();
-
-        const name =
-          item[1].toLowerCase();
-
-
-        return (
-          symbol.includes(search) ||
-          name.includes(search)
-        );
-
+        throw new Error(detail);
       }
-    );
 
-
-  $("coinList").innerHTML =
-    filtered
-      .map(
-        item => {
-
-          const symbol =
-            item[0];
-
-          const name =
-            item[1];
-
-
-          return `
-
-            <button
-              class="coin-option"
-              type="button"
-              data-symbol="${escapeHtml(symbol)}"
-            >
-
-              <img
-                class="coin-logo"
-                src="${getLogo(symbol)}"
-                alt="${escapeHtml(symbol)}"
-              >
-
-              <div class="coin-option-info">
-
-                <div class="coin-option-symbol">
-                  ${escapeHtml(symbol)}
-                </div>
-
-                <div class="coin-option-name">
-                  ${escapeHtml(name)}
-                </div>
-
-              </div>
-
-            </button>
-
-          `;
-
-        }
-      )
-      .join("");
-
-
-  document
-    .querySelectorAll(
-      ".coin-option"
-    )
-    .forEach(
-      button => {
-
-        button.addEventListener(
-          "click",
-          () => {
-
-            selectAsset(
-              button.dataset.symbol
-            );
-
-          }
+      if (!data || data.success !== true) {
+        throw new Error(
+          data?.error || "The swap could not be completed."
         );
-
       }
-    );
 
-}
+      // Verify the final status in the database.
+      const { data: finalSwap, error: finalError } = await supabase
+        .from("swaps")
+        .select(
+          "id, user_id, from_asset, to_asset, from_amount, " +
+          "quoted_to_amount, status, execution_reference"
+        )
+        .eq("id", quote.id)
+        .eq("user_id", currentUser.id)
+        .maybeSingle();
 
+      if (finalError || !finalSwap || finalSwap.status !== "COMPLETED") {
+        throw new Error(
+          "Execution was reported, but the final swap status could not be verified. " +
+          "Refresh your history before trying again."
+        );
+      }
 
-function selectAsset(symbol){
+      invalidateQuote();
 
-  const target =
-    pickerTarget;
+      $("fromAmount").value = "";
 
-
-  if(
-    target ===
-    "from"
-  ){
-
-    if(
-      symbol ===
-      toAssetValue
-    ){
+      await loadBalances();
 
       showMessage(
-        $("pageMessage"),
-        "Choose a different receiving asset.",
+        "Internal swap completed. Reference: " +
+        (finalSwap.execution_reference || "Recorded") +
+        ". No blockchain transaction was performed.",
+        "success"
+      );
+
+    } catch (error) {
+      console.error("Swap execution failed:", error);
+
+      showMessage(
+        error instanceof Error
+          ? error.message
+          : "The swap could not be completed.",
         "error"
       );
 
-      return;
+      await loadBalances();
 
+    } finally {
+      setBusy(false);
+      updateActionState();
+    }
+  }
+
+  function switchAssets() {
+    if (busy) return;
+
+    const from = $("fromAsset").value;
+    const to = $("toAsset").value;
+    const amount = $("fromAmount").value;
+
+    $("fromAsset").value = to;
+    $("toAsset").value = from;
+    $("fromAmount").value = "";
+
+    invalidateQuote();
+    updateAssetDisplays();
+
+    if (amount) {
+      $("fromAmount").placeholder = "0.00";
     }
 
-
-    fromAssetValue =
-      symbol;
-
+    clearMessage();
   }
-  else{
 
-    if(
-      symbol ===
-      fromAssetValue
-    ){
+  function setMax() {
+    if (busy) return;
 
-      showMessage(
-        $("pageMessage"),
-        "Choose a different payment asset.",
-        "error"
+    const asset = $("fromAsset").value;
+
+    $("fromAmount").value = String(
+      balances[asset] || 0
+    );
+
+    invalidateQuote();
+    clearMessage();
+  }
+
+  function onAssetChange() {
+    if ($("fromAsset").value === $("toAsset").value) {
+      const alternative = ["USDT", "USDC", "WETH"].find(
+        asset => asset !== $("fromAsset").value
       );
 
-      return;
-
+      $("toAsset").value = alternative;
     }
 
-
-    toAssetValue =
-      symbol;
-
+    invalidateQuote();
+    updateAssetDisplays();
+    clearMessage();
   }
 
-
-  renderSelectedAssets();
-
-
-  $("fromAmount").value =
-    "";
-
-
-  resetQuoteDisplay();
-
-
-  clearMessage(
-    $("pageMessage")
-  );
-
-
-  closeCoinPicker();
-
-
-  loadFromBalance();
-
-}
-
-
-/* =========================================================
-   SWITCH ASSETS
-========================================================= */
-
-async function switchAssets(){
-
-  if(executingSwap){
-    return;
+  function onAmountChange() {
+    invalidateQuote();
+    clearMessage();
   }
 
+  async function init() {
+    const authenticated = await requireSession();
 
-  const oldFrom =
-    fromAssetValue;
+    if (!authenticated) return;
 
+    await loadBalances();
 
-  fromAssetValue =
-    toAssetValue;
+    $("quoteBtn").addEventListener("click", getQuote);
+    $("executeBtn").addEventListener("click", executeSwap);
+    $("switchBtn").addEventListener("click", switchAssets);
+    $("maxBtn").addEventListener("click", setMax);
 
+    $("refreshBtn").addEventListener("click", async () => {
+      clearMessage();
+      invalidateQuote();
 
-  toAssetValue =
-    oldFrom;
+      await loadBalances();
 
+      showMessage(
+        "Wallet balances refreshed. Request a new quote to continue.",
+        "info"
+      );
+    });
 
-  $("fromAmount").value =
-    "";
+    $("fromAsset").addEventListener("change", onAssetChange);
+    $("toAsset").addEventListener("change", onAssetChange);
+    $("fromAmount").addEventListener("input", onAmountChange);
 
-
-  renderSelectedAssets();
-
-
-  resetQuoteDisplay();
-
-
-  clearMessage(
-    $("pageMessage")
-  );
-
-
-  await loadFromBalance();
-
-}
-
-
-/* =========================================================
-   AUTO QUOTE
-========================================================= */
-
-function scheduleQuote(){
-
-  if(executingSwap){
-    return;
+    // Recheck authentication when the session changes.
+    supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_OUT" || !session) {
+        window.location.replace("index.html");
+      }
+    });
   }
 
-
-  clearTimeout(
-    inputQuoteTimer
-  );
-
-
-  resetQuoteDisplay();
-
-
-  const amount =
-    Number(
-      $("fromAmount").value
-    );
-
-
-  if(
-    !Number.isFinite(amount) ||
-    amount <= 0
-  ){
-
-    return;
-
-  }
-
-
-  if(
-    amount >
-    availableBalanceValue
-  ){
+  init().catch(error => {
+    console.error("Swap page initialization failed:", error);
 
     showMessage(
-      $("pageMessage"),
-      `Insufficient ${fromAssetValue} balance.`,
+      "The swap page could not initialize. Refresh and try again.",
       "error"
     );
-
-    return;
-
-  }
-
-
-  $("quoteStatus").textContent =
-    "Preparing quote…";
-
-  $("quoteStatus").className =
-    "quote-status loading";
-
-
-  inputQuoteTimer =
-    setTimeout(
-      () => {
-        requestQuote();
-      },
-      450
-    );
-
-}
-
-
-/* =========================================================
-   LOGOUT
-========================================================= */
-
-async function logout(){
-
-  stopQuotePolling();
-
-
-  clearTimeout(
-    inputQuoteTimer
-  );
-
-
-  await supabaseClient
-    .auth
-    .signOut();
-
-
-  window.location.href =
-    "index.html";
-
-}
-
-
-/* =========================================================
-   PROFILE
-========================================================= */
-
-async function loadProfile(){
-
-  if(!currentUser){
-    return;
-  }
-
-
-  const {
-    data
-  } =
-    await supabaseClient
-      .from("profiles")
-      .select(
-        "full_name,email"
-      )
-      .eq(
-        "id",
-        currentUser.id
-      )
-      .maybeSingle();
-
-
-  const name =
-    data?.full_name ||
-    currentUser.email ||
-    "";
-
-
-  const parts =
-    name
-      .trim()
-      .split(/\s+/)
-      .filter(Boolean);
-
-
-  let initials =
-    "";
-
-
-  if(
-    parts.length >= 2
-  ){
-
-    initials =
-      parts[0][0] +
-      parts[
-        parts.length - 1
-      ][0];
-
-  }
-  else if(
-    parts.length === 1
-  ){
-
-    initials =
-      parts[0]
-        .slice(0,2);
-
-  }
-  else{
-
-    initials =
-      "?";
-
-  }
-
-
-  $("profileBtn").textContent =
-    initials.toUpperCase();
-
-}
-
-
-/* =========================================================
-   AUTH INIT
-========================================================= */
-
-async function init(){
-
-  const {
-    data:{
-      session
-    }
-  } =
-    await supabaseClient
-      .auth
-      .getSession();
-
-
-  if(!session){
-
-    window.location.href =
-      "login.html";
-
-    return;
-
-  }
-
-
-  currentUser =
-    session.user;
-
-
-  renderSelectedAssets();
-
-
-  await loadProfile();
-
-
-  await loadFromBalance();
-
-
-  resetQuoteDisplay();
-
-}
-
-
-/* =========================================================
-   AUTH STATE
-========================================================= */
-
-supabaseClient
-  .auth
-  .onAuthStateChange(
-    (
-      event,
-      session
-    ) => {
-
-      if(
-        event ===
-        "SIGNED_OUT"
-      ){
-
-        window.location.href =
-          "login.html";
-
-      }
-
-    }
-  );
-
-
-/* =========================================================
-   EVENTS
-========================================================= */
-
-$("fromAmount")
-  .addEventListener(
-    "input",
-    scheduleQuote
-  );
-
-
-$("maxBtn")
-  .addEventListener(
-    "click",
-    useMax
-  );
-
-
-$("fromPicker")
-  .addEventListener(
-    "click",
-    () => {
-      openCoinPicker("from");
-    }
-  );
-
-
-$("toPicker")
-  .addEventListener(
-    "click",
-    () => {
-      openCoinPicker("to");
-    }
-  );
-
-
-$("coinModalClose")
-  .addEventListener(
-    "click",
-    closeCoinPicker
-  );
-
-
-$("coinModal")
-  .addEventListener(
-    "click",
-    event => {
-
-      if(
-        event.target ===
-        $("coinModal")
-      ){
-
-        closeCoinPicker();
-
-      }
-
-    }
-  );
-
-
-$("coinSearch")
-  .addEventListener(
-    "input",
-    renderCoinList
-  );
-
-
-$("switchAssets")
-  .addEventListener(
-    "click",
-    switchAssets
-  );
-
-
-/* =========================================================
-   SWAP BUTTON
-========================================================= */
-
-$("swapBtn")
-  .addEventListener(
-    "click",
-    async () => {
-
-      if(executingSwap){
-        return;
-      }
-
-
-      if(!currentQuote){
-
-        await requestQuote();
-
-        return;
-
-      }
-
-
-      await executeSwap();
-
-    }
-  );
-
-
-$("profileBtn")
-  .addEventListener(
-    "click",
-    () => {
-
-      window.location.href =
-        "profile.html";
-
-    }
-  );
-
-
-$("logoutBtn")
-  .addEventListener(
-    "click",
-    logout
-  );
-
-
-/* =========================================================
-   DRAWER
-========================================================= */
-
-$("menuBtn")
-  .addEventListener(
-    "click",
-    () => {
-
-      $("drawer")
-        .classList
-        .add("open");
-
-      $("drawerOverlay")
-        .classList
-        .add("open");
-
-    }
-  );
-
-
-$("drawerClose")
-  .addEventListener(
-    "click",
-    () => {
-
-      $("drawer")
-        .classList
-        .remove("open");
-
-      $("drawerOverlay")
-        .classList
-        .remove("open");
-
-    }
-  );
-
-
-$("drawerOverlay")
-  .addEventListener(
-    "click",
-    () => {
-
-      $("drawer")
-        .classList
-        .remove("open");
-
-      $("drawerOverlay")
-        .classList
-        .remove("open");
-
-    }
-  );
-
-
-/* =========================================================
-   START
-========================================================= */
-
-init();
-
+  });
+})();
 </script>
 
 </body>
