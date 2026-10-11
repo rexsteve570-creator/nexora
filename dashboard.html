@@ -54,9 +54,7 @@ button{
   padding-bottom:95px;
 }
 
-/* =========================
-   LOADING
-========================= */
+/* LOADING */
 
 .loading-screen{
   position:fixed;
@@ -93,14 +91,10 @@ button{
 }
 
 @keyframes spin{
-  to{
-    transform:rotate(360deg);
-  }
+  to{transform:rotate(360deg);}
 }
 
-/* =========================
-   TOPBAR
-========================= */
+/* TOPBAR */
 
 .topbar{
   height:68px;
@@ -156,9 +150,7 @@ button{
   justify-content:center;
 }
 
-/* =========================
-   DRAWER
-========================= */
+/* DRAWER */
 
 .overlay{
   position:fixed;
@@ -184,6 +176,7 @@ button{
   z-index:200;
   transition:left .25s ease;
   padding:22px 15px;
+  overflow-y:auto;
 }
 
 .drawer.open{
@@ -249,9 +242,7 @@ button{
   color:#ef8990;
 }
 
-/* =========================
-   CONTENT
-========================= */
+/* CONTENT */
 
 .content{
   padding:25px 18px 0;
@@ -272,9 +263,7 @@ button{
   font-weight:760;
 }
 
-/* =========================
-   PORTFOLIO
-========================= */
+/* PORTFOLIO */
 
 .portfolio-card{
   background:
@@ -333,9 +322,7 @@ button{
   background:var(--green);
 }
 
-/* =========================
-   SECTIONS
-========================= */
+/* SECTIONS */
 
 .section{
   margin-top:25px;
@@ -358,9 +345,7 @@ button{
   font-size:11px;
 }
 
-/* =========================
-   CUSTOM CRYPTO PICKER
-========================= */
+/* CRYPTO PICKER */
 
 .crypto-picker{
   position:relative;
@@ -502,9 +487,7 @@ button{
   opacity:1;
 }
 
-/* =========================
-   ASSET BALANCE
-========================= */
+/* ASSET BALANCE */
 
 .asset-preview{
   margin-top:10px;
@@ -521,12 +504,14 @@ button{
   display:flex;
   align-items:center;
   gap:12px;
+  min-width:0;
 }
 
 .preview-logo{
   width:38px;
   height:38px;
   object-fit:contain;
+  flex:none;
 }
 
 .asset-name{
@@ -542,6 +527,7 @@ button{
 
 .asset-balance{
   text-align:right;
+  overflow-wrap:anywhere;
 }
 
 .asset-balance strong{
@@ -554,9 +540,7 @@ button{
   font-size:10px;
 }
 
-/* =========================
-   COUNTDOWN
-========================= */
+/* COUNTDOWN */
 
 .countdown-card{
   background:linear-gradient(145deg,#111f32,#0c1727);
@@ -610,9 +594,7 @@ button{
   display:none;
 }
 
-/* =========================
-   QUICK ACTIONS
-========================= */
+/* QUICK ACTIONS */
 
 .quick-grid{
   display:grid;
@@ -655,9 +637,7 @@ button{
   color:#cbd1d9;
 }
 
-/* =========================
-   BOTTOM NAV
-========================= */
+/* BOTTOM NAV */
 
 .bottom-nav{
   position:fixed;
@@ -695,9 +675,7 @@ button{
   font-size:20px;
 }
 
-/* =========================
-   TOAST
-========================= */
+/* TOAST */
 
 .toast{
   position:fixed;
@@ -714,6 +692,8 @@ button{
   pointer-events:none;
   transition:.25s;
   z-index:500;
+  max-width:90%;
+  text-align:center;
 }
 
 .toast.show{
@@ -746,35 +726,21 @@ button{
 
 <header class="topbar">
   <div class="topbar-inner">
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
 
-    <button class="menu-btn" id="menuBtn">☰</button>
+    <div class="logo">NEX<span>ORA</span></div>
 
-    <div class="logo">
-      NEX<span>ORA</span>
-    </div>
-
-    <div class="profile-initial" id="profileInitial">
-      —
-    </div>
-
+    <div class="profile-initial" id="profileInitial">—</div>
   </div>
 </header>
 
-
 <div class="overlay" id="overlay"></div>
 
-<aside class="drawer" id="drawer">
+<aside class="drawer" id="drawer" aria-label="Main navigation">
 
   <div class="drawer-head">
-
-    <div class="drawer-brand">
-      NEX<span>ORA</span>
-    </div>
-
-    <button class="close-drawer" id="closeDrawer">
-      ×
-    </button>
-
+    <div class="drawer-brand">NEX<span>ORA</span></div>
+    <button class="close-drawer" id="closeDrawer" aria-label="Close menu">×</button>
   </div>
 
   <nav class="drawer-nav">
@@ -825,9 +791,7 @@ button{
     </button>
 
   </nav>
-
 </aside>
-
 
 <main class="content">
 
@@ -836,38 +800,26 @@ button{
     <h1 id="userName">Welcome</h1>
   </div>
 
-
   <!-- PORTFOLIO -->
 
   <section class="portfolio-card">
 
-    <div class="card-label">
-      Portfolio
-    </div>
+    <div class="card-label">Portfolio</div>
 
-    <div class="portfolio-value" id="portfolioValue">
-      $0.00
-    </div>
+    <div class="portfolio-value" id="portfolioValue">$0.00</div>
 
-    <div class="portfolio-sub">
-      Available USDT balance
-    </div>
+    <div class="portfolio-sub">Available USDT balance</div>
 
     <div class="status-row">
-
-      <div class="status-label">
-        Account status
-      </div>
+      <div class="status-label">Account status</div>
 
       <div class="status" id="accountStatus">
         <span class="status-dot"></span>
         <span>Loading...</span>
       </div>
-
     </div>
 
   </section>
-
 
   <!-- CRYPTO ASSETS -->
 
@@ -878,152 +830,69 @@ button{
       <span>Wallet</span>
     </div>
 
-
     <div class="crypto-picker" id="cryptoPicker">
 
-      <button
-        type="button"
-        class="crypto-selected"
-        id="cryptoSelected"
-      >
+      <button type="button" class="crypto-selected" id="cryptoSelected"
+        aria-expanded="false" aria-controls="cryptoMenu">
 
         <div class="selected-left">
-
-          <img
-            id="selectedLogo"
-            class="selected-logo"
-            src=""
-            alt="Crypto logo"
-          >
+          <img id="selectedLogo" class="selected-logo" src="" alt="Crypto logo">
 
           <div class="selected-info">
-
-            <div
-              class="selected-symbol"
-              id="selectedSymbol"
-            >
-              USDT
-            </div>
-
-            <div
-              class="selected-name"
-              id="selectedName"
-            >
-              Tether
-            </div>
-
+            <div class="selected-symbol" id="selectedSymbol">USDT</div>
+            <div class="selected-name" id="selectedName">Tether</div>
           </div>
-
         </div>
 
-        <div class="selected-arrow">
-         ⌄
-        </div>
-
+        <div class="selected-arrow">⌄</div>
       </button>
 
-
-      <div
-        class="crypto-menu"
-        id="cryptoMenu"
-      ></div>
+      <div class="crypto-menu" id="cryptoMenu"></div>
 
     </div>
-
 
     <div class="asset-preview">
 
       <div class="asset-left">
-
-        <img
-          id="previewLogo"
-          class="preview-logo"
-          src=""
-          alt="Crypto logo"
-        >
+        <img id="previewLogo" class="preview-logo" src="" alt="Crypto logo">
 
         <div>
-
-          <div
-            class="asset-name"
-            id="previewName"
-          >
-            Tether
-          </div>
-
-          <div
-            class="asset-network"
-            id="previewNetwork"
-          >
-            Wallet
-          </div>
-
+          <div class="asset-name" id="previewName">Tether</div>
+          <div class="asset-network" id="previewNetwork">Wallet</div>
         </div>
-
       </div>
 
-
       <div class="asset-balance">
-
-        <strong id="previewBalance">
-          0
-        </strong>
-
-        <small id="previewSymbol">
-          USDT
-        </small>
-
+        <strong id="previewBalance">0</strong>
+        <small id="previewSymbol">USDT</small>
       </div>
 
     </div>
 
   </section>
 
-
   <!-- PROFIT COUNTDOWN -->
 
   <section class="section">
 
     <div class="section-title">
-
       <h2>Profit Countdown</h2>
-
-      <span id="countdownAsset">
-        —
-      </span>
-
+      <span id="countdownAsset">—</span>
     </div>
-
 
     <div class="countdown-card">
 
-      <div class="countdown-icon">
-        ◷
-      </div>
+      <div class="countdown-icon">◷</div>
 
-      <div class="countdown-title">
-        Next profit calculation
-      </div>
+      <div class="countdown-title">Next profit calculation</div>
 
-      <div
-        class="countdown-state"
-        id="countdownState"
-      >
+      <div class="countdown-state" id="countdownState">
         Awaiting confirmed deposit
       </div>
 
+      <div id="timerBox" class="countdown-hidden">
 
-      <div
-        id="timerBox"
-        class="countdown-hidden"
-      >
-
-        <div
-          class="timer"
-          id="timer"
-        >
-          24:00:00
-        </div>
+        <div class="timer" id="timer">24:00:00</div>
 
         <div class="timer-label">
           HOURS &nbsp; : &nbsp; MINUTES &nbsp; : &nbsp; SECONDS
@@ -1035,7 +904,6 @@ button{
 
   </section>
 
-
   <!-- QUICK ACTIONS -->
 
   <section class="section">
@@ -1044,31 +912,19 @@ button{
       <h2>Quick Actions</h2>
     </div>
 
-
     <div class="quick-grid">
 
-      <button
-        class="quick-btn"
-        onclick="go('swap.html')"
-      >
+      <button class="quick-btn" onclick="go('swap.html')">
         <span class="quick-icon">⇄</span>
-        <span>Currency Exchange</span>
+        <span>Market</span>
       </button>
 
-
-      <button
-        class="quick-btn"
-        onclick="go('deposit.html')"
-      >
+      <button class="quick-btn" onclick="go('deposit.html')">
         <span class="quick-icon">＋</span>
         <span>Add Funds</span>
       </button>
 
-
-      <button
-        class="quick-btn"
-        onclick="go('withdraw.html')"
-      >
+      <button class="quick-btn" onclick="go('withdraw.html')">
         <span class="quick-icon">↗</span>
         <span>Withdraw</span>
       </button>
@@ -1079,37 +935,24 @@ button{
 
 </main>
 
+<nav class="bottom-nav" aria-label="Bottom navigation">
 
-<nav class="bottom-nav">
-
-  <button
-    class="bottom-link active"
-    onclick="go('dashboard.html')"
-  >
+  <button class="bottom-link active" onclick="go('dashboard.html')">
     <span class="bottom-icon">⌂</span>
     <span>Portfolio</span>
   </button>
 
-  <button
-    class="bottom-link"
-    onclick="go('deposit.html')"
-  >
+  <button class="bottom-link" onclick="go('deposit.html')">
     <span class="bottom-icon">＋</span>
     <span>Deposit</span>
   </button>
 
-  <button
-    class="bottom-link"
-    onclick="go('transactions.html')"
-  >
+  <button class="bottom-link" onclick="go('transactions.html')">
     <span class="bottom-icon">≡</span>
     <span>History</span>
   </button>
 
-  <button
-    class="bottom-link"
-    onclick="go('profile.html')"
-  >
+  <button class="bottom-link" onclick="go('profile.html')">
     <span class="bottom-icon">○</span>
     <span>Account</span>
   </button>
@@ -1118,8 +961,7 @@ button{
 
 </div>
 
-<div class="toast" id="toast"></div>
-
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
 
@@ -1133,23 +975,20 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
   "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
 
-const db =
-  supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
+const db = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
 
 
 /* =========================================================
-   REAL CRYPTO LOGOS
-   SVG LOGOS — NO EMOJIS
+   CRYPTO LOGOS
 ========================================================= */
 
 const LOGO_BASE =
   "https://cdn.jsdelivr.net/gh/madenix/Crypto-logo-cdn@main/Logos/";
 
 const logoFiles = {
-
   BTC:"BTC.svg",
   ETH:"ETH.svg",
   USDT:"USDT.svg",
@@ -1174,7 +1013,6 @@ const logoFiles = {
   APT:"APT.svg",
   ARB:"ARB.svg",
   OP:"OP.svg"
-
 };
 
 
@@ -1183,7 +1021,6 @@ const logoFiles = {
 ========================================================= */
 
 const assets = [
-
   ["BTC","Bitcoin"],
   ["ETH","Ethereum"],
   ["USDT","Tether"],
@@ -1208,7 +1045,6 @@ const assets = [
   ["APT","Aptos"],
   ["ARB","Arbitrum"],
   ["OP","Optimism"]
-
 ];
 
 
@@ -1219,9 +1055,7 @@ const assets = [
 let currentUser = null;
 let wallets = [];
 let activeDeposits = [];
-
 let selectedAsset = "USDT";
-
 let countdownTarget = null;
 let countdownInterval = null;
 
@@ -1239,61 +1073,45 @@ function go(page){
 }
 
 function logoURL(symbol){
-
-  return (
-    LOGO_BASE +
-    (logoFiles[symbol] || "")
-  );
-
+  const file = logoFiles[symbol];
+  return file ? LOGO_BASE + file : "";
 }
 
 function formatNumber(value,max=8){
-
-  return Number(value || 0)
-    .toLocaleString("en-US",{
-      minimumFractionDigits:0,
-      maximumFractionDigits:max
-    });
-
+  return Number(value || 0).toLocaleString("en-US",{
+    minimumFractionDigits:0,
+    maximumFractionDigits:max
+  });
 }
 
 function initials(name){
-
-  const value =
-    String(name || "").trim();
+  const value = String(name || "").trim();
 
   if(!value){
     return "N";
   }
 
-  const parts =
-    value.split(/\s+/);
+  const parts = value.split(/\s+/);
 
   if(parts.length === 1){
-    return parts[0]
-      .slice(0,2)
-      .toUpperCase();
+    return parts[0].slice(0,2).toUpperCase();
   }
 
   return (
     parts[0][0] +
     parts[parts.length-1][0]
   ).toUpperCase();
-
 }
 
 function showToast(message){
-
   const toast = $("toast");
 
   toast.textContent = message;
-
   toast.classList.add("show");
 
   setTimeout(()=>{
     toast.classList.remove("show");
   },2500);
-
 }
 
 
@@ -1302,116 +1120,84 @@ function showToast(message){
 ========================================================= */
 
 function openDrawer(){
-
-  $("drawer")
-    .classList.add("open");
-
-  $("overlay")
-    .classList.add("show");
-
+  $("drawer").classList.add("open");
+  $("overlay").classList.add("show");
 }
 
 function closeDrawer(){
-
-  $("drawer")
-    .classList.remove("open");
-
-  $("overlay")
-    .classList.remove("show");
-
+  $("drawer").classList.remove("open");
+  $("overlay").classList.remove("show");
 }
 
-$("menuBtn")
-  .addEventListener(
-    "click",
-    openDrawer
-  );
+$("menuBtn").addEventListener("click",openDrawer);
+$("closeDrawer").addEventListener("click",closeDrawer);
+$("overlay").addEventListener("click",closeDrawer);
 
-$("closeDrawer")
-  .addEventListener(
-    "click",
-    closeDrawer
-  );
-
-$("overlay")
-  .addEventListener(
-    "click",
-    closeDrawer
-  );
+document.addEventListener("keydown",event=>{
+  if(event.key === "Escape"){
+    closeDrawer();
+    closeCryptoPicker();
+  }
+});
 
 
 /* =========================================================
-   CUSTOM CRYPTO MENU
+   CRYPTO MENU
 ========================================================= */
 
 function buildCryptoMenu(){
-
-  const menu =
-    $("cryptoMenu");
-
+  const menu = $("cryptoMenu");
   menu.innerHTML = "";
 
-  assets.forEach(
-    ([symbol,name])=>{
+  assets.forEach(([symbol,name])=>{
+    const button = document.createElement("button");
 
-      const button =
-        document.createElement("button");
+    button.type = "button";
+    button.className = "crypto-option";
+    button.dataset.asset = symbol;
 
-      button.type = "button";
+    const logo = document.createElement("img");
+    logo.className = "crypto-logo";
+    logo.src = logoURL(symbol);
+    logo.alt = "";
+    logo.loading = "lazy";
 
-      button.className =
-        "crypto-option";
+    logo.addEventListener("error",()=>{
+      logo.style.visibility = "hidden";
+    });
 
-      button.dataset.asset =
-        symbol;
+    const details = document.createElement("div");
+    details.className = "crypto-details";
 
-      button.innerHTML = `
+    const symbolElement = document.createElement("div");
+    symbolElement.className = "crypto-symbol";
+    symbolElement.textContent = symbol;
 
-        <img
-          class="crypto-logo"
-          src="${logoURL(symbol)}"
-          alt="${name} logo"
-        >
+    const nameElement = document.createElement("div");
+    nameElement.className = "crypto-name";
+    nameElement.textContent = name;
 
-        <div class="crypto-details">
+    details.appendChild(symbolElement);
+    details.appendChild(nameElement);
 
-          <div class="crypto-symbol">
-            ${symbol}
-          </div>
+    const check = document.createElement("div");
+    check.className = "crypto-option-check";
+    check.textContent = "✓";
 
-          <div class="crypto-name">
-            ${name}
-          </div>
+    button.appendChild(logo);
+    button.appendChild(details);
+    button.appendChild(check);
 
-        </div>
+    button.addEventListener("click",()=>{
+      selectedAsset = symbol;
+      renderSelectedAsset();
+      closeCryptoPicker();
+    });
 
-        <div class="crypto-option-check">
-          ✓
-        </div>
-
-      `;
-
-      button.addEventListener(
-        "click",
-        ()=>{
-
-          selectedAsset =
-            symbol;
-
-          renderSelectedAsset();
-
-          closeCryptoPicker();
-
-        }
-      );
-
-      menu.appendChild(button);
-
-    }
-  );
+    menu.appendChild(button);
+  });
 
   updateActiveCryptoOption();
-
 }
 
 
@@ -1420,55 +1206,38 @@ function buildCryptoMenu(){
 ========================================================= */
 
 function openCryptoPicker(){
-
-  $("cryptoPicker")
-    .classList.add("open");
-
+  $("cryptoPicker").classList.add("open");
+  $("cryptoSelected").setAttribute("aria-expanded","true");
 }
 
 function closeCryptoPicker(){
+  const picker = $("cryptoPicker");
 
-  $("cryptoPicker")
-    .classList.remove("open");
+  if(!picker){
+    return;
+  }
 
+  picker.classList.remove("open");
+  $("cryptoSelected").setAttribute("aria-expanded","false");
 }
 
-$("cryptoSelected")
-  .addEventListener(
-    "click",
-    (event)=>{
+$("cryptoSelected").addEventListener("click",event=>{
+  event.stopPropagation();
 
-      event.stopPropagation();
+  const picker = $("cryptoPicker");
 
-      const picker =
-        $("cryptoPicker");
-
-      if(
-        picker.classList.contains("open")
-      ){
-        closeCryptoPicker();
-      }
-      else{
-        openCryptoPicker();
-      }
-
-    }
-  );
-
-document.addEventListener(
-  "click",
-  (event)=>{
-
-    if(
-      !event.target.closest(
-        "#cryptoPicker"
-      )
-    ){
-      closeCryptoPicker();
-    }
-
+  if(picker.classList.contains("open")){
+    closeCryptoPicker();
+  }else{
+    openCryptoPicker();
   }
-);
+});
+
+document.addEventListener("click",event=>{
+  if(!event.target.closest("#cryptoPicker")){
+    closeCryptoPicker();
+  }
+});
 
 
 /* =========================================================
@@ -1476,19 +1245,12 @@ document.addEventListener(
 ========================================================= */
 
 function updateActiveCryptoOption(){
-
-  document
-    .querySelectorAll(".crypto-option")
-    .forEach(button=>{
-
-      button.classList.toggle(
-        "active",
-        button.dataset.asset ===
-        selectedAsset
-      );
-
-    });
-
+  document.querySelectorAll(".crypto-option").forEach(button=>{
+    button.classList.toggle(
+      "active",
+      button.dataset.asset === selectedAsset
+    );
+  });
 }
 
 
@@ -1497,15 +1259,10 @@ function updateActiveCryptoOption(){
 ========================================================= */
 
 function getWallet(symbol){
-
-  return wallets.find(
-    wallet =>
-      String(wallet.asset)
-        .toUpperCase() ===
-      String(symbol)
-        .toUpperCase()
+  return wallets.find(wallet=>
+    String(wallet.asset).toUpperCase() ===
+    String(symbol).toUpperCase()
   ) || null;
-
 }
 
 
@@ -1514,68 +1271,33 @@ function getWallet(symbol){
 ========================================================= */
 
 function renderSelectedAsset(){
-
-  const asset =
-    assets.find(
-      item =>
-        item[0] === selectedAsset
-    );
+  const asset = assets.find(item=>item[0] === selectedAsset);
 
   if(!asset){
     return;
   }
 
-  const symbol =
-    asset[0];
+  const symbol = asset[0];
+  const name = asset[1];
+  const wallet = getWallet(symbol);
+  const imageURL = logoURL(symbol);
 
-  const name =
-    asset[1];
+  $("selectedLogo").src = imageURL;
+  $("selectedSymbol").textContent = symbol;
+  $("selectedName").textContent = name;
 
-  const wallet =
-    getWallet(symbol);
+  $("previewLogo").src = imageURL;
+  $("previewName").textContent = name;
+  $("previewNetwork").textContent = "Wallet";
 
+  $("previewBalance").textContent = formatNumber(
+    wallet?.available_balance || 0,
+    8
+  );
 
-  /* Main selected coin */
-
-  $("selectedLogo").src =
-    logoURL(symbol);
-
-  $("selectedSymbol")
-    .textContent =
-    symbol;
-
-  $("selectedName")
-    .textContent =
-    name;
-
-
-  /* Balance section */
-
-  $("previewLogo").src =
-    logoURL(symbol);
-
-  $("previewName")
-    .textContent =
-    name;
-
-  $("previewNetwork")
-    .textContent =
-    "Wallet";
-
-  $("previewBalance")
-    .textContent =
-    formatNumber(
-      wallet?.available_balance || 0,
-      8
-    );
-
-  $("previewSymbol")
-    .textContent =
-    symbol;
-
+  $("previewSymbol").textContent = symbol;
 
   updateActiveCryptoOption();
-
 }
 
 
@@ -1584,59 +1306,28 @@ function renderSelectedAsset(){
 ========================================================= */
 
 async function loadProfile(){
-
-  const {
-    data,
-    error
-  } = await db
+  const {data,error} = await db
     .from("profiles")
-    .select(`
-      id,
-      full_name,
-      email,
-      account_status
-    `)
-    .eq(
-      "id",
-      currentUser.id
-    )
+    .select("id,full_name,email,account_status")
+    .eq("id",currentUser.id)
     .maybeSingle();
 
   if(error){
-
-    console.error(
-      "Profile error:",
-      error
-    );
-
+    console.error("Profile error:",error);
     return;
   }
 
-
   const name =
     data?.full_name ||
-    currentUser
-      .user_metadata
-      ?.full_name ||
+    currentUser.user_metadata?.full_name ||
     "Welcome";
 
+  $("userName").textContent = name;
+  $("profileInitial").textContent = initials(name);
 
-  $("userName")
-    .textContent =
-    name;
-
-
-  $("profileInitial")
-    .textContent =
-    initials(name);
-
-
-  const status =
-    String(
-      data?.account_status ||
-      "PENDING"
-    ).toUpperCase();
-
+  const status = String(
+    data?.account_status || "PENDING"
+  ).toUpperCase();
 
   const statusColor =
     status === "ACTIVE"
@@ -1645,21 +1336,17 @@ async function loadProfile(){
       ? "var(--red)"
       : "var(--gold)";
 
+  $("accountStatus").innerHTML = "";
 
-  $("accountStatus")
-    .innerHTML = `
+  const dot = document.createElement("span");
+  dot.className = "status-dot";
+  dot.style.background = statusColor;
 
-      <span
-        class="status-dot"
-        style="background:${statusColor}"
-      ></span>
+  const label = document.createElement("span");
+  label.textContent = status;
 
-      <span>
-        ${status}
-      </span>
-
-    `;
-
+  $("accountStatus").appendChild(dot);
+  $("accountStatus").appendChild(label);
 }
 
 
@@ -1668,11 +1355,7 @@ async function loadProfile(){
 ========================================================= */
 
 async function loadWallets(){
-
-  const {
-    data,
-    error
-  } = await db
+  const {data,error} = await db
     .from("wallets")
     .select(`
       id,
@@ -1682,34 +1365,18 @@ async function loadWallets(){
       principal_balance,
       profit_balance
     `)
-    .eq(
-      "user_id",
-      currentUser.id
-    );
+    .eq("user_id",currentUser.id);
 
   if(error){
-
-    console.error(
-      "Wallet error:",
-      error
-    );
-
-    showToast(
-      "Unable to load wallets"
-    );
-
+    console.error("Wallet error:",error);
+    showToast("Unable to load wallets");
     return;
   }
 
-
-  wallets =
-    data || [];
-
+  wallets = data || [];
 
   renderPortfolio();
-
   renderSelectedAsset();
-
 }
 
 
@@ -1718,35 +1385,23 @@ async function loadWallets(){
 ========================================================= */
 
 function renderPortfolio(){
+  const usdt = getWallet("USDT");
 
-  const usdt =
-    getWallet("USDT");
+  const available = Number(
+    usdt?.available_balance || 0
+  );
 
-  const available =
-    Number(
-      usdt?.available_balance || 0
-    );
+  const locked = Number(
+    usdt?.locked_balance || 0
+  );
 
-  const locked =
-    Number(
-      usdt?.locked_balance || 0
-    );
+  const total = available + locked;
 
-  const total =
-    available + locked;
-
-
-  $("portfolioValue")
-    .textContent =
-    "$" +
-    total.toLocaleString(
-      "en-US",
-      {
-        minimumFractionDigits:2,
-        maximumFractionDigits:2
-      }
-    );
-
+  $("portfolioValue").textContent =
+    "$" + total.toLocaleString("en-US",{
+      minimumFractionDigits:2,
+      maximumFractionDigits:2
+    });
 }
 
 
@@ -1755,11 +1410,7 @@ function renderPortfolio(){
 ========================================================= */
 
 async function loadActiveDeposits(){
-
-  const {
-    data,
-    error
-  } = await db
+  const {data,error} = await db
     .from("deposits")
     .select(`
       id,
@@ -1770,49 +1421,21 @@ async function loadActiveDeposits(){
       earning_ended_at,
       status
     `)
-    .eq(
-      "user_id",
-      currentUser.id
-    )
-    .eq(
-      "status",
-      "CONFIRMED"
-    )
-    .gt(
-      "earning_principal",
-      0
-    )
-    .not(
-      "earning_started_at",
-      "is",
-      null
-    )
-    .is(
-      "earning_ended_at",
-      null
-    );
+    .eq("user_id",currentUser.id)
+    .eq("status","CONFIRMED")
+    .gt("earning_principal",0)
+    .not("earning_started_at","is",null)
+    .is("earning_ended_at",null);
 
   if(error){
-
-    console.error(
-      "Deposit error:",
-      error
-    );
-
+    console.error("Deposit error:",error);
     activeDeposits = [];
-
     setupCountdown();
-
     return;
   }
 
-
-  activeDeposits =
-    data || [];
-
-
+  activeDeposits = data || [];
   setupCountdown();
-
 }
 
 
@@ -1820,48 +1443,23 @@ async function loadActiveDeposits(){
    CALCULATE NEXT 24H TARGET
 ========================================================= */
 
-function getNextCalculationTime(
-  startedAt,
-  nowMs
-){
+function getNextCalculationTime(startedAt,nowMs){
+  const start = new Date(startedAt).getTime();
 
-  const start =
-    new Date(
-      startedAt
-    ).getTime();
-
-  if(
-    !Number.isFinite(start)
-  ){
+  if(!Number.isFinite(start)){
     return null;
   }
 
-
-  const cycle =
-    24 * 60 * 60 * 1000;
-
+  const cycle = 24 * 60 * 60 * 1000;
 
   if(nowMs < start){
     return start;
   }
 
+  const elapsed = nowMs - start;
+  const completed = Math.floor(elapsed / cycle);
 
-  const elapsed =
-    nowMs - start;
-
-
-  const completed =
-    Math.floor(
-      elapsed / cycle
-    );
-
-
-  return (
-    start +
-    (completed + 1) *
-    cycle
-  );
-
+  return start + (completed + 1) * cycle;
 }
 
 
@@ -1870,109 +1468,54 @@ function getNextCalculationTime(
 ========================================================= */
 
 function setupCountdown(){
-
   stopCountdown();
 
-
   if(!activeDeposits.length){
-
-    $("countdownState")
-      .textContent =
+    $("countdownState").textContent =
       "Awaiting confirmed deposit";
 
-    $("countdownAsset")
-      .textContent =
-      "—";
-
-    $("timerBox")
-      .classList.add(
-        "countdown-hidden"
-      );
-
+    $("countdownAsset").textContent = "—";
+    $("timerBox").classList.add("countdown-hidden");
     return;
   }
 
+  const now = Date.now();
 
-  const now =
-    Date.now();
-
-
-  const prepared =
-    activeDeposits
-      .map(deposit=>({
-
-        ...deposit,
-
-        target:
-          getNextCalculationTime(
-            deposit.earning_started_at,
-            now
-          )
-
-      }))
-      .filter(
-        item =>
-          Number.isFinite(
-            item.target
-          )
-      );
-
+  const prepared = activeDeposits
+    .map(deposit=>({
+      ...deposit,
+      target:getNextCalculationTime(
+        deposit.earning_started_at,
+        now
+      )
+    }))
+    .filter(item=>Number.isFinite(item.target));
 
   if(!prepared.length){
-
-    $("countdownState")
-      .textContent =
+    $("countdownState").textContent =
       "Awaiting confirmed deposit";
 
-    $("timerBox")
-      .classList.add(
-        "countdown-hidden"
-      );
-
+    $("timerBox").classList.add("countdown-hidden");
     return;
   }
 
+  prepared.sort((a,b)=>a.target-b.target);
 
-  prepared.sort(
-    (a,b)=>
-      a.target - b.target
-  );
+  const next = prepared[0];
 
+  countdownTarget = next.target;
 
-  const next =
-    prepared[0];
+  $("countdownAsset").textContent =
+    next.asset || "—";
 
-
-  countdownTarget =
-    next.target;
-
-
-  $("countdownAsset")
-    .textContent =
-    next.asset ||
-    "—";
-
-
-  $("countdownState")
-    .textContent =
+  $("countdownState").textContent =
     "Active deposit confirmed";
 
-
-  $("timerBox")
-    .classList.remove(
-      "countdown-hidden"
-    );
-
+  $("timerBox").classList.remove("countdown-hidden");
 
   updateCountdown();
 
-
-  countdownInterval =
-    setInterval(
-      updateCountdown,
-      1000
-    );
-
+  countdownInterval = setInterval(updateCountdown,1000);
 }
 
 
@@ -1981,69 +1524,36 @@ function setupCountdown(){
 ========================================================= */
 
 function updateCountdown(){
-
   if(!countdownTarget){
     return;
   }
 
-
-  const remaining =
-    Math.max(
-      0,
-      countdownTarget -
-      Date.now()
-    );
-
+  const remaining = Math.max(
+    0,
+    countdownTarget - Date.now()
+  );
 
   if(remaining <= 0){
+    $("timer").textContent = "00:00:00";
 
-    $("timer")
-      .textContent =
-      "00:00:00";
+    if(countdownInterval){
+      clearInterval(countdownInterval);
+      countdownInterval = null;
+    }
 
-
-    setTimeout(
-      refreshDashboardData,
-      1500
-    );
-
+    setTimeout(refreshDashboardData,1500);
     return;
   }
 
+  const seconds = Math.floor(remaining / 1000);
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const secs = seconds % 60;
 
-  const seconds =
-    Math.floor(
-      remaining / 1000
-    );
-
-
-  const hours =
-    Math.floor(
-      seconds / 3600
-    );
-
-
-  const minutes =
-    Math.floor(
-      (seconds % 3600) / 60
-    );
-
-
-  const secs =
-    seconds % 60;
-
-
-  $("timer")
-    .textContent =
-    String(hours)
-      .padStart(2,"0") +
-    ":" +
-    String(minutes)
-      .padStart(2,"0") +
-    ":" +
-    String(secs)
-      .padStart(2,"0");
-
+  $("timer").textContent =
+    String(hours).padStart(2,"0") + ":" +
+    String(minutes).padStart(2,"0") + ":" +
+    String(secs).padStart(2,"0");
 }
 
 
@@ -2052,18 +1562,12 @@ function updateCountdown(){
 ========================================================= */
 
 function stopCountdown(){
-
   if(countdownInterval){
-
-    clearInterval(
-      countdownInterval
-    );
-
+    clearInterval(countdownInterval);
     countdownInterval = null;
   }
 
   countdownTarget = null;
-
 }
 
 
@@ -2072,13 +1576,15 @@ function stopCountdown(){
 ========================================================= */
 
 async function refreshDashboardData(){
+  if(!currentUser){
+    return;
+  }
 
   await Promise.all([
     loadProfile(),
     loadWallets(),
     loadActiveDeposits()
   ]);
-
 }
 
 
@@ -2087,39 +1593,20 @@ async function refreshDashboardData(){
 ========================================================= */
 
 async function checkAuth(){
-
-  const {
-    data,
-    error
-  } = await db.auth.getSession();
-
+  const {data,error} = await db.auth.getSession();
 
   if(error){
-
-    console.error(
-      "Auth error:",
-      error
-    );
-
+    console.error("Auth error:",error);
   }
 
-
-  currentUser =
-    data?.session?.user ||
-    null;
-
+  currentUser = data?.session?.user || null;
 
   if(!currentUser){
-
-    window.location.href =
-      "signin.html";
-
+    window.location.href = "signin.html";
     return false;
   }
 
-
   return true;
-
 }
 
 
@@ -2127,18 +1614,17 @@ async function checkAuth(){
    LOGOUT
 ========================================================= */
 
-$("logoutBtn")
-  .addEventListener(
-    "click",
-    async ()=>{
+$("logoutBtn").addEventListener("click",async()=>{
+  const {error} = await db.auth.signOut();
 
-      await db.auth.signOut();
+  if(error){
+    console.error("Logout error:",error);
+    showToast("Unable to log out. Please try again.");
+    return;
+  }
 
-      window.location.href =
-        "signin.html";
-
-    }
-  );
+  window.location.href = "signin.html";
+});
 
 
 /* =========================================================
@@ -2146,38 +1632,19 @@ $("logoutBtn")
 ========================================================= */
 
 function setGreeting(){
+  const hour = new Date().getHours();
 
-  const hour =
-    new Date().getHours();
-
-  let text =
-    "Welcome back";
-
+  let text = "Welcome back";
 
   if(hour < 12){
-
-    text =
-      "Good morning";
-
-  }
-  else if(hour < 18){
-
-    text =
-      "Good afternoon";
-
-  }
-  else{
-
-    text =
-      "Good evening";
-
+    text = "Good morning";
+  }else if(hour < 18){
+    text = "Good afternoon";
+  }else{
+    text = "Good evening";
   }
 
-
-  $("greetingText")
-    .textContent =
-    text;
-
+  $("greetingText").textContent = text;
 }
 
 
@@ -2185,31 +1652,22 @@ function setGreeting(){
    VISIBILITY
 ========================================================= */
 
-document.addEventListener(
-  "visibilitychange",
-  ()=>{
-
-    if(
-      document.visibilityState ===
-      "visible"
-    ){
-
-      refreshDashboardData();
-
-    }
-
+document.addEventListener("visibilitychange",()=>{
+  if(document.visibilityState === "visible"){
+    refreshDashboardData();
   }
-);
+});
 
 
 /* =========================================================
    AUTO REFRESH
 ========================================================= */
 
-setInterval(
-  refreshDashboardData,
-  30000
-);
+setInterval(()=>{
+  if(document.visibilityState === "visible"){
+    refreshDashboardData();
+  }
+},30000);
 
 
 /* =========================================================
@@ -2217,52 +1675,28 @@ setInterval(
 ========================================================= */
 
 (async function init(){
-
   try{
-
     setGreeting();
-
     buildCryptoMenu();
-
     renderSelectedAsset();
 
-
-    const authenticated =
-      await checkAuth();
-
+    const authenticated = await checkAuth();
 
     if(!authenticated){
       return;
     }
 
-
     await refreshDashboardData();
 
-  }
-  catch(error){
+  }catch(error){
+    console.error("Dashboard initialization error:",error);
+    showToast("Unable to load dashboard");
 
-    console.error(
-      "Dashboard initialization error:",
-      error
-    );
-
-    showToast(
-      "Unable to load dashboard"
-    );
-
-  }
-  finally{
-
+  }finally{
     setTimeout(()=>{
-
-      $("loadingScreen")
-        .style.display =
-        "none";
-
+      $("loadingScreen").style.display = "none";
     },250);
-
   }
-
 })();
 
 </script>
