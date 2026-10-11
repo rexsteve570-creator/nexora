@@ -4,13 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#07111f">
-
-<title>Currency Exchange | NEXORA</title>
+<title>NEXORA — Crypto Market</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-:root {
+:root{
   --bg:#07111f;
   --bg2:#091626;
   --card:#0d1b2d;
@@ -25,58 +24,82 @@
   --shadow:0 18px 50px rgba(0,0,0,.28);
 }
 
-* {
+*{
   box-sizing:border-box;
-}
-
-body {
   margin:0;
-  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  color:var(--text);
+  padding:0;
+}
+
+html,body{min-height:100%;}
+
+body{
   background:
-    radial-gradient(circle at top right,rgba(217,164,65,.09),transparent 35%),
-    linear-gradient(180deg,#07111f,#091523 55%,#07111f);
-  min-height:100vh;
+    radial-gradient(circle at 90% 0%,rgba(217,164,65,.09),transparent 30%),
+    linear-gradient(180deg,#07111f,#050c15);
+  color:var(--text);
+  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
 }
 
-button,input,select {
-  font:inherit;
-}
+button,input{font:inherit;}
+button{cursor:pointer;}
+button:disabled{opacity:.55;cursor:not-allowed;}
+a{color:inherit;text-decoration:none;}
 
-button {
-  cursor:pointer;
-}
-
-button:disabled {
-  opacity:.5;
-  cursor:not-allowed;
-}
-
-a {
-  color:inherit;
-  text-decoration:none;
-}
-
-.app {
+.app{
   width:100%;
   max-width:760px;
+  min-height:100vh;
   margin:auto;
-  padding-bottom:105px;
+  padding-bottom:100px;
 }
 
-/* HEADER */
+/* LOADING */
 
-.topbar {
+.loading-screen{
+  position:fixed;
+  inset:0;
+  background:#07111f;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+}
+
+.loading-box{text-align:center;}
+
+.loading-logo{
+  font-size:29px;
+  font-weight:850;
+  letter-spacing:2px;
+}
+
+.loading-logo span{color:var(--gold);}
+
+.spinner{
+  width:28px;
+  height:28px;
+  border:3px solid rgba(217,164,65,.18);
+  border-top-color:var(--gold);
+  border-radius:50%;
+  margin:20px auto 0;
+  animation:spin .8s linear infinite;
+}
+
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* TOPBAR — MATCHES DASHBOARD */
+
+.topbar{
   height:68px;
   position:sticky;
   top:0;
-  z-index:150;
-  background:rgba(7,17,31,.95);
+  z-index:100;
+  background:rgba(7,17,31,.94);
   backdrop-filter:blur(18px);
   border-bottom:1px solid var(--border);
 }
 
-.topbar-inner {
+.topbar-inner{
   height:100%;
   padding:0 18px;
   display:flex;
@@ -85,439 +108,555 @@ a {
   position:relative;
 }
 
-.menu-btn {
+.menu-btn{
   width:42px;
   height:42px;
   border:0;
-  border-radius:12px;
   background:transparent;
-  color:white;
+  color:#fff;
   font-size:25px;
 }
 
-.logo {
+.logo{
   position:absolute;
   left:50%;
   transform:translateX(-50%);
   font-size:21px;
-  font-weight:900;
+  font-weight:850;
   letter-spacing:2px;
 }
 
-.logo span,
-.drawer-brand span {
-  color:var(--gold2);
-}
+.logo span{color:var(--gold);}
 
-.profile-initial {
+.profile-initial{
   width:38px;
   height:38px;
   border-radius:50%;
+  background:linear-gradient(145deg,#efc25e,#987021);
+  color:#07111f;
+  font-size:12px;
+  font-weight:850;
   display:flex;
-  justify-content:center;
   align-items:center;
-  background:linear-gradient(135deg,var(--gold2),var(--gold));
-  color:#15110a;
-  font-weight:900;
+  justify-content:center;
 }
 
-/* SIDE MENU */
+/* DRAWER — MATCHES DASHBOARD */
 
-.overlay {
+.overlay{
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.68);
+  background:rgba(0,0,0,.64);
   z-index:190;
   display:none;
 }
 
-.overlay.show {
-  display:block;
-}
+.overlay.show{display:block;}
 
-.drawer {
+.drawer{
   position:fixed;
-  left:-320px;
+  left:-310px;
   top:0;
   width:290px;
   max-width:86%;
   height:100vh;
   overflow-y:auto;
-  padding:22px 15px;
   background:#091625;
   border-right:1px solid var(--border);
   z-index:200;
   transition:left .25s ease;
+  padding:22px 15px;
 }
 
-.drawer.open {
-  left:0;
-}
+.drawer.open{left:0;}
 
-.drawer-head {
+.drawer-head{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:0 5px 25px;
+  padding:8px 7px 25px;
+  border-bottom:1px solid var(--border);
 }
 
-.drawer-brand {
-  font-size:21px;
-  font-weight:900;
+.drawer-brand{
+  font-size:20px;
+  font-weight:850;
   letter-spacing:2px;
 }
 
-.close-drawer {
-  width:38px;
-  height:38px;
-  border:1px solid var(--border);
-  background:var(--card);
-  color:white;
-  border-radius:12px;
-  font-size:23px;
+.drawer-brand span{color:var(--gold);}
+
+.close-drawer{
+  border:0;
+  background:none;
+  color:#fff;
+  font-size:27px;
 }
 
-.drawer-nav {
-  display:grid;
-  gap:7px;
-}
+.drawer-nav{padding-top:18px;}
 
-.drawer-link {
+.drawer-link{
   width:100%;
+  border:0;
+  background:transparent;
+  color:#d7dce4;
+  padding:14px 13px;
+  border-radius:11px;
   display:flex;
   align-items:center;
   gap:13px;
-  padding:13px;
-  border:1px solid transparent;
-  border-radius:13px;
-  background:transparent;
-  color:#c7d0dd;
   text-align:left;
+  margin-bottom:4px;
   font-size:14px;
 }
 
 .drawer-link:hover,
-.drawer-link.current {
-  background:rgba(217,164,65,.09);
-  border-color:rgba(217,164,65,.2);
+.drawer-link.current{
+  background:rgba(217,164,65,.08);
   color:var(--gold2);
 }
 
-.drawer-icon {
-  width:25px;
+.drawer-icon{
+  width:22px;
   text-align:center;
-  color:var(--gold2);
-  font-size:18px;
+  color:var(--gold);
 }
 
-.drawer-link.logout {
-  margin-top:12px;
-  color:#ff858b;
+.logout{
+  margin-top:15px;
+  color:#ef8990;
 }
 
-/* PAGE */
+/* CONTENT */
 
-.content {
-  padding:22px 16px;
-}
+.content{padding:25px 18px 0;}
 
-.page-heading {
-  margin-bottom:20px;
-}
+.greeting{margin-bottom:20px;}
 
-.eyebrow {
-  font-size:10px;
-  color:var(--gold2);
-  letter-spacing:2px;
-  font-weight:800;
-  margin-bottom:8px;
-}
-
-h1 {
-  margin:0 0 8px;
-  font-size:27px;
-  letter-spacing:-.6px;
-}
-
-.subtitle {
-  margin:0;
-  font-size:13px;
-  line-height:1.7;
+.greeting small{
   color:var(--muted);
+  font-size:13px;
 }
 
-/* BALANCE CARD */
+.greeting h1{
+  margin-top:4px;
+  font-size:24px;
+  font-weight:760;
+}
 
-.balance-card {
-  padding:21px;
-  border-radius:20px;
-  border:1px solid rgba(217,164,65,.2);
+.subtitle{
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.7;
+  margin-top:7px;
+}
+
+/* MARKET OVERVIEW */
+
+.market-overview{
   background:
-    radial-gradient(circle at top right,rgba(217,164,65,.17),transparent 48%),
-    linear-gradient(135deg,#102238,#0b1728);
+    radial-gradient(circle at top right,rgba(217,164,65,.15),transparent 45%),
+    linear-gradient(145deg,#102238,#0b1829);
+  border:1px solid rgba(217,164,65,.18);
+  border-radius:20px;
+  padding:21px;
   box-shadow:var(--shadow);
-  margin-bottom:20px;
 }
 
-.balance-label {
+.market-overview-label{
   color:var(--muted);
   font-size:12px;
 }
 
-.balance-value {
-  font-size:29px;
+.market-overview-value{
+  margin-top:8px;
+  font-size:30px;
   font-weight:850;
-  margin:10px 0;
+  letter-spacing:-.7px;
   overflow-wrap:anywhere;
 }
 
-.balance-note {
+.market-overview-note{
   color:var(--muted);
   font-size:11px;
-  line-height:1.6;
+  line-height:1.7;
+  margin-top:8px;
 }
 
-/* CARDS */
-
-.card {
-  padding:19px;
-  border:1px solid var(--border);
-  background:linear-gradient(145deg,rgba(17,34,56,.96),rgba(11,24,41,.96));
-  border-radius:20px;
-  margin-bottom:18px;
-  box-shadow:0 12px 30px rgba(0,0,0,.12);
-}
-
-.card-heading {
+.market-status{
   display:flex;
-  justify-content:space-between;
   align-items:center;
-  gap:12px;
-  margin-bottom:18px;
-}
-
-.card-heading h2 {
-  font-size:17px;
-  margin:0;
-}
-
-.badge {
-  font-size:9px;
-  letter-spacing:1px;
-  padding:7px 9px;
-  border-radius:8px;
-  background:rgba(217,164,65,.1);
-  border:1px solid rgba(217,164,65,.22);
-  color:var(--gold2);
-  white-space:nowrap;
-}
-
-/* ASSET SELECTORS */
-
-.field {
-  margin-bottom:15px;
-}
-
-.field-label {
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  margin-bottom:9px;
+  gap:8px;
+  margin-top:15px;
   font-size:11px;
   color:var(--muted);
 }
 
-.available {
-  color:var(--gold2);
-  text-align:right;
-}
-
-.asset-box {
-  border:1px solid var(--border);
-  background:rgba(4,12,23,.45);
-  border-radius:15px;
-  padding:13px;
-}
-
-.asset-top {
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
-.coin-logo {
-  width:35px;
-  height:35px;
+.status-dot{
+  width:8px;
+  height:8px;
   border-radius:50%;
+  background:var(--green);
+  flex-shrink:0;
+}
+
+.status-dot.offline{background:var(--red);}
+
+/* SECTIONS */
+
+.section{margin-top:25px;}
+
+.section-title{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:12px;
+}
+
+.section-title h2{
+  font-size:16px;
+  font-weight:750;
+}
+
+.section-title span{
+  color:var(--muted);
+  font-size:11px;
+}
+
+/* CHART CARD */
+
+.chart-card{
+  overflow:hidden;
+  background:linear-gradient(145deg,#0d1b2d,#0a1625);
+  border:1px solid var(--border);
+  border-radius:19px;
+}
+
+.chart-coin{
+  padding:17px 15px 13px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.chart-coin-left{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  min-width:0;
+}
+
+.chart-logo{
+  width:43px;
+  height:43px;
   object-fit:contain;
   flex-shrink:0;
 }
 
-.asset-select {
-  min-width:0;
-  flex:1;
-  color:var(--text);
-  background:#0d1b2d;
-  border:0;
-  outline:none;
-  padding:7px 2px;
-  font-size:13px;
-  font-weight:700;
-}
-
-.asset-select option {
-  background:#0d1b2d;
-  color:white;
-}
-
-.amount-input {
-  width:100%;
-  margin-top:12px;
-  border:0;
-  border-top:1px solid var(--border);
-  padding:15px 0 3px;
-  background:transparent;
-  color:white;
-  outline:none;
-  font-size:25px;
-  font-weight:750;
-}
-
-.amount-input::placeholder {
-  color:#536175;
-}
-
-.asset-usd {
-  font-size:11px;
-  color:var(--muted);
-  margin-top:7px;
-}
-
-.max-btn {
-  border:1px solid rgba(217,164,65,.25);
-  background:rgba(217,164,65,.08);
-  color:var(--gold2);
-  padding:6px 10px;
-  border-radius:8px;
-  font-size:10px;
+.chart-coin-name{
+  font-size:14px;
   font-weight:800;
 }
 
-.switch-row {
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  margin:-2px 0 14px;
-}
-
-.switch-btn {
-  width:43px;
-  height:43px;
-  border-radius:14px;
-  border:1px solid rgba(217,164,65,.35);
-  color:var(--gold2);
-  background:#14263b;
-  font-size:22px;
-}
-
-/* QUOTE */
-
-.quote-box {
-  margin-top:17px;
-  padding:14px;
-  background:rgba(3,11,21,.38);
-  border:1px solid var(--border);
-  border-radius:14px;
-}
-
-.quote-row {
-  display:flex;
-  justify-content:space-between;
-  gap:15px;
-  padding:10px 0;
-  border-bottom:1px solid rgba(255,255,255,.045);
-  font-size:12px;
-}
-
-.quote-row:last-child {
-  border-bottom:0;
-}
-
-.quote-row span:first-child {
+.chart-coin-symbol{
   color:var(--muted);
+  font-size:11px;
+  margin-top:4px;
 }
 
-.quote-row span:last-child {
+.chart-price{
+  font-size:17px;
+  font-weight:850;
   text-align:right;
   overflow-wrap:anywhere;
 }
 
-.quote-result {
-  font-size:20px;
-  font-weight:800;
-  color:var(--gold2);
+.chart-price-note{
+  margin-top:4px;
+  font-size:10px;
+  color:var(--muted);
+  text-align:right;
 }
 
-.primary-btn {
-  width:100%;
-  min-height:51px;
-  border:0;
-  border-radius:14px;
-  margin-top:17px;
-  padding:13px;
-  background:linear-gradient(135deg,var(--gold2),var(--gold));
-  color:#171208;
-  font-weight:900;
-  font-size:13px;
+.chart-tools{
+  padding:0 13px 13px;
+  display:flex;
+  align-items:center;
+  gap:8px;
 }
 
-.secondary-btn {
-  width:100%;
-  min-height:43px;
-  border:1px solid var(--border);
-  border-radius:12px;
-  margin-top:10px;
-  padding:11px;
-  background:transparent;
+.chart-select{
+  flex:1;
+  min-width:0;
+  height:39px;
+  padding:0 10px;
   color:var(--text);
+  background:#112238;
+  border:1px solid var(--border);
+  border-radius:10px;
+  outline:none;
   font-size:12px;
 }
 
-.message {
-  display:none;
-  padding:12px 13px;
-  border-radius:12px;
-  margin:12px 0;
-  font-size:12px;
-  line-height:1.65;
-  overflow-wrap:anywhere;
+.chart-select option{
+  background:#0d1b2d;
+  color:#fff;
 }
 
-.message.show {
+.chart-frame{
+  height:350px;
+  width:100%;
+  background:#0b1523;
+  border-top:1px solid var(--border);
+  position:relative;
+}
+
+.chart-frame iframe{
+  width:100%;
+  height:100%;
+  border:0;
   display:block;
 }
 
-.message.error {
-  color:#ffb3b7;
-  background:rgba(239,107,115,.1);
-  border:1px solid rgba(239,107,115,.2);
+.chart-message{
+  display:none;
+  padding:13px 15px;
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.7;
+  border-top:1px solid var(--border);
 }
 
-.message.success {
-  color:#92f0c6;
-  background:rgba(50,196,141,.09);
-  border:1px solid rgba(50,196,141,.2);
+.chart-message.show{display:block;}
+
+.timeframes{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:7px;
+  padding:13px;
+  border-top:1px solid var(--border);
 }
 
-.message.info {
+.time-btn{
+  border:1px solid transparent;
+  border-radius:9px;
+  padding:9px 2px;
+  background:#112238;
+  color:#aab5c4;
+  font-size:11px;
+  font-weight:750;
+}
+
+.time-btn.active{
+  color:#151008;
+  background:linear-gradient(135deg,var(--gold2),var(--gold));
+}
+
+/* BUTTONS */
+
+.action-btn{
+  border:1px solid var(--border);
+  border-radius:11px;
+  padding:10px 13px;
+  background:#112238;
+  color:var(--text);
+  font-size:11px;
+  font-weight:750;
+}
+
+.action-btn.gold{
+  background:linear-gradient(135deg,var(--gold2),var(--gold));
+  color:#171208;
+  border:0;
+}
+
+.action-btn:disabled{opacity:.55;}
+
+/* MESSAGES */
+
+.message{
+  display:none;
+  padding:12px 13px;
+  border-radius:12px;
+  margin-top:12px;
+  font-size:11px;
+  line-height:1.7;
+  overflow-wrap:anywhere;
+}
+
+.message.show{display:block;}
+
+.message.info{
   color:#d8e4f5;
   background:rgba(110,155,220,.09);
   border:1px solid rgba(110,155,220,.17);
 }
 
+.message.error{
+  color:#ffb3b7;
+  background:rgba(239,107,115,.1);
+  border:1px solid rgba(239,107,115,.2);
+}
+
+.message.success{
+  color:#92f0c6;
+  background:rgba(50,196,141,.09);
+  border:1px solid rgba(50,196,141,.2);
+}
+
+/* MARKET LIST */
+
+.market-list-card{
+  background:linear-gradient(145deg,#0d1b2d,#0a1625);
+  border:1px solid var(--border);
+  border-radius:19px;
+  overflow:hidden;
+}
+
+.market-list-head{
+  padding:15px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  border-bottom:1px solid var(--border);
+}
+
+.market-list-head h2{
+  font-size:15px;
+}
+
+.market-count{
+  color:var(--muted);
+  font-size:10px;
+}
+
+.search-wrap{padding:13px 13px 5px;}
+
+.search-input{
+  width:100%;
+  height:43px;
+  border:1px solid var(--border);
+  border-radius:11px;
+  background:#081421;
+  color:var(--text);
+  padding:0 13px;
+  outline:none;
+  font-size:12px;
+}
+
+.search-input:focus{
+  border-color:rgba(217,164,65,.5);
+}
+
+.search-input::placeholder{color:#647386;}
+
+.coin-list{padding:0 12px 8px;}
+
+.coin-row{
+  width:100%;
+  border:0;
+  border-bottom:1px solid rgba(255,255,255,.055);
+  background:transparent;
+  color:var(--text);
+  min-height:76px;
+  padding:12px 2px;
+  display:flex;
+  align-items:center;
+  gap:11px;
+  text-align:left;
+}
+
+.coin-row:last-child{border-bottom:0;}
+
+.coin-row:hover,
+.coin-row.selected{
+  background:rgba(217,164,65,.045);
+}
+
+.coin-row.selected{
+  border-radius:10px;
+}
+
+.coin-logo{
+  width:39px;
+  height:39px;
+  object-fit:contain;
+  flex-shrink:0;
+}
+
+.coin-info{
+  min-width:0;
+  flex:1;
+}
+
+.coin-name{
+  font-size:12px;
+  font-weight:800;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.coin-symbol{
+  color:var(--muted);
+  font-size:10px;
+  margin-top:5px;
+}
+
+.coin-price-area{
+  min-width:95px;
+  text-align:right;
+}
+
+.coin-price{
+  font-size:12px;
+  font-weight:800;
+  overflow-wrap:anywhere;
+}
+
+.coin-price-note{
+  margin-top:5px;
+  color:var(--muted);
+  font-size:9px;
+}
+
+.coin-open{
+  color:var(--gold2);
+  font-size:16px;
+  padding-left:2px;
+}
+
+.empty-state{
+  text-align:center;
+  padding:25px 12px;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.7;
+}
+
+.data-note{
+  padding:12px 15px;
+  color:var(--muted);
+  font-size:10px;
+  line-height:1.7;
+  border-top:1px solid var(--border);
+}
+
+.market-footer-actions{
+  display:flex;
+  gap:9px;
+  margin-top:12px;
+}
+
+.market-footer-actions button{flex:1;}
+
 /* INFORMATION */
 
-.notice {
+.notice{
+  margin-top:18px;
   padding:15px;
   border-radius:14px;
   border:1px solid rgba(217,164,65,.18);
@@ -527,145 +666,82 @@ h1 {
   line-height:1.8;
 }
 
-.notice strong {
-  color:var(--gold2);
-}
+.notice strong{color:var(--gold2);}
 
-.section-title {
-  margin:26px 0 13px;
-  font-size:17px;
-}
+/* BOTTOM NAV — MATCHES DASHBOARD */
 
-.activity {
-  display:grid;
-  gap:10px;
-}
-
-.activity-item {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-  border:1px solid var(--border);
-  background:rgba(13,27,45,.7);
-  padding:13px;
-  border-radius:13px;
-}
-
-.activity-pair {
-  font-weight:750;
-  font-size:12px;
-}
-
-.activity-date {
-  font-size:10px;
-  color:var(--muted);
-  margin-top:6px;
-}
-
-.activity-amount {
-  text-align:right;
-  font-size:12px;
-  font-weight:750;
-}
-
-.status {
-  display:inline-block;
-  margin-top:6px;
-  font-size:9px;
-  letter-spacing:.5px;
-  color:var(--gold2);
-}
-
-.empty-state {
-  text-align:center;
-  padding:24px 12px;
-  color:var(--muted);
-  font-size:12px;
-  line-height:1.7;
-}
-
-.price-time {
-  margin-top:12px;
-  color:var(--muted);
-  font-size:10px;
-  line-height:1.6;
-}
-
-/* BOTTOM NAV */
-
-.bottom-nav {
+.bottom-nav{
   position:fixed;
   bottom:0;
   left:50%;
   transform:translateX(-50%);
   width:100%;
   max-width:760px;
-  height:75px;
-  padding-bottom:env(safe-area-inset-bottom);
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
+  height:70px;
   background:rgba(8,18,31,.97);
   backdrop-filter:blur(18px);
   border-top:1px solid var(--border);
   z-index:120;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  padding-bottom:env(safe-area-inset-bottom);
 }
 
-.bottom-link {
+.bottom-link{
+  border:0;
+  background:transparent;
+  color:#7e8998;
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
   gap:5px;
-  color:#7e8998;
   font-size:10px;
 }
 
-.bottom-link.active {
-  color:var(--gold2);
-}
+.bottom-link.active{color:var(--gold2);}
 
-.bottom-icon {
-  font-size:20px;
-}
+.bottom-icon{font-size:20px;}
 
-.toast {
+/* TOAST */
+
+.toast{
   position:fixed;
-  bottom:90px;
   left:50%;
-  transform:translateX(-50%);
+  bottom:87px;
+  transform:translateX(-50%) translateY(15px);
   width:calc(100% - 32px);
   max-width:420px;
-  padding:13px 15px;
-  background:#15253a;
-  color:white;
+  background:#142337;
   border:1px solid var(--border);
-  border-radius:12px;
-  box-shadow:var(--shadow);
-  z-index:500;
+  color:#fff;
+  padding:12px 15px;
+  border-radius:10px;
   font-size:12px;
-  display:none;
+  opacity:0;
+  pointer-events:none;
+  transition:.25s;
+  z-index:500;
 }
 
-.toast.show {
-  display:block;
+.toast.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
 }
 
-@media(max-width:380px) {
-  .content {
-    padding:18px 12px;
-  }
+@media(max-width:400px){
+  .content{padding:21px 12px 0;}
+  .market-overview-value{font-size:27px;}
+  .chart-frame{height:315px;}
+  .chart-price{font-size:14px;}
+  .coin-logo{width:34px;height:34px;}
+  .coin-price-area{min-width:85px;}
+}
 
-  .card {
-    padding:15px;
-  }
-
-  h1 {
-    font-size:24px;
-  }
-
-  .balance-value {
-    font-size:25px;
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms!important;
+    transition-duration:.01ms!important;
   }
 }
 </style>
@@ -673,324 +749,274 @@ h1 {
 
 <body>
 
-<div class="app">
-
-  <header class="topbar">
-    <div class="topbar-inner">
-      <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
-
-      <a class="logo" href="dashboard.html">NEX<span>ORA</span></a>
-
-      <div class="profile-initial" id="profileInitial">N</div>
-    </div>
-  </header>
-
-  <main class="content">
-
-    <section class="page-heading">
-      <div class="eyebrow">YOUR NEXORA WALLET</div>
-      <h1>Currency Exchange</h1>
-      <p class="subtitle">
-        Check market prices and calculate conversions between your supported assets.
-      </p>
-    </section>
-
-    <section class="balance-card">
-      <div class="balance-label">Available <span id="balanceAsset">USDT</span> balance</div>
-      <div class="balance-value" id="mainBalance">Loading...</div>
-      <div class="balance-note" id="balanceNote">
-        Loading your wallet balances and market prices.
-      </div>
-    </section>
-
-    <section class="card">
-
-      <div class="card-heading">
-        <h2>Swap assets</h2>
-        <span class="badge">INTERNAL EXCHANGE</span>
-      </div>
-
-      <div id="message" class="message"></div>
-
-      <div class="field">
-
-        <div class="field-label">
-          <span>YOU PAY</span>
-          <span class="available">
-            Available: <strong id="fromAvailable">—</strong>
-          </span>
-        </div>
-
-        <div class="asset-box">
-          <div class="asset-top">
-            <img id="fromLogo" class="coin-logo" alt="" hidden>
-
-            <select id="fromAsset" class="asset-select" aria-label="Asset to exchange"></select>
-          </div>
-
-          <input
-            id="fromAmount"
-            class="amount-input"
-            type="number"
-            inputmode="decimal"
-            min="0"
-            step="any"
-            placeholder="0.00"
-            autocomplete="off"
-          >
-
-          <div class="asset-usd" id="fromUsd">Enter an amount to calculate its value.</div>
-        </div>
-
-        <button class="secondary-btn" id="maxBtn" type="button">USE MAXIMUM BALANCE</button>
-
-      </div>
-
-      <div class="switch-row">
-        <button class="switch-btn" id="switchBtn" type="button" aria-label="Switch assets">⇅</button>
-      </div>
-
-      <div class="field">
-
-        <div class="field-label">
-          <span>YOU RECEIVE</span>
-          <span class="available">
-            Available: <strong id="toAvailable">—</strong>
-          </span>
-        </div>
-
-        <div class="asset-box">
-          <div class="asset-top">
-            <img id="toLogo" class="coin-logo" alt="" hidden>
-
-            <select id="toAsset" class="asset-select" aria-label="Asset to receive"></select>
-          </div>
-
-          <input
-            id="toAmount"
-            class="amount-input"
-            type="text"
-            placeholder="—"
-            readonly
-          >
-
-          <div class="asset-usd" id="toUsd">The estimated amount will appear here.</div>
-        </div>
-
-      </div>
-
-      <div class="quote-box">
-
-        <div class="quote-row">
-          <span>Exchange rate</span>
-          <span id="exchangeRate">Not calculated</span>
-        </div>
-
-        <div class="quote-row">
-          <span>Indicative amount</span>
-          <span id="indicativeAmount">—</span>
-        </div>
-
-        <div class="quote-row">
-          <span>Market price updated</span>
-          <span id="priceUpdated">Not available</span>
-        </div>
-
-      </div>
-
-      <div class="price-time" id="priceDisclaimer">
-        Prices will appear after the market-price service successfully refreshes them.
-      </div>
-
-      <button class="primary-btn" id="quoteBtn" type="button">
-        Calculate Exchange
-      </button>
-
-      <button class="primary-btn" id="confirmBtn" type="button" disabled>
-        Confirm Exchange
-      </button>
-
-      <button class="secondary-btn" id="refreshBtn" type="button">
-        Refresh Market Prices
-      </button>
-
-    </section>
-
-    <section class="notice">
-      <strong>Important information</strong><br>
-      This interface calculates an indicative conversion using stored USD market prices.
-      It does not send cryptocurrency to a blockchain or execute a market trade.
-      Market prices can change. A calculation is not a guaranteed execution price.
-      Internal exchanges must only be enabled after the backend verifies the quote,
-      fees, wallet balances, funding and accounting.
-    </section>
-
-    <h2 class="section-title">Recent exchange activity</h2>
-
-    <section class="activity" id="activityList">
-      <div class="empty-state">Loading recent exchange activity...</div>
-    </section>
-
-  </main>
+<div id="loadingScreen" class="loading-screen">
+  <div class="loading-box">
+    <div class="loading-logo">NEX<span>ORA</span></div>
+    <div class="spinner"></div>
+  </div>
 </div>
 
-<!-- SIDE MENU -->
+<div class="app">
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
+    <a class="logo" href="dashboard.html">NEX<span>ORA</span></a>
+    <div class="profile-initial" id="profileInitial">—</div>
+  </div>
+</header>
 
 <div class="overlay" id="overlay"></div>
 
 <aside class="drawer" id="drawer">
-
   <div class="drawer-head">
     <div class="drawer-brand">NEX<span>ORA</span></div>
     <button class="close-drawer" id="closeDrawer" aria-label="Close menu">×</button>
   </div>
 
   <nav class="drawer-nav">
-
-    <a class="drawer-link" href="dashboard.html">
-      <span class="drawer-icon">⌂</span>Portfolio
-    </a>
-
-    <a class="drawer-link" href="deposit.html">
-      <span class="drawer-icon">＋</span>Deposit
-    </a>
-
-    <a class="drawer-link" href="withdraw.html">
-      <span class="drawer-icon">↗</span>Withdraw
-    </a>
-
-    <a class="drawer-link" href="transactions.html">
-      <span class="drawer-icon">≡</span>Transactions
-    </a>
-
-    <a class="drawer-link" href="investments.html">
-      <span class="drawer-icon">◈</span>Investments
-    </a>
-
-    <a class="drawer-link" href="referrals.html">
-      <span class="drawer-icon">♧</span>Referrals
-    </a>
-
-    <a class="drawer-link" href="profile.html">
-      <span class="drawer-icon">○</span>Profile
-    </a>
-
-    <a class="drawer-link" href="support.html">
-      <span class="drawer-icon">?</span>Support
-    </a>
-
-    <a class="drawer-link" href="notifications.html">
-      <span class="drawer-icon">♢</span>Notifications
-    </a>
-
-    <a class="drawer-link current" href="swap.html">
-      <span class="drawer-icon">⇄</span>Currency Exchange
-    </a>
-
-    <button class="drawer-link logout" id="logoutBtn" type="button">
-      <span class="drawer-icon">↪</span>Logout
+    <button class="drawer-link" onclick="go('dashboard.html')">
+      <span class="drawer-icon">⌂</span><span>Portfolio</span>
     </button>
-
+    <button class="drawer-link" onclick="go('deposit.html')">
+      <span class="drawer-icon">＋</span><span>Deposit</span>
+    </button>
+    <button class="drawer-link" onclick="go('withdraw.html')">
+      <span class="drawer-icon">↗</span><span>Withdraw</span>
+    </button>
+    <button class="drawer-link" onclick="go('transactions.html')">
+      <span class="drawer-icon">≡</span><span>Transactions</span>
+    </button>
+    <button class="drawer-link" onclick="go('referrals.html')">
+      <span class="drawer-icon">♧</span><span>Referrals</span>
+    </button>
+    <button class="drawer-link" onclick="go('profile.html')">
+      <span class="drawer-icon">○</span><span>Profile</span>
+    </button>
+    <button class="drawer-link" onclick="go('support.html')">
+      <span class="drawer-icon">?</span><span>Support</span>
+    </button>
+    <button class="drawer-link" onclick="go('notifications.html')">
+      <span class="drawer-icon">♢</span><span>Notifications</span>
+    </button>
+    <button class="drawer-link current" onclick="go('swap.html')">
+      <span class="drawer-icon">⌁</span><span>Crypto Market</span>
+    </button>
+    <button class="drawer-link logout" id="logoutBtn">
+      <span class="drawer-icon">↪</span><span>Logout</span>
+    </button>
   </nav>
 </aside>
 
-<!-- BOTTOM NAV -->
+<main class="content">
+
+  <div class="greeting">
+    <small id="greetingText">Explore the market</small>
+    <h1>Crypto Market</h1>
+    <p class="subtitle">
+      Explore live charts and market prices for your supported cryptocurrencies.
+    </p>
+  </div>
+
+  <section class="market-overview">
+    <div class="market-overview-label">Market data status</div>
+    <div class="market-overview-value" id="marketOverviewValue">Loading...</div>
+    <div class="market-overview-note" id="marketOverviewNote">
+      Connecting to your market-price database.
+    </div>
+    <div class="market-status">
+      <span class="status-dot" id="marketStatusDot"></span>
+      <span id="marketStatusText">Checking market data</span>
+    </div>
+  </section>
+
+  <!-- CHART -->
+
+  <section class="section">
+    <div class="section-title">
+      <h2>Market Chart</h2>
+      <span id="chartProviderLabel">TradingView</span>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-coin">
+        <div class="chart-coin-left">
+          <img id="chartLogo" class="chart-logo" alt="">
+          <div>
+            <div class="chart-coin-name" id="chartCoinName">Bitcoin</div>
+            <div class="chart-coin-symbol" id="chartCoinSymbol">BTC · Bitcoin</div>
+          </div>
+        </div>
+        <div>
+          <div class="chart-price" id="chartCoinPrice">—</div>
+          <div class="chart-price-note">Saved market price</div>
+        </div>
+      </div>
+
+      <div class="chart-tools">
+        <select id="chartCoinSelect" class="chart-select" aria-label="Choose chart coin"></select>
+      </div>
+
+      <div class="chart-frame">
+        <iframe
+          id="marketChart"
+          title="Cryptocurrency market chart"
+          loading="lazy"
+          referrerpolicy="origin"
+          allowfullscreen
+        ></iframe>
+      </div>
+
+      <div class="chart-message" id="chartMessage">
+        The chart is provided by TradingView. If it does not load, check your internet connection or open this page again later.
+      </div>
+
+      <div class="timeframes" aria-label="Chart timeframe">
+        <button class="time-btn" data-range="1H">1H</button>
+        <button class="time-btn active" data-range="24H">24H</button>
+        <button class="time-btn" data-range="7D">7D</button>
+        <button class="time-btn" data-range="1M">1M</button>
+        <button class="time-btn" data-range="1Y">1Y</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- COIN LIST -->
+
+  <section class="section">
+    <div class="market-list-card">
+      <div class="market-list-head">
+        <h2>Supported Coins</h2>
+        <span class="market-count" id="coinCount">24 assets</span>
+      </div>
+
+      <div class="search-wrap">
+        <input
+          id="coinSearch"
+          class="search-input"
+          type="search"
+          placeholder="Search coin name or symbol..."
+          autocomplete="off"
+          aria-label="Search supported cryptocurrencies"
+        >
+      </div>
+
+      <div class="coin-list" id="coinList">
+        <div class="empty-state">Loading market prices...</div>
+      </div>
+
+      <div class="data-note" id="dataNote">
+        Prices will appear when recent values are available in the market database.
+      </div>
+    </div>
+
+    <div class="market-footer-actions">
+      <button class="action-btn gold" id="refreshBtn" type="button">
+        Refresh Prices
+      </button>
+      <button class="action-btn" id="resetSearchBtn" type="button">
+        Show All Coins
+      </button>
+    </div>
+
+    <div class="message" id="pageMessage"></div>
+  </section>
+
+  <section class="notice">
+    <strong>About market data</strong><br>
+    Chart data is provided by TradingView. Coin prices displayed in the list are read from NEXORA's market-price database. These data sources may update at different times. A missing or outdated database price will be shown as unavailable rather than replaced with an invented value. Market prices are informational and do not represent a completed trade or a guaranteed execution price.
+  </section>
+
+</main>
 
 <nav class="bottom-nav">
-
-  <a class="bottom-link" href="dashboard.html">
+  <button class="bottom-link" onclick="go('dashboard.html')">
     <span class="bottom-icon">⌂</span>
     <span>Portfolio</span>
-  </a>
-
-  <a class="bottom-link" href="deposit.html">
+  </button>
+  <button class="bottom-link" onclick="go('deposit.html')">
     <span class="bottom-icon">＋</span>
     <span>Deposit</span>
-  </a>
-
-  <a class="bottom-link" href="transactions.html">
+  </button>
+  <button class="bottom-link" onclick="go('transactions.html')">
     <span class="bottom-icon">≡</span>
     <span>History</span>
-  </a>
-
-  <a class="bottom-link" href="profile.html">
+  </button>
+  <button class="bottom-link" onclick="go('profile.html')">
     <span class="bottom-icon">○</span>
     <span>Account</span>
-  </a>
-
+  </button>
 </nav>
+
+</div>
 
 <div class="toast" id="toast"></div>
 
 <script>
 "use strict";
 
-/* =========================================================
-   SUPABASE CONFIGURATION
-========================================================= */
+/* SUPABASE */
 
 const SUPABASE_URL =
   "https://rihvvwktvgytbqzazage.supabase.co";
 
-const SUPABASE_ANON_KEY =
+const SUPABASE_KEY =
   "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
 
 const db = window.supabase.createClient(
   SUPABASE_URL,
-  SUPABASE_ANON_KEY
+  SUPABASE_KEY
 );
 
-/* =========================================================
-   SUPPORTED ASSETS
-
-   These symbols match the wallet records supplied by the
-   project owner. POL and TRX are intentional.
-========================================================= */
-
-const ASSETS = [
-  { symbol:"ADA", name:"Cardano", id:"cardano" },
-  { symbol:"APT", name:"Aptos", id:"aptos" },
-  { symbol:"ARB", name:"Arbitrum", id:"arbitrum" },
-  { symbol:"ATOM", name:"Cosmos", id:"cosmos" },
-  { symbol:"AVAX", name:"Avalanche", id:"avalanche-2" },
-  { symbol:"BCH", name:"Bitcoin Cash", id:"bitcoin-cash" },
-  { symbol:"BNB", name:"BNB", id:"binancecoin" },
-  { symbol:"BTC", name:"Bitcoin", id:"bitcoin" },
-  { symbol:"DOGE", name:"Dogecoin", id:"dogecoin" },
-  { symbol:"DOT", name:"Polkadot", id:"polkadot" },
-  { symbol:"ETH", name:"Ethereum", id:"ethereum" },
-  { symbol:"LINK", name:"Chainlink", id:"chainlink" },
-  { symbol:"LTC", name:"Litecoin", id:"litecoin" },
-  { symbol:"NEAR", name:"NEAR Protocol", id:"near" },
-  { symbol:"OP", name:"Optimism", id:"optimism" },
-  { symbol:"POL", name:"POL", id:"polygon-ecosystem-token" },
-  { symbol:"SHIB", name:"Shiba Inu", id:"shiba-inu" },
-  { symbol:"SOL", name:"Solana", id:"solana" },
-  { symbol:"TON", name:"Toncoin", id:"the-open-network" },
-  { symbol:"TRX", name:"TRON", id:"tron" },
-  { symbol:"USDC", name:"USD Coin", id:"usd-coin" },
-  { symbol:"USDT", name:"Tether", id:"tether" },
-  { symbol:"XLM", name:"Stellar", id:"stellar" },
-  { symbol:"XRP", name:"XRP", id:"ripple" }
-];
+/* COIN DATA */
 
 const LOGO_BASE =
   "https://cdn.jsdelivr.net/gh/madenix/Crypto-logo-cdn@main/Logos/";
 
+const ASSETS = [
+  {symbol:"ADA",name:"Cardano",id:"cardano",chart:"BINANCE:ADAUSDT",logo:"ADA.svg"},
+  {symbol:"APT",name:"Aptos",id:"aptos",chart:"BINANCE:APTUSDT",logo:"APT.svg"},
+  {symbol:"ARB",name:"Arbitrum",id:"arbitrum",chart:"BINANCE:ARBUSDT",logo:"ARB.svg"},
+  {symbol:"ATOM",name:"Cosmos",id:"cosmos",chart:"BINANCE:ATOMUSDT",logo:"ATOM.svg"},
+  {symbol:"AVAX",name:"Avalanche",id:"avalanche-2",chart:"BINANCE:AVAXUSDT",logo:"AVAX.svg"},
+  {symbol:"BCH",name:"Bitcoin Cash",id:"bitcoin-cash",chart:"BINANCE:BCHUSDT",logo:"BCH.svg"},
+  {symbol:"BNB",name:"BNB",id:"binancecoin",chart:"BINANCE:BNBUSDT",logo:"BNB.svg"},
+  {symbol:"BTC",name:"Bitcoin",id:"bitcoin",chart:"BINANCE:BTCUSDT",logo:"BTC.svg"},
+  {symbol:"DOGE",name:"Dogecoin",id:"dogecoin",chart:"BINANCE:DOGEUSDT",logo:"DOGE.svg"},
+  {symbol:"DOT",name:"Polkadot",id:"polkadot",chart:"BINANCE:DOTUSDT",logo:"DOT.svg"},
+  {symbol:"ETH",name:"Ethereum",id:"ethereum",chart:"BINANCE:ETHUSDT",logo:"ETH.svg"},
+  {symbol:"LINK",name:"Chainlink",id:"chainlink",chart:"BINANCE:LINKUSDT",logo:"LINK.svg"},
+  {symbol:"LTC",name:"Litecoin",id:"litecoin",chart:"BINANCE:LTCUSDT",logo:"LTC.svg"},
+  {symbol:"NEAR",name:"NEAR Protocol",id:"near",chart:"BINANCE:NEARUSDT",logo:"NEAR.svg"},
+  {symbol:"OP",name:"Optimism",id:"optimism",chart:"BINANCE:OPUSDT",logo:"OP.svg"},
+  {symbol:"POL",name:"POL",id:"polygon-ecosystem-token",chart:"BINANCE:POLUSDT",logo:"MATIC.svg"},
+  {symbol:"SHIB",name:"Shiba Inu",id:"shiba-inu",chart:"BINANCE:SHIBUSDT",logo:"SHIB.svg"},
+  {symbol:"SOL",name:"Solana",id:"solana",chart:"BINANCE:SOLUSDT",logo:"SOL.svg"},
+  {symbol:"TON",name:"Toncoin",id:"the-open-network",chart:"BINANCE:TONUSDT",logo:"TON.svg"},
+  {symbol:"TRX",name:"TRON",id:"tron",chart:"BINANCE:TRXUSDT",logo:"TRON.svg"},
+  {symbol:"USDC",name:"USD Coin",id:"usd-coin",chart:"BINANCE:USDCUSDT",logo:"USDC.svg"},
+  {symbol:"USDT",name:"Tether",id:"tether",chart:"BINANCE:USDTUSDC",logo:"USDT.svg"},
+  {symbol:"XLM",name:"Stellar",id:"stellar",chart:"BINANCE:XLMUSDT",logo:"XLM.svg"},
+  {symbol:"XRP",name:"XRP",id:"ripple",chart:"BINANCE:XRPUSDT",logo:"XRP.svg"}
+];
+
 const $ = id => document.getElementById(id);
 
 let currentUser = null;
-let wallets = [];
-let priceMap = new Map();
-let priceTimestamp = null;
-let calculatedQuote = null;
-let busy = false;
+let profileData = null;
+let prices = new Map();
+let selectedSymbol = "BTC";
+let selectedRange = "24H";
+let priceRefreshBusy = false;
+let lastRefreshTime = null;
 
-/* =========================================================
-   GENERAL HELPERS
-========================================================= */
+/* HELPERS */
 
-function escapeHTML(value) {
+function go(page){
+  window.location.href = page;
+}
+
+function escapeHTML(value){
   return String(value ?? "").replace(/[&<>"']/g, char => ({
     "&":"&amp;",
     "<":"&lt;",
@@ -1000,152 +1026,95 @@ function escapeHTML(value) {
   })[char]);
 }
 
-function money(value, maximumFractionDigits = 8) {
-  const number = Number(value);
+function formatNumber(value, max = 8){
+  const n = Number(value);
 
-  if (!Number.isFinite(number)) return "—";
+  if(!Number.isFinite(n)) return "—";
 
-  return number.toLocaleString("en-US", {
-    maximumFractionDigits,
-    minimumFractionDigits: 0
+  return n.toLocaleString("en-US", {
+    maximumFractionDigits:max,
+    minimumFractionDigits:0
   });
 }
 
-function formatUsd(value) {
-  const number = Number(value);
+function formatPrice(value){
+  const n = Number(value);
 
-  if (!Number.isFinite(number)) return "—";
+  if(!Number.isFinite(n) || n <= 0) return "Unavailable";
 
-  return "$" + number.toLocaleString("en-US", {
-    maximumFractionDigits: 4,
-    minimumFractionDigits: 2
+  if(n >= 1000){
+    return "$" + n.toLocaleString("en-US", {
+      minimumFractionDigits:2,
+      maximumFractionDigits:2
+    });
+  }
+
+  if(n >= 1){
+    return "$" + n.toLocaleString("en-US", {
+      minimumFractionDigits:2,
+      maximumFractionDigits:4
+    });
+  }
+
+  return "$" + n.toLocaleString("en-US", {
+    minimumFractionDigits:2,
+    maximumFractionDigits:8
   });
 }
 
-function showMessage(message, type = "info") {
-  const element = $("message");
-
-  element.className = "message show " + type;
-  element.textContent = message;
+function coinInfo(symbol){
+  return ASSETS.find(a => a.symbol === symbol);
 }
 
-function clearMessage() {
-  const element = $("message");
-
-  element.className = "message";
-  element.textContent = "";
+function logoURL(symbol){
+  const coin = coinInfo(symbol);
+  return LOGO_BASE + encodeURIComponent(coin?.logo || (symbol + ".svg"));
 }
 
-function toast(message) {
-  const element = $("toast");
-
-  element.textContent = message;
-  element.classList.add("show");
-
-  setTimeout(() => element.classList.remove("show"), 3500);
-}
-
-function setBusy(value) {
-  busy = value;
-
-  $("quoteBtn").disabled = value;
-  $("refreshBtn").disabled = value;
-  $("confirmBtn").disabled = value || !calculatedQuote;
-
-  $("quoteBtn").textContent = value
-    ? "Please wait..."
-    : "Calculate Exchange";
-
-  $("refreshBtn").textContent = value
-    ? "Working..."
-    : "Refresh Market Prices";
-}
-
-function walletBalance(asset) {
-  return wallets
-    .filter(wallet => wallet.asset === asset)
-    .reduce((total, wallet) => {
-      const value = Number(wallet.available_balance);
-      return total + (Number.isFinite(value) ? value : 0);
-    }, 0);
-}
-
-function assetInfo(symbol) {
-  return ASSETS.find(asset => asset.symbol === symbol);
-}
-
-function logoUrl(symbol) {
-  const mapping = {
-    TRX:"TRON",
-    POL:"POL",
-    SHIB:"SHIB"
+function setLogo(img, symbol){
+  img.onerror = () => {
+    img.style.visibility = "hidden";
   };
 
-  return LOGO_BASE + encodeURIComponent(mapping[symbol] || symbol) + ".svg";
-}
-
-function setCoinLogo(element, symbol) {
-  const info = assetInfo(symbol);
-
-  if (!info) {
-    element.hidden = true;
-    return;
-  }
-
-  element.hidden = false;
-  element.alt = info.name + " logo";
-  element.src = logoUrl(symbol);
-
-  element.onerror = () => {
-    element.hidden = true;
+  img.onload = () => {
+    img.style.visibility = "visible";
   };
+
+  img.src = logoURL(symbol);
+  img.alt = (coinInfo(symbol)?.name || symbol) + " logo";
 }
 
-/* =========================================================
-   AUTHENTICATION
-========================================================= */
+function showToast(message){
+  const toast = $("toast");
+  toast.textContent = message;
+  toast.classList.add("show");
 
-async function requireSession() {
-  const { data, error } = await db.auth.getSession();
-
-  if (error) throw error;
-
-  if (!data.session) {
-    window.location.replace("signin.html");
-    return false;
-  }
-
-  currentUser = data.session.user;
-  return true;
+  clearTimeout(showToast.timer);
+  showToast.timer = setTimeout(() => {
+    toast.classList.remove("show");
+  }, 3000);
 }
 
-async function loadProfile() {
-  const { data, error } = await db
-    .from("profiles")
-    .select("full_name,email")
-    .eq("id", currentUser.id)
-    .maybeSingle();
-
-  if (error) {
-    console.warn("Could not load profile:", error.message);
-  }
-
-  const name = data?.full_name || data?.email || currentUser.email || "N";
-
-  $("profileInitial").textContent =
-    name.trim().charAt(0).toUpperCase() || "N";
+function showMessage(message, type = "info"){
+  const box = $("pageMessage");
+  box.className = "message show " + type;
+  box.textContent = message;
 }
 
-/* =========================================================
-   SIDE MENU
-========================================================= */
+function clearMessage(){
+  const box = $("pageMessage");
+  box.className = "message";
+  box.textContent = "";
+}
 
-function openDrawer() {
+/* DRAWER */
+
+function openDrawer(){
   $("drawer").classList.add("open");
   $("overlay").classList.add("show");
 }
 
-function closeDrawer() {
+function closeDrawer(){
   $("drawer").classList.remove("open");
   $("overlay").classList.remove("show");
 }
@@ -1155,530 +1124,473 @@ $("closeDrawer").addEventListener("click", closeDrawer);
 $("overlay").addEventListener("click", closeDrawer);
 
 document.addEventListener("keydown", event => {
-  if (event.key === "Escape") closeDrawer();
+  if(event.key === "Escape") closeDrawer();
 });
 
 $("logoutBtn").addEventListener("click", async () => {
   $("logoutBtn").disabled = true;
 
-  const { error } = await db.auth.signOut();
+  const {error} = await db.auth.signOut();
 
-  if (error) {
+  if(error){
     $("logoutBtn").disabled = false;
-    toast("Logout failed. Please try again.");
+    showToast("Logout failed. Please try again.");
     return;
   }
 
   window.location.replace("signin.html");
 });
 
-/* =========================================================
-   ASSET SELECTORS
-========================================================= */
+/* AUTH AND PROFILE */
 
-function populateSelectors() {
-  const from = $("fromAsset");
-  const to = $("toAsset");
+async function checkAuth(){
+  const {data,error} = await db.auth.getSession();
 
-  from.innerHTML = "";
-  to.innerHTML = "";
+  if(error) throw error;
 
-  for (const asset of ASSETS) {
-    const label = `${asset.symbol} — ${asset.name}`;
+  currentUser = data.session?.user || null;
 
-    const option1 = document.createElement("option");
-    option1.value = asset.symbol;
-    option1.textContent = label;
-
-    const option2 = document.createElement("option");
-    option2.value = asset.symbol;
-    option2.textContent = label;
-
-    from.appendChild(option1);
-    to.appendChild(option2);
+  if(!currentUser){
+    window.location.replace("signin.html");
+    return false;
   }
 
-  from.value = "USDT";
-  to.value = "USDC";
-
-  updateAssetPresentation();
+  return true;
 }
 
-function updateAssetPresentation() {
-  const from = $("fromAsset").value;
-  const to = $("toAsset").value;
+async function loadProfile(){
+  const {data,error} = await db
+    .from("profiles")
+    .select("full_name,email")
+    .eq("id", currentUser.id)
+    .maybeSingle();
 
-  setCoinLogo($("fromLogo"), from);
-  setCoinLogo($("toLogo"), to);
-
-  $("balanceAsset").textContent = from;
-
-  $("fromAvailable").textContent =
-    money(walletBalance(from)) + " " + from;
-
-  $("toAvailable").textContent =
-    money(walletBalance(to)) + " " + to;
-
-  $("mainBalance").textContent =
-    money(walletBalance(from)) + " " + from;
-}
-
-function invalidateQuote() {
-  calculatedQuote = null;
-
-  $("confirmBtn").disabled = true;
-  $("toAmount").value = "";
-  $("toUsd").textContent = "Calculate an indicative amount first.";
-  $("exchangeRate").textContent = "Not calculated";
-  $("indicativeAmount").textContent = "—";
-
-  clearMessage();
-}
-
-/* =========================================================
-   LOAD WALLETS
-
-   Aggregate repeated wallet records for the same asset.
-========================================================= */
-
-async function loadWallets() {
-  const { data, error } = await db
-    .from("wallets")
-    .select("asset,available_balance")
-    .eq("user_id", currentUser.id);
-
-  if (error) throw error;
-
-  wallets = data || [];
-
-  updateAssetPresentation();
-
-  $("balanceNote").textContent =
-    `${new Set(wallets.map(wallet => wallet.asset)).size} wallet assets found.`;
-}
-
-/* =========================================================
-   REFRESH MARKET PRICES
-
-   Calls the authenticated Edge Function. The API key remains
-   on the server and is never placed in this page.
-========================================================= */
-
-async function refreshAssetPrices(force = false) {
-  const { data: sessionData, error: sessionError } =
-    await db.auth.getSession();
-
-  if (sessionError) throw sessionError;
-
-  const accessToken = sessionData.session?.access_token;
-
-  if (!accessToken) {
-    throw new Error("Your session has expired. Please sign in again.");
+  if(error){
+    console.warn("Profile lookup:", error.message);
   }
 
-  const { data, error } = await db.functions.invoke(
-    "refresh-asset-prices",
-    {
-      body: { force },
-      headers: {
-        Authorization: `Bearer ${accessToken}`
-      }
-    }
-  );
+  profileData = data || {};
 
-  if (error) {
-    throw new Error(
-      error.message || "The market-price service could not be reached."
+  const name =
+    profileData.full_name ||
+    currentUser.user_metadata?.full_name ||
+    profileData.email ||
+    currentUser.email ||
+    "N";
+
+  const parts = String(name).trim().split(/\s+/).filter(Boolean);
+
+  let initials = "N";
+
+  if(parts.length >= 2){
+    initials = (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  }else if(parts.length === 1){
+    initials = parts[0].slice(0,2).toUpperCase();
+  }
+
+  $("profileInitial").textContent = initials;
+}
+
+/* CHART */
+
+function timeframeSettings(range){
+  const settings = {
+    "1H": {interval:"5", range:"1D"},
+    "24H":{interval:"15",range:"1D"},
+    "7D": {interval:"60",range:"7D"},
+    "1M": {interval:"240",range:"1M"},
+    "1Y": {interval:"D",range:"12M"}
+  };
+
+  return settings[range] || settings["24H"];
+}
+
+function loadChart(){
+  const coin = coinInfo(selectedSymbol);
+
+  if(!coin) return;
+
+  const settings = timeframeSettings(selectedRange);
+
+  const params = new URLSearchParams({
+    symbol:coin.chart,
+    interval:settings.interval,
+    theme:"dark",
+    style:"1",
+    locale:"en",
+    timezone:"Etc/UTC",
+    hide_top_toolbar:"1",
+    hide_side_toolbar:"1",
+    allow_symbol_change:"0",
+    save_image:"0",
+    calendar:"0",
+    hide_volume:"0",
+    backgroundColor:"%230b1523",
+    gridColor:"rgba(255,255,255,0.04)"
+  });
+
+  $("marketChart").src =
+    "https://s.tradingview.com/widgetembed/?" + params.toString();
+
+  $("chartMessage").classList.add("show");
+}
+
+function updateChartHeader(){
+  const coin = coinInfo(selectedSymbol);
+  if(!coin) return;
+
+  setLogo($("chartLogo"), selectedSymbol);
+
+  $("chartCoinName").textContent = coin.name;
+  $("chartCoinSymbol").textContent = coin.symbol + " · " + coin.name;
+
+  const row = prices.get(selectedSymbol);
+  $("chartCoinPrice").textContent =
+    row ? formatPrice(row.price) : "Unavailable";
+
+  $("chartCoinSelect").value = selectedSymbol;
+
+  document.querySelectorAll(".time-btn").forEach(button => {
+    button.classList.toggle(
+      "active",
+      button.dataset.range === selectedRange
     );
-  }
-
-  if (!data?.success) {
-    throw new Error(data?.error || "Market prices could not be refreshed.");
-  }
-
-  return data;
+  });
 }
 
-/* =========================================================
-   LOAD MARKET PRICES
+function populateChartSelector(){
+  const select = $("chartCoinSelect");
+  select.innerHTML = "";
 
-   Only prices updated within the last 5 minutes are accepted.
-========================================================= */
+  ASSETS.forEach(coin => {
+    const option = document.createElement("option");
+    option.value = coin.symbol;
+    option.textContent = coin.symbol + " — " + coin.name;
+    select.appendChild(option);
+  });
 
-async function loadPrices() {
-  const { data, error } = await db
+  select.value = selectedSymbol;
+}
+
+/* PRICE DATA */
+
+function isRecentTimestamp(value){
+  if(!value) return false;
+
+  const timestamp = new Date(value).getTime();
+
+  return Number.isFinite(timestamp) &&
+    timestamp <= Date.now() + 30000 &&
+    Date.now() - timestamp <= 5 * 60 * 1000;
+}
+
+async function loadPrices(){
+  const {data,error} = await db
     .from("asset_prices")
-    .select("asset,usd_price,updated_at,enabled,price_source")
+    .select("asset,asset_name,usd_price,updated_at,enabled,price_source")
     .eq("enabled", true);
 
-  if (error) throw error;
+  if(error) throw error;
 
-  priceMap.clear();
+  prices.clear();
 
-  let newestTimestamp = 0;
+  let newest = 0;
 
-  for (const row of data || []) {
-    const price = Number(row.usd_price);
-    const updatedAt = row.updated_at
-      ? new Date(row.updated_at).getTime()
-      : 0;
+  for(const row of (data || [])){
+    const symbol = String(row.asset || "").toUpperCase();
+    const value = Number(row.usd_price);
 
-    if (
-      !Number.isFinite(price) ||
-      price <= 0 ||
-      !updatedAt ||
-      Date.now() - updatedAt > 5 * 60 * 1000 ||
-      updatedAt > Date.now() + 30000
-    ) {
+    if(
+      !coinInfo(symbol) ||
+      !Number.isFinite(value) ||
+      value <= 0 ||
+      !isRecentTimestamp(row.updated_at)
+    ){
       continue;
     }
 
-    priceMap.set(row.asset, {
-      price,
-      updatedAt,
-      source: row.price_source
+    const timestamp = new Date(row.updated_at).getTime();
+
+    prices.set(symbol, {
+      price:value,
+      updatedAt:timestamp,
+      source:row.price_source || "Market data"
     });
 
-    newestTimestamp = Math.max(newestTimestamp, updatedAt);
+    newest = Math.max(newest, timestamp);
   }
 
-  priceTimestamp = newestTimestamp || null;
+  lastRefreshTime = newest ? new Date(newest) : null;
 
-  $("priceUpdated").textContent = priceTimestamp
-    ? new Date(priceTimestamp).toLocaleString()
-    : "Prices unavailable";
+  renderMarketList();
+  renderOverview();
+  updateChartHeader();
 
-  $("priceDisclaimer").textContent = priceTimestamp
-    ? "Market data timestamp: " + new Date(priceTimestamp).toLocaleString()
-    : "No sufficiently recent market prices are available.";
-
-  $("balanceNote").textContent =
-    `${new Set(wallets.map(wallet => wallet.asset)).size} wallet assets found. ` +
-    `${priceMap.size} assets have recent market prices.`;
-
-  return priceMap;
+  return prices;
 }
 
-/* =========================================================
-   DISPLAY INDICATIVE CONVERSION
+function renderOverview(){
+  const count = prices.size;
 
-   This calculates an estimate only. It does not record or
-   execute a swap.
-========================================================= */
+  $("marketOverviewValue").textContent =
+    count + " / " + ASSETS.length;
 
-function calculateIndicative() {
-  invalidateQuote();
+  $("marketOverviewNote").textContent =
+    count === ASSETS.length
+      ? "All supported assets have recent saved prices."
+      : count > 0
+        ? count + " assets have recent prices. Other prices may be missing or stale."
+        : "No recent saved prices are available yet.";
 
-  const fromAsset = $("fromAsset").value;
-  const toAsset = $("toAsset").value;
-  const amount = Number($("fromAmount").value);
+  $("marketStatusText").textContent =
+    count > 0
+      ? "Market prices available"
+      : "Market prices unavailable";
 
-  updateAssetPresentation();
+  $("marketStatusDot").classList.toggle("offline", count === 0);
 
-  if (fromAsset === toAsset) {
-    showMessage("Choose two different assets.", "error");
-    return;
-  }
+  $("dataNote").textContent = lastRefreshTime
+    ? "Latest saved price update: " + lastRefreshTime.toLocaleString() +
+      ". Prices older than five minutes are hidden."
+    : "No prices updated within the last five minutes were found. Try Refresh Prices.";
+}
 
-  if (!Number.isFinite(amount) || amount <= 0) {
-    showMessage("Enter an amount greater than zero.", "error");
-    return;
-  }
+/* MARKET LIST */
 
-  const available = walletBalance(fromAsset);
+function renderMarketList(){
+  const container = $("coinList");
+  const search = $("coinSearch").value.trim().toLowerCase();
 
-  if (amount > available) {
-    showMessage("The amount exceeds your available balance.", "error");
-    return;
-  }
-
-  const fromPrice = priceMap.get(fromAsset);
-  const toPrice = priceMap.get(toAsset);
-
-  if (!fromPrice || !toPrice) {
-    showMessage(
-      "A recent market price is unavailable for one or both assets. Refresh prices before calculating.",
-      "error"
-    );
-    return;
-  }
-
-  const inputUsd = amount * fromPrice.price;
-  const estimatedOutput = inputUsd / toPrice.price;
-
-  if (
-    !Number.isFinite(estimatedOutput) ||
-    estimatedOutput <= 0
-  ) {
-    showMessage("The conversion could not be calculated safely.", "error");
-    return;
-  }
-
-  const rate = fromPrice.price / toPrice.price;
-
-  $("toAmount").value = money(estimatedOutput);
-  $("fromUsd").textContent = "Indicative value: " + formatUsd(inputUsd);
-  $("toUsd").textContent =
-    "Indicative value: " + formatUsd(estimatedOutput * toPrice.price);
-
-  $("exchangeRate").textContent =
-    `1 ${fromAsset} ≈ ${money(rate)} ${toAsset}`;
-
-  $("indicativeAmount").textContent =
-    `${money(estimatedOutput)} ${toAsset}`;
-
-  /*
-    Confirmation stays disabled until the secure backend
-    quote-and-execution function has been deployed and tested.
-  */
-
-  $("confirmBtn").disabled = true;
-
-  showMessage(
-    "Indicative conversion calculated. Final exchange confirmation is unavailable until the secure manual-swap backend is installed and verified.",
-    "info"
+  const filtered = ASSETS.filter(coin =>
+    coin.symbol.toLowerCase().includes(search) ||
+    coin.name.toLowerCase().includes(search)
   );
 
-  calculatedQuote = {
-    fromAsset,
-    toAsset,
-    amount,
-    estimatedOutput,
-    fromPrice: fromPrice.price,
-    toPrice: toPrice.price,
-    createdAt: Date.now()
-  };
-}
+  $("coinCount").textContent =
+    filtered.length + (filtered.length === 1 ? " asset" : " assets");
 
-/* =========================================================
-   REFRESH BUTTON
-========================================================= */
-
-async function handleRefresh() {
-  setBusy(true);
-  clearMessage();
-
-  try {
-    await refreshAssetPrices(true);
-    await loadPrices();
-
-    invalidateQuote();
-
-    if (priceMap.size < ASSETS.length) {
-      showMessage(
-        `${priceMap.size} of ${ASSETS.length} assets have recent prices. Check the price-service logs for missing assets.`,
-        "info"
-      );
-    } else {
-      showMessage("Market prices refreshed successfully.", "success");
-    }
-
-    toast("Market prices checked.");
-  } catch (error) {
-    console.error("Price refresh error:", error);
-
-    showMessage(
-      error.message || "Could not refresh market prices.",
-      "error"
-    );
-  } finally {
-    setBusy(false);
-  }
-}
-
-/* =========================================================
-   EVENT LISTENERS
-========================================================= */
-
-$("fromAsset").addEventListener("change", () => {
-  invalidateQuote();
-  updateAssetPresentation();
-  $("fromUsd").textContent = "Enter an amount to calculate its value.";
-});
-
-$("toAsset").addEventListener("change", () => {
-  invalidateQuote();
-  updateAssetPresentation();
-  $("toUsd").textContent = "The estimated amount will appear here.";
-});
-
-$("fromAmount").addEventListener("input", () => {
-  invalidateQuote();
-
-  const amount = Number($("fromAmount").value);
-  const asset = $("fromAsset").value;
-  const price = priceMap.get(asset);
-
-  $("fromUsd").textContent =
-    Number.isFinite(amount) && amount > 0 && price
-      ? "Indicative value: " + formatUsd(amount * price.price)
-      : "Enter an amount to calculate its value.";
-});
-
-$("maxBtn").addEventListener("click", () => {
-  $("fromAmount").value = String(walletBalance($("fromAsset").value));
-  invalidateQuote();
-
-  const amount = Number($("fromAmount").value);
-  const price = priceMap.get($("fromAsset").value);
-
-  $("fromUsd").textContent =
-    amount > 0 && price
-      ? "Indicative value: " + formatUsd(amount * price.price)
-      : "No available balance or current price.";
-});
-
-$("switchBtn").addEventListener("click", () => {
-  const oldFrom = $("fromAsset").value;
-  $("fromAsset").value = $("toAsset").value;
-  $("toAsset").value = oldFrom;
-
-  $("fromAmount").value = "";
-
-  invalidateQuote();
-  updateAssetPresentation();
-});
-
-$("quoteBtn").addEventListener("click", calculateIndicative);
-
-$("refreshBtn").addEventListener("click", handleRefresh);
-
-/*
-  The confirm button intentionally remains disabled until
-  manual-swap is deployed and its quote/execute flow is tested.
-*/
-$("confirmBtn").addEventListener("click", () => {
-  showMessage(
-    "Exchanges are not enabled yet. The secure backend must be completed before any balances can be changed.",
-    "info"
-  );
-});
-
-/* =========================================================
-   RECENT EXCHANGE ACTIVITY
-========================================================= */
-
-async function loadRecentActivity() {
-  const container = $("activityList");
-
-  const { data, error } = await db
-    .from("swaps")
-    .select(
-      "id,from_asset,to_asset,from_amount,quoted_to_amount,status,created_at"
-    )
-    .eq("user_id", currentUser.id)
-    .order("created_at", { ascending: false })
-    .limit(10);
-
-  if (error) {
-    console.warn("Activity loading failed:", error.message);
-
+  if(!filtered.length){
     container.innerHTML =
-      '<div class="empty-state">Could not load exchange activity.</div>';
-
+      '<div class="empty-state">No supported coins match your search.</div>';
     return;
   }
 
-  if (!data || data.length === 0) {
-    container.innerHTML =
-      '<div class="empty-state">No exchange activity yet.</div>';
-
-    return;
-  }
-
-  container.innerHTML = data.map(item => {
-    const date = item.created_at
-      ? new Date(item.created_at).toLocaleString()
-      : "Date unavailable";
+  container.innerHTML = filtered.map(coin => {
+    const saved = prices.get(coin.symbol);
+    const isSelected = coin.symbol === selectedSymbol;
 
     return `
-      <div class="activity-item">
-        <div>
-          <div class="activity-pair">
-            ${escapeHTML(item.from_asset)} → ${escapeHTML(item.to_asset)}
-          </div>
+      <button
+        type="button"
+        class="coin-row ${isSelected ? "selected" : ""}"
+        data-symbol="${escapeHTML(coin.symbol)}"
+        aria-label="View ${escapeHTML(coin.name)} chart"
+      >
+        <img
+          class="coin-logo"
+          src="${escapeHTML(logoURL(coin.symbol))}"
+          alt=""
+          loading="lazy"
+        >
 
-          <div class="activity-date">${escapeHTML(date)}</div>
+        <div class="coin-info">
+          <div class="coin-name">${escapeHTML(coin.name)}</div>
+          <div class="coin-symbol">${escapeHTML(coin.symbol)}</div>
         </div>
 
-        <div>
-          <div class="activity-amount">
-            ${escapeHTML(money(item.from_amount))}
-            ${escapeHTML(item.from_asset)}
+        <div class="coin-price-area">
+          <div class="coin-price">
+            ${saved ? escapeHTML(formatPrice(saved.price)) : "Unavailable"}
           </div>
-
-          <div class="status">
-            ${escapeHTML(item.status || "UNKNOWN")}
+          <div class="coin-price-note">
+            ${saved ? "Saved price" : "No recent price"}
           </div>
         </div>
-      </div>
+
+        <span class="coin-open">›</span>
+      </button>
     `;
   }).join("");
+
+  container.querySelectorAll(".coin-row").forEach(button => {
+    button.addEventListener("click", () => {
+      selectedSymbol = button.dataset.symbol;
+      updateChartHeader();
+      loadChart();
+      renderMarketList();
+
+      window.scrollTo({
+        top:0,
+        behavior:"smooth"
+      });
+    });
+  });
+
+  container.querySelectorAll(".coin-logo").forEach(img => {
+    img.addEventListener("error", () => {
+      img.style.visibility = "hidden";
+    });
+  });
 }
 
-/* =========================================================
-   INITIALIZATION
-========================================================= */
+/* REFRESH MARKET PRICES */
 
-async function init() {
-  $("mainBalance").textContent = "Loading...";
+async function refreshPrices(){
+  if(priceRefreshBusy) return;
 
-  try {
-    const authenticated = await requireSession();
+  priceRefreshBusy = true;
+  $("refreshBtn").disabled = true;
+  $("refreshBtn").textContent = "Refreshing...";
+  clearMessage();
 
-    if (!authenticated) return;
+  try{
+    const {data:sessionData,error:sessionError} =
+      await db.auth.getSession();
 
-    populateSelectors();
+    if(sessionError) throw sessionError;
 
-    await loadProfile();
-    await loadWallets();
+    const token = sessionData.session?.access_token;
 
-    /*
-      First display any previously saved fresh prices.
-      Then ask the server to refresh if necessary.
-    */
-
-    try {
-      await loadPrices();
-    } catch (error) {
-      console.warn("Could not read saved prices:", error.message);
+    if(!token){
+      throw new Error("Your session has expired. Please sign in again.");
     }
 
-    if (priceMap.size < ASSETS.length) {
-      try {
-        await refreshAssetPrices(false);
-        await loadPrices();
-      } catch (error) {
-        console.error("Automatic price refresh failed:", error);
-
-        showMessage(
-          "Your wallet loaded, but prices could not be refreshed. " +
-          (error.message || ""),
-          "error"
-        );
+    const {data,error} = await db.functions.invoke(
+      "refresh-asset-prices",
+      {
+        body:{force:true},
+        headers:{Authorization:"Bearer " + token}
       }
+    );
+
+    if(error){
+      throw new Error(error.message || "Could not contact the price service.");
     }
 
-    updateAssetPresentation();
-    await loadRecentActivity();
-
-    if (priceMap.size === 0) {
-      $("priceUpdated").textContent = "Unavailable";
-
-      if (!$("message").classList.contains("show")) {
-        showMessage(
-          "Market prices are not available yet. Use Refresh Market Prices to try again.",
-          "info"
-        );
-      }
+    if(!data?.success){
+      throw new Error(data?.error || "The price service could not refresh prices.");
     }
-  } catch (error) {
-    console.error("Exchange page initialization failed:", error);
+
+    await loadPrices();
+
+    if(prices.size === 0){
+      showMessage(
+        "The refresh request completed, but no recent prices were saved. The market-price service may need fixing.",
+        "error"
+      );
+    }else{
+      showMessage(
+        "Market prices checked. " + prices.size + " of " + ASSETS.length +
+        " coins have recent saved prices.",
+        "success"
+      );
+      showToast("Market prices checked.");
+    }
+
+  }catch(error){
+    console.error("Market refresh failed:", error);
 
     showMessage(
-      error.message || "The exchange page could not be initialized.",
+      "Could not refresh prices. " +
+      (error.message || "Please try again later."),
       "error"
     );
+  }finally{
+    priceRefreshBusy = false;
+    $("refreshBtn").disabled = false;
+    $("refreshBtn").textContent = "Refresh Prices";
+  }
+}
+
+/* EVENTS */
+
+$("chartCoinSelect").addEventListener("change", () => {
+  selectedSymbol = $("chartCoinSelect").value;
+  updateChartHeader();
+  loadChart();
+  renderMarketList();
+});
+
+document.querySelectorAll(".time-btn").forEach(button => {
+  button.addEventListener("click", () => {
+    selectedRange = button.dataset.range;
+    updateChartHeader();
+    loadChart();
+  });
+});
+
+$("coinSearch").addEventListener("input", renderMarketList);
+
+$("refreshBtn").addEventListener("click", refreshPrices);
+
+$("resetSearchBtn").addEventListener("click", () => {
+  $("coinSearch").value = "";
+  renderMarketList();
+});
+
+/* INITIALIZE */
+
+async function init(){
+  try{
+    const authenticated = await checkAuth();
+    if(!authenticated) return;
+
+    await loadProfile();
+
+    populateChartSelector();
+    loadChart();
+
+    try{
+      await loadPrices();
+    }catch(error){
+      console.error("Could not load saved prices:", error);
+      showMessage(
+        "Could not read market prices from the database. Check the asset_prices table permissions.",
+        "error"
+      );
+    }
+
+    if(prices.size < ASSETS.length){
+      try{
+        const {data:sessionData} = await db.auth.getSession();
+
+        if(sessionData.session?.access_token){
+          const {data,error} = await db.functions.invoke(
+            "refresh-asset-prices",
+            {
+              body:{force:false},
+              headers:{
+                Authorization:"Bearer " + sessionData.session.access_token
+              }
+            }
+          );
+
+          if(!error && data?.success){
+            await loadPrices();
+          }else if(error){
+            console.warn("Automatic price refresh:", error.message);
+          }
+        }
+      }catch(error){
+        console.warn("Automatic price refresh failed:", error.message);
+      }
+    }
+
+    renderMarketList();
+    renderOverview();
+    updateChartHeader();
+
+  }catch(error){
+    console.error("Market page initialization failed:", error);
+
+    showMessage(
+      error.message || "Could not initialize the market page.",
+      "error"
+    );
+  }finally{
+    setTimeout(() => {
+      $("loadingScreen").style.display = "none";
+    },250);
   }
 }
 
