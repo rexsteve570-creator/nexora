@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AITIVEST — Referrals</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+  --bg:#07111f;
+  --bg2:#091626;
+  --card:#0d1b2d;
+  --card2:#112238;
+  --border:rgba(255,255,255,.08);
+  --text:#f5f7fa;
+  --muted:#8d9aaa;
+  --gold:#d9a441;
+  --gold2:#f0c866;
+  --green:#32c48d;
+  --red:#ef6b73;
+  --shadow:0 18px 50px rgba(0,0,0,.28);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 90% 0%,rgba(217,164,65,.09),transparent 30%),
+    linear-gradient(180deg,#07111f,#050c15);
+  color:var(--text);
+  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+button{font:inherit;cursor:pointer}
+.app{max-width:760px;min-height:100vh;margin:auto;padding-bottom:95px}
+.loading-screen{
+  position:fixed;inset:0;background:#07111f;z-index:9999;
+  display:flex;align-items:center;justify-content:center
+}
+.loading-box{text-align:center}
+.loading-logo{font-size:29px;font-weight:850;letter-spacing:2px}
+.loading-logo span,.logo span,.drawer-brand span{color:var(--gold)}
+.spinner{
+  width:28px;height:28px;border:3px solid rgba(217,164,65,.18);
+  border-top-color:var(--gold);border-radius:50%;
+  margin:20px auto 0;animation:spin .8s linear infinite
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.topbar{
+  height:68px;position:sticky;top:0;z-index:100;
+  background:rgba(7,17,31,.94);backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--border)
+}
+.topbar-inner{
+  height:100%;padding:0 18px;display:flex;
+  align-items:center;justify-content:space-between;position:relative
+}
+.menu-btn{width:42px;height:42px;border:0;background:transparent;color:#fff;font-size:25px}
+.logo{position:absolute;left:50%;transform:translateX(-50%);font-size:21px;font-weight:850;letter-spacing:2px}
+.profile-initial{
+  width:38px;height:38px;border-radius:50%;
+  background:linear-gradient(145deg,#efc25e,#987021);color:#07111f;
+  font-size:12px;font-weight:850;display:flex;align-items:center;justify-content:center
+}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.64);z-index:190;display:none}
+.overlay.show{display:block}
+.drawer{
+  position:fixed;left:-310px;top:0;width:290px;max-width:86%;height:100vh;
+  background:#091625;border-right:1px solid var(--border);z-index:200;
+  transition:left .25s ease;padding:22px 15px;overflow-y:auto
+}
+.drawer.open{left:0}
+.drawer-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 7px 25px;border-bottom:1px solid var(--border)
+}
+.drawer-brand{font-size:20px;font-weight:850;letter-spacing:2px}
+.close-drawer{border:0;background:none;color:#fff;font-size:27px}
+.drawer-nav{padding-top:18px}
+.drawer-link{
+  width:100%;border:0;background:transparent;color:#d7dce4;
+  padding:14px 13px;border-radius:11px;display:flex;align-items:center;
+  gap:13px;text-align:left;margin-bottom:4px
+}
+.drawer-link:hover,.drawer-link.active{background:rgba(217,164,65,.08);color:var(--gold2)}
+.drawer-icon{width:22px;text-align:center;color:var(--gold)}
+.logout{margin-top:15px;color:#ef8990}
+.content{padding:25px 18px 0}
+.heading{margin-bottom:20px}
+.heading small{color:var(--muted);font-size:13px}
+.heading h1{margin-top:5px;font-size:25px;font-weight:780}
+.heading p{margin-top:8px;color:var(--muted);font-size:13px;line-height:1.6}
+.card{
+  background:linear-gradient(145deg,#102238,#0b1829);
+  border:1px solid rgba(217,164,65,.17);
+  border-radius:19px;padding:21px;box-shadow:var(--shadow)
+}
+.card-label{font-size:12px;color:var(--muted)}
+.commission-value{font-size:34px;font-weight:850;margin-top:9px;color:var(--gold2)}
+.card-note{font-size:12px;color:var(--muted);line-height:1.6;margin-top:8px}
+.section{margin-top:24px}
+.section-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.section-title h2{font-size:16px;font-weight:740}
+.section-title span{font-size:11px;color:var(--muted)}
+.link-box{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:15px;padding:16px
+}
+.field-label{font-size:12px;color:var(--muted);margin-bottom:9px}
+.referral-link{
+  width:100%;min-height:44px;background:#081321;border:1px solid var(--border);
+  border-radius:10px;color:#f4d58d;padding:12px;font-size:12px;
+  overflow-wrap:anywhere;line-height:1.5;user-select:all
+}
+.button-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.btn{
+  border:1px solid rgba(217,164,65,.25);border-radius:11px;padding:12px 10px;
+  background:rgba(217,164,65,.09);color:var(--gold2);font-weight:750;font-size:12px
+}
+.btn.primary{background:linear-gradient(135deg,#efc25e,#c9942d);color:#101827;border:0}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:15px;padding:17px}
+.stat-label{font-size:11px;color:var(--muted)}
+.stat-value{font-size:23px;font-weight:800;margin-top:9px;overflow-wrap:anywhere}
+.stat-foot{font-size:10px;color:var(--muted);margin-top:6px}
+.info-box{
+  padding:15px;background:rgba(217,164,65,.06);
+  border:1px solid rgba(217,164,65,.15);border-radius:13px;
+  color:#cbd2dc;font-size:12px;line-height:1.7
+}
+.table-card{background:var(--card);border:1px solid var(--border);border-radius:15px;overflow:hidden}
+.table-scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:470px}
+th,td{padding:14px 13px;text-align:left;border-bottom:1px solid var(--border);font-size:11px}
+th{color:var(--muted);font-weight:650;background:rgba(255,255,255,.015)}
+td{color:#e7ebf1}
+tr:last-child td{border-bottom:0}
+.empty{text-align:center;color:var(--muted);padding:25px 15px;font-size:12px;line-height:1.6}
+.badge{display:inline-block;padding:5px 8px;border-radius:20px;background:rgba(50,196,141,.1);color:var(--green);font-size:10px}
+.muted{color:var(--muted)}
+.bottom-nav{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:760px;height:70px;background:rgba(8,18,31,.97);
+  backdrop-filter:blur(18px);border-top:1px solid var(--border);
+  z-index:120;display:grid;grid-template-columns:repeat(4,1fr)
+}
+.bottom-link{
+  border:0;background:transparent;color:#7e8998;display:flex;
+  flex-direction:column;align-items:center;justify-content:center;gap:5px;font-size:10px
+}
+.bottom-link.active{color:var(--gold2)}
+.bottom-icon{font-size:20px}
+.toast{
+  position:fixed;left:50%;bottom:87px;transform:translateX(-50%) translateY(15px);
+  background:#142337;border:1px solid var(--border);color:#fff;padding:11px 16px;
+  border-radius:10px;font-size:12px;opacity:0;pointer-events:none;transition:.25s;
+  z-index:500;max-width:90%;text-align:center
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(max-width:400px){
+  .commission-value{font-size:29px}
+  .stat-value{font-size:20px}
+  .card{padding:18px}
+}
+</style>
+</head>
+
+<body>
+<div id="loadingScreen" class="loading-screen">
+  <div class="loading-box">
+    <div class="loading-logo">AITI<span>VEST</span></div>
+    <div class="spinner"></div>
+  </div>
+</div>
+
+<div class="app">
+<header class="topbar">
+  <div class="topbar-inner">
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
+    <div class="logo">AITI<span>VEST</span></div>
+    <div class="profile-initial" id="profileInitial">—</div>
+  </div>
+</header>
+
+<div class="overlay" id="overlay"></div>
+
+<aside class="drawer" id="drawer" aria-label="Main navigation">
+  <div class="drawer-head">
+    <div class="drawer-brand">AITI<span>VEST</span></div>
+    <button class="close-drawer" id="closeDrawer" aria-label="Close menu">×</button>
+  </div>
+  <nav class="drawer-nav">
+    <button class="drawer-link" onclick="go('dashboard.html')"><span class="drawer-icon">⌂</span><span>Portfolio</span></button>
+    <button class="drawer-link" onclick="go('deposit.html')"><span class="drawer-icon">＋</span><span>Deposit</span></button>
+    <button class="drawer-link" onclick="go('withdraw.html')"><span class="drawer-icon">↗</span><span>Withdraw</span></button>
+    <button class="drawer-link" onclick="go('transactions.html')"><span class="drawer-icon">≡</span><span>Transactions</span></button>
+    <button class="drawer-link active" onclick="go('referrals.html')"><span class="drawer-icon">♧</span><span>Referrals</span></button>
+    <button class="drawer-link" onclick="go('profile.html')"><span class="drawer-icon">○</span><span>Profile</span></button>
+    <button class="drawer-link" onclick="go('support.html')"><span class="drawer-icon">?</span><span>Support</span></button>
+    <button class="drawer-link" onclick="go('notifications.html')"><span class="drawer-icon">♢</span><span>Notifications</span></button>
+    <button class="drawer-link logout" id="logoutBtn"><span class="drawer-icon">↪</span><span>Logout</span></button>
+  </nav>
+</aside>
+
+<main class="content">
+  <div class="heading">
+    <small id="greetingText">Welcome back</small>
+    <h1>Refer &amp; Earn</h1>
+    <p>Invite people using your referral link. Your referral commission rate is 5% of eligible daily earnings generated by directly referred users, subject to the platform's published terms.</p>
+  </div>
+
+  <section class="card">
+    <div class="card-label">Referral commission rate</div>
+    <div class="commission-value">5%</div>
+    <div class="card-note">Commission is calculated from eligible referred-user daily earnings, not from their deposits. The rate shown here is the configured rate, not a guarantee of income.</div>
+  </section>
+
+  <section class="section">
+    <div class="section-title"><h2>Your referral link</h2><span>Share AITIVEST</span></div>
+    <div class="link-box">
+      <div class="field-label">Your unique link</div>
+      <div id="referralLink" class="referral-link">Generating your referral link…</div>
+      <div class="button-row">
+        <button class="btn primary" id="copyBtn" disabled>Copy link</button>
+        <button class="btn" id="shareBtn" disabled>Share link</button>
+      </div>
+      <div class="card-note" id="referralCodeText">Your referral code will appear here.</div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-title"><h2>Referral overview</h2><span>Account statistics</span></div>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">Total referrals</div>
+        <div class="stat-value" id="totalReferrals">—</div>
+        <div class="stat-foot">Recorded invitations</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Active referrals</div>
+        <div class="stat-value" id="activeReferrals">—</div>
+        <div class="stat-foot">Marked active in records</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Total recorded commission</div>
+        <div class="stat-value" id="totalCommission">$0.00</div>
+        <div class="stat-foot">From referral records</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Commission rate</div>
+        <div class="stat-value">5%</div>
+        <div class="stat-foot">Of eligible daily earnings</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-title"><h2>Your referrals</h2><span id="referralCountLabel">0 records</span></div>
+    <div class="table-card">
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>Date joined</th><th>Status</th><th>Recorded commission</th></tr></thead>
+          <tbody id="referralRows">
+            <tr><td colspan="3" class="empty">Loading your referral records…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="info-box">
+      <strong>How it works</strong><br>
+      1. Copy your personal referral link.<br>
+      2. Share it with someone who wants to join AITIVEST.<br>
+      3. Referral attribution must be recorded when they register.<br>
+      4. Eligible commission is calculated only after a valid daily earning is recorded by the platform.<br><br>
+      <strong>Note:</strong> This page displays recorded referral data. It does not itself create referrals or credit commission. Referral registration and commission processing must be configured securely before payments can be relied upon.
+    </div>
+  </section>
+</main>
+
+<nav class="bottom-nav" aria-label="Bottom navigation">
+  <button class="bottom-link" onclick="go('dashboard.html')"><span class="bottom-icon">⌂</span><span>Portfolio</span></button>
+  <button class="bottom-link" onclick="go('deposit.html')"><span class="bottom-icon">＋</span><span>Deposit</span></button>
+  <button class="bottom-link" onclick="go('transactions.html')"><span class="bottom-icon">≡</span><span>History</span></button>
+  <button class="bottom-link" onclick="go('profile.html')"><span class="bottom-icon">○</span><span>Account</span></button>
+</nav>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const SUPABASE_URL = "https://rihvvwktvgytbqzazage.supabase.co";
+const SUPABASE_KEY = "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
+const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let currentUser = null;
+let referralUrl = "";
+
+function $(id){ return document.getElementById(id); }
+function go(page){ window.location.href = page; }
+
+function showToast(message){
+  const toast = $("toast");
+  toast.textContent = message;
+  toast.classList.add("show");
+  setTimeout(()=>toast.classList.remove("show"),2500);
+}
+
+function initials(name){
+  const parts = String(name || "").trim().split(/\s+/).filter(Boolean);
+  if(!parts.length) return "A";
+  if(parts.length === 1) return parts[0].slice(0,2).toUpperCase();
+  return (parts[0][0] + parts[parts.length-1][0]).toUpperCase();
+}
+
+function setGreeting(){
+  const hour = new Date().getHours();
+  $("greetingText").textContent =
+    hour < 12 ? "Good morning" :
+    hour < 18 ? "Good afternoon" : "Good evening";
+}
+
+function openDrawer(){
+  $("drawer").classList.add("open");
+  $("overlay").classList.add("show");
+}
+function closeDrawer(){
+  $("drawer").classList.remove("open");
+  $("overlay").classList.remove("show");
+}
+$("menuBtn").addEventListener("click",openDrawer);
+$("closeDrawer").addEventListener("click",closeDrawer);
+$("overlay").addEventListener("click",closeDrawer);
+document.addEventListener("keydown",event=>{
+  if(event.key === "Escape") closeDrawer();
+});
+
+$("logoutBtn").addEventListener("click",async()=>{
+  const {error} = await db.auth.signOut();
+  if(error){
+    console.error(error);
+    showToast("Unable to log out. Try again.");
+    return;
+  }
+  window.location.href = "signin.html";
+});
+
+function makeReferralCode(){
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  const bytes = new Uint8Array(10);
+  crypto.getRandomValues(bytes);
+  return Array.from(bytes,b=>chars[b % chars.length]).join("");
+}
+
+async function getOrCreateReferralCode(profile){
+  if(profile?.referral_code) return profile.referral_code;
+
+  // Use a database-generated random candidate; uniqueness is enforced by the table.
+  // If concurrent requests collide, retry a limited number of times.
+  for(let attempt=0;attempt<4;attempt++){
+    const code = makeReferralCode();
+    const {data,error} = await db
+      .from("profiles")
+      .update({referral_code:code})
+      .eq("id",currentUser.id)
+      .is("referral_code",null)
+      .select("referral_code")
+      .maybeSingle();
+
+    if(error){
+      console.error("Referral code update failed:",error);
+      break;
+    }
+    if(data?.referral_code) return data.referral_code;
+
+    const {data:latest,error:readError} = await db
+      .from("profiles")
+      .select("referral_code")
+      .eq("id",currentUser.id)
+      .maybeSingle();
+
+    if(!readError && latest?.referral_code) return latest.referral_code;
+  }
+  throw new Error("Could not create your referral code. Check profile update permissions.");
+}
+
+async function loadProfileAndLink(){
+  const {data:profile,error} = await db
+    .from("profiles")
+    .select("id,full_name,referral_code")
+    .eq("id",currentUser.id)
+    .maybeSingle();
+
+  if(error) throw error;
+
+  const code = await getOrCreateReferralCode(profile);
+  referralUrl = new URL("signup.html",window.location.href).href +
+    "?ref=" + encodeURIComponent(code);
+
+  $("referralLink").textContent = referralUrl;
+  $("referralCodeText").textContent = "Your referral code: " + code;
+  $("copyBtn").disabled = false;
+  $("shareBtn").disabled = false;
+
+  const name = profile?.full_name || currentUser.user_metadata?.full_name || currentUser.email || "AITIVEST User";
+  $("profileInitial").textContent = initials(name);
+}
+
+async function loadReferralRecords(){
+  const {data,error} = await db
+    .from("referrals")
+    .select("id,created_at,status,total_commission,commission_rate")
+    .eq("referrer_id",currentUser.id)
+    .order("created_at",{ascending:false});
+
+  if(error){
+    console.error("Referral records error:",error);
+    $("referralRows").innerHTML = '<tr><td colspan="3" class="empty">Could not load referral records. Check the referrals table SELECT policy.</td></tr>';
+    $("totalReferrals").textContent = "—";
+    $("activeReferrals").textContent = "—";
+    $("totalCommission").textContent = "—";
+    return;
+  }
+
+  const rows = data || [];
+  const active = rows.filter(row=>row.status === "active").length;
+  const total = rows.reduce((sum,row)=>sum + Number(row.total_commission || 0),0);
+
+  $("totalReferrals").textContent = String(rows.length);
+  $("activeReferrals").textContent = String(active);
+  $("totalCommission").textContent = "$" + total.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:8});
+  $("referralCountLabel").textContent = rows.length + (rows.length === 1 ? " record" : " records");
+
+  if(!rows.length){
+    $("referralRows").innerHTML = '<tr><td colspan="3" class="empty">No referrals have been recorded yet. Share your referral link to get started.</td></tr>';
+    return;
+  }
+
+  $("referralRows").replaceChildren();
+  rows.forEach(row=>{
+    const tr = document.createElement("tr");
+    const date = document.createElement("td");
+    date.textContent = row.created_at ? new Date(row.created_at).toLocaleDateString() : "—";
+
+    const status = document.createElement("td");
+    const badge = document.createElement("span");
+    badge.className = row.status === "active" ? "badge" : "muted";
+    badge.textContent = row.status || "unknown";
+    status.appendChild(badge);
+
+    const commission = document.createElement("td");
+    commission.textContent = "$" + Number(row.total_commission || 0).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:8});
+
+    tr.append(date,status,commission);
+    $("referralRows").appendChild(tr);
+  });
+}
+
+$("copyBtn").addEventListener("click",async()=>{
+  if(!referralUrl) return;
+  try{
+    await navigator.clipboard.writeText(referralUrl);
+    showToast("Referral link copied");
+  }catch(error){
+    const range = document.createRange();
+    range.selectNodeContents($("referralLink"));
+    const selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+    showToast("Select and copy your referral link");
+  }
+});
+
+$("shareBtn").addEventListener("click",async()=>{
+  if(!referralUrl) return;
+  if(navigator.share){
+    try{
+      await navigator.share({
+        title:"Join AITIVEST",
+        text:"Here is my AITIVEST referral link:",
+        url:referralUrl
+      });
+    }catch(error){
+      if(error?.name !== "AbortError") showToast("Unable to open sharing options");
+    }
+  }else{
+    try{
+      await navigator.clipboard.writeText(referralUrl);
+      showToast("Link copied. Paste it into your message.");
+    }catch(error){
+      showToast("Please copy the referral link manually");
+    }
+  }
+});
+
+async function init(){
+  try{
+    setGreeting();
+
+    const {data,error} = await db.auth.getSession();
+    if(error) throw error;
+
+    currentUser = data?.session?.user || null;
+    if(!currentUser){
+      window.location.href = "signin.html";
+      return;
+    }
+
+    await loadProfileAndLink();
+    await loadReferralRecords();
+  }catch(error){
+    console.error("Referral page initialization error:",error);
+    showToast("Unable to load referral details");
+    $("referralLink").textContent = "Could not create referral link. Check Supabase permissions.";
+  }finally{
+    $("loadingScreen").style.display = "none";
+  }
+}
+
+init();
+</script>
+</body>
+</html>
