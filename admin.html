@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin Panel | AITIVEST</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{
+  --bg:#050b18;--panel:#0d1b31;--panel2:#091426;
+  --gold:#d6ad55;--gold2:#f0cf7a;--text:#f5f7fb;
+  --muted:#9da8ba;--border:#20314b;--green:#36c98b;
+  --red:#ff7777;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-serif}
+header{position:sticky;top:0;z-index:5;background:#071020;border-bottom:1px solid var(--border);padding:15px}
+.top{max-width:1200px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{font-size:20px;font-weight:800;letter-spacing:2px;color:var(--gold)}
+a{color:var(--gold2);text-decoration:none}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+button:disabled{opacity:.5;cursor:not-allowed}
+.btn{border:0;border-radius:9px;padding:11px 14px;font-weight:700;background:var(--gold);color:#101522}
+.btn.secondary{background:#182a43;color:var(--text);border:1px solid var(--border)}
+.btn.danger{background:#451f29;color:#ffd0d0;border:1px solid #73333e}
+.wrap{max-width:1200px;margin:28px auto;padding:0 15px 40px}
+h1{font-size:28px;margin:0 0 8px}
+h2{font-size:18px;margin:0 0 15px}
+.sub{color:var(--muted);line-height:1.6;margin:0 0 22px}
+#alert{display:none;padding:12px;border-radius:9px;margin:0 0 18px;line-height:1.5;overflow-wrap:anywhere}
+#alert.ok{display:block;background:#123b30;color:#a8f5d5}
+#alert.err{display:block;background:#451f29;color:#ffd0d0}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:20px}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:15px;padding:18px;min-width:0}
+.stat-label{color:var(--muted);font-size:13px}
+.stat-number{font-size:28px;font-weight:800;color:var(--gold);margin-top:10px;overflow-wrap:anywhere}
+.layout{display:grid;grid-template-columns:minmax(280px,.85fr) minmax(0,1.5fr);gap:18px}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+input,select,textarea{width:100%;padding:11px;background:var(--panel2);color:var(--text);border:1px solid var(--border);border-radius:9px;outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--gold)}
+.toolbar input{flex:1;min-width:120px}
+.ticket-list{max-height:680px;overflow-y:auto}
+.ticket{padding:14px 0;border-bottom:1px solid var(--border);cursor:pointer}
+.ticket:last-child{border-bottom:0}
+.ticket.selected{background:#14233a;padding-left:10px;padding-right:10px;border-radius:8px}
+.ticket-title{font-weight:700;line-height:1.5;overflow-wrap:anywhere}
+.meta{font-size:12px;color:var(--muted);line-height:1.6;margin-top:6px}
+.badge{display:inline-block;font-size:10px;text-transform:uppercase;letter-spacing:.4px;padding:5px 8px;border-radius:20px;background:#20314b;color:var(--gold2);margin-top:7px}
+.badge.open{background:#173b31;color:#a8f5d5}
+.badge.closed{background:#3b2530;color:#ffd0d0}
+.empty{padding:24px 0;text-align:center;color:var(--muted);line-height:1.6}
+#conversation{display:none}
+#conversationHeader{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap}
+#messages{display:flex;flex-direction:column;gap:10px;margin:18px 0;max-height:420px;overflow-y:auto}
+.message{padding:12px;border:1px solid var(--border);background:var(--panel2);border-radius:10px;max-width:95%;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.5}
+.message.admin{align-self:flex-end;border-color:#806a36}
+.message small{display:block;color:var(--muted);font-size:11px;margin-bottom:6px}
+textarea{min-height:110px;resize:vertical}
+#replyForm{margin-top:16px}
+.full{width:100%;margin-top:12px}
+#loginCheck{text-align:center;padding:70px 15px;color:var(--muted)}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
+@media(max-width:800px){
+ .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .layout{grid-template-columns:1fr}
+ .ticket-list{max-height:400px}
+ h1{font-size:25px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="top">
+    <a class="brand" href="dashboard.html">AITIVEST · ADMIN</a>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <a class="btn secondary" href="dashboard.html">User Dashboard</a>
+      <button class="btn danger" id="signOutBtn" type="button">Sign Out</button>
+    </div>
+  </div>
+</header>
+
+<div id="loginCheck">Verifying administrator access…</div>
+
+<main class="wrap" id="adminApp" style="display:none">
+  <h1>Admin Dashboard</h1>
+  <p class="sub">Manage customer support and monitor ticket activity.</p>
+
+  <div id="alert" role="status"></div>
+
+  <section class="stats">
+    <div class="card">
+      <div class="stat-label">Total Tickets</div>
+      <div class="stat-number" id="totalTickets">—</div>
+    </div>
+    <div class="card">
+      <div class="stat-label">Open Tickets</div>
+      <div class="stat-number" id="openTickets">—</div>
+    </div>
+    <div class="card">
+      <div class="stat-label">In Progress</div>
+      <div class="stat-number" id="progressTickets">—</div>
+    </div>
+    <div class="card">
+      <div class="stat-label">Resolved / Closed</div>
+      <div class="stat-number" id="closedTickets">—</div>
+    </div>
+  </section>
+
+  <div class="layout">
+    <section class="card">
+      <h2>Support Tickets</h2>
+      <div class="toolbar">
+        <input id="searchTickets" type="search" placeholder="Search subject or ticket number">
+        <select id="statusFilter" aria-label="Filter by status">
+          <option value="all">All statuses</option>
+          <option value="open">Open</option>
+          <option value="in_progress">In progress</option>
+          <option value="resolved">Resolved</option>
+          <option value="closed">Closed</option>
+        </select>
+      </div>
+      <div id="ticketList" class="ticket-list">
+        <div class="empty">Loading tickets…</div>
+      </div>
+      <button class="btn secondary full" id="refreshBtn" type="button">Refresh Tickets</button>
+    </section>
+
+    <section class="card">
+      <div id="noTicket" class="empty">
+        Select a support ticket to view the conversation.
+      </div>
+
+      <div id="conversation">
+        <div id="conversationHeader">
+          <div>
+            <h2 id="conversationTitle">Ticket Conversation</h2>
+            <div class="meta" id="ticketMeta"></div>
+          </div>
+          <div class="toolbar">
+            <button class="btn secondary" id="resolveBtn" type="button">Resolve</button>
+            <button class="btn danger" id="closeBtn" type="button">Close</button>
+          </div>
+        </div>
+
+        <div id="messages">
+          <div class="empty">Loading conversation…</div>
+        </div>
+
+        <form id="replyForm">
+          <label for="replyText" style="display:block;color:var(--muted);margin:10px 0 7px">Admin reply</label>
+          <textarea id="replyText" maxlength="5000" required placeholder="Write your response to the customer"></textarea>
+          <button class="btn full" id="sendReplyBtn" type="submit">Send Secure Reply</button>
+        </form>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer>AITIVEST Administration · Authorized access only.</footer>
+
+<script>
+const SUPABASE_URL="https://rihvvwktvgytbqzazage.supabase.co";
+const SUPABASE_KEY="sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
+const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+
+const $=id=>document.getElementById(id);
+let currentUser=null;
+let tickets=[];
+let selectedTicket=null;
+
+function escapeHtml(value){
+  return String(value??"").replace(/[&<>"']/g,ch=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[ch]));
+}
+function niceDate(value){
+  if(!value)return "—";
+  const d=new Date(value);
+  return Number.isNaN(d.getTime())?"—":d.toLocaleString();
+}
+function statusText(status){
+  return String(status||"open").replaceAll("_"," ");
+}
+function alertMessage(message,type="ok"){
+  $("alert").textContent=message;
+  $("alert").className=type;
+  $("alert").style.display="block";
+  $("alert").scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+function clearAlert(){
+  $("alert").style.display="none";
+  $("alert").textContent="";
+  $("alert").className="";
+}
+
+async function verifyAdmin(){
+  const {data:{session},error:sessionError}=await db.auth.getSession();
+  if(sessionError)throw sessionError;
+
+  if(!session){
+    location.replace("signin.html");
+    return false;
+  }
+
+  currentUser=session.user;
+
+  const {data:isAdmin,error:adminError}=await db.rpc("is_current_user_admin");
+  if(adminError)throw adminError;
+
+  if(isAdmin!==true){
+    $("loginCheck").textContent="Access denied. This account is not authorized to use the admin panel.";
+    await db.auth.signOut();
+    return false;
+  }
+
+  $("loginCheck").style.display="none";
+  $("adminApp").style.display="block";
+  return true;
+}
+
+async function loadTickets(){
+  clearAlert();
+  $("ticketList").innerHTML='<div class="empty">Loading tickets…</div>';
+
+  const {data,error}=await db
+    .from("support_tickets")
+    .select("id,ticket_number,user_id,subject,category,status,priority,created_at,updated_at,last_message_at")
+    .order("last_message_at",{ascending:false,nullsFirst:false});
+
+  if(error)throw error;
+
+  tickets=data||[];
+  updateStats();
+  renderTickets();
+
+  if(selectedTicket){
+    const refreshed=tickets.find(t=>t.id===selectedTicket.id);
+    if(refreshed){
+      selectedTicket=refreshed;
+      await openTicket(refreshed.id);
+    }else{
+      selectedTicket=null;
+      $("conversation").style.display="none";
+      $("noTicket").style.display="block";
+    }
+  }
+}
+
+function updateStats(){
+  $("totalTickets").textContent=tickets.length;
+  $("openTickets").textContent=tickets.filter(t=>t.status==="open").length;
+  $("progressTickets").textContent=tickets.filter(t=>t.status==="in_progress").length;
+  $("closedTickets").textContent=tickets.filter(t=>["resolved","closed"].includes(t.status)).length;
+}
+
+function renderTickets(){
+  const q=$("searchTickets").value.trim().toLowerCase();
+  const status=$("statusFilter").value;
+
+  const filtered=tickets.filter(t=>{
+    const matchesStatus=status==="all"||t.status===status;
+    const matchesSearch=String(t.ticket_number).includes(q)||
+      String(t.subject||"").toLowerCase().includes(q)||
+      String(t.category||"").toLowerCase().includes(q);
+    return matchesStatus&&matchesSearch;
+  });
+
+  if(!filtered.length){
+    $("ticketList").innerHTML='<div class="empty">No matching support tickets.</div>';
+    return;
+  }
+
+  $("ticketList").innerHTML=filtered.map(t=>`
+    <div class="ticket ${selectedTicket&&selectedTicket.id===t.id?"selected":""}"
+      data-id="${escapeHtml(t.id)}" tabindex="0" role="button">
+      <div class="ticket-title">#${escapeHtml(t.ticket_number)} · ${escapeHtml(t.subject)}</div>
+      <div class="meta">${escapeHtml(t.category)} · ${escapeHtml(niceDate(t.last_message_at||t.created_at))}</div>
+      <span class="badge ${t.status==="open"?"open":["closed","resolved"].includes(t.status)?"closed":""}">
+        ${escapeHtml(statusText(t.status))}
+      </span>
+    </div>
+  `).join("");
+
+  $("ticketList").querySelectorAll("[data-id]").forEach(el=>{
+    const open=()=>openTicket(el.dataset.id);
+    el.addEventListener("click",open);
+    el.addEventListener("keydown",e=>{
+      if(e.key==="Enter"||e.key===" "){e.preventDefault();open();}
+    });
+  });
+}
+
+async function openTicket(ticketId){
+  clearAlert();
+  const ticket=tickets.find(t=>t.id===ticketId);
+  if(!ticket)return;
+
+  selectedTicket=ticket;
+  $("noTicket").style.display="none";
+  $("conversation").style.display="block";
+  $("conversationTitle").textContent="Ticket #"+ticket.ticket_number+" · "+ticket.subject;
+  $("ticketMeta").textContent=
+    "Customer ID: "+ticket.user_id+
+    " · Category: "+ticket.category+
+    " · Status: "+statusText(ticket.status)+
+    " · Created: "+niceDate(ticket.created_at);
+  $("messages").innerHTML='<div class="empty">Loading conversation…</div>';
+  renderTickets();
+
+  const {data,error}=await db
+    .from("support_messages")
+    .select("id,sender_id,message,is_admin_reply,created_at")
+    .eq("ticket_id",ticket.id)
+    .order("created_at",{ascending:true});
+
+  if(error){
+    $("messages").innerHTML="";
+    alertMessage("Could not load messages: "+error.message,"err");
+    return;
+  }
+
+  $("messages").innerHTML=(data||[]).map(m=>`
+    <div class="message ${m.is_admin_reply?"admin":""}">
+      <small>${m.is_admin_reply?"AITIVEST Admin":m.sender_id===ticket.user_id?"Customer":"Support"} · ${escapeHtml(niceDate(m.created_at))}</small>
+      ${escapeHtml(m.message)}
+    </div>
+  `).join("")||'<div class="empty">No messages in this ticket.</div>';
+
+  const canReply=["open","in_progress"].includes(ticket.status);
+  $("replyText").disabled=!canReply;
+  $("sendReplyBtn").disabled=!canReply;
+  $("replyText").placeholder=canReply?"Write your response to the customer":"This ticket is resolved or closed.";
+  $("resolveBtn").disabled=!canReply;
+  $("closeBtn").disabled=ticket.status==="closed";
+  $("messages").scrollTop=$("messages").scrollHeight;
+}
+
+async function sendAdminReply(event){
+  event.preventDefault();
+  clearAlert();
+
+  if(!selectedTicket)return;
+  if(!["open","in_progress"].includes(selectedTicket.status)){
+    alertMessage("This ticket is not open for replies.","err");
+    return;
+  }
+
+  const message=$("replyText").value.trim();
+  if(!message){
+    alertMessage("Enter a reply first.","err");
+    return;
+  }
+
+  $("sendReplyBtn").disabled=true;
+  try{
+    const {data,error}=await db.rpc("admin_reply_to_ticket",{
+      p_ticket_id:selectedTicket.id,
+      p_message:message
+    });
+    if(error)throw error;
+    if(data&&data.success===false)throw new Error(data.message||"Reply failed.");
+
+    $("replyText").value="";
+    alertMessage("Admin reply sent successfully.");
+    await loadTickets();
+  }catch(error){
+    console.error(error);
+    alertMessage(error.message||"Could not send the admin reply.","err");
+  }finally{
+    $("sendReplyBtn").disabled=!selectedTicket||!["open","in_progress"].includes(selectedTicket.status);
+  }
+}
+
+async function changeTicketStatus(newStatus){
+  clearAlert();
+  if(!selectedTicket)return;
+
+  if(!["resolved","closed"].includes(newStatus))return;
+  if(!confirm("Mark ticket #"+selectedTicket.ticket_number+" as "+newStatus+"?"))return;
+
+  try{
+    const {error}=await db.rpc("admin_set_ticket_status",{
+      p_ticket_id:selectedTicket.id,
+      p_status:newStatus
+    });
+    if(error)throw error;
+
+    alertMessage("Ticket status updated.");
+    await loadTickets();
+  }catch(error){
+    console.error(error);
+    alertMessage(
+      "Status change failed. The secure status-update function may not exist yet. "+(error.message||""),
+      "err"
+    );
+  }
+}
+
+$("replyForm").addEventListener("submit",sendAdminReply);
+$("searchTickets").addEventListener("input",renderTickets);
+$("statusFilter").addEventListener("change",renderTickets);
+$("refreshBtn").addEventListener("click",async()=>{
+  try{await loadTickets();alertMessage("Tickets refreshed.");}
+  catch(error){alertMessage(error.message||"Could not refresh tickets.","err");}
+});
+$("resolveBtn").addEventListener("click",()=>changeTicketStatus("resolved"));
+$("closeBtn").addEventListener("click",()=>changeTicketStatus("closed"));
+
+$("signOutBtn").addEventListener("click",async()=>{
+  $("signOutBtn").disabled=true;
+  try{await db.auth.signOut();}
+  finally{location.replace("signin.html");}
+});
+
+(async()=>{
+  try{
+    const ok=await verifyAdmin();
+    if(ok)await loadTickets();
+  }catch(error){
+    console.error(error);
+    $("loginCheck").textContent=
+      "Could not verify administrator access. Refresh the page or sign in again.";
+  }
+})();
+</script>
+</body>
+</html>
