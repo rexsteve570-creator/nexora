@@ -1,14 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Create Account — AITIVEST</title>
+<meta name="theme-color" content="#07111f">
+<meta name="description" content="Create your AITIVEST account."><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><style>
+:root{
+    --bg:#07111f;
+    --card:#0d1b2c;
+    --gold:#d8b15a;
+    --text:#f5f7fa;
+    --muted:#93a1b5;
+    --border:#26384e;
+    --input:#081522;
+    --green:#8be6aa;
+    --red:#ff9b9b;
+}
 
-<title>Create Account — NEXORA</title>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<style>
 *{
     box-sizing:border-box;
     margin:0;
@@ -17,8 +24,8 @@
 
 body{
     font-family:Arial,Helvetica,sans-serif;
-    background:#07111f;
-    color:#fff;
+    background:var(--bg);
+    color:var(--text);
     min-height:100vh;
     display:flex;
     justify-content:center;
@@ -33,20 +40,20 @@ body{
 
 .logo{
     text-align:center;
-    margin-bottom:28px;
+    margin-bottom:25px;
 }
 
 .logo a{
     text-decoration:none;
-    color:#d8b15a;
-    font-size:27px;
+    color:var(--gold);
+    font-size:28px;
     font-weight:800;
     letter-spacing:3px;
 }
 
 .card{
-    background:#0d1b2c;
-    border:1px solid rgba(216,177,90,.18);
+    background:var(--card);
+    border:1px solid rgba(216,177,90,.2);
     border-radius:18px;
     padding:26px 22px;
     box-shadow:0 20px 60px rgba(0,0,0,.35);
@@ -60,10 +67,10 @@ h1{
 
 .subtitle{
     text-align:center;
-    color:#93a1b5;
+    color:var(--muted);
     font-size:14px;
-    line-height:1.5;
-    margin-bottom:25px;
+    line-height:1.6;
+    margin-bottom:24px;
 }
 
 .field{
@@ -81,20 +88,22 @@ label{
     position:relative;
 }
 
-input{
+input[type="text"],
+input[type="email"],
+input[type="password"]{
     width:100%;
     height:48px;
     border-radius:10px;
-    border:1px solid #26384e;
-    background:#081522;
-    color:#fff;
+    border:1px solid var(--border);
+    background:var(--input);
+    color:var(--text);
     padding:0 14px;
     outline:none;
     font-size:14px;
 }
 
 input:focus{
-    border-color:#d8b15a;
+    border-color:var(--gold);
     box-shadow:0 0 0 3px rgba(216,177,90,.08);
 }
 
@@ -103,7 +112,7 @@ input::placeholder{
 }
 
 .password-input{
-    padding-right:70px;
+    padding-right:70px !important;
 }
 
 .toggle{
@@ -113,10 +122,10 @@ input::placeholder{
     transform:translateY(-50%);
     border:0;
     background:none;
-    color:#d8b15a;
+    color:var(--gold);
     cursor:pointer;
     font-size:12px;
-    font-weight:600;
+    font-weight:700;
 }
 
 .strength{
@@ -124,20 +133,21 @@ input::placeholder{
     width:100%;
     background:#172536;
     border-radius:10px;
-    margin-top:7px;
+    margin-top:8px;
     overflow:hidden;
 }
 
 .strength-bar{
     height:100%;
-    width:0%;
-    transition:.25s;
+    width:0;
+    background:var(--gold);
+    transition:width .2s,background .2s;
 }
 
 .strength-text{
     font-size:11px;
     color:#77869a;
-    margin-top:5px;
+    margin-top:6px;
 }
 
 .captcha-box{
@@ -147,78 +157,134 @@ input::placeholder{
 }
 
 .captcha-code{
+    position:relative;
+    isolation:isolate;
+    overflow:hidden;
     flex:1;
-    height:48px;
+    height:60px;
     border-radius:10px;
-    background:#e7e9ed;
-    color:#27303a;
+    border:1px solid rgba(216,177,90,.45);
+    background:
+        repeating-linear-gradient(
+            135deg,
+            #ece9df 0,
+            #ece9df 3px,
+            #d4d3cd 4px,
+            #d4d3cd 6px
+        );
     display:flex;
-    align-items:center;
     justify-content:center;
-    font-size:22px;
-    font-weight:800;
-    letter-spacing:8px;
+    align-items:center;
+    gap:8px;
     user-select:none;
-    text-decoration:line-through;
-    transform:rotate(-1deg);
+}
+
+.captcha-digit{
+    display:inline-block;
+    position:relative;
+    z-index:2;
+    color:#172437;
+    font-family:Georgia,serif;
+    font-size:29px;
+    font-weight:900;
+    text-shadow:1px 1px 0 white;
+}
+
+.captcha-noise{
+    position:absolute;
+    inset:0;
+    z-index:1;
+    pointer-events:none;
+}
+
+.captcha-line{
+    position:absolute;
+    height:2px;
+    border-radius:50%;
+    background:rgba(142,65,45,.7);
+}
+
+.captcha-dot{
+    position:absolute;
+    width:3px;
+    height:3px;
+    border-radius:50%;
+    background:#26384e;
 }
 
 .refresh-btn{
     width:48px;
-    height:48px;
+    height:60px;
+    flex-shrink:0;
     border-radius:10px;
-    border:1px solid #26384e;
-    background:#081522;
-    color:#d8b15a;
-    font-size:20px;
+    border:1px solid var(--border);
+    background:var(--input);
+    color:var(--gold);
+    font-size:23px;
     cursor:pointer;
+}
+
+.refresh-btn:hover{
+    background:#14253a;
+}
+
+.captcha-input{
+    margin-top:9px;
+}
+
+.captcha-help{
+    color:#7f8da0;
+    font-size:11px;
+    line-height:1.5;
+    margin-top:7px;
 }
 
 .terms{
     display:flex;
     align-items:flex-start;
     gap:9px;
-    margin:4px 0 18px;
+    margin:5px 0 18px;
 }
 
 .terms input{
     width:17px;
     height:17px;
     margin-top:2px;
-    accent-color:#d8b15a;
+    flex-shrink:0;
+    accent-color:var(--gold);
 }
 
 .terms label{
     margin:0;
     font-size:12px;
-    line-height:1.5;
+    line-height:1.6;
     color:#8998aa;
 }
 
 .terms a{
-    color:#d8b15a;
+    color:var(--gold);
     text-decoration:none;
 }
 
 button.submit{
     width:100%;
-    height:50px;
-    border:none;
+    min-height:50px;
+    border:0;
     border-radius:10px;
-    background:#d8b15a;
+    background:var(--gold);
     color:#08111d;
     font-size:15px;
     font-weight:800;
     cursor:pointer;
-    transition:.2s;
+    transition:filter .2s;
 }
 
 button.submit:hover{
-    filter:brightness(1.06);
+    filter:brightness(1.07);
 }
 
 button.submit:disabled{
-    opacity:.55;
+    opacity:.6;
     cursor:not-allowed;
 }
 
@@ -228,39 +294,41 @@ button.submit:disabled{
     border-radius:9px;
     margin-bottom:16px;
     font-size:13px;
-    line-height:1.5;
+    line-height:1.6;
+    overflow-wrap:anywhere;
 }
 
 .message.error{
     display:block;
-    background:rgba(220,38,38,.10);
-    border:1px solid rgba(220,38,38,.30);
-    color:#ff9b9b;
+    background:rgba(220,38,38,.1);
+    border:1px solid rgba(220,38,38,.3);
+    color:var(--red);
 }
 
 .message.success{
     display:block;
-    background:rgba(34,197,94,.10);
-    border:1px solid rgba(34,197,94,.30);
-    color:#8be6aa;
+    background:rgba(34,197,94,.1);
+    border:1px solid rgba(34,197,94,.3);
+    color:var(--green);
 }
 
 .bottom{
     text-align:center;
     margin-top:22px;
     font-size:13px;
+    line-height:1.8;
     color:#7f8da0;
 }
 
 .bottom a{
-    color:#d8b15a;
+    color:var(--gold);
     text-decoration:none;
     font-weight:700;
 }
 
 .back{
     text-align:center;
-    margin-top:18px;
+    margin-top:17px;
 }
 
 .back a{
@@ -273,7 +341,7 @@ button.submit:disabled{
     display:inline-flex;
     align-items:center;
     justify-content:center;
-    gap:8px;
+    gap:9px;
 }
 
 .spinner{
@@ -286,209 +354,176 @@ button.submit:disabled{
 }
 
 @keyframes spin{
-    to{
-        transform:rotate(360deg);
-    }
+    to{transform:rotate(360deg);}
 }
 
 @media(max-width:380px){
-    .card{
-        padding:23px 17px;
-    }
-
-    h1{
-        font-size:23px;
-    }
+    .card{padding:23px 17px;}
+    h1{font-size:23px;}
 }
-</style>
-</head>
+</style></head><body>
+<div class="container"><div class="logo">
+    <a href="index.html">AITIVEST</a>
+</div>
 
-<body>
+<div class="card">
 
-<div class="container">
+    <h1>Create Your Account</h1>
 
-    <div class="logo">
-        <a href="index.html">NEXORA</a>
+    <p class="subtitle">
+        Register for your AITIVEST account using your email address.
+    </p>
+
+    <div id="message" class="message" role="status" aria-live="polite"></div>
+
+    <form id="signupForm">
+
+        <div class="field">
+            <label for="fullName">Full Name</label>
+            <input
+                type="text"
+                id="fullName"
+                placeholder="Enter your full name"
+                autocomplete="name"
+                minlength="2"
+                maxlength="100"
+                required
+            >
+        </div>
+
+        <div class="field">
+            <label for="email">Email Address</label>
+            <input
+                type="email"
+                id="email"
+                placeholder="Enter your email"
+                autocomplete="email"
+                maxlength="254"
+                required
+            >
+        </div>
+
+        <div class="field">
+            <label for="password">Password</label>
+
+            <div class="input-wrap">
+                <input
+                    type="password"
+                    id="password"
+                    class="password-input"
+                    placeholder="Create a password"
+                    autocomplete="new-password"
+                    minlength="8"
+                    maxlength="128"
+                    required
+                >
+
+                <button type="button" class="toggle" id="togglePassword">
+                    Show
+                </button>
+            </div>
+
+            <div class="strength">
+                <div id="strengthBar" class="strength-bar"></div>
+            </div>
+
+            <div id="strengthText" class="strength-text">
+                Use at least 8 characters.
+            </div>
+        </div>
+
+        <div class="field">
+            <label for="confirmPassword">Confirm Password</label>
+
+            <div class="input-wrap">
+                <input
+                    type="password"
+                    id="confirmPassword"
+                    class="password-input"
+                    placeholder="Confirm your password"
+                    autocomplete="new-password"
+                    maxlength="128"
+                    required
+                >
+
+                <button type="button" class="toggle" id="toggleConfirm">
+                    Show
+                </button>
+            </div>
+        </div>
+
+        <div class="field">
+            <label>Security Check</label>
+
+            <div class="captcha-box">
+                <div
+                    id="captchaCode"
+                    class="captcha-code"
+                    role="img"
+                    aria-label="Visual security code"
+                ></div>
+
+                <button
+                    type="button"
+                    id="refreshCaptcha"
+                    class="refresh-btn"
+                    aria-label="Generate a new security code"
+                    title="Refresh security code"
+                >↻</button>
+            </div>
+
+            <input
+                type="text"
+                id="captchaInput"
+                class="captcha-input"
+                placeholder="Enter the 3-digit code"
+                inputmode="numeric"
+                pattern="[0-9]{3}"
+                maxlength="3"
+                autocomplete="off"
+                required
+            >
+
+            <p class="captcha-help">
+                Enter the three digits shown above. Select the refresh
+                button if you need a new code.
+            </p>
+        </div>
+
+        <div class="terms">
+            <input type="checkbox" id="terms" required>
+
+            <label for="terms">
+                I agree to the
+                <a href="index.html#terms">Terms</a>,
+                <a href="index.html#privacy">Privacy Policy</a>
+                and
+                <a href="index.html#risk">Risk Disclosure</a>.
+            </label>
+        </div>
+
+        <button type="submit" class="submit" id="submitBtn">
+            Create Account
+        </button>
+
+    </form>
+
+    <div class="bottom">
+        Already have an account?
+        <a href="signin.html">Sign In</a>
     </div>
 
-    <div class="card">
-
-        <h1>Create Your Account</h1>
-
-        <p class="subtitle">
-            Create your NEXORA account to access your digital asset dashboard.
-        </p>
-
-        <div id="message" class="message"></div>
-
-        <form id="signupForm">
-
-            <div class="field">
-                <label for="fullName">Full Name</label>
-
-                <input
-                    type="text"
-                    id="fullName"
-                    placeholder="Enter your full name"
-                    autocomplete="name"
-                    required
-                >
-            </div>
-
-            <div class="field">
-                <label for="email">Email Address</label>
-
-                <input
-                    type="email"
-                    id="email"
-                    placeholder="Enter your email"
-                    autocomplete="email"
-                    required
-                >
-            </div>
-
-            <div class="field">
-                <label for="password">Password</label>
-
-                <div class="input-wrap">
-                    <input
-                        type="password"
-                        id="password"
-                        class="password-input"
-                        placeholder="Create a password"
-                        autocomplete="new-password"
-                        minlength="8"
-                        required
-                    >
-
-                    <button
-                        type="button"
-                        class="toggle"
-                        id="togglePassword"
-                    >
-                        Show
-                    </button>
-                </div>
-
-                <div class="strength">
-                    <div id="strengthBar" class="strength-bar"></div>
-                </div>
-
-                <div id="strengthText" class="strength-text">
-                    Use at least 8 characters.
-                </div>
-            </div>
-
-            <div class="field">
-                <label for="confirmPassword">Confirm Password</label>
-
-                <div class="input-wrap">
-                    <input
-                        type="password"
-                        id="confirmPassword"
-                        class="password-input"
-                        placeholder="Confirm your password"
-                        autocomplete="new-password"
-                        required
-                    >
-
-                    <button
-                        type="button"
-                        class="toggle"
-                        id="toggleConfirm"
-                    >
-                        Show
-                    </button>
-                </div>
-            </div>
-
-            <div class="field">
-
-                <label>Security Check</label>
-
-                <div class="captcha-box">
-
-                    <div
-                        id="captchaCode"
-                        class="captcha-code"
-                    ></div>
-
-                    <button
-                        type="button"
-                        id="refreshCaptcha"
-                        class="refresh-btn"
-                        aria-label="Refresh CAPTCHA"
-                    >
-                        ↻
-                    </button>
-
-                </div>
-
-                <input
-                    type="text"
-                    id="captchaInput"
-                    placeholder="Enter the code above"
-                    inputmode="numeric"
-                    maxlength="3"
-                    autocomplete="off"
-                    style="margin-top:9px;"
-                    required
-                >
-
-            </div>
-
-            <div class="terms">
-
-                <input
-                    type="checkbox"
-                    id="terms"
-                    required
-                >
-
-                <label for="terms">
-                    I agree to the
-                    <a href="index.html#terms">
-                        Terms
-                    </a>,
-                    <a href="index.html#privacy">
-                        Privacy Policy
-                    </a>
-                    and
-                    <a href="index.html#risk">
-                        Risk Disclosure
-                    </a>.
-                </label>
-
-            </div>
-
-            <button
-                type="submit"
-                class="submit"
-                id="submitBtn"
-            >
-                Create Account
-            </button>
-
-        </form>
-
-        <div class="bottom">
-            Already have an account?
-            <a href="signin.html">Sign In</a>
-        </div>
-
-        <div class="back">
-            <a href="index.html">← Back to NEXORA</a>
-        </div>
-
+    <div class="back">
+        <a href="index.html">← Back to AITIVEST</a>
     </div>
 
 </div>
 
-
-<script>
+</div><script>
+"use strict";
 
 /* =========================================================
-   NEXORA SUPABASE CONFIGURATION
+   AITIVEST SUPABASE CONFIGURATION
 ========================================================= */
 
 const SUPABASE_URL =
@@ -497,547 +532,407 @@ const SUPABASE_URL =
 const SUPABASE_PUBLISHABLE_KEY =
     "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
 
-
-/* =========================================================
-   CREATE SUPABASE CLIENT
-========================================================= */
-
-const supabaseClient =
-    window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_PUBLISHABLE_KEY,
-        {
-            auth:{
-                autoRefreshToken:true,
-                persistSession:true,
-                detectSessionInUrl:true
-            }
+const supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY,
+    {
+        auth: {
+            autoRefreshToken: true,
+            persistSession: true,
+            detectSessionInUrl: true
         }
-    );
-
+    }
+);
 
 /* =========================================================
    ELEMENTS
 ========================================================= */
 
-const form =
-    document.getElementById("signupForm");
-
-const fullNameInput =
-    document.getElementById("fullName");
-
-const emailInput =
-    document.getElementById("email");
-
-const passwordInput =
-    document.getElementById("password");
-
-const confirmPasswordInput =
-    document.getElementById("confirmPassword");
-
-const captchaInput =
-    document.getElementById("captchaInput");
-
-const captchaCode =
-    document.getElementById("captchaCode");
-
-const refreshCaptcha =
-    document.getElementById("refreshCaptcha");
-
-const terms =
-    document.getElementById("terms");
-
-const message =
-    document.getElementById("message");
-
-const submitBtn =
-    document.getElementById("submitBtn");
-
-const strengthBar =
-    document.getElementById("strengthBar");
-
-const strengthText =
-    document.getElementById("strengthText");
-
+const form = document.getElementById("signupForm");
+const fullNameInput = document.getElementById("fullName");
+const emailInput = document.getElementById("email");
+const passwordInput = document.getElementById("password");
+const confirmPasswordInput = document.getElementById("confirmPassword");
+const captchaInput = document.getElementById("captchaInput");
+const captchaCode = document.getElementById("captchaCode");
+const refreshCaptcha = document.getElementById("refreshCaptcha");
+const terms = document.getElementById("terms");
+const message = document.getElementById("message");
+const submitBtn = document.getElementById("submitBtn");
+const strengthBar = document.getElementById("strengthBar");
+const strengthText = document.getElementById("strengthText");
 
 /* =========================================================
-   MESSAGE
+   REFERRAL CODE
+   Capture ?ref=CODE and preserve it for this registration.
 ========================================================= */
 
-function showMessage(text,type){
+const REFERRAL_STORAGE_KEY = "aitivest_signup_referral";
 
-    message.className =
-        "message " + type;
+function getReferralCode() {
+    const params = new URLSearchParams(window.location.search);
+    const urlCode = params.get("ref");
 
-    message.textContent =
-        text;
+    if (urlCode) {
+        const cleaned = urlCode.trim().toUpperCase();
+
+        // Only accept a reasonable code format.
+        if (/^[A-Z0-9_-]{3,64}$/.test(cleaned)) {
+            try {
+                sessionStorage.setItem(
+                    REFERRAL_STORAGE_KEY,
+                    cleaned
+                );
+            } catch (_) {}
+
+            return cleaned;
+        }
+    }
+
+    try {
+        const saved = sessionStorage.getItem(
+            REFERRAL_STORAGE_KEY
+        );
+
+        if (saved && /^[A-Z0-9_-]{3,64}$/.test(saved)) {
+            return saved;
+        }
+    } catch (_) {}
+
+    return "";
+}
+
+const referralCode = getReferralCode();
+
+/* =========================================================
+   MESSAGES
+========================================================= */
+
+function showMessage(text, type) {
+    message.className = "message " + type;
+    message.textContent = text;
 
     message.scrollIntoView({
-        behavior:"smooth",
-        block:"nearest"
+        behavior: "smooth",
+        block: "nearest"
     });
 }
 
-
-function clearMessage(){
-
-    message.className =
-        "message";
-
-    message.textContent =
-        "";
+function clearMessage() {
+    message.className = "message";
+    message.textContent = "";
 }
 
-
 /* =========================================================
-   CAPTCHA
+   VISUAL CAPTCHA
+
+   This is a client-side visual check, not a secure
+   server-verified CAPTCHA service.
 ========================================================= */
 
 let captchaValue = "";
 
+function generateCaptcha() {
+    captchaValue = String(
+        Math.floor(100 + Math.random() * 900)
+    );
 
-function generateCaptcha(){
+    captchaCode.replaceChildren();
 
-    captchaValue =
-        Math.floor(
-            100 +
-            Math.random() * 900
-        ).toString();
+    const noise = document.createElement("div");
+    noise.className = "captcha-noise";
+    noise.setAttribute("aria-hidden", "true");
 
-    captchaCode.textContent =
-        captchaValue;
+    for (let i = 0; i < 8; i++) {
+        const line = document.createElement("span");
+        line.className = "captcha-line";
+
+        line.style.width =
+            (18 + Math.random() * 65) + "px";
+
+        line.style.left =
+            (Math.random() * 90) + "%";
+
+        line.style.top =
+            (Math.random() * 100) + "%";
+
+        line.style.transform =
+            "rotate(" + (Math.random() * 150 - 75) + "deg)";
+
+        noise.appendChild(line);
+    }
+
+    for (let i = 0; i < 28; i++) {
+        const dot = document.createElement("span");
+        dot.className = "captcha-dot";
+
+        dot.style.left =
+            (Math.random() * 97) + "%";
+
+        dot.style.top =
+            (Math.random() * 95) + "%";
+
+        noise.appendChild(dot);
+    }
+
+    captchaCode.appendChild(noise);
+
+    for (const digit of captchaValue) {
+        const character = document.createElement("span");
+        character.className = "captcha-digit";
+        character.textContent = digit;
+
+        character.style.transform =
+            "rotate(" + (Math.random() * 44 - 22) + "deg)";
+
+        character.style.marginTop =
+            (Math.random() * 10 - 5) + "px";
+
+        captchaCode.appendChild(character);
+    }
 
     captchaInput.value = "";
 }
 
-
-refreshCaptcha.addEventListener(
-    "click",
-    generateCaptcha
-);
+refreshCaptcha.addEventListener("click", function() {
+    generateCaptcha();
+    clearMessage();
+});
 
 generateCaptcha();
-
 
 /* =========================================================
    PASSWORD VISIBILITY
 ========================================================= */
 
-document
-.getElementById("togglePassword")
-.addEventListener("click",function(){
+document.getElementById("togglePassword")
+.addEventListener("click", function() {
+    const showing = passwordInput.type === "password";
 
-    if(passwordInput.type === "password"){
-
-        passwordInput.type =
-            "text";
-
-        this.textContent =
-            "Hide";
-
-    }else{
-
-        passwordInput.type =
-            "password";
-
-        this.textContent =
-            "Show";
-    }
-
+    passwordInput.type = showing ? "text" : "password";
+    this.textContent = showing ? "Hide" : "Show";
 });
 
+document.getElementById("toggleConfirm")
+.addEventListener("click", function() {
+    const showing = confirmPasswordInput.type === "password";
 
-document
-.getElementById("toggleConfirm")
-.addEventListener("click",function(){
-
-    if(confirmPasswordInput.type === "password"){
-
-        confirmPasswordInput.type =
-            "text";
-
-        this.textContent =
-            "Hide";
-
-    }else{
-
-        confirmPasswordInput.type =
-            "password";
-
-        this.textContent =
-            "Show";
-    }
-
+    confirmPasswordInput.type = showing ? "text" : "password";
+    this.textContent = showing ? "Hide" : "Show";
 });
-
 
 /* =========================================================
    PASSWORD STRENGTH
 ========================================================= */
 
-passwordInput.addEventListener(
-    "input",
-    function(){
+passwordInput.addEventListener("input", function() {
+    const password = this.value;
+    let score = 0;
 
-        const password =
-            this.value;
+    if (password.length >= 8) score++;
+    if (/[A-Z]/.test(password)) score++;
+    if (/[a-z]/.test(password)) score++;
+    if (/[0-9]/.test(password)) score++;
+    if (/[^A-Za-z0-9]/.test(password)) score++;
 
-        let score = 0;
+    const levels = [
+        { width: "0%", text: "Use at least 8 characters.", color: "#172536" },
+        { width: "20%", text: "Very weak password.", color: "#ef6b73" },
+        { width: "40%", text: "Weak password.", color: "#ef6b73" },
+        { width: "60%", text: "Moderate password.", color: "#d8b15a" },
+        { width: "80%", text: "Strong password.", color: "#32c48d" },
+        { width: "100%", text: "Very strong password.", color: "#32c48d" }
+    ];
 
-        if(password.length >= 8)
-            score++;
+    const level = password.length === 0
+        ? levels[0]
+        : levels[score];
 
-        if(/[A-Z]/.test(password))
-            score++;
-
-        if(/[a-z]/.test(password))
-            score++;
-
-        if(/[0-9]/.test(password))
-            score++;
-
-        if(/[^A-Za-z0-9]/.test(password))
-            score++;
-
-
-        if(password.length === 0){
-
-            strengthBar.style.width =
-                "0%";
-
-            strengthText.textContent =
-                "Use at least 8 characters.";
-
-        }
-
-        else if(score <= 2){
-
-            strengthBar.style.width =
-                "35%";
-
-            strengthText.textContent =
-                "Weak password.";
-
-        }
-
-        else if(score === 3){
-
-            strengthBar.style.width =
-                "60%";
-
-            strengthText.textContent =
-                "Moderate password.";
-
-        }
-
-        else if(score === 4){
-
-            strengthBar.style.width =
-                "80%";
-
-            strengthText.textContent =
-                "Strong password.";
-
-        }
-
-        else{
-
-            strengthBar.style.width =
-                "100%";
-
-            strengthText.textContent =
-                "Very strong password.";
-
-        }
-
-    }
-);
-
+    strengthBar.style.width = level.width;
+    strengthBar.style.background = level.color;
+    strengthText.textContent = level.text;
+});
 
 /* =========================================================
-   SIGN UP
+   SIGNUP
 ========================================================= */
 
-form.addEventListener(
-    "submit",
-    async function(event){
+let signupInProgress = false;
 
-        event.preventDefault();
+form.addEventListener("submit", async function(event) {
+    event.preventDefault();
 
-        clearMessage();
+    if (signupInProgress) return;
 
+    clearMessage();
 
-        const fullName =
-            fullNameInput.value.trim();
+    const fullName = fullNameInput.value.trim();
+    const email = emailInput.value.trim().toLowerCase();
+    const password = passwordInput.value;
+    const confirmPassword = confirmPasswordInput.value;
+    const enteredCaptcha = captchaInput.value.trim();
 
-        const email =
-            emailInput.value.trim()
-                .toLowerCase();
+    if (fullName.length < 2) {
+        showMessage("Please enter your full name.", "error");
+        return;
+    }
 
-        const password =
-            passwordInput.value;
+    if (!email) {
+        showMessage("Please enter your email address.", "error");
+        return;
+    }
 
-        const confirmPassword =
-            confirmPasswordInput.value;
+    if (password.length < 8) {
+        showMessage(
+            "Your password must contain at least 8 characters.",
+            "error"
+        );
+        return;
+    }
 
-        const captchaEntered =
-            captchaInput.value.trim();
+    if (password !== confirmPassword) {
+        showMessage("Your passwords do not match.", "error");
+        return;
+    }
 
+    if (enteredCaptcha !== captchaValue) {
+        showMessage(
+            "The security code is incorrect. Please try again.",
+            "error"
+        );
+        generateCaptcha();
+        return;
+    }
 
-        /* -----------------------------
-           BASIC VALIDATION
-        ----------------------------- */
+    if (!terms.checked) {
+        showMessage(
+            "Please accept the Terms, Privacy Policy and Risk Disclosure.",
+            "error"
+        );
+        return;
+    }
 
-        if(fullName.length < 2){
+    signupInProgress = true;
+    submitBtn.disabled = true;
 
-            showMessage(
-                "Please enter your full name.",
-                "error"
-            );
+    submitBtn.innerHTML =
+        '<span class="loading">' +
+        '<span class="spinner"></span>' +
+        'Creating Account...' +
+        '</span>';
 
-            return;
+    try {
+        const metadata = {
+            full_name: fullName
+        };
+
+        /*
+         * The database trigger expects the metadata field
+         * to be named referral_code.
+         */
+        if (referralCode) {
+            metadata.referral_code = referralCode;
         }
 
-
-        if(!email){
-
-            showMessage(
-                "Please enter your email address.",
-                "error"
-            );
-
-            return;
-        }
-
-
-        if(password.length < 8){
-
-            showMessage(
-                "Password must contain at least 8 characters.",
-                "error"
-            );
-
-            return;
-        }
-
-
-        if(password !== confirmPassword){
-
-            showMessage(
-                "Passwords do not match.",
-                "error"
-            );
-
-            return;
-        }
-
-
-        if(captchaEntered !== captchaValue){
-
-            showMessage(
-                "Incorrect security code. Please try again.",
-                "error"
-            );
-
-            generateCaptcha();
-
-            return;
-        }
-
-
-        if(!terms.checked){
-
-            showMessage(
-                "Please accept the terms before creating your account.",
-                "error"
-            );
-
-            return;
-        }
-
-
-        /* -----------------------------
-           LOADING
-        ----------------------------- */
-
-        submitBtn.disabled =
-            true;
-
-        submitBtn.innerHTML =
-            '<span class="loading">' +
-            '<span class="spinner"></span>' +
-            'Creating Account...' +
-            '</span>';
-
-
-        try{
-
-            /* -----------------------------
-               SUPABASE AUTH SIGNUP
-            ----------------------------- */
-
-            const {
-                data,
-                error
-            } =
+        const { data, error } =
             await supabaseClient.auth.signUp({
-
-                email:email,
-
-                password:password,
-
-                options:{
-                    data:{
-                        full_name:fullName
-                    }
+                email: email,
+                password: password,
+                options: {
+                    data: metadata
                 }
-
             });
 
-
-            if(error){
-
-                console.error(
-                    "Supabase signup error:",
-                    error
-                );
-
-                throw error;
-            }
-
-
-            /* -----------------------------
-               SUCCESS
-            ----------------------------- */
-
-            console.log(
-                "Supabase signup response:",
-                data
-            );
-
-
-            if(
-                data.user &&
-                !data.session
-            ){
-
-                showMessage(
-                    "Account created successfully. Please check your email and confirm your email address before signing in.",
-                    "success"
-                );
-
-            }else{
-
-                showMessage(
-                    "Your NEXORA account has been created successfully.",
-                    "success"
-                );
-
-            }
-
-
-            form.reset();
-
-            strengthBar.style.width =
-                "0%";
-
-            strengthText.textContent =
-                "Use at least 8 characters.";
-
-            generateCaptcha();
-
-
-            /* -----------------------------
-               OPTIONAL REDIRECT
-            ----------------------------- */
-
-            setTimeout(function(){
-
-                window.location.href =
-                    "signin.html";
-
-            },3500);
-
-
-        }catch(error){
-
-            console.error(
-                "Registration error:",
-                error
-            );
-
-
-            let errorMessage =
-                "Unable to create your account. Please try again.";
-
-
-            if(error){
-
-                if(
-                    error.message &&
-                    error.message.toLowerCase()
-                    .includes("user already registered")
-                ){
-
-                    errorMessage =
-                        "An account with this email already exists. Please sign in instead.";
-
-                }
-
-                else if(
-                    error.message &&
-                    error.message.toLowerCase()
-                    .includes("invalid api key")
-                ){
-
-                    errorMessage =
-                        "Supabase API authentication failed. Please verify that this page is using the correct NEXORA project URL and publishable key.";
-
-                }
-
-                else if(
-                    error.message &&
-                    error.message.toLowerCase()
-                    .includes("password")
-                ){
-
-                    errorMessage =
-                        error.message;
-
-                }
-
-                else if(error.message){
-
-                    errorMessage =
-                        error.message;
-                }
-
-            }
-
-
-            showMessage(
-                errorMessage,
-                "error"
-            );
-
-
-            generateCaptcha();
-
-
-        }finally{
-
-            submitBtn.disabled =
-                false;
-
-            submitBtn.textContent =
-                "Create Account";
-
+        if (error) {
+            throw error;
         }
 
+        if (!data || !data.user) {
+            throw new Error(
+                "Supabase did not return a user. Please try again."
+            );
+        }
+
+        /*
+         * Do not manually insert profiles or referrals here.
+         * The on_auth_user_created database trigger handles
+         * profile creation and, if correctly configured,
+         * referral attribution.
+         */
+
+        if (data.session) {
+            showMessage(
+                "Your account has been created. You can now sign in.",
+                "success"
+            );
+        } else {
+            showMessage(
+                "Your account registration was accepted. Check your email for the confirmation link before signing in.",
+                "success"
+            );
+        }
+
+        form.reset();
+
+        strengthBar.style.width = "0%";
+        strengthBar.style.background = "#172536";
+        strengthText.textContent = "Use at least 8 characters.";
+
+        generateCaptcha();
+
+        /*
+         * Keep the saved referral code until registration
+         * has been tested. This helps if the user returns
+         * to the signup page before completing registration.
+         */
+        setTimeout(function() {
+            window.location.href = "signin.html";
+        }, 4000);
+
+    } catch (error) {
+        console.error("AITIVEST signup error:", error);
+
+        let errorMessage =
+            "Unable to create your account. Please try again.";
+
+        const detail = (
+            error && error.message
+                ? error.message
+                : ""
+        ).toLowerCase();
+
+        if (
+            detail.includes("user already registered") ||
+            detail.includes("already been registered")
+        ) {
+            errorMessage =
+                "An account with this email may already exist. Please sign in or use password recovery.";
+        } else if (
+            detail.includes("invalid api key") ||
+            detail.includes("invalid api")
+        ) {
+            errorMessage =
+                "Supabase authentication failed. Check the project URL and publishable key.";
+        } else if (
+            detail.includes("password")
+        ) {
+            errorMessage = error.message;
+        } else if (
+            detail.includes("email")
+        ) {
+            errorMessage = error.message;
+        } else if (error && error.message) {
+            errorMessage = error.message;
+        }
+
+        showMessage(errorMessage, "error");
+        generateCaptcha();
+
+    } finally {
+        signupInProgress = false;
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Create Account";
     }
-);
-
-</script>
-
-</body>
+});
+</script></body>
 </html>
