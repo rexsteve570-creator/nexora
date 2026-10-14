@@ -112,37 +112,65 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
   <div id="alert" role="status" aria-live="polite"></div>
 
   <section class="stats">
-    <div class="card"><div class="stat-label">Users Loaded</div><div class="stat-number" id="totalUsers">—</div></div>
-    <div class="card"><div class="stat-label">Total Tickets</div><div class="stat-number" id="totalTickets">—</div></div>
-    <div class="card"><div class="stat-label">Open Tickets</div><div class="stat-number" id="openTickets">—</div></div>
-    <div class="card"><div class="stat-label">Pending Deposits</div><div class="stat-number" id="pendingDeposits">—</div></div>
+    <div class="card">
+      <div class="stat-label">Users Loaded</div>
+      <div class="stat-number" id="totalUsers">—</div>
+    </div>
+    <div class="card">
+      <div class="stat-label">Total Tickets</div>
+      <div class="stat-number" id="totalTickets">—</div>
+    </div>
+    <div class="card">
+      <div class="stat-label">Open Tickets</div>
+      <div class="stat-number" id="openTickets">—</div>
+    </div>
+    <div class="card">
+      <div class="stat-label">Pending Deposits</div>
+      <div class="stat-number" id="pendingDeposits">—</div>
+    </div>
   </section>
 
   <!-- USER MANAGEMENT -->
   <section class="card section">
     <h2>User Management</h2>
     <p class="sub">Search registered users and review account status, KYC status, registration dates, and referral codes.</p>
+
     <div class="toolbar">
       <input id="userSearch" type="search" maxlength="100" placeholder="Search by name or email">
       <button class="btn" id="searchUsersBtn" type="button">Search Users</button>
       <button class="btn secondary" id="refreshUsersBtn" type="button">Refresh</button>
     </div>
+
     <div id="userCount" class="meta">Click Search Users to load accounts.</div>
+
     <div class="table-wrap">
       <table>
-        <thead><tr><th>User</th><th>Account Status</th><th>KYC Status</th><th>Registration Date</th><th>Referral Code</th></tr></thead>
-        <tbody id="usersTable"><tr><td colspan="5" class="empty">Users have not been loaded yet.</td></tr></tbody>
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Account Status</th>
+            <th>KYC Status</th>
+            <th>Registration Date</th>
+            <th>Referral Code</th>
+          </tr>
+        </thead>
+        <tbody id="usersTable">
+          <tr><td colspan="5" class="empty">Users have not been loaded yet.</td></tr>
+        </tbody>
       </table>
     </div>
+
     <button class="btn secondary full" id="loadMoreUsersBtn" type="button" hidden>Load More Users</button>
   </section>
 
   <!-- DEPOSIT MANAGEMENT -->
   <section class="card section">
     <h2>Manual Deposit Management</h2>
+
     <div class="warning">
       Verify each payment independently before approval. Confirm the transaction hash, correct blockchain network, destination address, token, and received amount. Never approve based only on a screenshot or a customer's claim.
     </div>
+
     <div class="toolbar">
       <input id="depositSearch" type="search" placeholder="Search user ID, asset, network or reference">
       <select id="depositStatusFilter">
@@ -153,11 +181,24 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
       </select>
       <button class="btn secondary" id="refreshDepositsBtn" type="button">Refresh Deposits</button>
     </div>
+
     <div id="depositCount" class="meta">Loading deposits…</div>
+
     <div class="table-wrap">
       <table>
-        <thead><tr><th>Deposit / User</th><th>Asset / Network</th><th>Submitted Amount</th><th>Transaction Reference</th><th>Status / Date</th><th>Actions</th></tr></thead>
-        <tbody id="depositsTable"><tr><td colspan="6" class="empty">Loading deposits…</td></tr></tbody>
+        <thead>
+          <tr>
+            <th>Deposit / User</th>
+            <th>Asset / Network</th>
+            <th>Submitted Amount</th>
+            <th>Transaction Reference</th>
+            <th>Status / Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="depositsTable">
+          <tr><td colspan="6" class="empty">Loading deposits…</td></tr>
+        </tbody>
       </table>
     </div>
   </section>
@@ -166,13 +207,22 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
   <section class="card section">
     <h2>Customer Support Management</h2>
     <p class="sub">Review complaints and respond through the secure admin-reply function.</p>
+
     <div class="stats" style="margin-bottom:15px">
-      <div class="card"><div class="stat-label">Resolved / Closed</div><div class="stat-number" id="closedTickets">—</div></div>
-      <div class="card"><div class="stat-label">Selected Ticket</div><div class="stat-number" id="selectedTicketNumber" style="font-size:21px">—</div></div>
+      <div class="card">
+        <div class="stat-label">Resolved / Closed</div>
+        <div class="stat-number" id="closedTickets">—</div>
+      </div>
+      <div class="card">
+        <div class="stat-label">Selected Ticket</div>
+        <div class="stat-number" id="selectedTicketNumber" style="font-size:21px">—</div>
+      </div>
     </div>
+
     <div class="layout">
       <div class="card">
         <h2>Support Tickets</h2>
+
         <div class="toolbar">
           <input id="searchTickets" type="search" placeholder="Search tickets">
           <select id="statusFilter">
@@ -183,20 +233,34 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
             <option value="closed">Closed</option>
           </select>
         </div>
-        <div id="ticketList" class="ticket-list"><div class="empty">Loading tickets…</div></div>
+
+        <div id="ticketList" class="ticket-list">
+          <div class="empty">Loading tickets…</div>
+        </div>
+
         <button class="btn secondary full" id="refreshTicketsBtn" type="button">Refresh Tickets</button>
       </div>
+
       <div class="card">
         <div id="noTicket" class="empty">Select a ticket to read the conversation.</div>
+
         <div id="conversation">
           <div class="conversation-head">
-            <div><h2 id="conversationTitle">Ticket Conversation</h2><div id="ticketMeta" class="meta"></div></div>
+            <div>
+              <h2 id="conversationTitle">Ticket Conversation</h2>
+              <div id="ticketMeta" class="meta"></div>
+            </div>
+
             <div class="toolbar">
               <button class="btn secondary" id="resolveBtn" type="button">Resolve</button>
               <button class="btn danger" id="closeBtn" type="button">Close</button>
             </div>
           </div>
-          <div id="messages"><div class="empty">Loading messages…</div></div>
+
+          <div id="messages">
+            <div class="empty">Loading messages…</div>
+          </div>
+
           <form id="replyForm">
             <label for="replyText" style="display:block;color:var(--muted);margin:10px 0 7px">Admin Reply</label>
             <textarea id="replyText" maxlength="5000" required placeholder="Write your response to the customer"></textarea>
@@ -206,6 +270,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
       </div>
     </div>
   </section>
+
   <p class="meta">AITIVEST Administration · Financial actions must be independently verified and authorized by secure database functions.</p>
 </main>
 
@@ -217,6 +282,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
 const SUPABASE_URL = "https://rihvvwktvgytbqzazage.supabase.co";
 const SUPABASE_KEY = "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
 const $ = id => document.getElementById(id);
 
 let tickets = [];
@@ -229,27 +295,36 @@ let userRequestNumber = 0;
 
 function escapeHtml(value) {
   return String(value ?? "").replace(/[&<>"']/g, ch => ({
-    "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#39;"
   }[ch]));
 }
+
 function niceDate(value) {
   if (!value) return "—";
   const d = new Date(value);
   return Number.isNaN(d.getTime()) ? "—" : d.toLocaleString();
 }
+
 function niceDateOnly(value) {
   if (!value) return "—";
   const d = new Date(value);
   return Number.isNaN(d.getTime()) ? "—" : d.toLocaleDateString();
 }
+
 function statusText(value) {
   return String(value || "unknown").replaceAll("_", " ");
 }
+
 function alertMessage(message, type = "ok") {
   $("alert").textContent = message;
   $("alert").className = type;
   $("alert").style.display = "block";
 }
+
 function clearAlert() {
   $("alert").style.display = "none";
   $("alert").textContent = "";
@@ -259,6 +334,7 @@ function clearAlert() {
 /* ADMIN AUTHORIZATION */
 async function verifyAdmin() {
   const { data: { session }, error } = await db.auth.getSession();
+
   if (error) throw error;
 
   if (!session) {
@@ -274,26 +350,32 @@ async function verifyAdmin() {
   if (isAdmin !== true) {
     $("loginCheck").textContent =
       "Access denied. This account is not authorized to use the admin panel.";
+
     $("signOutBtn").disabled = true;
+
     await db.auth.signOut();
     return false;
   }
 
   $("loginCheck").style.display = "none";
   $("adminApp").style.display = "block";
+
   return true;
 }
 
 /* USER MANAGEMENT */
 async function loadAdminUsers(reset = false) {
   clearAlert();
+
   const request = ++userRequestNumber;
 
   if (reset) {
     userOffset = 0;
     loadedUserCount = 0;
+
     $("usersTable").innerHTML =
       '<tr><td colspan="5" class="empty">Loading users…</td></tr>';
+
     $("userCount").textContent = "Loading registered users…";
     $("loadMoreUsersBtn").hidden = true;
   }
@@ -308,41 +390,61 @@ async function loadAdminUsers(reset = false) {
       p_limit: userPageSize,
       p_offset: userOffset
     });
+
     if (error) throw error;
     if (request !== userRequestNumber) return;
 
     const users = data || [];
-    if (reset) $("usersTable").innerHTML = "";
+
+    if (reset) {
+      $("usersTable").innerHTML = "";
+    }
 
     if (!users.length && userOffset === 0) {
       $("usersTable").innerHTML =
         '<tr><td colspan="5" class="empty">No matching users found.</td></tr>';
     } else if (users.length) {
-      $("usersTable").insertAdjacentHTML("beforeend", users.map(u => `
-        <tr>
-          <td><strong>${escapeHtml(u.full_name || "Unnamed user")}</strong>
-          <div class="meta">${escapeHtml(u.email || "No email")}</div></td>
-          <td><span class="badge">${escapeHtml(statusText(u.account_status))}</span></td>
-          <td><span class="badge">${escapeHtml(statusText(u.kyc_status))}</span></td>
-          <td>${escapeHtml(niceDateOnly(u.created_at))}</td>
-          <td>${escapeHtml(u.referral_code || "—")}</td>
-        </tr>`).join(""));
+      $("usersTable").insertAdjacentHTML(
+        "beforeend",
+        users.map(u => `
+          <tr>
+            <td>
+              <strong>${escapeHtml(u.full_name || "Unnamed user")}</strong>
+              <div class="meta">${escapeHtml(u.email || "No email")}</div>
+            </td>
+            <td><span class="badge">${escapeHtml(statusText(u.account_status))}</span></td>
+            <td><span class="badge">${escapeHtml(statusText(u.kyc_status))}</span></td>
+            <td>${escapeHtml(niceDateOnly(u.created_at))}</td>
+            <td>${escapeHtml(u.referral_code || "—")}</td>
+          </tr>
+        `).join("")
+      );
     }
 
     userOffset += users.length;
     loadedUserCount += users.length;
+
     $("totalUsers").textContent = loadedUserCount.toLocaleString();
     $("userCount").textContent =
       `Loaded ${loadedUserCount} user(s) in this search.`;
+
     $("loadMoreUsersBtn").hidden = users.length < userPageSize;
+
   } catch (e) {
     console.error(e);
+
     if (request === userRequestNumber) {
       $("userCount").textContent = "Unable to load users.";
+
       $("usersTable").innerHTML =
         '<tr><td colspan="5" class="empty">Could not load users. Try again.</td></tr>';
-      alertMessage("Could not load users: " + (e.message || "Unknown error"), "err");
+
+      alertMessage(
+        "Could not load users: " + (e.message || "Unknown error"),
+        "err"
+      );
     }
+
   } finally {
     if (request === userRequestNumber) {
       $("searchUsersBtn").disabled = false;
@@ -355,6 +457,7 @@ async function loadAdminUsers(reset = false) {
 /* MANUAL DEPOSIT MANAGEMENT */
 async function loadDeposits() {
   $("refreshDepositsBtn").disabled = true;
+
   $("depositsTable").innerHTML =
     '<tr><td colspan="6" class="empty">Loading deposits…</td></tr>';
 
@@ -365,13 +468,21 @@ async function loadDeposits() {
       .limit(500);
 
     if (error) throw error;
+
     deposits = data || [];
     renderDeposits();
+
   } catch (e) {
     console.error("Deposit load failed:", e);
+
     $("depositsTable").innerHTML =
       '<tr><td colspan="6" class="empty">Could not load deposits. Check the admin SELECT policy on public.deposits.</td></tr>';
-    alertMessage("Could not load deposits: " + (e.message || "Unknown error"), "err");
+
+    alertMessage(
+      "Could not load deposits: " + (e.message || "Unknown error"),
+      "err"
+    );
+
   } finally {
     $("refreshDepositsBtn").disabled = false;
   }
@@ -382,14 +493,24 @@ function renderDeposits() {
   const query = $("depositSearch").value.trim().toLowerCase();
 
   $("pendingDeposits").textContent =
-    deposits.filter(d => String(d.status).toUpperCase() === "PENDING").length;
+    deposits.filter(
+      d => String(d.status).toUpperCase() === "PENDING"
+    ).length;
 
   const list = deposits.filter(d => {
     const status = String(d.status || "").toUpperCase();
+
     const statusMatches = filter === "all" || status === filter;
+
     const haystack = [
-      d.id, d.user_id, d.asset, d.network, d.external_reference, d.notes
+      d.id,
+      d.user_id,
+      d.asset,
+      d.network,
+      d.external_reference,
+      d.notes
     ].join(" ").toLowerCase();
+
     return statusMatches && haystack.includes(query);
   });
 
@@ -403,134 +524,272 @@ function renderDeposits() {
   }
 
   $("depositsTable").innerHTML = list.map(d => {
-    const pending = String(d.status || "").toUpperCase() === "PENDING";
+    const pending =
+      String(d.status || "").toUpperCase() === "PENDING";
+
     return `
       <tr>
-        <td><strong>#${escapeHtml(d.id)}</strong>
-        <div class="meta">${escapeHtml(d.user_id)}</div></td>
-        <td><strong>${escapeHtml(d.asset)}</strong>
-        <div class="meta">${escapeHtml(d.network || "Network not recorded")}</div></td>
-        <td>${escapeHtml(d.amount == null ? "Not provided" : d.amount)} ${escapeHtml(d.asset)}
-        <div class="meta">Credited: ${escapeHtml(d.credited_amount == null ? "—" : d.credited_amount)}</div></td>
-        <td>${d.external_reference
-          ? `<span>${escapeHtml(d.external_reference)}</span>`
-          : '<span class="meta">No transaction reference recorded</span>'}
-          ${d.notes ? `<div class="meta">Note: ${escapeHtml(d.notes)}</div>` : ""}
+        <td>
+          <strong>#${escapeHtml(d.id)}</strong>
+          <div class="meta">${escapeHtml(d.user_id)}</div>
         </td>
-        <td><span class="badge ${pending ? "open" : d.status === "REJECTED" ? "closed" : ""}">${escapeHtml(statusText(d.status))}</span>
-        <div class="meta">${escapeHtml(niceDate(d.created_at))}</div></td>
-        <td>${pending ? `
-          <div class="action-group">
-            <input class="amount-input" id="credit-${escapeHtml(d.id)}"
-              type="number" min="0.00000001" step="any"
-              placeholder="Verified amount" aria-label="Verified credit amount">
-            <button class="btn" type="button" data-approve="${escapeHtml(d.id)}">Approve</button>
-            <button class="btn danger" type="button" data-reject="${escapeHtml(d.id)}">Reject</button>
-          </div>` : '<span class="meta">No action available</span>'}
+
+        <td>
+          <strong>${escapeHtml(d.asset)}</strong>
+          <div class="meta">${escapeHtml(d.network || "Network not recorded")}</div>
         </td>
-      </tr>`;
+
+        <td>
+          ${escapeHtml(d.amount == null ? "Not provided" : d.amount)}
+          ${escapeHtml(d.asset)}
+          <div class="meta">
+            Credited: ${escapeHtml(d.credited_amount == null ? "—" : d.credited_amount)}
+          </div>
+        </td>
+
+        <td>
+          ${d.external_reference
+            ? `<span>${escapeHtml(d.external_reference)}</span>`
+            : '<span class="meta">No transaction reference recorded</span>'}
+          ${d.notes
+            ? `<div class="meta">Note: ${escapeHtml(d.notes)}</div>`
+            : ""}
+        </td>
+
+        <td>
+          <span class="badge ${
+            pending ? "open" :
+            String(d.status).toUpperCase() === "REJECTED" ? "closed" : ""
+          }">${escapeHtml(statusText(d.status))}</span>
+
+          <div class="meta">${escapeHtml(niceDate(d.created_at))}</div>
+        </td>
+
+        <td>
+          ${pending ? `
+            <div class="action-group">
+              <input
+                class="amount-input"
+                id="credit-${escapeHtml(d.id)}"
+                type="number"
+                min="0.00000001"
+                step="any"
+                placeholder="Verified amount"
+                aria-label="Verified credit amount"
+              >
+
+              <button
+                class="btn"
+                type="button"
+                data-approve="${escapeHtml(d.id)}"
+              >Approve</button>
+
+              <button
+                class="btn danger"
+                type="button"
+                data-reject="${escapeHtml(d.id)}"
+              >Reject</button>
+            </div>
+          ` : '<span class="meta">No action available</span>'}
+        </td>
+      </tr>
+    `;
   }).join("");
 
   $("depositsTable").querySelectorAll("[data-approve]").forEach(btn => {
-    btn.addEventListener("click", () => approveDeposit(btn.dataset.approve, btn));
+    btn.addEventListener("click", () => {
+      approveDeposit(btn.dataset.approve, btn);
+    });
   });
+
   $("depositsTable").querySelectorAll("[data-reject]").forEach(btn => {
-    btn.addEventListener("click", () => rejectDeposit(btn.dataset.reject, btn));
+    btn.addEventListener("click", () => {
+      rejectDeposit(btn.dataset.reject, btn);
+    });
   });
 }
 
+/* SECURE DEPOSIT APPROVAL */
 async function approveDeposit(id, button) {
-  const deposit = deposits.find(d => String(d.id) === String(id));
-  if (!deposit) return;
+  const deposit = deposits.find(
+    d => String(d.id) === String(id)
+  );
+
+  if (!deposit) {
+    alertMessage("Deposit not found in the loaded list.", "err");
+    return;
+  }
 
   if (String(deposit.status).toUpperCase() !== "PENDING") {
     alertMessage("This deposit is no longer pending.", "err");
     return;
   }
 
-  if (!deposit.external_reference || !String(deposit.external_reference).trim()) {
-    alertMessage("No transaction reference is recorded. Do not approve this deposit until its transaction reference is recorded and independently verified.", "err");
+  if (
+    !deposit.external_reference ||
+    !String(deposit.external_reference).trim()
+  ) {
+    alertMessage(
+      "No transaction reference is recorded. Independently verify the transaction before approval.",
+      "err"
+    );
     return;
   }
 
   const input = $("credit-" + id);
-  const amount = input.value.trim() === ""
-    ? Number(deposit.amount)
-    : Number(input.value);
+
+  /*
+   * Do not automatically use the customer's submitted amount.
+   * An administrator must enter the independently verified amount.
+   */
+  if (!input || input.value.trim() === "") {
+    alertMessage(
+      "Enter the independently verified amount received before approving.",
+      "err"
+    );
+
+    if (input) input.focus();
+    return;
+  }
+
+  const amount = Number(input.value);
 
   if (!Number.isFinite(amount) || amount <= 0) {
     alertMessage("Enter a valid positive verified amount.", "err");
+
+    input.focus();
     return;
   }
 
-  if (deposit.amount != null && amount > Number(deposit.amount)) {
-    alertMessage("Credit cannot exceed the submitted amount.", "err");
+  if (
+    deposit.amount != null &&
+    amount > Number(deposit.amount)
+  ) {
+    alertMessage(
+      "The verified amount cannot exceed the submitted amount.",
+      "err"
+    );
+
+    input.focus();
     return;
   }
 
-  if (!confirm(
+  const confirmed = confirm(
     `Approve deposit #${id} for ${amount} ${deposit.asset}?\n\n` +
-    "Only proceed after verifying the transaction hash, blockchain network, destination address and received amount."
-  )) return;
+    "Confirm that you independently verified the transaction hash, " +
+    "blockchain network, destination address, token and actual amount received.\n\n" +
+    "Do not approve based only on a screenshot or customer claim."
+  );
+
+  if (!confirmed) return;
 
   button.disabled = true;
 
   try {
-    const { data, error } = await db.rpc("admin_approve_deposit", {
-      p_deposit_id: Number(id),
-      p_credited_amount: amount
-    });
+    const { data, error } = await db.rpc(
+      "admin_approve_deposit",
+      {
+        p_deposit_id: Number(id),
+        p_credited_amount: amount
+      }
+    );
 
     if (error) throw error;
-    if (data && data.success === false) {
-      throw new Error(data.message || "Approval failed.");
+
+    if (!data || data.success !== true) {
+      throw new Error(
+        data?.message || "The database did not confirm approval."
+      );
     }
 
-    alertMessage(`Deposit #${id} approved. ${amount} ${deposit.asset} credited.`);
+    alertMessage(
+      `Deposit #${id} approved. ${amount} ${deposit.asset} credited.`
+    );
+
     await loadDeposits();
+
   } catch (e) {
-    console.error(e);
-    alertMessage("Approval failed: " + (e.message || "Unknown error"), "err");
+    console.error("Deposit approval failed:", e);
+
+    alertMessage(
+      "Approval failed: " + (e.message || "Unknown error"),
+      "err"
+    );
+
     button.disabled = false;
   }
 }
 
+/* SECURE DEPOSIT REJECTION */
 async function rejectDeposit(id, button) {
-  const deposit = deposits.find(d => String(d.id) === String(id));
-  if (!deposit) return;
+  const deposit = deposits.find(
+    d => String(d.id) === String(id)
+  );
 
-  const answer = prompt(`Reason for rejecting deposit #${id}:`);
+  if (!deposit) {
+    alertMessage("Deposit not found in the loaded list.", "err");
+    return;
+  }
+
+  if (String(deposit.status).toUpperCase() !== "PENDING") {
+    alertMessage("Only pending deposits can be rejected.", "err");
+    return;
+  }
+
+  const answer = prompt(
+    `Reason for rejecting deposit #${id}:`
+  );
+
   if (answer === null) return;
 
   const reason = answer.trim();
+
   if (!reason) {
     alertMessage("Enter a rejection reason.", "err");
     return;
   }
+
   if (reason.length > 1000) {
-    alertMessage("Rejection reason must be 1,000 characters or fewer.", "err");
+    alertMessage(
+      "Rejection reason must be 1,000 characters or fewer.",
+      "err"
+    );
     return;
   }
+
   if (!confirm(`Reject deposit #${id}?`)) return;
 
   button.disabled = true;
 
   try {
-    const { data, error } = await db.rpc("admin_reject_deposit", {
-      p_deposit_id: Number(id),
-      p_reason: reason
-    });
+    const { data, error } = await db.rpc(
+      "admin_reject_deposit",
+      {
+        p_deposit_id: Number(id),
+        p_reason: reason
+      }
+    );
 
     if (error) throw error;
-    if (data && data.success === false) {
-      throw new Error(data.message || "Rejection failed.");
+
+    if (!data || data.success !== true) {
+      throw new Error(
+        data?.message || "The database did not confirm rejection."
+      );
     }
 
     alertMessage(`Deposit #${id} rejected.`);
+
     await loadDeposits();
+
   } catch (e) {
-    console.error(e);
-    alertMessage("Rejection failed: " + (e.message || "Unknown error"), "err");
+    console.error("Deposit rejection failed:", e);
+
+    alertMessage(
+      "Rejection failed: " + (e.message || "Unknown error"),
+      "err"
+    );
+
     button.disabled = false;
   }
 }
@@ -538,31 +797,46 @@ async function rejectDeposit(id, button) {
 /* SUPPORT TICKETS */
 function updateTicketStats() {
   $("totalTickets").textContent = tickets.length;
-  $("openTickets").textContent = tickets.filter(t => t.status === "open").length;
+
+  $("openTickets").textContent =
+    tickets.filter(t => t.status === "open").length;
+
   $("closedTickets").textContent =
-    tickets.filter(t => ["resolved", "closed"].includes(t.status)).length;
+    tickets.filter(
+      t => ["resolved", "closed"].includes(t.status)
+    ).length;
 }
 
 async function loadTickets() {
-  $("ticketList").innerHTML = '<div class="empty">Loading tickets…</div>';
+  $("ticketList").innerHTML =
+    '<div class="empty">Loading tickets…</div>';
 
   const { data, error } = await db.from("support_tickets")
     .select("id,ticket_number,user_id,subject,category,status,priority,created_at,updated_at,last_message_at")
-    .order("last_message_at", { ascending: false, nullsFirst: false });
+    .order("last_message_at", {
+      ascending: false,
+      nullsFirst: false
+    });
 
   if (error) throw error;
 
   tickets = data || [];
+
   updateTicketStats();
   renderTickets();
 
   if (selectedTicket) {
-    const updated = tickets.find(t => t.id === selectedTicket.id);
+    const updated = tickets.find(
+      t => String(t.id) === String(selectedTicket.id)
+    );
+
     if (updated) {
       selectedTicket = updated;
       await openTicket(updated.id);
+
     } else {
       selectedTicket = null;
+
       $("conversation").style.display = "none";
       $("noTicket").style.display = "block";
       $("selectedTicketNumber").textContent = "—";
@@ -584,23 +858,47 @@ function renderTickets() {
   );
 
   if (!filtered.length) {
-    $("ticketList").innerHTML = '<div class="empty">No matching support tickets.</div>';
+    $("ticketList").innerHTML =
+      '<div class="empty">No matching support tickets.</div>';
     return;
   }
 
   $("ticketList").innerHTML = filtered.map(t => `
-    <div class="ticket ${selectedTicket && selectedTicket.id === t.id ? "selected" : ""}"
-      data-id="${escapeHtml(t.id)}" tabindex="0" role="button">
-      <div class="ticket-title">#${escapeHtml(t.ticket_number)} · ${escapeHtml(t.subject)}</div>
-      <div class="meta">${escapeHtml(t.category)} · ${escapeHtml(niceDate(t.last_message_at || t.created_at))}</div>
-      <span class="badge ${t.status === "open" ? "open" : ["closed","resolved"].includes(t.status) ? "closed" : ""}">
+    <div
+      class="ticket ${
+        selectedTicket &&
+        String(selectedTicket.id) === String(t.id)
+          ? "selected" : ""
+      }"
+      data-id="${escapeHtml(t.id)}"
+      tabindex="0"
+      role="button"
+    >
+      <div class="ticket-title">
+        #${escapeHtml(t.ticket_number)} · ${escapeHtml(t.subject)}
+      </div>
+
+      <div class="meta">
+        ${escapeHtml(t.category)} ·
+        ${escapeHtml(niceDate(t.last_message_at || t.created_at))}
+      </div>
+
+      <span class="badge ${
+        t.status === "open"
+          ? "open"
+          : ["closed", "resolved"].includes(t.status)
+            ? "closed" : ""
+      }">
         ${escapeHtml(statusText(t.status))}
       </span>
-    </div>`).join("");
+    </div>
+  `).join("");
 
   $("ticketList").querySelectorAll("[data-id]").forEach(el => {
     const open = () => openTicket(el.dataset.id);
+
     el.addEventListener("click", open);
+
     el.addEventListener("keydown", event => {
       if (event.key === "Enter" || event.key === " ") {
         event.preventDefault();
@@ -612,21 +910,33 @@ function renderTickets() {
 
 async function openTicket(id) {
   clearAlert();
-  const ticket = tickets.find(t => t.id === id);
+
+  const ticket = tickets.find(
+    t => String(t.id) === String(id)
+  );
+
   if (!ticket) return;
 
   selectedTicket = ticket;
+
   $("noTicket").style.display = "none";
   $("conversation").style.display = "block";
-  $("selectedTicketNumber").textContent = "#" + ticket.ticket_number;
-  $("conversationTitle").textContent = "Ticket #" + ticket.ticket_number + " · " + ticket.subject;
+
+  $("selectedTicketNumber").textContent =
+    "#" + ticket.ticket_number;
+
+  $("conversationTitle").textContent =
+    "Ticket #" + ticket.ticket_number + " · " + ticket.subject;
+
   $("ticketMeta").textContent =
     "Customer ID: " + ticket.user_id +
     " · Category: " + ticket.category +
     " · Status: " + statusText(ticket.status) +
     " · Created: " + niceDate(ticket.created_at);
 
-  $("messages").innerHTML = '<div class="empty">Loading conversation…</div>';
+  $("messages").innerHTML =
+    '<div class="empty">Loading conversation…</div>';
+
   renderTickets();
 
   const { data, error } = await db.from("support_messages")
@@ -636,24 +946,43 @@ async function openTicket(id) {
 
   if (error) {
     $("messages").innerHTML = "";
-    alertMessage("Could not load conversation: " + error.message, "err");
+
+    alertMessage(
+      "Could not load conversation: " + error.message,
+      "err"
+    );
+
     return;
   }
 
   $("messages").innerHTML = (data || []).map(m => `
     <div class="message ${m.is_admin_reply ? "admin" : ""}">
-      <small>${m.is_admin_reply ? "AITIVEST Admin" : m.sender_id === ticket.user_id ? "Customer" : "Support"} · ${escapeHtml(niceDate(m.created_at))}</small>
+      <small>
+        ${
+          m.is_admin_reply
+            ? "AITIVEST Admin"
+            : String(m.sender_id) === String(ticket.user_id)
+              ? "Customer"
+              : "Support"
+        }
+        · ${escapeHtml(niceDate(m.created_at))}
+      </small>
       ${escapeHtml(m.message)}
-    </div>`).join("") || '<div class="empty">No messages in this ticket.</div>';
+    </div>
+  `).join("") || '<div class="empty">No messages in this ticket.</div>';
 
   const canReply = ["open", "in_progress"].includes(ticket.status);
+
   $("replyText").disabled = !canReply;
   $("sendReplyBtn").disabled = !canReply;
+
   $("replyText").placeholder = canReply
     ? "Write your response to the customer"
     : "This ticket is resolved or closed.";
+
   $("resolveBtn").disabled = !canReply;
   $("closeBtn").disabled = ticket.status === "closed";
+
   $("messages").scrollTop = $("messages").scrollHeight;
 }
 
@@ -662,12 +991,14 @@ async function sendAdminReply(event) {
   clearAlert();
 
   if (!selectedTicket) return;
+
   if (!["open", "in_progress"].includes(selectedTicket.status)) {
     alertMessage("This ticket is not open for replies.", "err");
     return;
   }
 
   const message = $("replyText").value.trim();
+
   if (!message) {
     alertMessage("Enter a reply first.", "err");
     return;
@@ -680,78 +1011,171 @@ async function sendAdminReply(event) {
       p_ticket_id: selectedTicket.id,
       p_message: message
     });
+
     if (error) throw error;
-    if (data && data.success === false) throw new Error(data.message || "Reply failed.");
+
+    if (data && data.success === false) {
+      throw new Error(data.message || "Reply failed.");
+    }
 
     $("replyText").value = "";
+
     alertMessage("Admin reply sent successfully.");
+
     await loadTickets();
+
   } catch (e) {
     console.error(e);
-    alertMessage(e.message || "Could not send the admin reply.", "err");
+
+    alertMessage(
+      e.message || "Could not send the admin reply.",
+      "err"
+    );
+
   } finally {
     $("sendReplyBtn").disabled =
-      !selectedTicket || !["open", "in_progress"].includes(selectedTicket.status);
+      !selectedTicket ||
+      !["open", "in_progress"].includes(selectedTicket.status);
   }
 }
 
 async function changeTicketStatus(status) {
   clearAlert();
-  if (!selectedTicket || !["resolved", "closed"].includes(status)) return;
-  if (!confirm(`Mark ticket #${selectedTicket.ticket_number} as ${status}?`)) return;
+
+  if (
+    !selectedTicket ||
+    !["resolved", "closed"].includes(status)
+  ) return;
+
+  if (
+    !confirm(
+      `Mark ticket #${selectedTicket.ticket_number} as ${status}?`
+    )
+  ) return;
 
   try {
     const { error } = await db.rpc("admin_set_ticket_status", {
       p_ticket_id: selectedTicket.id,
       p_status: status
     });
+
     if (error) throw error;
+
     alertMessage("Ticket status updated successfully.");
+
     await loadTickets();
+
   } catch (e) {
     console.error(e);
-    alertMessage("Could not update ticket status: " + (e.message || "Unknown error"), "err");
+
+    alertMessage(
+      "Could not update ticket status: " +
+      (e.message || "Unknown error"),
+      "err"
+    );
   }
 }
 
 /* EVENT LISTENERS */
-$("searchUsersBtn").addEventListener("click", () => loadAdminUsers(true));
-$("refreshUsersBtn").addEventListener("click", () => loadAdminUsers(true));
-$("loadMoreUsersBtn").addEventListener("click", () => loadAdminUsers(false));
+$("searchUsersBtn").addEventListener(
+  "click",
+  () => loadAdminUsers(true)
+);
+
+$("refreshUsersBtn").addEventListener(
+  "click",
+  () => loadAdminUsers(true)
+);
+
+$("loadMoreUsersBtn").addEventListener(
+  "click",
+  () => loadAdminUsers(false)
+);
+
 $("userSearch").addEventListener("keydown", e => {
   if (e.key === "Enter") {
     e.preventDefault();
     loadAdminUsers(true);
   }
 });
-$("depositSearch").addEventListener("input", renderDeposits);
-$("depositStatusFilter").addEventListener("change", renderDeposits);
-$("refreshDepositsBtn").addEventListener("click", loadDeposits);
-$("searchTickets").addEventListener("input", renderTickets);
-$("statusFilter").addEventListener("change", renderTickets);
-$("refreshTicketsBtn").addEventListener("click", async () => {
-  try {
-    await loadTickets();
-    alertMessage("Support tickets refreshed.");
-  } catch (e) {
-    console.error(e);
-    alertMessage(e.message || "Could not refresh support tickets.", "err");
+
+$("depositSearch").addEventListener(
+  "input",
+  renderDeposits
+);
+
+$("depositStatusFilter").addEventListener(
+  "change",
+  renderDeposits
+);
+
+$("refreshDepositsBtn").addEventListener(
+  "click",
+  loadDeposits
+);
+
+$("searchTickets").addEventListener(
+  "input",
+  renderTickets
+);
+
+$("statusFilter").addEventListener(
+  "change",
+  renderTickets
+);
+
+$("refreshTicketsBtn").addEventListener(
+  "click",
+  async () => {
+    try {
+      await loadTickets();
+      alertMessage("Support tickets refreshed.");
+
+    } catch (e) {
+      console.error(e);
+
+      alertMessage(
+        e.message || "Could not refresh support tickets.",
+        "err"
+      );
+    }
   }
-});
-$("replyForm").addEventListener("submit", sendAdminReply);
-$("resolveBtn").addEventListener("click", () => changeTicketStatus("resolved"));
-$("closeBtn").addEventListener("click", () => changeTicketStatus("closed"));
+);
+
+$("replyForm").addEventListener(
+  "submit",
+  sendAdminReply
+);
+
+$("resolveBtn").addEventListener(
+  "click",
+  () => changeTicketStatus("resolved")
+);
+
+$("closeBtn").addEventListener(
+  "click",
+  () => changeTicketStatus("closed")
+);
 
 $("signOutBtn").addEventListener("click", async () => {
   $("signOutBtn").disabled = true;
+
   try {
     const { error } = await db.auth.signOut();
+
     if (error) throw error;
+
     location.replace("signin.html");
+
   } catch (e) {
     console.error(e);
+
     $("signOutBtn").disabled = false;
-    alertMessage("Sign-out failed. Please try again.", "err");
+
+    alertMessage(
+      "Sign-out failed. Please try again.",
+      "err"
+    );
   }
 });
 
@@ -765,8 +1189,10 @@ $("signOutBtn").addEventListener("click", async () => {
       loadTickets(),
       loadAdminUsers(true)
     ]);
+
   } catch (e) {
     console.error("Admin startup error:", e);
+
     $("loginCheck").textContent =
       "Could not verify administrator access. Please refresh or sign in again.";
   }
