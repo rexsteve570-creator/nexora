@@ -1,1009 +1,872 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#0A1428">
-
-  <title>AITIVEST | Admin Dashboard</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-  <style>
-    :root {
-      --ink: #0A1428;
-      --panel: #101D38;
-      --panel2: #17284B;
-      --line: #243559;
-      --gold: #D4A64A;
-      --goldsoft: #EBD29A;
-      --text: #EAF0FA;
-      --muted: #8696B5;
-      --green: #6FBF8E;
-      --red: #D9705F;
-      --yellow: #E8B84F;
-      --radius: 14px;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: Manrope, sans-serif;
-      background: var(--ink);
-      color: var(--text);
-      min-height: 100vh;
-    }
-
-    button, input, select {
-      font: inherit;
-    }
-
-    button {
-      cursor: pointer;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    .app {
-      display: grid;
-      grid-template-columns: 245px minmax(0, 1fr);
-      min-height: 100vh;
-    }
-
-    .sidebar {
-      background: var(--ink);
-      border-right: 1px solid var(--line);
-      padding: 24px 15px;
-      display: flex;
-      flex-direction: column;
-      gap: 26px;
-      position: sticky;
-      top: 0;
-      height: 100vh;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 0 8px;
-    }
-
-    .brand-icon {
-      width: 36px;
-      height: 36px;
-      display: grid;
-      place-items: center;
-      background: linear-gradient(135deg, var(--goldsoft), var(--gold));
-      border-radius: 10px;
-      color: var(--ink);
-      font-weight: 800;
-      font-size: 19px;
-    }
-
-    .brand-name {
-      font-family: "Instrument Serif", serif;
-      font-size: 27px;
-    }
-
-    .admin-badge {
-      font-size: 9px;
-      font-weight: 800;
-      padding: 3px 6px;
-      border: 1px solid var(--gold);
-      border-radius: 20px;
-      color: var(--goldsoft);
-    }
-
-    .nav {
-      display: grid;
-      gap: 5px;
-    }
-
-    .nav a,
-    .nav button {
-      display: flex;
-      align-items: center;
-      gap: 11px;
-      padding: 12px;
-      border: 0;
-      border-radius: 9px;
-      background: transparent;
-      color: var(--muted);
-      font-size: 12px;
-      font-weight: 700;
-      text-align: left;
-    }
-
-    .nav a:hover,
-    .nav button:hover {
-      background: var(--panel);
-      color: var(--text);
-    }
-
-    .nav a.active {
-      background: var(--panel2);
-      color: var(--goldsoft);
-      box-shadow: inset 3px 0 var(--gold);
-    }
-
-    .sidebar-bottom {
-      margin-top: auto;
-      padding: 13px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      overflow-wrap: anywhere;
-    }
-
-    .sidebar-bottom small {
-      color: var(--muted);
-      display: block;
-      margin-top: 5px;
-    }
-
-    main {
-      min-width: 0;
-      padding: 28px;
-      max-width: 1500px;
-      width: 100%;
-    }
-
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 15px;
-      flex-wrap: wrap;
-      margin-bottom: 25px;
-    }
-
-    h1 {
-      font-family: "Instrument Serif", serif;
-      font-size: 36px;
-      font-weight: 400;
-    }
-
-    .top-actions {
-      display: flex;
-      gap: 8px;
-    }
-
-    .btn {
-      padding: 9px 13px;
-      border-radius: 8px;
-      border: 1px solid var(--line);
-      background: var(--panel2);
-      color: var(--text);
-      font-size: 11px;
-      font-weight: 800;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--goldsoft), var(--gold));
-      color: var(--ink);
-      border-color: var(--gold);
-    }
-
-    .btn-danger {
-      color: var(--red);
-      border-color: #6a3841;
-      background: transparent;
-    }
-
-    .btn:disabled {
-      opacity: .45;
-      cursor: not-allowed;
-    }
-
-    .notice {
-      padding: 12px 14px;
-      margin-bottom: 15px;
-      background: var(--panel2);
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      font-size: 12px;
-      overflow-wrap: anywhere;
-    }
-
-    .notice.error {
-      color: #ffb1b6;
-      border-color: #6a3841;
-    }
-
-    .notice.success {
-      color: var(--green);
-      border-color: #32694e;
-    }
-
-    .hidden {
-      display: none !important;
-    }
-
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 14px;
-      margin-bottom: 20px;
-    }
-
-    .card {
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      padding: 19px;
-      min-width: 0;
-    }
-
-    .stat-label {
-      font-size: 11px;
-      color: var(--muted);
-    }
-
-    .stat-number {
-      font-family: "Instrument Serif", serif;
-      font-size: 34px;
-      margin-top: 7px;
-      overflow-wrap: anywhere;
-    }
-
-    .gold-text {
-      color: var(--goldsoft);
-    }
-
-    .stat-note {
-      color: var(--muted);
-      font-size: 10px;
-      margin-top: 5px;
-    }
-
-    .content-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-      gap: 18px;
-      margin-bottom: 20px;
-    }
-
-    .card-heading {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-bottom: 15px;
-    }
-
-    h2 {
-      font-size: 14px;
-    }
-
-    .muted {
-      color: var(--muted);
-      font-size: 11px;
-    }
-
-    .list {
-      list-style: none;
-    }
-
-    .list li {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      padding: 13px 0;
-      border-bottom: 1px solid var(--line);
-      font-size: 12px;
-    }
-
-    .list li:last-child {
-      border-bottom: 0;
-    }
-
-    .table-wrap {
-      overflow-x: auto;
-    }
-
-    table {
-      width: 100%;
-      min-width: 550px;
-      border-collapse: collapse;
-      font-size: 11px;
-    }
-
-    th {
-      color: var(--muted);
-      text-align: left;
-      font-size: 10px;
-      padding: 12px 9px;
-      border-bottom: 1px solid var(--line);
-      white-space: nowrap;
-    }
-
-    td {
-      padding: 13px 9px;
-      border-bottom: 1px solid var(--line);
-      vertical-align: middle;
-    }
-
-    tr:last-child td {
-      border-bottom: 0;
-    }
-
-    .user {
-      display: flex;
-      align-items: center;
-      gap: 9px;
-      min-width: 160px;
-    }
-
-    .avatar {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      background: var(--panel2);
-      border: 1px solid var(--line);
-      color: var(--goldsoft);
-      font-weight: 800;
-      flex-shrink: 0;
-    }
-
-    .user-name {
-      font-weight: 800;
-      overflow-wrap: anywhere;
-    }
-
-    .user-email {
-      color: var(--muted);
-      font-size: 10px;
-      overflow-wrap: anywhere;
-    }
-
-    .pill {
-      display: inline-block;
-      padding: 4px 8px;
-      border: 1px solid var(--line);
-      border-radius: 30px;
-      font-size: 9px;
-      font-weight: 800;
-      white-space: nowrap;
-    }
-
-    .pill-good {
-      color: var(--green);
-      border-color: #32694e;
-    }
-
-    .pill-pending {
-      color: var(--yellow);
-      border-color: #705a2a;
-    }
-
-    .pill-bad {
-      color: var(--red);
-      border-color: #6a3841;
-    }
-
-    .empty {
-      padding: 25px 10px;
-      text-align: center;
-      color: var(--muted);
-    }
-
-    .footer {
-      text-align: center;
-      color: var(--muted);
-      font-size: 10px;
-      padding: 20px 0;
-    }
-
-    .toast {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translate(-50%, 15px);
-      opacity: 0;
-      pointer-events: none;
-      padding: 12px 17px;
-      border: 1px solid var(--gold);
-      border-radius: 10px;
-      background: var(--panel2);
-      font-size: 12px;
-      z-index: 100;
-      transition: .2s;
-      max-width: 90%;
-    }
-
-    .toast.show {
-      opacity: 1;
-      transform: translate(-50%, 0);
-    }
-
-    @media (max-width: 1050px) {
-      .stats {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .content-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 700px) {
-      .app {
-        display: block;
-      }
-
-      .sidebar {
-        position: fixed;
-        top: auto;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        width: 100%;
-        height: auto;
-        padding: 6px 4px;
-        z-index: 50;
-        border-right: 0;
-        border-top: 1px solid var(--line);
-        background: var(--ink);
-      }
-
-      .brand,
-      .sidebar-bottom {
-        display: none;
-      }
-
-      .nav {
-        display: flex;
-        justify-content: space-around;
-        gap: 0;
-      }
-
-      .nav a,
-      .nav button {
-        flex: 1;
-        justify-content: center;
-        text-align: center;
-        flex-direction: column;
-        gap: 3px;
-        padding: 8px 3px;
-        font-size: 9px;
-      }
-
-      main {
-        padding: 20px 13px 100px;
-      }
-
-      h1 {
-        font-size: 30px;
-      }
-
-      .stats {
-        gap: 9px;
-      }
-
-      .card {
-        padding: 14px;
-      }
-
-      .stat-number {
-        font-size: 28px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AITIVEST Admin Dashboard</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg: #0A1428;
+  --sidebar: #0B162D;
+  --card: #101D38;
+  --card-hover: #17284B;
+  --border: #243559;
+  --gold: #D4A64A;
+  --gold-light: #EBD29A;
+  --text: #EAF0FA;
+  --muted: #94A3BD;
+  --green: #53D6A0;
+  --red: #FF777F;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Manrope', sans-serif;
+  min-height: 100vh;
+}
+
+button, a {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.layout {
+  min-height: 100vh;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 100vh;
+  padding: 25px 17px;
+  background: var(--sidebar);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  overflow-y: auto;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 5px 10px 28px;
+  border-bottom: 1px solid var(--border);
+}
+
+.brand-icon {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, var(--gold-light), var(--gold));
+  color: #101827;
+  border-radius: 12px;
+  font-weight: 800;
+  font-size: 21px;
+}
+
+.brand-name {
+  font-family: 'Instrument Serif', serif;
+  font-size: 25px;
+  letter-spacing: 1px;
+}
+
+.brand-label {
+  color: var(--muted);
+  font-size: 10px;
+  margin-top: 3px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.nav-label {
+  margin: 27px 11px 12px;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 13px 14px;
+  margin-bottom: 5px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+  transition: .2s;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: var(--gold-light);
+  background: rgba(212,166,74,.10);
+  border-color: rgba(212,166,74,.20);
+}
+
+.nav-icon {
+  width: 21px;
+  text-align: center;
+  font-size: 17px;
+}
+
+.sidebar-bottom {
+  margin-top: auto;
+  padding-top: 20px;
+}
+
+.admin-profile {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 15px 9px;
+  margin-bottom: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.avatar {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  background: #263755;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  color: var(--gold-light);
+  font-weight: 800;
+}
+
+.admin-name {
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.admin-role {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.signout {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: transparent;
+  color: var(--red);
+  cursor: pointer;
+  text-align: left;
+}
+
+.main {
+  margin-left: 250px;
+  min-width: 0;
+  padding: 30px;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.page-eyebrow {
+  color: var(--gold);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+h1 {
+  margin-top: 7px;
+  font-family: 'Instrument Serif', serif;
+  font-size: clamp(29px, 4vw, 39px);
+  font-weight: 400;
+}
+
+.subtitle {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.top-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.admin-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 13px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--green);
+}
+
+.menu-button {
+  display: none;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--gold-light);
+  border-radius: 9px;
+  padding: 10px 13px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  min-width: 0;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+}
+
+.stat-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.stat-label {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.stat-icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 35px;
+  height: 35px;
+  border-radius: 10px;
+  color: var(--gold-light);
+  background: rgba(212,166,74,.12);
+}
+
+.stat-value {
+  margin-top: 19px;
+  font-family: 'Instrument Serif', serif;
+  font-size: 32px;
+  overflow-wrap: anywhere;
+}
+
+.stat-note {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(260px, .9fr);
+  gap: 20px;
+  margin-bottom: 22px;
+}
+
+.panel {
+  min-width: 0;
+  padding: 22px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+
+.panel-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.panel-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 23px;
+  font-weight: 400;
+}
+
+.panel-caption {
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.text-link {
+  color: var(--gold-light);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.review-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 15px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.review-item:last-child {
+  border-bottom: 0;
+}
+
+.review-icon {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 11px;
+  background: rgba(212,166,74,.10);
+  color: var(--gold-light);
+}
+
+.review-title {
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.review-description {
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+.review-count {
+  margin-left: auto;
+  padding: 6px 9px;
+  border-radius: 7px;
+  background: rgba(255,119,127,.10);
+  color: var(--red);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.quick-links {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.quick-link {
+  display: block;
+  padding: 17px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  transition: .2s;
+}
+
+.quick-link:hover {
+  border-color: var(--gold);
+  transform: translateY(-2px);
+}
+
+.quick-link-icon {
+  margin-bottom: 13px;
+  color: var(--gold);
+  font-size: 20px;
+}
+
+.quick-link-title {
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.quick-link-description {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  white-space: nowrap;
+}
+
+th {
+  padding: 13px 12px;
+  color: var(--muted);
+  font-size: 10px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+td {
+  padding: 16px 12px;
+  font-size: 11px;
+  border-bottom: 1px solid var(--border);
+}
+
+.empty-state {
+  padding: 25px 10px;
+  color: var(--muted);
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+.footer-note {
+  margin-top: 22px;
+  color: var(--muted);
+  text-align: center;
+  font-size: 10px;
+  line-height: 1.8;
+}
+
+.overlay {
+  display: none;
+}
+
+@media (max-width: 1100px) {
+  .stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform .25s ease;
+    width: 270px;
+    box-shadow: none;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+    box-shadow: 20px 0 60px rgba(0,0,0,.35);
+  }
+
+  .overlay.show {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    background: rgba(0,0,0,.65);
+  }
+
+  .main {
+    margin-left: 0;
+    padding: 20px 15px 30px;
+  }
+
+  .menu-button {
+    display: inline-block;
+  }
+
+  .topbar {
+    align-items: flex-start;
+  }
+
+  .admin-status {
+    display: none;
+  }
+
+  .stats {
+    gap: 10px;
+  }
+
+  .stat-card {
+    padding: 15px;
+  }
+
+  .stat-value {
+    font-size: 27px;
+  }
+
+  .panel {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 380px) {
+  .stats {
+    grid-template-columns: 1fr;
+  }
+
+  .quick-links {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
 </head>
 
 <body>
-<div class="app">
 
-  <aside class="sidebar">
-    <div class="brand">
+<div class="layout">
+
+  <aside class="sidebar" id="sidebar">
+
+    <a class="brand" href="admin.html">
       <div class="brand-icon">A</div>
-      <div class="brand-name">AITIVEST</div>
-      <span class="admin-badge">ADMIN</span>
-    </div>
+      <div>
+        <div class="brand-name">AITIVEST</div>
+        <div class="brand-label">Administration</div>
+      </div>
+    </a>
 
-    <nav class="nav">
-      <a class="active" href="admin.html">▦ Overview</a>
-      <a href="admin-users.html">♙ Users</a>
-      <a href="admin-deposits.html">＋ Deposits</a>
-      <a href="admin-withdrawals.html">↗ Withdrawals</a>
-      <a href="admin-transactions.html">⇄ Transactions</a>
-      <a href="admin-support.html">✉ Support</a>
-      <a href="admin-security.html">⌕ Security logs</a>
-      <a href="admin-settings.html">⚙ Settings</a>
-      <button id="signOutButton">⇥ Sign out</button>
+    <div class="nav-label">Main Menu</div>
+
+    <nav>
+      <a class="nav-link active" href="admin.html">
+        <span class="nav-icon">▦</span> Overview
+      </a>
+
+      <a class="nav-link" href="admin-users.html">
+        <span class="nav-icon">♙</span> Users
+      </a>
+
+      <a class="nav-link" href="admin-deposits.html">
+        <span class="nav-icon">↓</span> Deposits
+      </a>
+
+      <a class="nav-link" href="admin-withdrawals.html">
+        <span class="nav-icon">↑</span> Withdrawals
+      </a>
+
+      <a class="nav-link" href="admin-transactions.html">
+        <span class="nav-icon">⇄</span> Transactions
+      </a>
+
+      <div class="nav-label">Management</div>
+
+      <a class="nav-link" href="admin-support.html">
+        <span class="nav-icon">✉</span> Support
+      </a>
+
+      <a class="nav-link" href="admin-security.html">
+        <span class="nav-icon">♧</span> Security Logs
+      </a>
+
+      <a class="nav-link" href="admin-settings.html">
+        <span class="nav-icon">⚙</span> Settings
+      </a>
     </nav>
 
     <div class="sidebar-bottom">
-      <strong id="adminEmail">Administrator</strong>
-      <small>Authorized admin session</small>
+      <div class="admin-profile">
+        <div class="avatar">AD</div>
+        <div>
+          <div class="admin-name">Administrator</div>
+          <div class="admin-role">Admin access</div>
+        </div>
+      </div>
+
+      <button class="signout" id="signOutButton" type="button">
+        ↪ &nbsp; Sign Out
+      </button>
     </div>
+
   </aside>
 
-  <main>
+  <div class="overlay" id="overlay"></div>
+
+  <main class="main">
+
     <header class="topbar">
-      <h1>Overview</h1>
+      <div>
+        <div class="page-eyebrow">Administration / Overview</div>
+        <h1>Dashboard Overview</h1>
+        <p class="subtitle">
+          Welcome to the AITIVEST administration panel.
+        </p>
+      </div>
 
       <div class="top-actions">
-        <button class="btn" id="refreshButton">↻ Refresh</button>
-        <button class="btn btn-danger" id="topSignOut">Sign out</button>
+        <div class="admin-status">
+          <span class="status-dot"></span>
+          Admin panel layout
+        </div>
+
+        <button class="menu-button" id="menuButton"
+          type="button" aria-label="Open navigation menu"
+          aria-expanded="false">
+          ☰
+        </button>
       </div>
     </header>
 
-    <div id="pageError" class="notice error hidden"></div>
-    <div id="pageSuccess" class="notice success hidden"></div>
-
     <section class="stats">
-      <article class="card">
-        <div class="stat-label">Users returned</div>
-        <div class="stat-number" id="totalUsers">—</div>
-        <div class="stat-note">Latest admin user-list result</div>
+
+      <article class="stat-card">
+        <div class="stat-top">
+          <div class="stat-label">Registered Users</div>
+          <div class="stat-icon">♙</div>
+        </div>
+        <div class="stat-value">—</div>
+        <div class="stat-note">Connect to live user data</div>
       </article>
 
-      <article class="card">
-        <div class="stat-label">Confirmed deposits</div>
-        <div class="stat-number" id="confirmedDeposits">—</div>
-        <div class="stat-note">Records with confirmed status</div>
+      <article class="stat-card">
+        <div class="stat-top">
+          <div class="stat-label">Confirmed Deposits</div>
+          <div class="stat-icon">↓</div>
+        </div>
+        <div class="stat-value">—</div>
+        <div class="stat-note">Connect to confirmed deposits</div>
       </article>
 
-      <article class="card">
-        <div class="stat-label">Pending deposits</div>
-        <div class="stat-number" id="pendingDeposits">—</div>
-        <div class="stat-note">Awaiting review</div>
+      <article class="stat-card">
+        <div class="stat-top">
+          <div class="stat-label">Pending Deposits</div>
+          <div class="stat-icon">◷</div>
+        </div>
+        <div class="stat-value">—</div>
+        <div class="stat-note">Awaiting administrator review</div>
       </article>
 
-      <article class="card">
-        <div class="stat-label">Pending withdrawals</div>
-        <div class="stat-number gold-text" id="pendingWithdrawals">—</div>
-        <div class="stat-note">Awaiting review</div>
+      <article class="stat-card">
+        <div class="stat-top">
+          <div class="stat-label">Pending Withdrawals</div>
+          <div class="stat-icon">↑</div>
+        </div>
+        <div class="stat-value">—</div>
+        <div class="stat-note">Awaiting administrator review</div>
       </article>
+
     </section>
 
     <section class="content-grid">
 
-      <article class="card">
-        <div class="card-heading">
-          <h2>Needs review</h2>
-          <span class="muted">Live database records</span>
+      <article class="panel">
+        <div class="panel-heading">
+          <div>
+            <h2 class="panel-title">Needs Attention</h2>
+            <p class="panel-caption">
+              Open a management page to review requests.
+            </p>
+          </div>
         </div>
 
-        <ul class="list" id="reviewList">
-          <li><span>Loading requests...</span><span>—</span></li>
-        </ul>
+        <a class="review-item" href="admin-deposits.html">
+          <div class="review-icon">↓</div>
+          <div>
+            <div class="review-title">Deposit Requests</div>
+            <div class="review-description">
+              Review submitted deposits and their confirmation details.
+            </div>
+          </div>
+          <span class="review-count">Open</span>
+        </a>
+
+        <a class="review-item" href="admin-withdrawals.html">
+          <div class="review-icon">↑</div>
+          <div>
+            <div class="review-title">Withdrawal Requests</div>
+            <div class="review-description">
+              Review withdrawals and make authorized decisions.
+            </div>
+          </div>
+          <span class="review-count">Open</span>
+        </a>
+
+        <a class="review-item" href="admin-support.html">
+          <div class="review-icon">✉</div>
+          <div>
+            <div class="review-title">Support Requests</div>
+            <div class="review-description">
+              View customer enquiries and support tickets.
+            </div>
+          </div>
+          <span class="review-count">Open</span>
+        </a>
       </article>
 
-      <article class="card">
-        <div class="card-heading">
-          <h2>Quick actions</h2>
+      <article class="panel">
+        <div class="panel-heading">
+          <div>
+            <h2 class="panel-title">Quick Actions</h2>
+            <p class="panel-caption">Navigate to admin tools.</p>
+          </div>
         </div>
 
-        <ul class="list">
-          <li>
-            <span>Manage registered users</span>
-            <a class="btn" href="admin-users.html">Open</a>
-          </li>
+        <div class="quick-links">
 
-          <li>
-            <span>Review deposits</span>
-            <a class="btn" href="admin-deposits.html">Open</a>
-          </li>
+          <a class="quick-link" href="admin-users.html">
+            <div class="quick-link-icon">♙</div>
+            <div class="quick-link-title">Manage Users</div>
+            <div class="quick-link-description">
+              Review user accounts.
+            </div>
+          </a>
 
-          <li>
-            <span>Review withdrawals</span>
-            <a class="btn btn-primary" href="admin-withdrawals.html">Open</a>
-          </li>
+          <a class="quick-link" href="admin-deposits.html">
+            <div class="quick-link-icon">↓</div>
+            <div class="quick-link-title">Deposits</div>
+            <div class="quick-link-description">
+              Open deposit requests.
+            </div>
+          </a>
 
-          <li>
-            <span>Inspect security logs</span>
-            <a class="btn" href="admin-security.html">Open</a>
-          </li>
-        </ul>
+          <a class="quick-link" href="admin-withdrawals.html">
+            <div class="quick-link-icon">↑</div>
+            <div class="quick-link-title">Withdrawals</div>
+            <div class="quick-link-description">
+              Open withdrawal requests.
+            </div>
+          </a>
 
-        <p class="muted" style="margin-top:15px">
-          Financial totals will only be displayed when their database source is verified.
-        </p>
+          <a class="quick-link" href="admin-security.html">
+            <div class="quick-link-icon">♧</div>
+            <div class="quick-link-title">Security Logs</div>
+            <div class="quick-link-description">
+              Inspect available security records.
+            </div>
+          </a>
+
+        </div>
       </article>
 
     </section>
 
-    <section class="card">
-      <div class="card-heading">
-        <h2>Newest users</h2>
-        <a class="btn" href="admin-users.html">View all</a>
+    <section class="panel">
+      <div class="panel-heading">
+        <div>
+          <h2 class="panel-title">Recent Activity</h2>
+          <p class="panel-caption">
+            Live records will appear here when connected to Supabase.
+          </p>
+        </div>
+
+        <a class="text-link" href="admin-transactions.html">
+          View transactions →
+        </a>
       </div>
 
       <div class="table-wrap">
         <table>
           <thead>
             <tr>
-              <th>User</th>
-              <th>Joined</th>
-              <th>Status</th>
+              <th>ACTIVITY</th>
+              <th>REFERENCE</th>
+              <th>STATUS</th>
+              <th>DATE</th>
             </tr>
           </thead>
 
-          <tbody id="newUsers">
-            <tr><td colspan="3" class="empty">Loading users...</td></tr>
+          <tbody>
+            <tr>
+              <td colspan="4" class="empty-state">
+                No live activity is connected to this layout yet.<br>
+                This page currently displays the dashboard design only.
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
     </section>
 
-    <div class="footer">
-      AITIVEST Administration · Secure access only
+    <div class="footer-note">
+      AITIVEST Administration · Secure access required<br>
+      Financial actions must be handled by verified server-side procedures.
     </div>
+
   </main>
 </div>
 
-<div id="toast" class="toast" role="status"></div>
-
 <script>
-"use strict";
+const sidebar = document.getElementById("sidebar");
+const overlay = document.getElementById("overlay");
+const menuButton = document.getElementById("menuButton");
 
-/*
- * AITIVEST ADMIN DASHBOARD
- *
- * This page uses the existing Supabase project.
- * The publishable/anon key is intended for browser use.
- * Never put a Supabase service-role key in frontend code.
- */
-
-const SUPABASE_URL =
-  "https://rihvvwktvgytbqzazage.supabase.co";
-
-/*
- * Use the same publishable key already configured in your
- * working AITIVEST/Nexora admin.html.
- *
- * If the key below is not the key currently used by your project,
- * replace it with your existing publishable/anon key.
- */
-const SUPABASE_PUBLISHABLE_KEY =
-  "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
-
-const db = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_PUBLISHABLE_KEY
-);
-
-const $ = id => document.getElementById(id);
-
-function escapeHTML(value) {
-  return String(value ?? "").replace(/[&<>"']/g, char => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#39;"
-  })[char]);
+function openMenu() {
+  sidebar.classList.add("open");
+  overlay.classList.add("show");
+  menuButton.setAttribute("aria-expanded", "true");
 }
 
-function formatDate(value) {
-  if (!value) return "—";
-
-  const date = new Date(value);
-
-  return Number.isNaN(date.getTime())
-    ? "—"
-    : date.toLocaleDateString();
+function closeMenu() {
+  sidebar.classList.remove("open");
+  overlay.classList.remove("show");
+  menuButton.setAttribute("aria-expanded", "false");
 }
 
-function normalizeStatus(value) {
-  return String(value ?? "UNKNOWN").trim().toUpperCase();
-}
-
-function statusPill(value) {
-  const current = normalizeStatus(value);
-
-  let className = "";
-
-  if (
-    ["ACTIVE", "APPROVED", "CONFIRMED", "COMPLETED", "SUCCESS"]
-      .includes(current)
-  ) {
-    className = "pill-good";
-  } else if (
-    ["PENDING", "UNDER_REVIEW", "PROCESSING"]
-      .includes(current)
-  ) {
-    className = "pill-pending";
-  } else if (
-    ["REJECTED", "FAILED", "CANCELLED", "SUSPENDED"]
-      .includes(current)
-  ) {
-    className = "pill-bad";
+menuButton.addEventListener("click", () => {
+  if (sidebar.classList.contains("open")) {
+    closeMenu();
+  } else {
+    openMenu();
   }
+});
 
-  return `<span class="pill ${className}">${escapeHTML(current.replaceAll("_", " "))}</span>`;
-}
+overlay.addEventListener("click", closeMenu);
 
-function showToast(message) {
-  const element = $("toast");
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape") closeMenu();
+});
 
-  element.textContent = message;
-  element.classList.add("show");
+document.querySelectorAll(".nav-link").forEach(link => {
+  link.addEventListener("click", () => {
+    if (window.innerWidth <= 760) closeMenu();
+  });
+});
 
-  clearTimeout(window.toastTimer);
-
-  window.toastTimer = setTimeout(() => {
-    element.classList.remove("show");
-  }, 3500);
-}
-
-function showPageError(message) {
-  const element = $("pageError");
-
-  element.textContent = message;
-  element.classList.remove("hidden");
-}
-
-function clearPageError() {
-  $("pageError").textContent = "";
-  $("pageError").classList.add("hidden");
-}
-
-/*
- * Security boundary:
- * A valid login is not enough.
- * Supabase must also confirm that the signed-in user is an admin.
- */
-async function verifyAdmin() {
-  const { data, error } = await db.auth.getSession();
-
-  if (error) throw error;
-
-  if (!data.session) {
-    location.replace("admin-login.html");
-    return false;
-  }
-
-  const result = await db.rpc("is_current_user_admin");
-
-  if (result.error) {
-    throw result.error;
-  }
-
-  if (result.data !== true) {
-    await db.auth.signOut();
-
-    location.replace("admin-login.html?denied=1");
-
-    return false;
-  }
-
-  $("adminEmail").textContent =
-    data.session.user.email || "Administrator";
-
-  return true;
-}
-
-/*
- * Load dashboard information.
- * No hardcoded sample financial figures are used.
- */
-async function loadDashboard() {
-  clearPageError();
-
-  $("totalUsers").textContent = "—";
-  $("confirmedDeposits").textContent = "—";
-  $("pendingDeposits").textContent = "—";
-  $("pendingWithdrawals").textContent = "—";
-
-  $("newUsers").innerHTML =
-    '<tr><td colspan="3" class="empty">Loading users...</td></tr>';
-
-  $("reviewList").innerHTML =
-    '<li><span>Loading requests...</span><span>—</span></li>';
-
-  const errors = [];
-
-  /*
-   * The existing project should expose this admin-only RPC.
-   * If the actual parameter names differ, use the signature
-   * already configured in your database.
-   */
-  try {
-    const result = await db.rpc("admin_list_users", {
-      p_search: "",
-      p_limit: 10,
-      p_offset: 0
-    });
-
-    if (result.error) throw result.error;
-
-    const users = Array.isArray(result.data)
-      ? result.data
-      : result.data
-        ? [result.data]
-        : [];
-
-    $("totalUsers").textContent = users.length.toLocaleString();
-
-    if (!users.length) {
-      $("newUsers").innerHTML =
-        '<tr><td colspan="3" class="empty">No user records returned.</td></tr>';
-    } else {
-      $("newUsers").innerHTML = users.slice(0, 5).map(user => {
-        const email =
-          user.email ||
-          user.user_email ||
-          "Email unavailable";
-
-        const name =
-          user.full_name ||
-          user.name ||
-          user.username ||
-          email.split("@")[0];
-
-        const joined =
-          user.created_at ||
-          user.joined_at;
-
-        const userStatus =
-          user.status ||
-          user.account_status ||
-          user.user_status ||
-          "UNKNOWN";
-
-        return `
-          <tr>
-            <td>
-              <div class="user">
-                <div class="avatar">
-                  ${escapeHTML(name.slice(0, 2).toUpperCase())}
-                </div>
-
-                <div>
-                  <div class="user-name">${escapeHTML(name)}</div>
-                  <div class="user-email">${escapeHTML(email)}</div>
-                </div>
-              </div>
-            </td>
-
-            <td>${escapeHTML(formatDate(joined))}</td>
-
-            <td>${statusPill(userStatus)}</td>
-          </tr>
-        `;
-      }).join("");
-    }
-  } catch (error) {
-    errors.push("Users: " + (error.message || String(error)));
-
-    $("newUsers").innerHTML =
-      '<tr><td colspan="3" class="empty">User records could not be loaded.</td></tr>';
-  }
-
-  /*
-   * The following queries depend on the existing deposits
-   * and withdrawals tables and their column names.
-   */
-  try {
-    const [depositResult, withdrawalResult] = await Promise.all([
-      db.from("deposits")
-        .select("id,status")
-        .limit(500),
-
-      db.from("withdrawals")
-        .select("id,status")
-        .limit(500)
-    ]);
-
-    if (depositResult.error) throw depositResult.error;
-    if (withdrawalResult.error) throw withdrawalResult.error;
-
-    const deposits = depositResult.data || [];
-    const withdrawals = withdrawalResult.data || [];
-
-    const confirmed = deposits.filter(
-      item => normalizeStatus(item.status) === "CONFIRMED"
-    ).length;
-
-    const pendingDep = deposits.filter(
-      item => normalizeStatus(item.status) === "PENDING"
-    ).length;
-
-    const pendingWith = withdrawals.filter(
-      item => normalizeStatus(item.status) === "PENDING"
-    ).length;
-
-    $("confirmedDeposits").textContent = confirmed.toLocaleString();
-    $("pendingDeposits").textContent = pendingDep.toLocaleString();
-    $("pendingWithdrawals").textContent = pendingWith.toLocaleString();
-
-    $("reviewList").innerHTML = `
-      <li>
-        <span>Pending deposits</span>
-        <strong>${pendingDep}</strong>
-      </li>
-
-      <li>
-        <span>Pending withdrawals</span>
-        <strong>${pendingWith}</strong>
-      </li>
-    `;
-  } catch (error) {
-    errors.push("Requests: " + (error.message || String(error)));
-
-    $("reviewList").innerHTML =
-      '<li><span>Request counts unavailable</span><span>—</span></li>';
-  }
-
-  if (errors.length) {
-    showPageError(
-      "Some dashboard information could not be loaded. " +
-      errors.join(" | ")
-    );
-  }
-}
-
-/*
- * Sign-out action.
- */
-async function signOut() {
-  if (!confirm("Are you sure you want to sign out?")) return;
-
-  try {
-    const { data } = await db.auth.getSession();
-
-    if (data.session) {
-      await db.rpc("admin_write_security_log", {
-        p_action: "ADMIN_SIGN_OUT",
-        p_target_type: "admin",
-        p_target_id: String(data.session.user.id),
-        p_details: {},
-        p_success: true
-      });
-    }
-  } catch (error) {
-    console.error("Security log error:", error);
-  }
-
-  await db.auth.signOut();
-
-  location.replace("admin-login.html");
-}
-
-/*
- * Start only after server-side admin verification.
- */
-async function startDashboard() {
-  try {
-    const authorized = await verifyAdmin();
-
-    if (!authorized) return;
-
-    await loadDashboard();
-  } catch (error) {
-    console.error("Dashboard initialization failed:", error);
-
-    showPageError(
-      "Admin verification or dashboard loading failed: " +
-      (error.message || String(error))
-    );
-  }
-}
-
-$("refreshButton").addEventListener("click", loadDashboard);
-$("signOutButton").addEventListener("click", signOut);
-$("topSignOut").addEventListener("click", signOut);
-
-startDashboard();
+document.getElementById("signOutButton").addEventListener("click", () => {
+  alert(
+    "Sign-out is not connected in this layout. " +
+    "Keep your existing authenticated sign-out handler."
+  );
+});
 </script>
+
 </body>
 </html>
