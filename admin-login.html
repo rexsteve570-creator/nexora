@@ -1,0 +1,468 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>AITIVEST | Administrator Login</title>  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">  <style>
+    :root {
+      --bg: #050b18;
+      --panel: #0d1b31;
+      --gold: #d6ad55;
+      --gold2: #f0cf7a;
+      --text: #f5f7fb;
+      --muted: #9da8ba;
+      --border: rgba(214,173,85,.22);
+      --danger: #ff777f;
+      --success: #53d6a0;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(ellipse at 50% 0%, #172847 0%, transparent 58%),
+        var(--bg);
+      color: var(--text);
+      font-family: Manrope, Arial, sans-serif;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 430px;
+      padding: 32px 27px;
+      background: rgba(13,27,49,.97);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      box-shadow: 0 24px 80px rgba(0,0,0,.4);
+    }
+
+    .brand {
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    .brand-mark {
+      width: 55px;
+      height: 55px;
+      margin: 0 auto 12px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--gold);
+      border-radius: 15px;
+      color: var(--gold2);
+      font: 32px "Instrument Serif", serif;
+    }
+
+    .brand-name {
+      margin: 0;
+      color: var(--gold2);
+      font-size: 25px;
+      font-weight: 800;
+      letter-spacing: 4px;
+    }
+
+    .brand-subtitle {
+      margin-top: 9px;
+      color: var(--muted);
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      text-align: center;
+      font: 36px "Instrument Serif", serif;
+    }
+
+    .intro {
+      margin: 0 0 26px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.8;
+      text-align: center;
+    }
+
+    label {
+      display: block;
+      margin: 18px 0 8px;
+      color: #dce4f2;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    input {
+      width: 100%;
+      min-height: 49px;
+      padding: 13px 14px;
+      border: 1px solid rgba(157,168,186,.25);
+      border-radius: 10px;
+      outline: none;
+      background: #081326;
+      color: var(--text);
+      font: inherit;
+      font-size: 14px;
+    }
+
+    input:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(214,173,85,.1);
+    }
+
+    .password-wrap {
+      position: relative;
+    }
+
+    .password-wrap input {
+      padding-right: 75px;
+    }
+
+    .toggle-password {
+      position: absolute;
+      top: 50%;
+      right: 12px;
+      transform: translateY(-50%);
+      padding: 8px 0;
+      border: 0;
+      background: transparent;
+      color: var(--gold2);
+      font-size: 11px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .forgot {
+      display: block;
+      margin-top: 13px;
+      color: var(--gold2);
+      font-size: 12px;
+      text-align: right;
+      text-decoration: none;
+    }
+
+    .forgot:hover {
+      text-decoration: underline;
+    }
+
+    .submit {
+      width: 100%;
+      min-height: 50px;
+      margin-top: 24px;
+      border: 0;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      color: #101726;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .submit:disabled {
+      opacity: .65;
+      cursor: wait;
+    }
+
+    .message {
+      display: none;
+      margin-top: 17px;
+      padding: 12px;
+      border-radius: 9px;
+      font-size: 12px;
+      line-height: 1.7;
+      overflow-wrap: anywhere;
+    }
+
+    .message.error {
+      display: block;
+      border: 1px solid rgba(255,119,127,.3);
+      background: rgba(255,119,127,.08);
+      color: #ffb4b8;
+    }
+
+    .message.success {
+      display: block;
+      border: 1px solid rgba(83,214,160,.3);
+      background: rgba(83,214,160,.08);
+      color: #8de8c0;
+    }
+
+    .security-note {
+      margin-top: 25px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.8;
+      text-align: center;
+    }
+
+    @media (max-width: 400px) {
+      .card {
+        padding: 27px 20px;
+      }
+    }
+  </style></head><body>
+  <main class="card">
+    <header class="brand">
+      <div class="brand-mark">A</div>
+      <p class="brand-name">AITIVEST</p>
+      <div class="brand-subtitle">Administrator Portal</div>
+    </header><h1>Welcome back</h1>
+<p class="intro">
+  Sign in to access the AITIVEST administration dashboard.
+</p>
+
+<form id="loginForm">
+  <label for="email">Administrator email</label>
+  <input
+    id="email"
+    type="email"
+    placeholder="Enter your email address"
+    autocomplete="username"
+    required
+  >
+
+  <label for="password">Password</label>
+  <div class="password-wrap">
+    <input
+      id="password"
+      type="password"
+      placeholder="Enter your password"
+      autocomplete="current-password"
+      required
+    >
+    <button
+      type="button"
+      class="toggle-password"
+      id="togglePassword"
+      aria-label="Show password"
+    >SHOW</button>
+  </div>
+
+  <a href="#" class="forgot" id="forgotPassword">Forgot password?</a>
+
+  <button class="submit" id="submitButton" type="submit">
+    SIGN IN SECURELY
+  </button>
+
+  <div
+    class="message"
+    id="message"
+    role="status"
+    aria-live="polite"
+  ></div>
+</form>
+
+<div class="security-note">
+  Restricted administrator access.<br>
+  Only accounts authorized by the database can access the dashboard.
+</div>
+
+  </main>  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>  <script>
+    "use strict";
+
+    const SUPABASE_URL =
+      "https://rihvvwktvgytbqzazage.supabase.co";
+
+    const SUPABASE_PUBLISHABLE_KEY =
+      "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
+
+    const loginForm = document.getElementById("loginForm");
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const submitButton = document.getElementById("submitButton");
+    const messageBox = document.getElementById("message");
+
+    const db = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_PUBLISHABLE_KEY
+    );
+
+    function showMessage(text, type) {
+      messageBox.textContent = text;
+      messageBox.className = "message " + type;
+    }
+
+    function setLoading(loading) {
+      submitButton.disabled = loading;
+      submitButton.textContent = loading
+        ? "VERIFYING ACCESS..."
+        : "SIGN IN SECURELY";
+    }
+
+    async function checkAdministrator() {
+      const { data: sessionData, error: sessionError } =
+        await db.auth.getSession();
+
+      if (sessionError || !sessionData.session) {
+        return {
+          allowed: false,
+          reason: "No active session."
+        };
+      }
+
+      const { data, error } =
+        await db.rpc("is_current_user_admin");
+
+      if (error) {
+        console.error("Administrator verification error:", error);
+
+        return {
+          allowed: false,
+          reason: "Administrator verification failed."
+        };
+      }
+
+      return {
+        allowed: data === true,
+        reason: data === true
+          ? "Administrator verified."
+          : "This account is not an administrator."
+      };
+    }
+
+    document
+      .getElementById("togglePassword")
+      .addEventListener("click", function () {
+        const show = passwordInput.type === "password";
+
+        passwordInput.type = show ? "text" : "password";
+        this.textContent = show ? "HIDE" : "SHOW";
+        this.setAttribute(
+          "aria-label",
+          show ? "Hide password" : "Show password"
+        );
+      });
+
+    document
+      .getElementById("forgotPassword")
+      .addEventListener("click", async function (event) {
+        event.preventDefault();
+
+        const email = emailInput.value.trim();
+
+        if (!email) {
+          showMessage(
+            "Enter your account email address first.",
+            "error"
+          );
+          emailInput.focus();
+          return;
+        }
+
+        showMessage("Requesting password reset...", "success");
+
+        try {
+          const { error } =
+            await db.auth.resetPasswordForEmail(email, {
+              redirectTo: window.location.origin +
+                "/admin-login.html"
+            });
+
+          if (error) {
+            console.error("Password reset error:", error);
+
+            showMessage(
+              "Unable to request a password reset. Check your connection and Supabase configuration.",
+              "error"
+            );
+            return;
+          }
+
+          showMessage(
+            "If an account exists for that email, password-reset instructions will be sent. Check your inbox and spam folder.",
+            "success"
+          );
+        } catch (error) {
+          console.error(error);
+
+          showMessage(
+            "A connection error occurred. Please try again.",
+            "error"
+          );
+        }
+      });
+
+    loginForm.addEventListener("submit", async function (event) {
+      event.preventDefault();
+
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+
+      if (!email || !password) {
+        showMessage("Enter your email and password.", "error");
+        return;
+      }
+
+      setLoading(true);
+      showMessage("Checking your credentials...", "success");
+
+      try {
+        const { error: loginError } =
+          await db.auth.signInWithPassword({
+            email,
+            password
+          });
+
+        if (loginError) {
+          console.error("Sign-in error:", loginError);
+
+          showMessage(
+            "Sign-in failed. Check your email and password, then try again.",
+            "error"
+          );
+          return;
+        }
+
+        const result = await checkAdministrator();
+
+        if (!result.allowed) {
+          await db.auth.signOut();
+
+          showMessage(
+            "Access denied. Your account is not authorized as an AITIVEST administrator. If you should have access, verify your admin role in the database.",
+            "error"
+          );
+          return;
+        }
+
+        showMessage(
+          "Administrator verified. Opening dashboard...",
+          "success"
+        );
+
+        window.location.replace("admin.html");
+      } catch (error) {
+        console.error("Login error:", error);
+
+        showMessage(
+          "Unable to connect. Check your internet connection and try again.",
+          "error"
+        );
+      } finally {
+        setLoading(false);
+      }
+    });
+
+    (async function redirectExistingAdmin() {
+      try {
+        const result = await checkAdministrator();
+
+        if (result.allowed) {
+          window.location.replace("admin.html");
+        }
+      } catch (error) {
+        console.error("Session verification error:", error);
+      }
+    })();
+  </script></body>
+</html>
