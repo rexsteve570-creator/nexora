@@ -1,14 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AITIVEST Admin Dashboard</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-<style>
+<meta name="robots" content="noindex, nofollow">
+<title>AITIVEST Admin Dashboard</title><link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet"><style>
 :root {
   --bg: #0A1428;
   --sidebar: #0B162D;
@@ -43,6 +39,12 @@ button, a {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--gold-light);
+  outline-offset: 3px;
 }
 
 .layout {
@@ -163,6 +165,7 @@ a {
 .admin-name {
   font-size: 12px;
   font-weight: 800;
+  overflow-wrap: anywhere;
 }
 
 .admin-role {
@@ -182,6 +185,11 @@ a {
   text-align: left;
 }
 
+.signout:disabled {
+  opacity: .6;
+  cursor: wait;
+}
+
 .main {
   margin-left: 250px;
   min-width: 0;
@@ -193,7 +201,7 @@ a {
   justify-content: space-between;
   align-items: center;
   gap: 15px;
-  margin-bottom: 30px;
+  margin-bottom: 25px;
 }
 
 .page-eyebrow {
@@ -238,8 +246,13 @@ h1 {
 .status-dot {
   width: 7px;
   height: 7px;
+  flex-shrink: 0;
   border-radius: 50%;
   background: var(--green);
+}
+
+.status-dot.error {
+  background: var(--red);
 }
 
 .menu-button {
@@ -251,6 +264,61 @@ h1 {
   padding: 10px 13px;
   font-size: 20px;
   cursor: pointer;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.toolbar-note {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.refresh-button {
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--card);
+  color: var(--gold-light);
+  font-size: 11px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.refresh-button:disabled {
+  opacity: .6;
+  cursor: wait;
+}
+
+.notice {
+  display: none;
+  margin-bottom: 20px;
+  padding: 13px 15px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-size: 12px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+.notice.error {
+  display: block;
+  border-color: rgba(255,119,127,.35);
+  background: rgba(255,119,127,.08);
+  color: #ffb4b8;
+}
+
+.notice.success {
+  display: block;
+  border-color: rgba(83,214,160,.35);
+  background: rgba(83,214,160,.08);
+  color: #8de8c0;
 }
 
 .stats {
@@ -303,6 +371,7 @@ h1 {
   margin-top: 8px;
   color: var(--muted);
   font-size: 10px;
+  line-height: 1.6;
 }
 
 .content-grid {
@@ -338,6 +407,7 @@ h1 {
   margin-top: 5px;
   color: var(--muted);
   font-size: 11px;
+  line-height: 1.7;
 }
 
 .text-link {
@@ -453,12 +523,29 @@ td {
   border-bottom: 1px solid var(--border);
 }
 
+.activity-description {
+  max-width: 280px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.activity-amount {
+  color: var(--gold-light);
+  font-weight: 800;
+}
+
+.activity-type {
+  color: var(--text);
+  font-weight: 700;
+}
+
 .empty-state {
   padding: 25px 10px;
   color: var(--muted);
   text-align: center;
   font-size: 12px;
   line-height: 1.8;
+  white-space: normal;
 }
 
 .footer-note {
@@ -547,81 +634,67 @@ td {
     grid-template-columns: 1fr;
   }
 }
-</style>
-</head>
-
-<body>
-
-<div class="layout">
-
-  <aside class="sidebar" id="sidebar">
-
+</style></head><body>
+<div class="layout">  <aside class="sidebar" id="sidebar">
     <a class="brand" href="admin.html">
       <div class="brand-icon">A</div>
       <div>
         <div class="brand-name">AITIVEST</div>
         <div class="brand-label">Administration</div>
       </div>
-    </a>
+    </a><div class="nav-label">Main Menu</div>
 
-    <div class="nav-label">Main Menu</div>
+<nav>
+  <a class="nav-link active" href="admin.html">
+    <span class="nav-icon">▦</span> Overview
+  </a>
 
-    <nav>
-      <a class="nav-link active" href="admin.html">
-        <span class="nav-icon">▦</span> Overview
-      </a>
+  <a class="nav-link" href="admin-users.html">
+    <span class="nav-icon">♙</span> Users
+  </a>
 
-      <a class="nav-link" href="admin-users.html">
-        <span class="nav-icon">♙</span> Users
-      </a>
+  <a class="nav-link" href="admin-deposits.html">
+    <span class="nav-icon">↓</span> Deposits
+  </a>
 
-      <a class="nav-link" href="admin-deposits.html">
-        <span class="nav-icon">↓</span> Deposits
-      </a>
+  <a class="nav-link" href="admin-withdrawals.html">
+    <span class="nav-icon">↑</span> Withdrawals
+  </a>
 
-      <a class="nav-link" href="admin-withdrawals.html">
-        <span class="nav-icon">↑</span> Withdrawals
-      </a>
+  <a class="nav-link" href="admin-transactions.html">
+    <span class="nav-icon">⇄</span> Transactions
+  </a>
 
-      <a class="nav-link" href="admin-transactions.html">
-        <span class="nav-icon">⇄</span> Transactions
-      </a>
+  <div class="nav-label">Management</div>
 
-      <div class="nav-label">Management</div>
+  <a class="nav-link" href="admin-support.html">
+    <span class="nav-icon">✉</span> Support
+  </a>
 
-      <a class="nav-link" href="admin-support.html">
-        <span class="nav-icon">✉</span> Support
-      </a>
+  <a class="nav-link" href="admin-security.html">
+    <span class="nav-icon">♧</span> Security Logs
+  </a>
 
-      <a class="nav-link" href="admin-security.html">
-        <span class="nav-icon">♧</span> Security Logs
-      </a>
+  <a class="nav-link" href="admin-settings.html">
+    <span class="nav-icon">⚙</span> Settings
+  </a>
+</nav>
 
-      <a class="nav-link" href="admin-settings.html">
-        <span class="nav-icon">⚙</span> Settings
-      </a>
-    </nav>
-
-    <div class="sidebar-bottom">
-      <div class="admin-profile">
-        <div class="avatar">AD</div>
-        <div>
-          <div class="admin-name">Administrator</div>
-          <div class="admin-role">Admin access</div>
-        </div>
-      </div>
-
-      <button class="signout" id="signOutButton" type="button">
-        ↪ &nbsp; Sign Out
-      </button>
+<div class="sidebar-bottom">
+  <div class="admin-profile">
+    <div class="avatar" id="adminAvatar">AD</div>
+    <div>
+      <div class="admin-name" id="adminName">Administrator</div>
+      <div class="admin-role">Verified admin session</div>
     </div>
+  </div>
 
-  </aside>
+  <button class="signout" id="signOutButton" type="button">
+    ↪ &nbsp; Sign Out
+  </button>
+</div>
 
-  <div class="overlay" id="overlay"></div>
-
-  <main class="main">
-
+  </aside>  <div class="overlay" id="overlay"></div>  <main class="main">
     <header class="topbar">
       <div>
         <div class="page-eyebrow">Administration / Overview</div>
@@ -629,204 +702,531 @@ td {
         <p class="subtitle">
           Welcome to the AITIVEST administration panel.
         </p>
-      </div>
-
-      <div class="top-actions">
-        <div class="admin-status">
-          <span class="status-dot"></span>
-          Admin panel layout
-        </div>
-
-        <button class="menu-button" id="menuButton"
-          type="button" aria-label="Open navigation menu"
-          aria-expanded="false">
-          ☰
-        </button>
-      </div>
-    </header>
-
-    <section class="stats">
-
-      <article class="stat-card">
-        <div class="stat-top">
-          <div class="stat-label">Registered Users</div>
-          <div class="stat-icon">♙</div>
-        </div>
-        <div class="stat-value">—</div>
-        <div class="stat-note">Connect to live user data</div>
-      </article>
-
-      <article class="stat-card">
-        <div class="stat-top">
-          <div class="stat-label">Confirmed Deposits</div>
-          <div class="stat-icon">↓</div>
-        </div>
-        <div class="stat-value">—</div>
-        <div class="stat-note">Connect to confirmed deposits</div>
-      </article>
-
-      <article class="stat-card">
-        <div class="stat-top">
-          <div class="stat-label">Pending Deposits</div>
-          <div class="stat-icon">◷</div>
-        </div>
-        <div class="stat-value">—</div>
-        <div class="stat-note">Awaiting administrator review</div>
-      </article>
-
-      <article class="stat-card">
-        <div class="stat-top">
-          <div class="stat-label">Pending Withdrawals</div>
-          <div class="stat-icon">↑</div>
-        </div>
-        <div class="stat-value">—</div>
-        <div class="stat-note">Awaiting administrator review</div>
-      </article>
-
-    </section>
-
-    <section class="content-grid">
-
-      <article class="panel">
-        <div class="panel-heading">
-          <div>
-            <h2 class="panel-title">Needs Attention</h2>
-            <p class="panel-caption">
-              Open a management page to review requests.
-            </p>
-          </div>
-        </div>
-
-        <a class="review-item" href="admin-deposits.html">
-          <div class="review-icon">↓</div>
-          <div>
-            <div class="review-title">Deposit Requests</div>
-            <div class="review-description">
-              Review submitted deposits and their confirmation details.
-            </div>
-          </div>
-          <span class="review-count">Open</span>
-        </a>
-
-        <a class="review-item" href="admin-withdrawals.html">
-          <div class="review-icon">↑</div>
-          <div>
-            <div class="review-title">Withdrawal Requests</div>
-            <div class="review-description">
-              Review withdrawals and make authorized decisions.
-            </div>
-          </div>
-          <span class="review-count">Open</span>
-        </a>
-
-        <a class="review-item" href="admin-support.html">
-          <div class="review-icon">✉</div>
-          <div>
-            <div class="review-title">Support Requests</div>
-            <div class="review-description">
-              View customer enquiries and support tickets.
-            </div>
-          </div>
-          <span class="review-count">Open</span>
-        </a>
-      </article>
-
-      <article class="panel">
-        <div class="panel-heading">
-          <div>
-            <h2 class="panel-title">Quick Actions</h2>
-            <p class="panel-caption">Navigate to admin tools.</p>
-          </div>
-        </div>
-
-        <div class="quick-links">
-
-          <a class="quick-link" href="admin-users.html">
-            <div class="quick-link-icon">♙</div>
-            <div class="quick-link-title">Manage Users</div>
-            <div class="quick-link-description">
-              Review user accounts.
-            </div>
-          </a>
-
-          <a class="quick-link" href="admin-deposits.html">
-            <div class="quick-link-icon">↓</div>
-            <div class="quick-link-title">Deposits</div>
-            <div class="quick-link-description">
-              Open deposit requests.
-            </div>
-          </a>
-
-          <a class="quick-link" href="admin-withdrawals.html">
-            <div class="quick-link-icon">↑</div>
-            <div class="quick-link-title">Withdrawals</div>
-            <div class="quick-link-description">
-              Open withdrawal requests.
-            </div>
-          </a>
-
-          <a class="quick-link" href="admin-security.html">
-            <div class="quick-link-icon">♧</div>
-            <div class="quick-link-title">Security Logs</div>
-            <div class="quick-link-description">
-              Inspect available security records.
-            </div>
-          </a>
-
-        </div>
-      </article>
-
-    </section>
-
-    <section class="panel">
-      <div class="panel-heading">
-        <div>
-          <h2 class="panel-title">Recent Activity</h2>
-          <p class="panel-caption">
-            Live records will appear here when connected to Supabase.
-          </p>
-        </div>
-
-        <a class="text-link" href="admin-transactions.html">
-          View transactions →
-        </a>
-      </div>
-
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>ACTIVITY</th>
-              <th>REFERENCE</th>
-              <th>STATUS</th>
-              <th>DATE</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <tr>
-              <td colspan="4" class="empty-state">
-                No live activity is connected to this layout yet.<br>
-                This page currently displays the dashboard design only.
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <div class="footer-note">
-      AITIVEST Administration · Secure access required<br>
-      Financial actions must be handled by verified server-side procedures.
+      </div>  <div class="top-actions">
+    <div class="admin-status" id="connectionStatus">
+      <span class="status-dot" id="statusDot"></span>
+      <span id="statusText">Verifying access...</span>
     </div>
 
-  </main>
+    <button class="menu-button" id="menuButton"
+      type="button" aria-label="Open navigation menu"
+      aria-expanded="false">
+      ☰
+    </button>
+  </div>
+</header>
+
+<div class="toolbar">
+  <p class="toolbar-note" id="lastUpdated">
+    Checking administrator access and loading dashboard data...
+  </p>
+
+  <button class="refresh-button" id="refreshButton" type="button">
+    ↻ Refresh data
+  </button>
 </div>
 
-<script>
+<div class="notice" id="dashboardNotice" role="status"
+  aria-live="polite"></div>
+
+<section class="stats">
+  <article class="stat-card">
+    <div class="stat-top">
+      <div class="stat-label">Registered Users</div>
+      <div class="stat-icon">♙</div>
+    </div>
+    <div class="stat-value" id="registeredUsersValue">—</div>
+    <div class="stat-note">Profiles registered in the database</div>
+  </article>
+
+  <article class="stat-card">
+    <div class="stat-top">
+      <div class="stat-label">Confirmed Deposits</div>
+      <div class="stat-icon">↓</div>
+    </div>
+    <div class="stat-value" id="confirmedDepositsValue">—</div>
+    <div class="stat-note">Deposits marked CONFIRMED</div>
+  </article>
+
+  <article class="stat-card">
+    <div class="stat-top">
+      <div class="stat-label">Pending Deposits</div>
+      <div class="stat-icon">◷</div>
+    </div>
+    <div class="stat-value" id="pendingDepositsValue">—</div>
+    <div class="stat-note">Deposits awaiting review</div>
+  </article>
+
+  <article class="stat-card">
+    <div class="stat-top">
+      <div class="stat-label">Pending Withdrawals</div>
+      <div class="stat-icon">↑</div>
+    </div>
+    <div class="stat-value" id="pendingWithdrawalsValue">—</div>
+    <div class="stat-note">Pending or under review</div>
+  </article>
+</section>
+
+<section class="content-grid">
+  <article class="panel">
+    <div class="panel-heading">
+      <div>
+        <h2 class="panel-title">Needs Attention</h2>
+        <p class="panel-caption">
+          Open a management page to review requests.
+        </p>
+      </div>
+    </div>
+
+    <a class="review-item" href="admin-deposits.html">
+      <div class="review-icon">↓</div>
+      <div>
+        <div class="review-title">Deposit Requests</div>
+        <div class="review-description">
+          Review submitted deposits and their confirmation details.
+        </div>
+      </div>
+      <span class="review-count" id="depositReviewCount">—</span>
+    </a>
+
+    <a class="review-item" href="admin-withdrawals.html">
+      <div class="review-icon">↑</div>
+      <div>
+        <div class="review-title">Withdrawal Requests</div>
+        <div class="review-description">
+          Review withdrawals and make authorized decisions.
+        </div>
+      </div>
+      <span class="review-count" id="withdrawalReviewCount">—</span>
+    </a>
+
+    <a class="review-item" href="admin-support.html">
+      <div class="review-icon">✉</div>
+      <div>
+        <div class="review-title">Support Requests</div>
+        <div class="review-description">
+          View customer enquiries and support tickets.
+        </div>
+      </div>
+      <span class="review-count" id="supportReviewCount">Open</span>
+    </a>
+  </article>
+
+  <article class="panel">
+    <div class="panel-heading">
+      <div>
+        <h2 class="panel-title">Quick Actions</h2>
+        <p class="panel-caption">Navigate to admin tools.</p>
+      </div>
+    </div>
+
+    <div class="quick-links">
+      <a class="quick-link" href="admin-users.html">
+        <div class="quick-link-icon">♙</div>
+        <div class="quick-link-title">Manage Users</div>
+        <div class="quick-link-description">Review user accounts.</div>
+      </a>
+
+      <a class="quick-link" href="admin-deposits.html">
+        <div class="quick-link-icon">↓</div>
+        <div class="quick-link-title">Deposits</div>
+        <div class="quick-link-description">Open deposit requests.</div>
+      </a>
+
+      <a class="quick-link" href="admin-withdrawals.html">
+        <div class="quick-link-icon">↑</div>
+        <div class="quick-link-title">Withdrawals</div>
+        <div class="quick-link-description">Open withdrawal requests.</div>
+      </a>
+
+      <a class="quick-link" href="admin-security.html">
+        <div class="quick-link-icon">♧</div>
+        <div class="quick-link-title">Security Logs</div>
+        <div class="quick-link-description">Inspect security records.</div>
+      </a>
+    </div>
+  </article>
+</section>
+
+<section class="panel">
+  <div class="panel-heading">
+    <div>
+      <h2 class="panel-title">Recent Activity</h2>
+      <p class="panel-caption">
+        Latest wallet transactions recorded in Supabase.
+      </p>
+    </div>
+
+    <a class="text-link" href="admin-transactions.html">
+      View transactions →
+    </a>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>ACTIVITY</th>
+          <th>REFERENCE</th>
+          <th>AMOUNT</th>
+          <th>DATE</th>
+        </tr>
+      </thead>
+
+      <tbody id="recentActivityBody">
+        <tr>
+          <td colspan="4" class="empty-state">
+            Verifying access and loading recent activity...
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<div class="footer-note">
+  AITIVEST Administration · Secure access required<br>
+  Financial actions must be handled by verified server-side procedures.
+</div>
+
+  </main>
+</div><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>
+"use strict";
+
+/*
+  AITIVEST Supabase connection.
+  The publishable key is intended for browser use.
+  Never put a service_role or secret key in this file.
+*/
+const SUPABASE_URL =
+  "https://rihvvwktvgytbqzazage.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
+
+const db = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY,
+  {
+    auth: {
+      persistSession: true,
+      autoRefreshToken: true,
+      detectSessionInUrl: true
+    }
+  }
+);
+
 const sidebar = document.getElementById("sidebar");
 const overlay = document.getElementById("overlay");
 const menuButton = document.getElementById("menuButton");
+const signOutButton = document.getElementById("signOutButton");
+const refreshButton = document.getElementById("refreshButton");
+const notice = document.getElementById("dashboardNotice");
+const statusDot = document.getElementById("statusDot");
+const statusText = document.getElementById("statusText");
+const lastUpdated = document.getElementById("lastUpdated");
+const recentActivityBody = document.getElementById("recentActivityBody");
+
+let currentSession = null;
+let refreshInProgress = false;
+let redirecting = false;
+
+function showNotice(message, type) {
+  notice.textContent = message;
+  notice.className = "notice " + type;
+}
+
+function clearNotice() {
+  notice.textContent = "";
+  notice.className = "notice";
+}
+
+function setConnectionStatus(message, isError) {
+  statusText.textContent = message;
+  statusDot.classList.toggle("error", Boolean(isError));
+}
+
+function setStat(id, value) {
+  document.getElementById(id).textContent =
+    Number(value).toLocaleString("en-US");
+}
+
+function setLoadingStats() {
+  [
+    "registeredUsersValue",
+    "confirmedDepositsValue",
+    "pendingDepositsValue",
+    "pendingWithdrawalsValue"
+  ].forEach(id => {
+    document.getElementById(id).textContent = "—";
+  });
+}
+
+function formatDate(value) {
+  if (!value) return "—";
+
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) return "—";
+
+  return date.toLocaleString(undefined, {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit"
+  });
+}
+
+function makeCell(text, className) {
+  const td = document.createElement("td");
+  td.textContent = text == null || text === ""
+    ? "—"
+    : String(text);
+
+  if (className) td.className = className;
+
+  return td;
+}
+
+function showEmptyActivity(message) {
+  recentActivityBody.replaceChildren();
+
+  const row = document.createElement("tr");
+  const cell = document.createElement("td");
+
+  cell.colSpan = 4;
+  cell.className = "empty-state";
+  cell.textContent = message;
+
+  row.appendChild(cell);
+  recentActivityBody.appendChild(row);
+}
+
+function renderRecentActivity(items) {
+  recentActivityBody.replaceChildren();
+
+  if (!Array.isArray(items) || items.length === 0) {
+    showEmptyActivity("No wallet transactions have been recorded yet.");
+    return;
+  }
+
+  items.forEach(item => {
+    const row = document.createElement("tr");
+
+    const type = String(item.transaction_type || "Transaction");
+    const description = String(item.description || type);
+    const referenceType = String(item.reference_type || "—");
+    const referenceId = item.reference_id == null
+      ? ""
+      : String(item.reference_id);
+
+    const reference = referenceId
+      ? referenceType + " #" + referenceId
+      : referenceType;
+
+    const asset = String(item.asset || "");
+    const amount = item.amount == null
+      ? "—"
+      : String(item.amount) + (asset ? " " + asset : "");
+
+    row.appendChild(
+      makeCell(description + " (" + type + ")", "activity-description")
+    );
+
+    row.appendChild(makeCell(reference));
+
+    row.appendChild(
+      makeCell(amount, "activity-amount")
+    );
+
+    row.appendChild(makeCell(formatDate(item.created_at)));
+
+    recentActivityBody.appendChild(row);
+  });
+}
+
+async function requireAdministrator() {
+  if (redirecting) return false;
+
+  let sessionResult;
+
+  try {
+    sessionResult = await db.auth.getSession();
+  } catch (error) {
+    console.error("Session check failed:", error);
+    showNotice(
+      "Unable to verify your session. Check your connection and reload the page.",
+      "error"
+    );
+    setConnectionStatus("Verification error", true);
+    return false;
+  }
+
+  const session = sessionResult.data?.session;
+
+  if (sessionResult.error || !session) {
+    redirecting = true;
+    window.location.replace("admin-login.html");
+    return false;
+  }
+
+  currentSession = session;
+
+  let adminResult;
+
+  try {
+    adminResult = await db.rpc("is_current_user_admin");
+  } catch (error) {
+    console.error("Admin RPC failed:", error);
+    showNotice(
+      "Administrator verification could not be completed. Dashboard data has not been loaded.",
+      "error"
+    );
+    setConnectionStatus("Verification error", true);
+    return false;
+  }
+
+  if (adminResult.error) {
+    console.error("Administrator verification error:", adminResult.error);
+    showNotice(
+      "Administrator verification failed. Check the is_current_user_admin database function and your Supabase configuration.",
+      "error"
+    );
+    setConnectionStatus("Verification error", true);
+    return false;
+  }
+
+  if (adminResult.data !== true) {
+    await db.auth.signOut();
+    redirecting = true;
+    window.location.replace("admin-login.html?denied=1");
+    return false;
+  }
+
+  const email = session.user?.email || "Administrator";
+  document.getElementById("adminName").textContent = email;
+  document.getElementById("adminAvatar").textContent =
+    email.substring(0, 2).toUpperCase();
+
+  setConnectionStatus("Administrator verified", false);
+  return true;
+}
+
+async function loadDashboard() {
+  if (refreshInProgress || redirecting) return;
+
+  refreshInProgress = true;
+  refreshButton.disabled = true;
+  refreshButton.textContent = "Loading...";
+  clearNotice();
+  lastUpdated.textContent = "Loading live dashboard data...";
+
+  try {
+    const allowed = await requireAdministrator();
+
+    if (!allowed) {
+      return;
+    }
+
+    const { data, error } =
+      await db.rpc("admin_dashboard_summary");
+
+    if (error) {
+      console.error("Dashboard summary error:", error);
+
+      setLoadingStats();
+      showEmptyActivity(
+        "Recent activity could not be loaded. Check the dashboard summary function."
+      );
+
+      showNotice(
+        "The administrator session is valid, but dashboard data could not be loaded. Check the admin_dashboard_summary function and its database permissions.",
+        "error"
+      );
+
+      setConnectionStatus("Data loading error", true);
+      lastUpdated.textContent = "Dashboard data unavailable.";
+      return;
+    }
+
+    if (!data || typeof data !== "object") {
+      setLoadingStats();
+      showEmptyActivity("The server returned an unexpected response.");
+
+      showNotice(
+        "The dashboard received an unexpected response from Supabase.",
+        "error"
+      );
+
+      setConnectionStatus("Invalid response", true);
+      return;
+    }
+
+    const requiredFields = [
+      "registered_users",
+      "confirmed_deposits",
+      "pending_deposits",
+      "pending_withdrawals"
+    ];
+
+    const hasAllFields = requiredFields.every(
+      key => Object.prototype.hasOwnProperty.call(data, key)
+    );
+
+    if (!hasAllFields) {
+      console.error("Unexpected dashboard response:", data);
+
+      setLoadingStats();
+      showEmptyActivity("The dashboard response is missing required fields.");
+
+      showNotice(
+        "The summary function returned incomplete data. Check its definition in Supabase.",
+        "error"
+      );
+
+      setConnectionStatus("Invalid response", true);
+      return;
+    }
+
+    setStat("registeredUsersValue", data.registered_users);
+    setStat("confirmedDepositsValue", data.confirmed_deposits);
+    setStat("pendingDepositsValue", data.pending_deposits);
+    setStat("pendingWithdrawalsValue", data.pending_withdrawals);
+
+    document.getElementById("depositReviewCount").textContent =
+      Number(data.pending_deposits).toLocaleString("en-US");
+
+    document.getElementById("withdrawalReviewCount").textContent =
+      Number(data.pending_withdrawals).toLocaleString("en-US");
+
+    renderRecentActivity(data.recent_activity);
+
+    const now = new Date();
+
+    lastUpdated.textContent =
+      "Last updated " + now.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+
+    setConnectionStatus("Live data connected", false);
+  } catch (error) {
+    console.error("Unexpected dashboard error:", error);
+
+    showNotice(
+      "An unexpected error occurred while loading the dashboard. Please refresh and try again.",
+      "error"
+    );
+
+    setConnectionStatus("Connection error", true);
+    lastUpdated.textContent = "Dashboard refresh failed.";
+  } finally {
+    refreshInProgress = false;
+    refreshButton.disabled = false;
+    refreshButton.textContent = "↻ Refresh data";
+  }
+}
 
 function openMenu() {
   sidebar.classList.add("open");
@@ -860,13 +1260,72 @@ document.querySelectorAll(".nav-link").forEach(link => {
   });
 });
 
-document.getElementById("signOutButton").addEventListener("click", () => {
-  alert(
-    "Sign-out is not connected in this layout. " +
-    "Keep your existing authenticated sign-out handler."
-  );
-});
-</script>
+refreshButton.addEventListener("click", loadDashboard);
 
-</body>
+signOutButton.addEventListener("click", async () => {
+  if (signOutButton.disabled) return;
+
+  signOutButton.disabled = true;
+  signOutButton.textContent = "Signing out...";
+
+  try {
+    /*
+      Record sign-out where possible. Sign-out must still proceed
+      if the optional security log call fails.
+    */
+    if (currentSession?.user?.id) {
+      const { error: logError } = await db.rpc(
+        "admin_write_security_log",
+        {
+          p_action: "ADMIN_SIGN_OUT",
+          p_target_type: "session",
+          p_target_id: currentSession.user.id,
+          p_details: {},
+          p_success: true
+        }
+      );
+
+      if (logError) {
+        console.warn("Sign-out log could not be saved:", logError);
+      }
+    }
+  } catch (error) {
+    console.warn("Optional sign-out logging failed:", error);
+  }
+
+  const { error } = await db.auth.signOut();
+
+  if (error) {
+    console.error("Sign-out error:", error);
+
+    showNotice(
+      "Sign-out could not be confirmed. Please try again.",
+      "error"
+    );
+
+    signOutButton.disabled = false;
+    signOutButton.textContent = "↪ Sign Out";
+    return;
+  }
+
+  window.location.replace("admin-login.html");
+});
+
+/*
+  If Supabase detects that the session has ended, return to login.
+*/
+db.auth.onAuthStateChange((event, session) => {
+  if (event === "SIGNED_OUT" && !redirecting) {
+    redirecting = true;
+    window.location.replace("admin-login.html");
+  }
+
+  if (event === "TOKEN_REFRESHED" && session) {
+    currentSession = session;
+  }
+});
+
+/* Verify the admin session, then load live dashboard information. */
+loadDashboard();
+</script></body>
 </html>
