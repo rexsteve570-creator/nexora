@@ -2024,51 +2024,138 @@ function renderDepositRequest(deposit) {
     </article>
   `;
 }
-
-function renderWithdrawalRequest(record) {
+  function renderWithdrawalRequest(record) {
   const status = normalizeStatus(record.status);
-  const pending = status === "PENDING";
   const amount = getWithdrawalAmount(record);
   const asset = getWithdrawalAsset(record);
+  const withdrawalId = record.id ?? record.withdrawal_id;
+
   const userId = record.user_id || record.profile_id || "—";
-  const destination = record.wallet_address || record.address || record.destination_address || record.bank_account || "Not supplied";
+
+  const destination =
+    record.wallet_address ||
+    record.address ||
+    record.destination_address ||
+    record.bank_account ||
+    "Not supplied";
+
+  const source =
+    record.withdrawal_source ||
+    record.source ||
+    "Not supplied";
+
+  const canReview = [
+    "PENDING",
+    "UNDER_REVIEW"
+  ].includes(status);
+
+  const canRelease = [
+    "APPROVED",
+    "PROCESSING"
+  ].includes(status);
 
   return `
     <article class="request-card">
+
       <div class="request-top">
         <div>
-          <div class="request-title">Withdrawal #${escapeHTML(record.id || record.withdrawal_id || "—")}</div>
-          <div class="request-meta">${escapeHTML(formatDate(record.created_at))}</div>
+          <div class="request-title">
+            Withdrawal #${escapeHTML(withdrawalId ?? "—")}
+          </div>
+
+          <div class="request-meta">
+            ${escapeHTML(formatDate(record.created_at))}
+          </div>
         </div>
+
         ${statusPill(status)}
       </div>
 
-      <div class="request-amount">${escapeHTML(formatNumber(amount))} ${escapeHTML(asset)}</div>
-
-      <div class="request-details">
-        <div>
-          <div class="detail-label">User ID</div>
-          <div class="detail-value">${escapeHTML(userId)}</div>
-        </div>
-        <div>
-          <div class="detail-label">Withdrawal source</div>
-          <div class="detail-value">${escapeHTML(record.source || record.withdrawal_source || "Not supplied")}</div>
-        </div>
-        <div style="grid-column:1/-1;">
-          <div class="detail-label">Destination</div>
-          <div class="detail-value">${escapeHTML(destination)}</div>
-        </div>
+      <div class="request-amount">
+        ${escapeHTML(formatNumber(amount))}
+        ${escapeHTML(asset)}
       </div>
 
-      ${pending ? `
-        <div class="message error" style="margin-bottom:0;">
-          Withdrawal decisions are disabled until the existing withdrawal approval and rejection RPC names and required parameters are verified. No request will be marked approved or rejected by the browser alone.
+      <div class="request-details">
+
+        <div>
+          <div class="detail-label">User ID</div>
+          <div class="detail-value">
+            ${escapeHTML(userId)}
+          </div>
         </div>
-      ` : `<div class="muted small">No action available for this request status.</div>`}
+
+        <div>
+          <div class="detail-label">Withdrawal source</div>
+          <div class="detail-value">
+            ${escapeHTML(source)}
+          </div>
+        </div>
+
+        <div style="grid-column:1/-1;">
+          <div class="detail-label">Destination</div>
+          <div class="detail-value">
+            ${escapeHTML(destination)}
+          </div>
+        </div>
+
+      </div>
+
+      ${
+        canReview
+          ? `
+            <div class="button-row">
+
+              <button
+                class="button button-success"
+                data-approve-withdrawal="${escapeHTML(withdrawalId)}">
+                Approve request
+              </button>
+
+              <button
+                class="button button-danger"
+                data-reject-withdrawal="${escapeHTML(withdrawalId)}">
+                Reject request
+              </button>
+
+              <button
+                class="button button-secondary"
+                data-cancel-withdrawal="${escapeHTML(withdrawalId)}">
+                Cancel request
+              </button>
+
+            </div>
+
+            <div class="muted small" style="margin-top:10px;">
+              Approval records the decision; it does not send cryptocurrency.
+            </div>
+          `
+          : canRelease
+            ? `
+              <div class="button-row">
+
+                <button
+                  class="button button-danger"
+                  data-cancel-withdrawal="${escapeHTML(withdrawalId)}">
+                  Cancel and release funds
+                </button>
+
+              </div>
+
+              <div class="muted small" style="margin-top:10px;">
+                Confirm that the withdrawal has not been paid before cancelling.
+              </div>
+            `
+            : `
+              <div class="muted small">
+                No action is available for this request's current status.
+              </div>
+            `
+      }
+
     </article>
   `;
 }
-
 function renderRequests() {
   const type = $("requestTypeFilter").value;
   const statusFilter = $("requestStatusFilter").value;
