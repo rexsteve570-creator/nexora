@@ -1,0 +1,685 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deposit Requests | AITIVEST Admin</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{
+  --bg:#081225;--sidebar:#0b162d;--card:#101d38;--border:#233352;
+  --gold:#d4a64a;--gold-light:#ebd29a;--text:#eaf0fa;--muted:#94a3bd;
+  --green:#53d6a0;--red:#ff777f;--blue:#5b8def
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif}
+button,input,select,textarea{font:inherit}
+a{color:inherit;text-decoration:none}
+.sidebar{width:245px;position:fixed;inset:0 auto 0 0;background:var(--sidebar);border-right:1px solid var(--border);padding:25px 16px;overflow-y:auto;z-index:20}
+.brand{font-size:24px;font-weight:800;letter-spacing:2px;color:var(--gold-light);padding:8px 12px 5px}
+.brand-sub{font-size:10px;color:var(--muted);letter-spacing:2px;padding:0 13px 28px}
+.nav-label{font-size:10px;color:var(--muted);letter-spacing:1.5px;padding:14px 12px 9px}
+.nav a{display:block;padding:12px;border-radius:9px;color:var(--muted);font-size:13px;margin-bottom:4px}
+.nav a:hover,.nav a.active{background:#192947;color:var(--gold-light)}
+.nav a.active{border:1px solid #6d552d}
+.sidebar-note{font-size:11px;color:var(--muted);line-height:1.6;padding:22px 12px}
+.main{margin-left:245px;padding:25px 30px 50px;max-width:1600px}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:30px}
+.menu-btn{display:none;background:var(--card);border:1px solid var(--border);color:var(--text);padding:10px 12px;border-radius:8px}
+.top-right{display:flex;align-items:center;gap:12px;margin-left:auto}
+.admin-info{text-align:right}
+.admin-label{font-size:10px;color:var(--muted);margin-bottom:4px}
+.admin-email{font-size:12px;overflow-wrap:anywhere}
+.avatar{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:#3b3020;color:var(--gold-light);font-weight:bold}
+h1{font-size:27px;margin:0 0 8px}
+.subtitle{font-size:13px;color:var(--muted);line-height:1.6;margin:0 0 25px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:20px}
+.card-title{font-size:15px;font-weight:700;margin-bottom:7px}
+.card-description{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:18px}
+.notice{padding:12px 14px;border-radius:9px;background:#132440;color:var(--muted);font-size:12px;line-height:1.6;margin-bottom:18px;overflow-wrap:anywhere}
+.notice.error{background:#351c29;color:#ffb4bc}
+.notice.success{background:#123528;color:#a4f0ce}
+.notice.warning{background:#3b3020;color:var(--gold-light)}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap}
+.search-wrap{flex:1;min-width:180px}
+.search,.filter{width:100%;padding:12px 14px;background:#081225;border:1px solid var(--border);border-radius:9px;color:var(--text);outline:none}
+.search:focus,.filter:focus{border-color:var(--gold)}
+.filter-wrap{width:170px}
+.btn{padding:12px 15px;border-radius:9px;border:1px solid var(--border);background:#182743;color:var(--text);cursor:pointer;font-size:12px;font-weight:700}
+.btn-primary{background:var(--gold);border-color:var(--gold);color:#17130a}
+.btn-danger{background:#3b2029;border-color:#6e3440;color:#ffb4bc}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.statusline{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:17px 0 0;color:var(--muted);font-size:12px}
+.table-wrap{width:100%;overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:1050px}
+th{text-align:left;color:var(--muted);font-size:10px;letter-spacing:.7px;text-transform:uppercase;padding:13px 12px;border-bottom:1px solid var(--border)}
+td{padding:15px 12px;border-bottom:1px solid #1c2a44;font-size:12px;vertical-align:top}
+tr:last-child td{border-bottom:0}
+.user-name{font-weight:700;margin-bottom:5px}
+.small{font-size:10px;color:var(--muted);line-height:1.6;overflow-wrap:anywhere}
+.email{overflow-wrap:anywhere;max-width:190px}
+.amount{font-weight:700;color:var(--gold-light);white-space:nowrap}
+.badge{display:inline-block;border-radius:20px;padding:5px 8px;font-size:10px;background:#26334b;color:#c4d0e4;white-space:nowrap}
+.badge.good{background:#123b30;color:#8ce6bc}
+.badge.bad{background:#43222b;color:#ffb4bc}
+.badge.gold{background:#3b3020;color:var(--gold-light)}
+.empty{text-align:center;padding:30px;color:var(--muted)}
+.pagination{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:18px}
+.page-info{font-size:12px;color:var(--muted)}
+.actions{display:flex;gap:7px;flex-wrap:wrap}
+.actions .btn{padding:9px 10px}
+.ref{max-width:200px;overflow-wrap:anywhere}
+.footer-note{font-size:11px;color:var(--muted);line-height:1.7;margin-top:18px}
+.overlay{display:none}
+@media(max-width:850px){
+ .sidebar{transform:translateX(-100%);transition:transform .2s}
+ .sidebar.open{transform:translateX(0)}
+ .overlay.show{display:block;position:fixed;inset:0;background:#0009;z-index:15}
+ .main{margin-left:0;padding:18px 14px 40px}
+ .menu-btn{display:block}
+ .topbar{margin-bottom:25px}
+ h1{font-size:24px}
+ .card{padding:15px}
+}
+@media(max-width:440px){
+ .admin-email{max-width:140px;font-size:10px}
+ .avatar{width:34px;height:34px}
+ .filter-wrap{width:100%}
+ .toolbar .btn{flex:1}
+}
+</style>
+</head>
+<body>
+<div class="overlay" id="overlay" onclick="toggleMenu(false)"></div><aside class="sidebar" id="sidebar">
+  <div class="brand">AITIVEST</div>
+  <div class="brand-sub">ADMINISTRATION</div>
+  <nav class="nav">
+    <div class="nav-label">OVERVIEW</div>
+    <a href="admin.html">Dashboard</a>
+    <div class="nav-label">MANAGEMENT</div>
+    <a href="admin-users.html">Users Management</a>
+    <a class="active" href="admin-deposits.html">Deposit Requests</a>
+    <a href="admin-withdrawals.html">Withdrawal Requests</a>
+    <a href="admin-transactions.html">Transactions</a>
+    <a href="admin-support.html">Support Tickets</a>
+    <div class="nav-label">SECURITY</div>
+    <a href="admin-security.html">Security Logs</a>
+    <a href="admin-settings.html">Admin Settings</a>
+  </nav>
+  <div class="sidebar-note">Restricted administration area. Financial actions must be verified and recorded server-side.</div>
+</aside><main class="main">
+  <header class="topbar">
+    <button class="menu-btn" onclick="toggleMenu(true)">☰ Menu</button>
+    <div class="top-right">
+      <div class="admin-info">
+        <div class="admin-label">SIGNED IN AS</div>
+        <div class="admin-email" id="adminEmail">Checking session…</div>
+      </div>
+      <div class="avatar" id="avatar">A</div>
+      <button class="btn" id="signOutBtn">Sign out</button>
+    </div>
+  </header>  <h1>Deposit Requests</h1>
+  <p class="subtitle">Review incoming deposit records and their confirmation status.</p>  <section class="card">
+    <div class="card-title">Deposit review queue</div>
+    <div class="card-description">Pending deposits are shown first. Search by user, deposit ID, asset, or transaction reference.</div><div class="notice warning">
+  Financial safety: verify the transaction independently on the correct blockchain/network before approving a deposit. A transaction reference submitted by a user is not proof of payment.
+</div>
+
+<div class="notice" id="notice">Verifying administrator access…</div>
+
+<div class="toolbar">
+  <div class="search-wrap">
+    <input class="search" id="searchInput" type="search" placeholder="Search name, email, ID, asset, or reference…" autocomplete="off">
+  </div>
+  <div class="filter-wrap">
+    <select class="filter" id="statusFilter" aria-label="Filter deposit status">
+      <option value="PENDING">Pending deposits</option>
+      <option value="CONFIRMED">Confirmed deposits</option>
+      <option value="REJECTED">Rejected deposits</option>
+      <option value="ALL">All supported statuses</option>
+    </select>
+  </div>
+  <button class="btn btn-primary" id="searchBtn">Search</button>
+  <button class="btn" id="refreshBtn">Refresh</button>
+</div>
+
+<div class="statusline">
+  <span id="resultCount">Waiting for data…</span>
+  <span id="filterLabel">Pending deposits</span>
+</div>
+
+  </section>  <section class="card">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Deposit</th>
+            <th>User</th>
+            <th>Asset / Network</th>
+            <th>Submitted amount</th>
+            <th>Credited amount</th>
+            <th>Status</th>
+            <th>Transaction reference</th>
+            <th>Created</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="depositsBody">
+          <tr><td colspan="9" class="empty">Loading deposits…</td></tr>
+        </tbody>
+      </table>
+    </div><div class="pagination">
+  <div class="page-info" id="pageInfo">Page 1</div>
+  <div class="toolbar">
+    <button class="btn" id="prevBtn" disabled>Previous</button>
+    <button class="btn" id="nextBtn" disabled>Next</button>
+  </div>
+</div>
+<div class="footer-note">
+  Approve and reject buttons call the existing server-side administrator RPC functions. The browser does not directly update deposit records. Only approve a deposit after independently verifying the transaction and amount.
+</div>
+
+  </section>
+</main><script>
+(() => {
+  const SUPABASE_URL = "https://rihvvwktvgytbqzazage.supabase.co";
+  const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
+  const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+
+  const $ = id => document.getElementById(id);
+  const PAGE_SIZE = 50;
+
+  let authorized = false;
+  let currentOffset = 0;
+  let currentSearch = "";
+  let currentStatus = "PENDING";
+  let totalDeposits = 0;
+  let busy = false;
+  let searchTimer = null;
+
+  function toggleMenu(open) {
+    $("sidebar").classList.toggle("open", open);
+    $("overlay").classList.toggle("show", open);
+  }
+  window.toggleMenu = toggleMenu;
+
+  function setNotice(message, type = "") {
+    const el = $("notice");
+    el.textContent = message;
+    el.className = "notice" + (type ? " " + type : "");
+  }
+
+  function safeText(value, fallback = "—") {
+    if (value === null || value === undefined || String(value).trim() === "") return fallback;
+    return String(value);
+  }
+
+  function formatDate(value) {
+    if (!value) return "—";
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return "—";
+    return date.toLocaleString(undefined, {
+      year: "numeric", month: "short", day: "numeric",
+      hour: "2-digit", minute: "2-digit"
+    });
+  }
+
+  function badgeClass(value) {
+    const v = String(value || "").toUpperCase();
+    if (["CONFIRMED", "COMPLETED", "APPROVED"].includes(v)) return "badge good";
+    if (["REJECTED", "FAILED", "CANCELLED"].includes(v)) return "badge bad";
+    if (["PENDING", "UNDER_REVIEW"].includes(v)) return "badge gold";
+    return "badge";
+  }
+
+  function addCell(row, value, className = "") {
+    const td = document.createElement("td");
+    if (className) td.className = className;
+    td.textContent = value;
+    row.appendChild(td);
+    return td;
+  }
+
+  function addBadge(row, value) {
+    const td = document.createElement("td");
+    const badge = document.createElement("span");
+    badge.className = badgeClass(value);
+    badge.textContent = safeText(value, "UNKNOWN").toUpperCase();
+    td.appendChild(badge);
+    row.appendChild(td);
+  }
+
+  function renderDeposits(deposits) {
+    const body = $("depositsBody");
+    body.replaceChildren();
+
+    if (!Array.isArray(deposits) || deposits.length === 0) {
+      const tr = document.createElement("tr");
+      const td = document.createElement("td");
+      td.colSpan = 9;
+      td.className = "empty";
+      td.textContent = "No deposits found for this filter.";
+      tr.appendChild(td);
+      body.appendChild(tr);
+      return;
+    }
+
+    for (const deposit of deposits) {
+      const tr = document.createElement("tr");
+
+      const depositCell = document.createElement("td");
+      const depositName = document.createElement("div");
+      depositName.className = "user-name";
+      depositName.textContent = "Deposit #" + safeText(deposit.id, "?");
+      const depositId = document.createElement("div");
+      depositId.className = "small";
+      depositId.textContent = "User ID: " + safeText(deposit.user_id);
+      depositCell.append(depositName, depositId);
+      tr.appendChild(depositCell);
+
+      const userCell = document.createElement("td");
+      const userName = document.createElement("div");
+      userName.className = "user-name";
+      userName.textContent = safeText(deposit.full_name, "Unnamed user");
+      const userEmail = document.createElement("div");
+      userEmail.className = "small";
+      userEmail.textContent = safeText(deposit.email);
+      userCell.append(userName, userEmail);
+      tr.appendChild(userCell);
+
+      const assetCell = document.createElement("td");
+      const asset = document.createElement("div");
+      asset.className = "user-name";
+      asset.textContent = safeText(deposit.asset, "Unknown asset").toUpperCase();
+      const network = document.createElement("div");
+      network.className = "small";
+      network.textContent = safeText(deposit.network, "Unknown network");
+      assetCell.append(asset, network);
+      tr.appendChild(assetCell);
+
+      addCell(tr, safeText(deposit.amount), "amount");
+      addCell(tr, safeText(deposit.credited_amount), "amount");
+      addBadge(tr, deposit.status);
+
+      const refCell = document.createElement("td");
+      refCell.className = "ref";
+      const reference = document.createElement("div");
+      reference.textContent = safeText(deposit.external_reference, "Not provided");
+      refCell.appendChild(reference);
+
+      if (deposit.notes) {
+        const notes = document.createElement("div");
+        notes.className = "small";
+        notes.textContent = "Notes: " + String(deposit.notes);
+        refCell.appendChild(notes);
+      }
+      tr.appendChild(refCell);
+
+      addCell(tr, formatDate(deposit.created_at));
+
+      const actionsCell = document.createElement("td");
+      const actions = document.createElement("div");
+      actions.className = "actions";
+
+      if (String(deposit.status || "").toUpperCase() === "PENDING") {
+        const approve = document.createElement("button");
+        approve.className = "btn btn-primary";
+        approve.textContent = "Approve";
+        approve.addEventListener("click", () => approveDeposit(deposit));
+
+        const reject = document.createElement("button");
+        reject.className = "btn btn-danger";
+        reject.textContent = "Reject";
+        reject.addEventListener("click", () => rejectDeposit(deposit));
+
+        actions.append(approve, reject);
+      } else {
+        const label = document.createElement("span");
+        label.className = "small";
+        label.textContent = "No action available";
+        actions.appendChild(label);
+      }
+
+      actionsCell.appendChild(actions);
+      tr.appendChild(actionsCell);
+      body.appendChild(tr);
+    }
+  }
+
+  async function loadDeposits(resetOffset = false) {
+    if (!authorized || busy) return;
+    if (resetOffset) currentOffset = 0;
+
+    busy = true;
+    $("refreshBtn").disabled = true;
+    $("searchBtn").disabled = true;
+    $("prevBtn").disabled = true;
+    $("nextBtn").disabled = true;
+
+    const body = $("depositsBody");
+    body.replaceChildren();
+    const loadingRow = document.createElement("tr");
+    const loadingCell = document.createElement("td");
+    loadingCell.colSpan = 9;
+    loadingCell.className = "empty";
+    loadingCell.textContent = "Loading deposit requests…";
+    loadingRow.appendChild(loadingCell);
+    body.appendChild(loadingRow);
+
+    setNotice("Loading deposit requests…");
+
+    try {
+      const { data, error } = await db.rpc("admin_list_deposit_requests", {
+        p_search: currentSearch || null,
+        p_status: currentStatus,
+        p_limit: PAGE_SIZE,
+        p_offset: currentOffset
+      });
+
+      if (error) throw error;
+      if (!data || !Array.isArray(data.deposits)) {
+        throw new Error("Unexpected response from admin_list_deposit_requests.");
+      }
+
+      totalDeposits = Number(data.total) || 0;
+      renderDeposits(data.deposits);
+
+      const start = totalDeposits === 0 ? 0 : currentOffset + 1;
+      const end = Math.min(currentOffset + data.deposits.length, totalDeposits);
+
+      $("resultCount").textContent =
+        `${totalDeposits} deposit${totalDeposits === 1 ? "" : "s"} found`;
+      $("pageInfo").textContent = totalDeposits === 0
+        ? "Page 0 of 0"
+        : `Showing ${start}–${end} of ${totalDeposits}`;
+      $("filterLabel").textContent =
+        currentStatus === "ALL" ? "All supported statuses" :
+        currentStatus.charAt(0) + currentStatus.slice(1).toLowerCase() + " deposits";
+
+      $("prevBtn").disabled = currentOffset <= 0;
+      $("nextBtn").disabled = currentOffset + PAGE_SIZE >= totalDeposits;
+      setNotice("Administrator verified. Deposit records loaded.", "success");
+    } catch (error) {
+      console.error("Deposit list error:", error);
+      renderDeposits([]);
+      $("resultCount").textContent = "Unable to load deposits";
+      $("pageInfo").textContent = "Page unavailable";
+      setNotice(
+        "Could not load deposits: " + (error.message || "Unknown error") +
+        ". Verify the database function and administrator permissions.",
+        "error"
+      );
+    } finally {
+      busy = false;
+      $("refreshBtn").disabled = false;
+      $("searchBtn").disabled = false;
+      $("prevBtn").disabled = currentOffset <= 0;
+      $("nextBtn").disabled = currentOffset + PAGE_SIZE >= totalDeposits;
+    }
+  }
+
+  async function writeSecurityLog(action, depositId, details, success) {
+    try {
+      const { error } = await db.rpc("admin_write_security_log", {
+        p_action: action,
+        p_target_type: "deposit",
+        p_target_id: String(depositId),
+        p_details: details || {},
+        p_success: success
+      });
+      if (error) console.warn("Security log write failed:", error.message);
+    } catch (error) {
+      console.warn("Security log write failed:", error);
+    }
+  }
+
+  async function approveDeposit(deposit) {
+    if (!authorized || busy) return;
+
+    const amountDefault =
+      deposit.credited_amount !== null && deposit.credited_amount !== undefined
+        ? deposit.credited_amount
+        : deposit.amount;
+
+    const amountInput = prompt(
+      "Enter the exact amount to credit in " +
+      String(deposit.asset || "the deposit asset").toUpperCase() +
+      ". Only continue after independently verifying the transaction on the correct network.",
+      amountDefault === null || amountDefault === undefined ? "" : String(amountDefault)
+    );
+
+    if (amountInput === null) return;
+
+    const creditedAmount = Number(amountInput);
+    if (!Number.isFinite(creditedAmount) || creditedAmount <= 0) {
+      alert("Enter a valid credited amount greater than zero.");
+      return;
+    }
+
+    const confirmed = confirm(
+      "FINAL DEPOSIT REVIEW\n\n" +
+      "Deposit ID: " + deposit.id + "\n" +
+      "User: " + safeText(deposit.email) + "\n" +
+      "Asset: " + safeText(deposit.asset) + "\n" +
+      "Network: " + safeText(deposit.network) + "\n" +
+      "Amount to credit: " + creditedAmount + "\n\n" +
+      "Have you independently verified the transaction, network, recipient address, confirmations, and amount?\n\n" +
+      "Press OK only if you have completed verification."
+    );
+
+    if (!confirmed) return;
+
+    busy = true;
+    setNotice("Submitting approval to the secure database function…", "warning");
+
+    try {
+      const { error } = await db.rpc("admin_approve_deposit", {
+        p_deposit_id: deposit.id,
+        p_credited_amount: creditedAmount
+      });
+
+      if (error) throw error;
+
+      await writeSecurityLog("ADMIN_APPROVE_DEPOSIT", deposit.id, {
+        credited_amount: creditedAmount,
+        asset: deposit.asset,
+        network: deposit.network
+      }, true);
+
+      alert("The database accepted the deposit approval request.");
+      currentOffset = 0;
+      await loadDeposits(false);
+    } catch (error) {
+      console.error("Deposit approval error:", error);
+
+      await writeSecurityLog("ADMIN_APPROVE_DEPOSIT", deposit.id, {
+        error: error.message || "Unknown error"
+      }, false);
+
+      alert(
+        "Deposit approval failed.\n\n" +
+        (error.message || "Unknown error") +
+        "\n\nNo success was reported. Refresh the list to check the actual database status."
+      );
+      setNotice("Deposit approval failed: " + (error.message || "Unknown error"), "error");
+    } finally {
+      busy = false;
+      $("refreshBtn").disabled = false;
+      $("searchBtn").disabled = false;
+      await loadDeposits(false);
+    }
+  }
+
+  async function rejectDeposit(deposit) {
+    if (!authorized || busy) return;
+
+    const reason = prompt(
+      "Enter a clear reason for rejecting deposit #" + deposit.id + "."
+    );
+
+    if (reason === null) return;
+    if (!reason.trim()) {
+      alert("A rejection reason is required.");
+      return;
+    }
+
+    const confirmed = confirm(
+      "Reject deposit #" + deposit.id + " for " +
+      safeText(deposit.email) + "?\n\nReason: " + reason.trim() +
+      "\n\nThis submits a rejection request to the database."
+    );
+
+    if (!confirmed) return;
+
+    busy = true;
+    setNotice("Submitting rejection to the secure database function…", "warning");
+
+    try {
+      const { error } = await db.rpc("admin_reject_deposit", {
+        p_deposit_id: deposit.id,
+        p_reason: reason.trim()
+      });
+
+      if (error) throw error;
+
+      await writeSecurityLog("ADMIN_REJECT_DEPOSIT", deposit.id, {
+        reason: reason.trim(),
+        asset: deposit.asset,
+        network: deposit.network
+      }, true);
+
+      alert("The database accepted the deposit rejection request.");
+      currentOffset = 0;
+      await loadDeposits(false);
+    } catch (error) {
+      console.error("Deposit rejection error:", error);
+
+      await writeSecurityLog("ADMIN_REJECT_DEPOSIT", deposit.id, {
+        error: error.message || "Unknown error"
+      }, false);
+
+      alert(
+        "Deposit rejection failed.\n\n" +
+        (error.message || "Unknown error") +
+        "\n\nNo success was reported. Refresh the list to check the actual database status."
+      );
+      setNotice("Deposit rejection failed: " + (error.message || "Unknown error"), "error");
+    } finally {
+      busy = false;
+      $("refreshBtn").disabled = false;
+      $("searchBtn").disabled = false;
+      await loadDeposits(false);
+    }
+  }
+
+  async function verifyAdmin() {
+    setNotice("Verifying administrator access…");
+
+    try {
+      const { data: sessionData, error: sessionError } = await db.auth.getSession();
+      if (sessionError) throw sessionError;
+
+      const session = sessionData && sessionData.session;
+      if (!session) {
+        window.location.replace("admin-login.html");
+        return;
+      }
+
+      const { data: isAdmin, error: adminError } =
+        await db.rpc("is_current_user_admin");
+
+      if (adminError) throw adminError;
+
+      if (isAdmin !== true) {
+        await db.auth.signOut();
+        setNotice("Access denied. This account is not an authorized administrator.", "error");
+        setTimeout(() => window.location.replace("admin-login.html"), 1800);
+        return;
+      }
+
+      authorized = true;
+      const email = session.user.email || "Administrator";
+      $("adminEmail").textContent = email;
+      $("avatar").textContent = email.charAt(0).toUpperCase() || "A";
+
+      await loadDeposits(true);
+    } catch (error) {
+      console.error("Admin verification error:", error);
+      setNotice(
+        "Could not verify administrator access: " +
+        (error.message || "Unknown error"),
+        "error"
+      );
+    }
+  }
+
+  $("searchBtn").addEventListener("click", () => {
+    currentSearch = $("searchInput").value.trim();
+    currentStatus = $("statusFilter").value;
+    loadDeposits(true);
+  });
+
+  $("searchInput").addEventListener("keydown", event => {
+    if (event.key === "Enter") {
+      clearTimeout(searchTimer);
+      currentSearch = $("searchInput").value.trim();
+      currentStatus = $("statusFilter").value;
+      loadDeposits(true);
+    }
+  });
+
+  $("searchInput").addEventListener("input", () => {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(() => {
+      currentSearch = $("searchInput").value.trim();
+      currentStatus = $("statusFilter").value;
+      loadDeposits(true);
+    }, 500);
+  });
+
+  $("statusFilter").addEventListener("change", () => {
+    currentStatus = $("statusFilter").value;
+    currentSearch = $("searchInput").value.trim();
+    loadDeposits(true);
+  });
+
+  $("refreshBtn").addEventListener("click", () => loadDeposits(false));
+
+  $("prevBtn").addEventListener("click", () => {
+    if (!busy && currentOffset >= PAGE_SIZE) {
+      currentOffset -= PAGE_SIZE;
+      loadDeposits(false);
+    }
+  });
+
+  $("nextBtn").addEventListener("click", () => {
+    if (!busy && currentOffset + PAGE_SIZE < totalDeposits) {
+      currentOffset += PAGE_SIZE;
+      loadDeposits(false);
+    }
+  });
+
+  $("signOutBtn").addEventListener("click", async () => {
+    $("signOutBtn").disabled = true;
+    try {
+      const { data } = await db.auth.getUser();
+      if (data && data.user) {
+        await db.rpc("admin_write_security_log", {
+          p_action: "ADMIN_SIGN_OUT",
+          p_target_type: "session",
+          p_target_id: data.user.id,
+          p_details: {},
+          p_success: true
+        });
+      }
+    } catch (error) {
+      console.warn("Sign-out log failed:", error);
+    }
+
+    await db.auth.signOut();
+    window.location.replace("admin-login.html");
+  });
+
+  verifyAdmin();
+})();
+</script></body>
+</html>
