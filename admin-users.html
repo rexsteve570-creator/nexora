@@ -1,0 +1,433 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Users Management | AITIVEST Admin</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root {
+  --bg:#081225;
+  --sidebar:#0b162d;
+  --card:#101d38;
+  --border:#233352;
+  --gold:#d4a64a;
+  --gold-light:#ebd29a;
+  --text:#eaf0fa;
+  --muted:#94a3bd;
+  --green:#53d6a0;
+  --red:#ff777f;
+  --blue:#5b8def;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif}
+button,input{font:inherit}
+button,a{-webkit-tap-highlight-color:transparent}
+a{color:inherit;text-decoration:none}
+.layout{min-height:100vh}
+.sidebar{
+  width:245px;position:fixed;inset:0 auto 0 0;
+  background:var(--sidebar);border-right:1px solid var(--border);
+  padding:25px 16px;overflow-y:auto;z-index:20
+}
+.brand{font-size:24px;font-weight:800;letter-spacing:2px;color:var(--gold-light);padding:8px 12px 5px}
+.brand-sub{font-size:10px;color:var(--muted);letter-spacing:2px;padding:0 13px 28px}
+.nav-label{font-size:10px;color:var(--muted);letter-spacing:1.5px;padding:14px 12px 9px}
+.nav a{display:block;padding:12px;border-radius:9px;color:var(--muted);font-size:13px;margin-bottom:4px}
+.nav a:hover,.nav a.active{background:#192947;color:var(--gold-light)}
+.nav a.active{border:1px solid #6d552d}
+.sidebar-note{font-size:11px;color:var(--muted);line-height:1.6;padding:22px 12px}
+.main{margin-left:245px;padding:25px 30px 50px;max-width:1600px}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:30px}
+.menu-btn{display:none;background:var(--card);border:1px solid var(--border);color:var(--text);padding:10px 12px;border-radius:8px}
+.top-right{display:flex;align-items:center;gap:12px;margin-left:auto}
+.admin-info{text-align:right}
+.admin-label{font-size:10px;color:var(--muted);margin-bottom:4px}
+.admin-email{font-size:12px;overflow-wrap:anywhere}
+.avatar{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:#3b3020;color:var(--gold-light);font-weight:bold}
+h1{font-size:27px;margin:0 0 8px}
+.subtitle{font-size:13px;color:var(--muted);line-height:1.6;margin:0 0 25px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:20px}
+.card-title{font-size:15px;font-weight:700;margin-bottom:7px}
+.card-description{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:18px}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap}
+.search-wrap{flex:1;min-width:180px}
+.search{width:100%;padding:13px 14px;background:#081225;border:1px solid var(--border);border-radius:9px;color:var(--text);outline:none}
+.search:focus{border-color:var(--gold)}
+.btn{padding:12px 15px;border-radius:9px;border:1px solid var(--border);background:#182743;color:var(--text);cursor:pointer;font-size:12px;font-weight:700}
+.btn-primary{background:var(--gold);border-color:var(--gold);color:#17130a}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.statusline{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:17px 0 0;color:var(--muted);font-size:12px}
+.notice{padding:12px 14px;border-radius:9px;background:#132440;color:var(--muted);font-size:12px;line-height:1.6;margin-bottom:18px}
+.error{background:#351c29;color:#ffb4bc}
+.success{background:#123528;color:#a4f0ce}
+.table-wrap{width:100%;overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:850px}
+th{text-align:left;color:var(--muted);font-size:10px;letter-spacing:.7px;text-transform:uppercase;padding:13px 12px;border-bottom:1px solid var(--border)}
+td{padding:15px 12px;border-bottom:1px solid #1c2a44;font-size:12px;vertical-align:top}
+tr:last-child td{border-bottom:0}
+.user-name{font-weight:700;margin-bottom:5px}
+.user-id{font-size:10px;color:var(--muted);max-width:170px;overflow-wrap:anywhere}
+.email{overflow-wrap:anywhere;max-width:190px}
+.badge{display:inline-block;border-radius:20px;padding:5px 8px;font-size:10px;background:#26334b;color:#c4d0e4;white-space:nowrap}
+.badge.good{background:#123b30;color:#8ce6bc}
+.badge.bad{background:#43222b;color:#ffb4bc}
+.badge.gold{background:#3b3020;color:var(--gold-light)}
+.empty{text-align:center;padding:30px;color:var(--muted)}
+.pagination{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:18px}
+.page-info{font-size:12px;color:var(--muted)}
+.loading{opacity:.7}
+.footer-note{font-size:11px;color:var(--muted);line-height:1.7;margin-top:18px}
+.overlay{display:none}
+@media(max-width:850px){
+  .sidebar{transform:translateX(-100%);transition:transform .2s}
+  .sidebar.open{transform:translateX(0)}
+  .overlay.show{display:block;position:fixed;inset:0;background:#0009;z-index:15}
+  .main{margin-left:0;padding:18px 14px 40px}
+  .menu-btn{display:block}
+  .topbar{margin-bottom:25px}
+  h1{font-size:24px}
+  .card{padding:15px}
+}
+@media(max-width:420px){
+  .admin-email{max-width:155px;font-size:10px}
+  .avatar{width:34px;height:34px}
+  .toolbar .btn{flex:1}
+}
+</style>
+</head>
+<body>
+<div class="overlay" id="overlay" onclick="toggleMenu(false)"></div><aside class="sidebar" id="sidebar">
+  <div class="brand">AITIVEST</div>
+  <div class="brand-sub">ADMINISTRATION</div>
+  <nav class="nav">
+    <div class="nav-label">OVERVIEW</div>
+    <a href="admin.html">Dashboard</a>
+    <div class="nav-label">MANAGEMENT</div>
+    <a class="active" href="admin-users.html">Users Management</a>
+    <a href="admin-deposits.html">Deposit Requests</a>
+    <a href="admin-withdrawals.html">Withdrawal Requests</a>
+    <a href="admin-transactions.html">Transactions</a>
+    <a href="admin-support.html">Support Tickets</a>
+    <div class="nav-label">SECURITY</div>
+    <a href="admin-security.html">Security Logs</a>
+    <a href="admin-settings.html">Admin Settings</a>
+  </nav>
+  <div class="sidebar-note">Restricted administration area. Access is checked against your authenticated administrator account.</div>
+</aside><main class="main">
+  <header class="topbar">
+    <button class="menu-btn" onclick="toggleMenu(true)" aria-label="Open menu">☰ Menu</button>
+    <div class="top-right">
+      <div class="admin-info">
+        <div class="admin-label">SIGNED IN AS</div>
+        <div class="admin-email" id="adminEmail">Checking session…</div>
+      </div>
+      <div class="avatar" id="avatar">A</div>
+      <button class="btn" id="signOutBtn">Sign out</button>
+    </div>
+  </header>  <h1>Users Management</h1>
+  <p class="subtitle">Review registered accounts, registration dates, account status, KYC status, and referral information.</p>  <section class="card">
+    <div class="card-title">Registered users</div>
+    <div class="card-description">Search by user's name, email address, or user ID. Results are newest first.</div>
+    <div class="notice" id="notice">Verifying administrator access…</div><div class="toolbar">
+  <div class="search-wrap">
+    <input class="search" id="searchInput" type="search" placeholder="Search name, email, or user ID…" autocomplete="off">
+  </div>
+  <button class="btn btn-primary" id="searchBtn">Search</button>
+  <button class="btn" id="refreshBtn">Refresh</button>
+</div>
+
+<div class="statusline">
+  <span id="resultCount">Waiting for data…</span>
+  <span id="pageStatus"></span>
+</div>
+
+  </section>  <section class="card">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Email</th>
+            <th>Account status</th>
+            <th>KYC</th>
+            <th>Referral code</th>
+            <th>Referred by</th>
+            <th>Registered</th>
+          </tr>
+        </thead>
+        <tbody id="usersBody">
+          <tr><td colspan="7" class="empty">Loading users…</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="pagination">
+      <div class="page-info" id="pageInfo">Page 1</div>
+      <div class="toolbar">
+        <button class="btn" id="prevBtn" disabled>Previous</button>
+        <button class="btn" id="nextBtn" disabled>Next</button>
+      </div>
+    </div>
+    <div class="footer-note">This page is read-only. Account changes, financial actions, and KYC decisions must use separately verified administrator functions.</div>
+  </section>
+</main><script>
+(() => {
+  const SUPABASE_URL = "https://rihvvwktvgytbqzazage.supabase.co";
+  const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
+  const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+
+  const $ = id => document.getElementById(id);
+  const PAGE_SIZE = 50;
+  let currentOffset = 0;
+  let totalUsers = 0;
+  let currentSearch = "";
+  let authorized = false;
+  let searchTimer = null;
+
+  function setNotice(message, type = "") {
+    const el = $("notice");
+    el.textContent = message;
+    el.className = "notice" + (type ? " " + type : "");
+  }
+
+  function toggleMenu(open) {
+    $("sidebar").classList.toggle("open", open);
+    $("overlay").classList.toggle("show", open);
+  }
+  window.toggleMenu = toggleMenu;
+
+  function safeText(value, fallback = "—") {
+    if (value === null || value === undefined || String(value).trim() === "") return fallback;
+    return String(value);
+  }
+
+  function badgeClass(value, kind) {
+    const v = String(value || "").toUpperCase();
+    if (["ACTIVE", "APPROVED", "VERIFIED", "COMPLETED"].includes(v)) return "badge good";
+    if (["SUSPENDED", "DISABLED", "REJECTED", "FAILED", "BLOCKED"].includes(v)) return "badge bad";
+    if (["PENDING", "UNDER_REVIEW", "IN_REVIEW"].includes(v)) return "badge gold";
+    return "badge";
+  }
+
+  function makeCell(row, value, className) {
+    const td = document.createElement("td");
+    if (className) td.className = className;
+    td.textContent = value;
+    row.appendChild(td);
+    return td;
+  }
+
+  function makeBadgeCell(row, value, kind) {
+    const td = document.createElement("td");
+    const span = document.createElement("span");
+    span.className = badgeClass(value, kind);
+    span.textContent = safeText(value, "NOT SET");
+    td.appendChild(span);
+    row.appendChild(td);
+  }
+
+  function formatDate(value) {
+    if (!value) return "—";
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return "—";
+    return date.toLocaleDateString(undefined, {year:"numeric", month:"short", day:"numeric"});
+  }
+
+  function renderUsers(users) {
+    const body = $("usersBody");
+    body.replaceChildren();
+
+    if (!Array.isArray(users) || users.length === 0) {
+      const tr = document.createElement("tr");
+      const td = document.createElement("td");
+      td.colSpan = 7;
+      td.className = "empty";
+      td.textContent = "No users found for this search.";
+      tr.appendChild(td);
+      body.appendChild(tr);
+      return;
+    }
+
+    for (const user of users) {
+      const tr = document.createElement("tr");
+
+      const userCell = document.createElement("td");
+      const name = document.createElement("div");
+      name.className = "user-name";
+      name.textContent = safeText(user.full_name, "Unnamed user");
+      const id = document.createElement("div");
+      id.className = "user-id";
+      id.textContent = safeText(user.id);
+      userCell.append(name, id);
+      tr.appendChild(userCell);
+
+      makeCell(tr, safeText(user.email), "email");
+      makeBadgeCell(tr, user.account_status, "account");
+      makeBadgeCell(tr, user.kyc_status, "kyc");
+      makeCell(tr, safeText(user.referral_code));
+      makeCell(tr, safeText(user.referred_by));
+      makeCell(tr, formatDate(user.created_at));
+
+      body.appendChild(tr);
+    }
+  }
+
+  async function loadUsers(resetOffset = false) {
+    if (!authorized) return;
+    if (resetOffset) currentOffset = 0;
+
+    $("usersBody").classList.add("loading");
+    $("usersBody").replaceChildren();
+    const loadingRow = document.createElement("tr");
+    const loadingCell = document.createElement("td");
+    loadingCell.colSpan = 7;
+    loadingCell.className = "empty";
+    loadingCell.textContent = "Loading users…";
+    loadingRow.appendChild(loadingCell);
+    $("usersBody").appendChild(loadingRow);
+
+    $("searchBtn").disabled = true;
+    $("refreshBtn").disabled = true;
+    setNotice("Loading user records…");
+
+    try {
+      const { data, error } = await db.rpc("admin_list_users", {
+        p_search: currentSearch || null,
+        p_limit: PAGE_SIZE,
+        p_offset: currentOffset
+      });
+
+      if (error) throw error;
+      if (!data || !Array.isArray(data.users)) {
+        throw new Error("Unexpected response from admin_list_users. Check the database function.");
+      }
+
+      totalUsers = Number(data.total) || 0;
+      renderUsers(data.users);
+
+      const start = totalUsers === 0 ? 0 : currentOffset + 1;
+      const end = Math.min(currentOffset + data.users.length, totalUsers);
+      $("resultCount").textContent = `${totalUsers} user${totalUsers === 1 ? "" : "s"} found`;
+      $("pageInfo").textContent = totalUsers === 0 ? "Page 0 of 0" : `Showing ${start}–${end} of ${totalUsers}`;
+      $("pageStatus").textContent = currentSearch ? `Search: ${currentSearch}` : "All accounts";
+      $("prevBtn").disabled = currentOffset <= 0;
+      $("nextBtn").disabled = currentOffset + PAGE_SIZE >= totalUsers;
+      setNotice("Administrator verified. User records loaded successfully.", "success");
+    } catch (error) {
+      console.error("User list error:", error);
+      renderUsers([]);
+      $("resultCount").textContent = "Could not load users";
+      $("pageInfo").textContent = "Page unavailable";
+      $("prevBtn").disabled = true;
+      $("nextBtn").disabled = true;
+      setNotice("Unable to load users: " + (error.message || "Unknown error") + ". Check that the SQL function was created and your admin account is authorized.", "error");
+    } finally {
+      $("usersBody").classList.remove("loading");
+      $("searchBtn").disabled = false;
+      $("refreshBtn").disabled = false;
+    }
+  }
+
+  async function verifyAdmin() {
+    setNotice("Verifying administrator access…");
+    try {
+      const { data: sessionData, error: sessionError } = await db.auth.getSession();
+      if (sessionError) throw sessionError;
+
+      const session = sessionData && sessionData.session;
+      if (!session) {
+        window.location.replace("admin-login.html");
+        return;
+      }
+
+      const { data: isAdmin, error: adminError } = await db.rpc("is_current_user_admin");
+      if (adminError) throw adminError;
+
+      if (isAdmin !== true) {
+        await db.auth.signOut();
+        setNotice("Access denied. This account is not an authorized administrator.", "error");
+        setTimeout(() => window.location.replace("admin-login.html"), 1800);
+        return;
+      }
+
+      authorized = true;
+      const email = session.user.email || "Administrator";
+      $("adminEmail").textContent = email;
+      $("avatar").textContent = email.charAt(0).toUpperCase() || "A";
+      await loadUsers(true);
+    } catch (error) {
+      console.error("Admin verification error:", error);
+      setNotice("Could not verify administrator access: " + (error.message || "Unknown error"), "error");
+      $("usersBody").replaceChildren();
+      const tr = document.createElement("tr");
+      const td = document.createElement("td");
+      td.colSpan = 7;
+      td.className = "empty";
+      td.textContent = "User records are hidden until administrator access is verified.";
+      tr.appendChild(td);
+      $("usersBody").appendChild(tr);
+    }
+  }
+
+  $("searchBtn").addEventListener("click", () => {
+    currentSearch = $("searchInput").value.trim();
+    loadUsers(true);
+  });
+
+  $("searchInput").addEventListener("keydown", event => {
+    if (event.key === "Enter") {
+      clearTimeout(searchTimer);
+      currentSearch = $("searchInput").value.trim();
+      loadUsers(true);
+    }
+  });
+
+  $("searchInput").addEventListener("input", () => {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(() => {
+      currentSearch = $("searchInput").value.trim();
+      loadUsers(true);
+    }, 500);
+  });
+
+  $("refreshBtn").addEventListener("click", () => loadUsers(false));
+
+  $("prevBtn").addEventListener("click", () => {
+    if (currentOffset >= PAGE_SIZE) {
+      currentOffset -= PAGE_SIZE;
+      loadUsers(false);
+    }
+  });
+
+  $("nextBtn").addEventListener("click", () => {
+    if (currentOffset + PAGE_SIZE < totalUsers) {
+      currentOffset += PAGE_SIZE;
+      loadUsers(false);
+    }
+  });
+
+  $("signOutBtn").addEventListener("click", async () => {
+    $("signOutBtn").disabled = true;
+    try {
+      const { data } = await db.auth.getUser();
+      const user = data && data.user;
+      if (user) {
+        await db.rpc("admin_write_security_log", {
+          p_action: "ADMIN_SIGN_OUT",
+          p_target_type: "session",
+          p_target_id: user.id,
+          p_details: {},
+          p_success: true
+        });
+      }
+    } catch (error) {
+      console.warn("Could not write sign-out security log:", error);
+    }
+
+    await db.auth.signOut();
+    window.location.replace("admin-login.html");
+  });
+
+  verifyAdmin();
+})();
+</script></body>
+</html>
