@@ -2,916 +2,506 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#0A1428">
-  <meta name="description" content="AITIVEST secure administration dashboard">
+
   <title>AITIVEST | Admin Dashboard</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
     :root {
-      color-scheme: dark;
-      --bg: #0A1428;
-      --sidebar: #0B162D;
-      --card: #101D38;
-      --card-hover: #152442;
+      --ink: #0A1428;
+      --panel: #101D38;
+      --panel2: #17284B;
+      --line: #243559;
       --gold: #D4A64A;
-      --gold-light: #EBD29A;
-      --blue: #5B8DEF;
+      --goldsoft: #EBD29A;
       --text: #EAF0FA;
-      --muted: #94A3BD;
-      --border: #233453;
-      --green: #53D6A0;
-      --red: #FF777F;
-      --orange: #FFBD69;
-      --input: #0B172E;
-      --shadow: 0 12px 35px rgba(0,0,0,.14);
+      --muted: #8696B5;
+      --green: #6FBF8E;
+      --red: #D9705F;
+      --yellow: #E8B84F;
       --radius: 14px;
     }
 
-    [data-theme="light"] {
-      color-scheme: light;
-      --bg: #F3F5FA;
-      --sidebar: #FFFFFF;
-      --card: #FFFFFF;
-      --card-hover: #F5F7FC;
-      --gold: #A8791D;
-      --gold-light: #C99A3C;
-      --blue: #396ACB;
-      --text: #17243A;
-      --muted: #64748B;
-      --border: #DCE3EF;
-      --green: #12875B;
-      --red: #D64250;
-      --orange: #A96109;
-      --input: #F7F9FC;
-      --shadow: 0 8px 25px rgba(22,35,60,.06);
-    }
-
-    * { box-sizing: border-box; }
-
-    html {
-      scroll-behavior: smooth;
-      scroll-padding-top: 85px;
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
     body {
-      margin: 0;
-      background: var(--bg);
+      font-family: Manrope, sans-serif;
+      background: var(--ink);
       color: var(--text);
-      font-family: "Manrope", sans-serif;
-      font-size: 13px;
-      line-height: 1.6;
-      transition: background .2s, color .2s;
+      min-height: 100vh;
     }
 
-    button, input, select, textarea { font: inherit; }
-    button { cursor: pointer; }
-    button:disabled { opacity: .5; cursor: not-allowed; }
-
-    button:focus-visible,
-    a:focus-visible,
-    input:focus-visible,
-    select:focus-visible,
-    textarea:focus-visible {
-      outline: 3px solid var(--blue);
-      outline-offset: 3px;
+    button, input, select {
+      font: inherit;
     }
 
-    a { color: inherit; text-decoration: none; }
+    button {
+      cursor: pointer;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
 
     .app {
+      display: grid;
+      grid-template-columns: 245px minmax(0, 1fr);
       min-height: 100vh;
     }
 
     .sidebar {
-      display: none;
-      position: fixed;
-      inset: 0 auto 0 0;
-      width: 245px;
-      padding: 26px 17px;
-      background: var(--sidebar);
-      border-right: 1px solid var(--border);
-      z-index: 30;
-      overflow-y: auto;
+      background: var(--ink);
+      border-right: 1px solid var(--line);
+      padding: 24px 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 26px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
     }
 
     .brand {
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding: 5px 9px 30px;
+      gap: 10px;
+      padding: 0 8px;
     }
 
     .brand-icon {
+      width: 36px;
+      height: 36px;
       display: grid;
       place-items: center;
-      width: 42px;
-      height: 42px;
-      flex-shrink: 0;
-      border-radius: 13px;
-      background: linear-gradient(145deg, var(--gold-light), var(--gold));
-      color: #172033;
+      background: linear-gradient(135deg, var(--goldsoft), var(--gold));
+      border-radius: 10px;
+      color: var(--ink);
       font-weight: 800;
-      font-size: 17px;
+      font-size: 19px;
     }
 
     .brand-name {
-      font-size: 17px;
-      letter-spacing: 2px;
-      font-weight: 800;
+      font-family: "Instrument Serif", serif;
+      font-size: 27px;
     }
 
-    .brand-sub {
-      color: var(--muted);
-      font-size: 10px;
-      letter-spacing: 1.5px;
-    }
-
-    .admin-tag {
-      margin-left: auto;
-      padding: 3px 7px;
-      border-radius: 5px;
-      border: 1px solid var(--gold);
-      color: var(--gold);
+    .admin-badge {
       font-size: 9px;
       font-weight: 800;
+      padding: 3px 6px;
+      border: 1px solid var(--gold);
+      border-radius: 20px;
+      color: var(--goldsoft);
     }
 
-    .nav-label {
-      padding: 15px 12px 9px;
-      color: var(--muted);
-      font-size: 10px;
-      letter-spacing: 1.7px;
-      text-transform: uppercase;
-      font-weight: 800;
+    .nav {
+      display: grid;
+      gap: 5px;
     }
 
-    .nav-item {
-      width: 100%;
+    .nav a,
+    .nav button {
       display: flex;
       align-items: center;
-      gap: 12px;
-      min-height: 45px;
-      padding: 11px 13px;
-      margin: 3px 0;
+      gap: 11px;
+      padding: 12px;
+      border: 0;
+      border-radius: 9px;
       background: transparent;
-      border: 1px solid transparent;
-      border-radius: 10px;
       color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
       text-align: left;
-      transition: background .15s, color .15s;
     }
 
-    .nav-item:hover {
-      background: var(--card-hover);
+    .nav a:hover,
+    .nav button:hover {
+      background: var(--panel);
       color: var(--text);
     }
 
-    .nav-item.active {
-      background: rgba(212,166,74,.11);
-      border-color: rgba(212,166,74,.2);
-      color: var(--gold-light);
-    }
-
-    .nav-icon {
-      width: 22px;
-      text-align: center;
-      font-size: 17px;
-    }
-
-    .nav-badge {
-      margin-left: auto;
-      min-width: 22px;
-      padding: 2px 6px;
-      text-align: center;
-      background: var(--gold);
-      color: #101827;
-      border-radius: 20px;
-      font-size: 10px;
-      font-weight: 800;
+    .nav a.active {
+      background: var(--panel2);
+      color: var(--goldsoft);
+      box-shadow: inset 3px 0 var(--gold);
     }
 
     .sidebar-bottom {
-      margin-top: 35px;
+      margin-top: auto;
       padding: 13px;
-      border: 1px solid var(--border);
-      background: var(--card);
-      border-radius: 12px;
-    }
-
-    .security-dot {
-      display: inline-block;
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--green);
-      margin-right: 6px;
-    }
-
-    .main {
-      min-width: 0;
-      min-height: 100vh;
-      padding-bottom: 85px;
-    }
-
-    .topbar {
-      height: 72px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 0 17px;
-      background: var(--sidebar);
-      border-bottom: 1px solid var(--border);
-      position: sticky;
-      top: 0;
-      z-index: 20;
-    }
-
-    .mobile-brand {
-      display: flex;
-      align-items: center;
-      gap: 9px;
-      min-width: 0;
-    }
-
-    .mobile-brand .brand-icon {
-      width: 35px;
-      height: 35px;
-      border-radius: 10px;
-      font-size: 14px;
-    }
-
-    .mobile-brand .brand-name {
-      font-size: 14px;
-      letter-spacing: 1.3px;
-    }
-
-    .mobile-brand .brand-sub { font-size: 9px; }
-
-    .top-actions {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .icon-button {
-      min-width: 42px;
-      height: 42px;
-      padding: 0 10px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 7px;
-      border: 1px solid var(--border);
-      background: var(--card);
-      color: var(--text);
-      border-radius: 10px;
-    }
-
-    .icon-button:hover { background: var(--card-hover); }
-
-    .top-admin {
-      display: none;
-      text-align: right;
-      line-height: 1.5;
-    }
-
-    .top-admin strong { font-size: 12px; }
-    .top-admin span { color: var(--muted); font-size: 10px; }
-
-    .content {
-      width: 100%;
-      max-width: 1500px;
-      margin: 0 auto;
-      padding: 24px 16px;
-    }
-
-    .page { display: none; animation: appear .2s ease; }
-    .page.active { display: block; }
-
-    @keyframes appear {
-      from { opacity: .4; transform: translateY(3px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .page-heading {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-bottom: 24px;
-    }
-
-    .eyebrow {
-      margin-bottom: 5px;
-      color: var(--gold);
-      font-size: 10px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      font-weight: 800;
-    }
-
-    h1, h2, h3, .big-number {
-      font-family: "Instrument Serif", Georgia, serif;
-      font-weight: 400;
-    }
-
-    h1 {
-      margin: 0;
-      font-size: clamp(31px, 5vw, 43px);
-      line-height: 1.1;
-    }
-
-    h2 { font-size: 25px; margin: 0; }
-    h3 { font-size: 21px; margin: 0; }
-
-    .muted { color: var(--muted); }
-    .small { font-size: 11px; }
-
-    .button {
-      min-height: 44px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 7px;
-      padding: 10px 14px;
-      border-radius: 9px;
-      border: 1px solid var(--border);
-      background: var(--card);
-      color: var(--text);
-      font-weight: 800;
-      font-size: 11px;
-      transition: transform .15s, opacity .15s, background .15s;
-    }
-
-    .button:hover:not(:disabled) { transform: translateY(-1px); }
-
-    .button-primary {
-      background: var(--gold);
-      color: #111A2A;
-      border-color: var(--gold);
-    }
-
-    .button-secondary { background: var(--card); }
-
-    .button-danger {
-      color: var(--red);
-      border-color: rgba(255,119,127,.35);
-      background: rgba(255,119,127,.06);
-    }
-
-    .button-success {
-      color: var(--green);
-      border-color: rgba(83,214,160,.35);
-      background: rgba(83,214,160,.06);
-    }
-
-    .button-blue {
-      color: var(--blue);
-      border-color: rgba(91,141,239,.35);
-      background: rgba(91,141,239,.07);
-    }
-
-    .button-row {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .kpi-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-      margin-bottom: 19px;
-    }
-
-    .card {
-      min-width: 0;
-      padding: 17px;
+      border: 1px solid var(--line);
       border-radius: var(--radius);
-      border: 1px solid var(--border);
-      background: var(--card);
-      box-shadow: var(--shadow);
-    }
-
-    .kpi-card {
-      position: relative;
-      overflow: hidden;
-      min-height: 137px;
-    }
-
-    .kpi-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-    }
-
-    .kpi-label {
-      color: var(--muted);
-      font-size: 10px;
-      line-height: 1.5;
-    }
-
-    .kpi-icon {
-      display: grid;
-      place-items: center;
-      width: 34px;
-      height: 34px;
-      flex-shrink: 0;
-      border-radius: 10px;
-      color: var(--gold-light);
-      background: rgba(212,166,74,.1);
-      font-size: 16px;
-    }
-
-    .big-number {
-      margin: 14px 0 4px;
-      font-size: clamp(27px, 5vw, 37px);
-      line-height: 1;
       overflow-wrap: anywhere;
     }
 
-    .kpi-note {
+    .sidebar-bottom small {
       color: var(--muted);
-      font-size: 10px;
+      display: block;
+      margin-top: 5px;
     }
 
-    .positive { color: var(--green); }
-    .negative { color: var(--red); }
+    main {
+      min-width: 0;
+      padding: 28px;
+      max-width: 1500px;
+      width: 100%;
+    }
 
-    .dashboard-grid {
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+      margin-bottom: 25px;
+    }
+
+    h1 {
+      font-family: "Instrument Serif", serif;
+      font-size: 36px;
+      font-weight: 400;
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn {
+      padding: 9px 13px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: var(--panel2);
+      color: var(--text);
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--goldsoft), var(--gold));
+      color: var(--ink);
+      border-color: var(--gold);
+    }
+
+    .btn-danger {
+      color: var(--red);
+      border-color: #6a3841;
+      background: transparent;
+    }
+
+    .btn:disabled {
+      opacity: .45;
+      cursor: not-allowed;
+    }
+
+    .notice {
+      padding: 12px 14px;
+      margin-bottom: 15px;
+      background: var(--panel2);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      font-size: 12px;
+      overflow-wrap: anywhere;
+    }
+
+    .notice.error {
+      color: #ffb1b6;
+      border-color: #6a3841;
+    }
+
+    .notice.success {
+      color: var(--green);
+      border-color: #32694e;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .stats {
       display: grid;
-      grid-template-columns: minmax(0, 1fr);
-      gap: 17px;
-      margin-bottom: 18px;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 19px;
+      min-width: 0;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .stat-number {
+      font-family: "Instrument Serif", serif;
+      font-size: 34px;
+      margin-top: 7px;
+      overflow-wrap: anywhere;
+    }
+
+    .gold-text {
+      color: var(--goldsoft);
+    }
+
+    .stat-note {
+      color: var(--muted);
+      font-size: 10px;
+      margin-top: 5px;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+      gap: 18px;
+      margin-bottom: 20px;
     }
 
     .card-heading {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
+      align-items: center;
+      flex-wrap: wrap;
       gap: 12px;
-      margin-bottom: 18px;
+      margin-bottom: 15px;
     }
 
-    .card-heading h2 { font-size: 23px; }
+    h2 {
+      font-size: 14px;
+    }
 
-    .chart-legend {
-      display: flex;
-      align-items: center;
-      gap: 7px;
+    .muted {
       color: var(--muted);
-      font-size: 10px;
+      font-size: 11px;
     }
 
-    .legend-dot {
-      width: 8px;
-      height: 8px;
-      background: var(--gold);
-      border-radius: 2px;
+    .list {
+      list-style: none;
     }
 
-    .chart {
-      height: 190px;
+    .list li {
       display: flex;
-      align-items: flex-end;
-      gap: 8px;
-      padding: 18px 2px 0;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .chart-column {
-      height: 100%;
-      min-width: 0;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      align-items: center;
-      gap: 9px;
-    }
-
-    .chart-bar {
-      width: min(100%, 24px);
-      min-height: 3px;
-      border-radius: 5px 5px 0 0;
-      background: rgba(91,141,239,.75);
-      transition: height .2s;
-    }
-
-    .chart-bar.latest { background: var(--gold); }
-
-    .chart-label {
-      height: 17px;
-      color: var(--muted);
-      font-size: 9px;
-    }
-
-    .chart-value {
-      display: none;
-      color: var(--muted);
-      font-size: 9px;
-    }
-
-    .needs-list {
-      display: grid;
-      gap: 10px;
-    }
-
-    .needs-item {
-      display: flex;
+      justify-content: space-between;
       align-items: center;
       gap: 12px;
-      padding: 12px;
-      background: var(--input);
-      border: 1px solid var(--border);
-      border-radius: 11px;
+      padding: 13px 0;
+      border-bottom: 1px solid var(--line);
+      font-size: 12px;
     }
 
-    .needs-icon {
-      width: 38px;
-      height: 38px;
-      display: grid;
-      place-items: center;
-      border-radius: 10px;
-      background: rgba(212,166,74,.1);
-      color: var(--gold-light);
-      flex-shrink: 0;
-      font-size: 16px;
+    .list li:last-child {
+      border-bottom: 0;
     }
-
-    .needs-text { flex: 1; min-width: 0; }
-    .needs-text strong { display: block; font-size: 12px; }
-    .needs-text span { color: var(--muted); font-size: 10px; }
-    .needs-count { font-weight: 800; color: var(--gold-light); }
-
-    .table-card { padding: 0; overflow: hidden; }
-    .table-header { padding: 18px 17px 5px; }
 
     .table-wrap {
-      width: 100%;
       overflow-x: auto;
-      overscroll-behavior-x: contain;
-      -webkit-overflow-scrolling: touch;
     }
 
     table {
       width: 100%;
+      min-width: 550px;
       border-collapse: collapse;
-      text-align: left;
       font-size: 11px;
     }
 
     th {
-      padding: 13px 15px;
       color: var(--muted);
-      background: var(--input);
+      text-align: left;
       font-size: 10px;
-      font-weight: 800;
+      padding: 12px 9px;
+      border-bottom: 1px solid var(--line);
       white-space: nowrap;
     }
 
     td {
-      padding: 14px 15px;
-      border-top: 1px solid var(--border);
+      padding: 13px 9px;
+      border-bottom: 1px solid var(--line);
       vertical-align: middle;
     }
 
-    td.nowrap, th.nowrap { white-space: nowrap; }
+    tr:last-child td {
+      border-bottom: 0;
+    }
 
-    tbody tr:hover { background: var(--card-hover); }
-
-    .user-cell {
+    .user {
       display: flex;
       align-items: center;
-      gap: 10px;
-      min-width: 180px;
+      gap: 9px;
+      min-width: 160px;
     }
 
     .avatar {
-      width: 34px;
-      height: 34px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
       display: grid;
       place-items: center;
-      flex-shrink: 0;
-      border-radius: 50%;
-      background: rgba(91,141,239,.14);
-      border: 1px solid rgba(91,141,239,.25);
-      color: var(--blue);
+      background: var(--panel2);
+      border: 1px solid var(--line);
+      color: var(--goldsoft);
       font-weight: 800;
+      flex-shrink: 0;
     }
 
-    .user-name { font-weight: 800; font-size: 11px; }
-    .user-email { color: var(--muted); font-size: 10px; overflow-wrap: anywhere; }
+    .user-name {
+      font-weight: 800;
+      overflow-wrap: anywhere;
+    }
+
+    .user-email {
+      color: var(--muted);
+      font-size: 10px;
+      overflow-wrap: anywhere;
+    }
 
     .pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
+      display: inline-block;
       padding: 4px 8px;
+      border: 1px solid var(--line);
       border-radius: 30px;
       font-size: 9px;
       font-weight: 800;
       white-space: nowrap;
-      border: 1px solid var(--border);
-      background: var(--input);
-      color: var(--muted);
     }
 
-    .pill::before {
-      content: "";
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: currentColor;
+    .pill-good {
+      color: var(--green);
+      border-color: #32694e;
     }
 
-    .pill-success { color: var(--green); border-color: rgba(83,214,160,.22); }
-    .pill-warning { color: var(--orange); border-color: rgba(255,189,105,.25); }
-    .pill-danger { color: var(--red); border-color: rgba(255,119,127,.25); }
-    .pill-blue { color: var(--blue); border-color: rgba(91,141,239,.25); }
-
-    .toolbar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 16px;
+    .pill-pending {
+      color: var(--yellow);
+      border-color: #705a2a;
     }
 
-    .field {
-      min-height: 44px;
-      padding: 10px 12px;
-      border-radius: 9px;
-      border: 1px solid var(--border);
-      background: var(--input);
-      color: var(--text);
-      width: 100%;
-      min-width: 0;
+    .pill-bad {
+      color: var(--red);
+      border-color: #6a3841;
     }
-
-    .search-field { flex: 1 1 230px; }
-
-    .filter-field { flex: 0 1 150px; }
-
-    .form-label {
-      display: block;
-      margin-bottom: 7px;
-      color: var(--muted);
-      font-size: 11px;
-      font-weight: 700;
-    }
-
-    .form-group { margin-bottom: 17px; }
-
-    .request-list {
-      display: grid;
-      gap: 12px;
-    }
-
-    .request-card {
-      padding: 17px;
-      border: 1px solid var(--border);
-      background: var(--card);
-      border-radius: 12px;
-      min-width: 0;
-    }
-
-    .request-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 10px;
-      margin-bottom: 13px;
-    }
-
-    .request-title { font-weight: 800; font-size: 13px; }
-    .request-meta { color: var(--muted); font-size: 10px; margin-top: 3px; }
-    .request-amount { font-size: 20px; font-family: "Instrument Serif", Georgia, serif; }
-    .request-details {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0,1fr));
-      gap: 12px;
-      padding: 13px 0;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 13px;
-    }
-
-    .detail-label { color: var(--muted); font-size: 10px; }
-    .detail-value { font-size: 11px; font-weight: 700; overflow-wrap: anywhere; }
 
     .empty {
-      padding: 35px 15px;
+      padding: 25px 10px;
       text-align: center;
       color: var(--muted);
     }
-
-    .empty-icon {
-      font-size: 30px;
-      margin-bottom: 8px;
-      color: var(--gold);
-    }
-
-    .empty strong {
-      display: block;
-      color: var(--text);
-      font-size: 13px;
-      margin-bottom: 4px;
-    }
-
-    .message {
-      margin-bottom: 16px;
-      padding: 12px 14px;
-      border-radius: 10px;
-      background: var(--input);
-      border: 1px solid var(--border);
-      color: var(--muted);
-      overflow-wrap: anywhere;
-    }
-
-    .message.error {
-      color: var(--red);
-      border-color: rgba(255,119,127,.35);
-    }
-
-    .message.success {
-      color: var(--green);
-      border-color: rgba(83,214,160,.35);
-    }
-
-    .hidden { display: none !important; }
-
-    .support-grid {
-      display: grid;
-      grid-template-columns: minmax(0,1fr);
-      gap: 15px;
-    }
-
-    .ticket-card {
-      border: 1px solid var(--border);
-      background: var(--card);
-      border-radius: 12px;
-      padding: 15px;
-      margin-bottom: 12px;
-    }
-
-    .ticket-content {
-      white-space: pre-wrap;
-      overflow-wrap: anywhere;
-      color: var(--muted);
-      font-size: 11px;
-      margin: 12px 0;
-    }
-
-    .security-note {
-      border: 1px solid rgba(212,166,74,.3);
-      background: rgba(212,166,74,.06);
-      color: var(--muted);
-      padding: 13px;
-      border-radius: 10px;
-      margin-bottom: 17px;
-      font-size: 11px;
-    }
-
-    .bottom-nav {
-      position: fixed;
-      inset: auto 0 0;
-      z-index: 40;
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0,1fr));
-      padding: 7px 8px calc(7px + env(safe-area-inset-bottom));
-      border-top: 1px solid var(--border);
-      background: var(--sidebar);
-      box-shadow: 0 -8px 25px rgba(0,0,0,.1);
-    }
-
-    .bottom-nav .nav-item {
-      position: relative;
-      min-height: 54px;
-      margin: 0;
-      padding: 6px 3px;
-      justify-content: center;
-      flex-direction: column;
-      gap: 2px;
-      border-radius: 9px;
-      font-size: 9px;
-      text-align: center;
-    }
-
-    .bottom-nav .nav-icon { font-size: 18px; line-height: 1.2; }
-    .bottom-nav .nav-badge {
-      position: absolute;
-      top: 0;
-      right: calc(50% - 29px);
-      min-width: 18px;
-      padding: 1px 5px;
-      font-size: 9px;
-    }
-
-    .toast-container {
-      position: fixed;
-      top: 82px;
-      right: 14px;
-      z-index: 100;
-      width: min(340px, calc(100% - 28px));
-      display: grid;
-      gap: 8px;
-      pointer-events: none;
-    }
-
-    .toast {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-left: 3px solid var(--gold);
-      border-radius: 10px;
-      padding: 13px 15px;
-      box-shadow: var(--shadow);
-      overflow-wrap: anywhere;
-      animation: appear .15s ease;
-    }
-
-    .toast.error { border-left-color: var(--red); }
-    .toast.success { border-left-color: var(--green); }
-
-    .loading-screen {
-      position: fixed;
-      inset: 0;
-      z-index: 200;
-      display: grid;
-      place-items: center;
-      padding: 20px;
-      background: var(--bg);
-    }
-
-    .loading-box {
-      width: min(390px,100%);
-      padding: 28px;
-      text-align: center;
-      border: 1px solid var(--border);
-      background: var(--card);
-      border-radius: 16px;
-    }
-
-    .loading-box .brand-icon { margin: 0 auto 16px; }
-    .loading-box h2 { margin-bottom: 8px; }
-    .loading-box p { color: var(--muted); font-size: 11px; }
-    .loading-box input { margin: 9px 0; }
 
     .footer {
       text-align: center;
-      padding: 24px 10px;
       color: var(--muted);
       font-size: 10px;
+      padding: 20px 0;
     }
 
-    @media (min-width: 600px) {
-      .content { padding: 28px 24px; }
-      .topbar { padding: 0 24px; }
-      .mobile-brand .brand-name { font-size: 16px; }
-      .kpi-grid { gap: 16px; }
-      .kpi-card { padding: 20px; }
-      .dashboard-grid { grid-template-columns: minmax(0,1.25fr) minmax(0,.75fr); }
-      .support-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
-      .request-list { grid-template-columns: repeat(2,minmax(0,1fr)); }
-      .chart { height: 220px; }
-      .chart-value { display: block; }
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translate(-50%, 15px);
+      opacity: 0;
+      pointer-events: none;
+      padding: 12px 17px;
+      border: 1px solid var(--gold);
+      border-radius: 10px;
+      background: var(--panel2);
+      font-size: 12px;
+      z-index: 100;
+      transition: .2s;
+      max-width: 90%;
     }
 
-    @media (min-width: 900px) {
-      .sidebar { display: block; }
-      .main { margin-left: 245px; padding-bottom: 0; }
-      .topbar { padding: 0 30px; }
-      .mobile-brand { display: none; }
-      .top-admin { display: block; }
-      .bottom-nav { display: none; }
-      .content { padding: 35px 30px; }
-      .kpi-grid { grid-template-columns: repeat(4,minmax(0,1fr)); }
-      .kpi-card { min-height: 150px; }
-      .big-number { font-size: 37px; }
-      .request-list { grid-template-columns: repeat(2,minmax(0,1fr)); }
+    .toast.show {
+      opacity: 1;
+      transform: translate(-50%, 0);
     }
 
-    @media (min-width: 1250px) {
-      .content { padding: 38px 38px; }
-      .dashboard-grid { grid-template-columns: minmax(0,1.35fr) minmax(0,.65fr); }
+    @media (max-width: 1050px) {
+      .stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
     }
 
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        scroll-behavior: auto !important;
-        animation-duration: .01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: .01ms !important;
+    @media (max-width: 700px) {
+      .app {
+        display: block;
+      }
+
+      .sidebar {
+        position: fixed;
+        top: auto;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        height: auto;
+        padding: 6px 4px;
+        z-index: 50;
+        border-right: 0;
+        border-top: 1px solid var(--line);
+        background: var(--ink);
+      }
+
+      .brand,
+      .sidebar-bottom {
+        display: none;
+      }
+
+      .nav {
+        display: flex;
+        justify-content: space-around;
+        gap: 0;
+      }
+
+      .nav a,
+      .nav button {
+        flex: 1;
+        justify-content: center;
+        text-align: center;
+        flex-direction: column;
+        gap: 3px;
+        padding: 8px 3px;
+        font-size: 9px;
+      }
+
+      main {
+        padding: 20px 13px 100px;
+      }
+
+      h1 {
+        font-size: 30px;
+      }
+
+      .stats {
+        gap: 9px;
+      }
+
+      .card {
+        padding: 14px;
+      }
+
+      .stat-number {
+        font-size: 28px;
       }
     }
   </style>
@@ -920,530 +510,176 @@
 <body>
 <div class="app">
 
-  <aside class="sidebar" aria-label="Main administration navigation">
+  <aside class="sidebar">
     <div class="brand">
-      <div class="brand-icon" aria-hidden="true">A</div>
-      <div>
-        <div class="brand-name">AITIVEST</div>
-        <div class="brand-sub">ADMINISTRATION</div>
-      </div>
-      <span class="admin-tag">ADMIN</span>
+      <div class="brand-icon">A</div>
+      <div class="brand-name">AITIVEST</div>
+      <span class="admin-badge">ADMIN</span>
     </div>
 
-    <div class="nav-label">Workspace</div>
-
-    <button class="nav-item active" data-page="overview">
-      <span class="nav-icon" aria-hidden="true">⌂</span>
-      <span>Overview</span>
-    </button>
-
-    <button class="nav-item" data-page="users">
-      <span class="nav-icon" aria-hidden="true">♙</span>
-      <span>Users</span>
-    </button>
-
-    <button class="nav-item" data-page="requests">
-      <span class="nav-icon" aria-hidden="true">⇄</span>
-      <span>Requests</span>
-      <span class="nav-badge" id="sidebarPending">0</span>
-    </button>
-
-    <button class="nav-item" data-page="support">
-      <span class="nav-icon" aria-hidden="true">✉</span>
-      <span>Support</span>
-      <span class="nav-badge" id="sidebarTickets">0</span>
-    </button>
-
-    <div class="nav-label">Security</div>
-
-    <button class="nav-item" data-page="security">
-      <span class="nav-icon" aria-hidden="true">▣</span>
-      <span>Security Logs</span>
-    </button>
-
-    <div class="nav-label">Account</div>
-
-    <button class="nav-item" id="sidebarTheme">
-      <span class="nav-icon" aria-hidden="true">◐</span>
-      <span>Change Theme</span>
-    </button>
-
-    <button class="nav-item" id="sidebarSignOut">
-      <span class="nav-icon" aria-hidden="true">↪</span>
-      <span>Sign Out</span>
-    </button>
+    <nav class="nav">
+      <a class="active" href="admin.html">▦ Overview</a>
+      <a href="admin-users.html">♙ Users</a>
+      <a href="admin-deposits.html">＋ Deposits</a>
+      <a href="admin-withdrawals.html">↗ Withdrawals</a>
+      <a href="admin-transactions.html">⇄ Transactions</a>
+      <a href="admin-support.html">✉ Support</a>
+      <a href="admin-security.html">⌕ Security logs</a>
+      <a href="admin-settings.html">⚙ Settings</a>
+      <button id="signOutButton">⇥ Sign out</button>
+    </nav>
 
     <div class="sidebar-bottom">
-      <div style="font-weight:800;margin-bottom:7px;">
-        <span class="security-dot"></span>Admin security
-      </div>
-      <div class="muted small">Protected administration area. Only authorized administrators may use administrative actions.</div>
+      <strong id="adminEmail">Administrator</strong>
+      <small>Authorized admin session</small>
     </div>
   </aside>
 
-  <main class="main">
+  <main>
     <header class="topbar">
-      <div class="mobile-brand">
-        <div class="brand-icon" aria-hidden="true">A</div>
-        <div>
-          <div class="brand-name">AITIVEST</div>
-          <div class="brand-sub">ADMIN PANEL</div>
-        </div>
-      </div>
-
-      <div class="top-admin">
-        <strong id="adminEmail">Administrator</strong><br>
-        <span><span class="security-dot"></span>Authenticated session</span>
-      </div>
+      <h1>Overview</h1>
 
       <div class="top-actions">
-        <button class="icon-button" id="refreshAll" aria-label="Refresh dashboard data" title="Refresh dashboard">↻</button>
-        <button class="icon-button" id="themeToggle" aria-label="Switch between dark and light theme" title="Change theme">◐</button>
-        <button class="icon-button" id="signOutButton" aria-label="Sign out of administrator account" title="Sign out">↪</button>
+        <button class="btn" id="refreshButton">↻ Refresh</button>
+        <button class="btn btn-danger" id="topSignOut">Sign out</button>
       </div>
     </header>
 
-    <div class="content">
+    <div id="pageError" class="notice error hidden"></div>
+    <div id="pageSuccess" class="notice success hidden"></div>
 
-      <div id="globalMessage" class="message hidden" role="status" aria-live="polite"></div>
+    <section class="stats">
+      <article class="card">
+        <div class="stat-label">Users returned</div>
+        <div class="stat-number" id="totalUsers">—</div>
+        <div class="stat-note">Latest admin user-list result</div>
+      </article>
 
-      <!-- OVERVIEW -->
-      <section class="page active" id="page-overview">
-        <div class="page-heading">
-          <div>
-            <div class="eyebrow">Administration / Overview</div>
-            <h1>Welcome back.</h1>
-            <div class="muted" style="margin-top:7px;">Monitor platform activity and review important requests.</div>
-          </div>
-          <button class="button button-primary" id="overviewRefresh">↻ Refresh overview</button>
+      <article class="card">
+        <div class="stat-label">Confirmed deposits</div>
+        <div class="stat-number" id="confirmedDeposits">—</div>
+        <div class="stat-note">Records with confirmed status</div>
+      </article>
+
+      <article class="card">
+        <div class="stat-label">Pending deposits</div>
+        <div class="stat-number" id="pendingDeposits">—</div>
+        <div class="stat-note">Awaiting review</div>
+      </article>
+
+      <article class="card">
+        <div class="stat-label">Pending withdrawals</div>
+        <div class="stat-number gold-text" id="pendingWithdrawals">—</div>
+        <div class="stat-note">Awaiting review</div>
+      </article>
+    </section>
+
+    <section class="content-grid">
+
+      <article class="card">
+        <div class="card-heading">
+          <h2>Needs review</h2>
+          <span class="muted">Live database records</span>
         </div>
 
-        <div class="kpi-grid">
-          <article class="card kpi-card">
-            <div class="kpi-top">
-              <span class="kpi-label">TOTAL USERS</span>
-              <span class="kpi-icon" aria-hidden="true">♙</span>
-            </div>
-            <div class="big-number" id="kpiUsers">—</div>
-            <div class="kpi-note">Registered accounts loaded</div>
-          </article>
+        <ul class="list" id="reviewList">
+          <li><span>Loading requests...</span><span>—</span></li>
+        </ul>
+      </article>
 
-          <article class="card kpi-card">
-            <div class="kpi-top">
-              <span class="kpi-label">TOTAL DEPOSITS</span>
-              <span class="kpi-icon" aria-hidden="true">↓</span>
-            </div>
-            <div class="big-number" id="kpiDeposits">—</div>
-            <div class="kpi-note">Confirmed deposit records</div>
-          </article>
-
-          <article class="card kpi-card">
-            <div class="kpi-top">
-              <span class="kpi-label">PENDING REQUESTS</span>
-              <span class="kpi-icon" aria-hidden="true">◷</span>
-            </div>
-            <div class="big-number" id="kpiPending">—</div>
-            <div class="kpi-note">Deposits and withdrawals awaiting review</div>
-          </article>
-
-          <article class="card kpi-card">
-            <div class="kpi-top">
-              <span class="kpi-label">FEES — LAST 30 DAYS</span>
-              <span class="kpi-icon" aria-hidden="true">◇</span>
-            </div>
-            <div class="big-number" id="kpiFees">—</div>
-            <div class="kpi-note">Unavailable until fee data is connected</div>
-          </article>
+      <article class="card">
+        <div class="card-heading">
+          <h2>Quick actions</h2>
         </div>
 
-        <div class="dashboard-grid">
-          <article class="card">
-            <div class="card-heading">
-              <div>
-                <div class="eyebrow">Activity</div>
-                <h2>12-week revenue</h2>
-                <div class="muted small">Confirmed revenue data only</div>
-              </div>
-              <div class="chart-legend"><span class="legend-dot"></span>Latest week</div>
-            </div>
+        <ul class="list">
+          <li>
+            <span>Manage registered users</span>
+            <a class="btn" href="admin-users.html">Open</a>
+          </li>
 
-            <div class="chart" id="revenueChart" role="img" aria-label="Revenue chart">
-              <div class="empty" style="width:100%;padding:20px;">Revenue history is not connected yet.</div>
-            </div>
-            <div class="muted small" style="margin-top:12px;" id="chartFootnote">
-              No revenue series has been loaded. The chart will not invent figures.
-            </div>
-          </article>
+          <li>
+            <span>Review deposits</span>
+            <a class="btn" href="admin-deposits.html">Open</a>
+          </li>
 
-          <article class="card">
-            <div class="card-heading">
-              <div>
-                <div class="eyebrow">Action center</div>
-                <h2>Needs review</h2>
-              </div>
-            </div>
+          <li>
+            <span>Review withdrawals</span>
+            <a class="btn btn-primary" href="admin-withdrawals.html">Open</a>
+          </li>
 
-            <div class="needs-list">
-              <button class="needs-item" data-page="requests" style="text-align:left;color:inherit;">
-                <span class="needs-icon" aria-hidden="true">↓</span>
-                <span class="needs-text">
-                  <strong>Pending deposits</strong>
-                  <span>Verify on-chain transactions</span>
-                </span>
-                <span class="needs-count" id="needsDeposits">0</span>
-              </button>
+          <li>
+            <span>Inspect security logs</span>
+            <a class="btn" href="admin-security.html">Open</a>
+          </li>
+        </ul>
 
-              <button class="needs-item" data-page="requests" style="text-align:left;color:inherit;">
-                <span class="needs-icon" aria-hidden="true">↑</span>
-                <span class="needs-text">
-                  <strong>Pending withdrawals</strong>
-                  <span>Review payout requests</span>
-                </span>
-                <span class="needs-count" id="needsWithdrawals">0</span>
-              </button>
+        <p class="muted" style="margin-top:15px">
+          Financial totals will only be displayed when their database source is verified.
+        </p>
+      </article>
 
-              <button class="needs-item" data-page="support" style="text-align:left;color:inherit;">
-                <span class="needs-icon" aria-hidden="true">✉</span>
-                <span class="needs-text">
-                  <strong>Open support tickets</strong>
-                  <span>Respond to users</span>
-                </span>
-                <span class="needs-count" id="needsTickets">0</span>
-              </button>
-            </div>
-          </article>
-        </div>
+    </section>
 
-        <article class="card table-card">
-          <div class="table-header">
-            <div class="card-heading">
-              <div>
-                <div class="eyebrow">Latest registrations</div>
-                <h2>Newest users</h2>
-              </div>
-              <button class="button button-secondary" data-page="users">View users →</button>
-            </div>
-          </div>
-
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>User</th>
-                  <th class="nowrap">Joined</th>
-                  <th>Status</th>
-                  <th>Account</th>
-                </tr>
-              </thead>
-              <tbody id="newestUsersBody">
-                <tr><td colspan="4"><div class="empty">Loading users...</div></td></tr>
-              </tbody>
-            </table>
-          </div>
-        </article>
-      </section>
-
-      <!-- USERS -->
-      <section class="page" id="page-users">
-        <div class="page-heading">
-          <div>
-            <div class="eyebrow">Administration / Accounts</div>
-            <h1>User management</h1>
-            <div class="muted" style="margin-top:7px;">Search accounts and review account status.</div>
-          </div>
-          <button class="button button-primary" id="refreshUsers">↻ Refresh users</button>
-        </div>
-
-        <div class="kpi-grid">
-          <article class="card kpi-card">
-            <div class="kpi-label">USERS LOADED</div>
-            <div class="big-number" id="userCount">0</div>
-            <div class="kpi-note">Current result set</div>
-          </article>
-          <article class="card kpi-card">
-            <div class="kpi-label">ACTIVE</div>
-            <div class="big-number" id="activeUsersCount">—</div>
-            <div class="kpi-note">Based on available status fields</div>
-          </article>
-        </div>
-
-        <div id="usersMessage" class="message hidden" role="status"></div>
-
-        <div class="toolbar">
-          <input class="field search-field" id="userSearch" type="search" placeholder="Search by email or user ID..." aria-label="Search users">
-          <select class="field filter-field" id="userStatusFilter" aria-label="Filter users by status">
-            <option value="all">All statuses</option>
-            <option value="active">Active</option>
-            <option value="pending">Pending</option>
-            <option value="suspended">Suspended</option>
-          </select>
-          <button class="button button-secondary" id="searchUsers">Search</button>
-        </div>
-
-        <article class="card table-card">
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>User</th>
-                  <th class="nowrap">Join date</th>
-                  <th>Status</th>
-                  <th class="nowrap">Balance</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody id="usersBody">
-                <tr><td colspan="5"><div class="empty">Loading users...</div></td></tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="button-row" style="padding:15px;justify-content:space-between;">
-            <span class="muted small" id="usersPaginationText">Page 1</span>
-            <div class="button-row">
-              <button class="button button-secondary" id="prevUsers">← Previous</button>
-              <button class="button button-secondary" id="nextUsers">Next →</button>
-            </div>
-          </div>
-        </article>
-
-        <div class="security-note" style="margin-top:16px;">
-          Account actions must be enforced by secure backend functions and database policies. This interface does not pretend to suspend or restore an account when no server-side action is configured.
-        </div>
-      </section>
-
-      <!-- REQUESTS -->
-      <section class="page" id="page-requests">
-        <div class="page-heading">
-          <div>
-            <div class="eyebrow">Administration / Transactions</div>
-            <h1>Requests</h1>
-            <div class="muted" style="margin-top:7px;">Review deposit and withdrawal requests.</div>
-          </div>
-          <button class="button button-primary" id="refreshRequests">↻ Refresh requests</button>
-        </div>
-
-        <div class="kpi-grid">
-          <article class="card kpi-card">
-            <div class="kpi-label">PENDING DEPOSITS</div>
-            <div class="big-number" id="pendingDepositsCount">0</div>
-            <div class="kpi-note">Require transaction verification</div>
-          </article>
-          <article class="card kpi-card">
-            <div class="kpi-label">PENDING WITHDRAWALS</div>
-            <div class="big-number" id="pendingWithdrawalsCount">0</div>
-            <div class="kpi-note">Require payout review</div>
-          </article>
-        </div>
-
-        <div class="toolbar">
-          <select class="field filter-field" id="requestTypeFilter" aria-label="Filter request type">
-            <option value="all">All requests</option>
-            <option value="deposits">Deposits</option>
-            <option value="withdrawals">Withdrawals</option>
-          </select>
-          <select class="field filter-field" id="requestStatusFilter" aria-label="Filter request status">
-            <option value="PENDING">Pending only</option>
-            <option value="all">All statuses</option>
-          </select>
-        </div>
-
-        <div id="requestsMessage" class="message hidden" role="status"></div>
-        <div class="request-list" id="requestsList">
-          <div class="card"><div class="empty">Loading requests...</div></div>
-        </div>
-      </section>
-
-      <!-- SUPPORT -->
-      <section class="page" id="page-support">
-        <div class="page-heading">
-          <div>
-            <div class="eyebrow">Administration / Communication</div>
-            <h1>Support center</h1>
-            <div class="muted" style="margin-top:7px;">Review tickets and reply to users.</div>
-          </div>
-          <button class="button button-primary" id="refreshSupport">↻ Refresh tickets</button>
-        </div>
-
-        <div class="kpi-grid">
-          <article class="card kpi-card">
-            <div class="kpi-label">TOTAL TICKETS LOADED</div>
-            <div class="big-number" id="ticketCount">0</div>
-            <div class="kpi-note">Current result set</div>
-          </article>
-          <article class="card kpi-card">
-            <div class="kpi-label">OPEN TICKETS</div>
-            <div class="big-number" id="openTicketCount">0</div>
-            <div class="kpi-note">Need attention</div>
-          </article>
-        </div>
-
-        <div id="supportMessage" class="message hidden" role="status"></div>
-
-        <div class="toolbar">
-          <input class="field search-field" id="ticketSearch" type="search" placeholder="Search tickets..." aria-label="Search support tickets">
-          <select class="field filter-field" id="ticketStatusFilter" aria-label="Filter tickets by status">
-            <option value="all">All tickets</option>
-            <option value="open">Open</option>
-            <option value="pending">Pending</option>
-            <option value="closed">Closed</option>
-          </select>
-        </div>
-
-        <div id="ticketsList">
-          <div class="card"><div class="empty">Loading support tickets...</div></div>
-        </div>
-      </section>
-
-      <!-- SECURITY LOGS -->
-      <section class="page" id="page-security">
-        <div class="page-heading">
-          <div>
-            <div class="eyebrow">Administration / Security</div>
-            <h1>Security logs</h1>
-            <div class="muted" style="margin-top:7px;">Review recorded administrative actions.</div>
-          </div>
-          <button class="button button-primary" id="refreshSecurityLogs">↻ Refresh logs</button>
-        </div>
-
-        <div class="security-note">
-          Logs are only as complete as the events that have been instrumented. Successful log entries are not proof that every admin action is logged. Login failures that happen before authentication require a separate trusted server-side logging mechanism.
-        </div>
-
-        <div id="securityMessage" class="message hidden" role="status"></div>
-
-        <div class="toolbar">
-          <input class="field search-field" id="securitySearch" type="search" placeholder="Search actions or target IDs..." aria-label="Search security logs">
-          <select class="field filter-field" id="securityResultFilter" aria-label="Filter security log result">
-            <option value="all">All results</option>
-            <option value="success">Successful</option>
-            <option value="failed">Failed</option>
-          </select>
-        </div>
-
-        <article class="card table-card">
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th class="nowrap">Date</th>
-                  <th>Admin</th>
-                  <th>Action</th>
-                  <th>Target</th>
-                  <th>Result</th>
-                  <th>Details</th>
-                </tr>
-              </thead>
-              <tbody id="securityLogsBody">
-                <tr><td colspan="6"><div class="empty">Loading security logs...</div></td></tr>
-              </tbody>
-            </table>
-          </div>
-        </article>
-      </section>
-
-      <div class="footer">
-        AITIVEST Administration · Secure access only
+    <section class="card">
+      <div class="card-heading">
+        <h2>Newest users</h2>
+        <a class="btn" href="admin-users.html">View all</a>
       </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>Joined</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+
+          <tbody id="newUsers">
+            <tr><td colspan="3" class="empty">Loading users...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <div class="footer">
+      AITIVEST Administration · Secure access only
     </div>
   </main>
-
-  <!-- MOBILE BOTTOM NAVIGATION -->
-  <nav class="bottom-nav" aria-label="Mobile navigation">
-    <button class="nav-item active" data-page="overview">
-      <span class="nav-icon" aria-hidden="true">⌂</span>
-      <span>Overview</span>
-    </button>
-    <button class="nav-item" data-page="users">
-      <span class="nav-icon" aria-hidden="true">♙</span>
-      <span>Users</span>
-    </button>
-    <button class="nav-item" data-page="requests">
-      <span class="nav-icon" aria-hidden="true">⇄</span>
-      <span>Requests</span>
-      <span class="nav-badge" id="mobilePending">0</span>
-    </button>
-  </nav>
-
-  <div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="true"></div>
-
-  <!-- AUTHENTICATION SCREEN -->
-  <div class="loading-screen" id="authScreen">
-    <div class="loading-box">
-      <div class="brand-icon" aria-hidden="true">A</div>
-      <div class="eyebrow">AITIVEST Security</div>
-      <h2 id="authHeading">Verifying administrator</h2>
-      <p id="authDescription">Checking your authenticated session and administrator permissions.</p>
-
-      <div id="loginForm" class="hidden">
-        <label class="form-label" for="loginEmail" style="text-align:left;">Email address</label>
-        <input class="field" id="loginEmail" type="email" autocomplete="username" placeholder="Admin email" required>
-
-        <label class="form-label" for="loginPassword" style="text-align:left;margin-top:12px;">Password</label>
-        <input class="field" id="loginPassword" type="password" autocomplete="current-password" placeholder="Password" required>
-
-        <button class="button button-primary" id="loginButton" style="width:100%;margin-top:12px;">Sign in securely</button>
-      </div>
-
-      <button class="button button-secondary hidden" id="retryAuth" style="margin-top:10px;">Try again</button>
-    </div>
-  </div>
-
 </div>
+
+<div id="toast" class="toast" role="status"></div>
 
 <script>
 "use strict";
 
 /*
-  AITIVEST ADMIN DASHBOARD
+ * AITIVEST ADMIN DASHBOARD
+ *
+ * This page uses the existing Supabase project.
+ * The publishable/anon key is intended for browser use.
+ * Never put a Supabase service-role key in frontend code.
+ */
 
-  Sample-data arrays are provided for development/reference only.
-  The live dashboard uses Supabase and does not invent production
-  users, transactions, fees, or revenue.
+const SUPABASE_URL =
+  "https://rihvvwktvgytbqzazage.supabase.co";
 
-  Existing RPCs used:
-    is_current_user_admin()
-    admin_list_users(p_search, p_limit, p_offset)
-    admin_approve_deposit(p_deposit_id, p_credited_amount)
-    admin_reject_deposit(p_deposit_id, p_reason)
-    admin_write_security_log(p_action, p_target_type, p_target_id,
-                             p_details, p_success)
-
-  Withdrawal and account status actions must use verified server-side
-  RPCs that actually exist in the database. No fake status changes
-  are performed if an action RPC is missing.
-*/
-
-const SAMPLE_USERS = [];
-const SAMPLE_DEPOSITS = [];
-const SAMPLE_WITHDRAWALS = [];
-const SAMPLE_REVENUE_12_WEEKS = [];
-
-/* Use the existing AITIVEST Supabase project. */
-const SUPABASE_URL = "https://rihvvwktvgytbqzazage.supabase.co";
-const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
+/*
+ * Use the same publishable key already configured in your
+ * working AITIVEST/Nexora admin.html.
+ *
+ * If the key below is not the key currently used by your project,
+ * replace it with your existing publishable/anon key.
+ */
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
 
 const db = window.supabase.createClient(
   SUPABASE_URL,
   SUPABASE_PUBLISHABLE_KEY
 );
-
-/* Expose the existing client for optional extensions. */
-window.db = db;
-
-const state = {
-  isAdmin: false,
-  session: null,
-  users: [],
-  userPage: 0,
-  userPageSize: 50,
-  userSearch: "",
-  userFilter: "all",
-  deposits: [],
-  withdrawals: [],
-  tickets: [],
-  securityLogs: [],
-  loading: false
-};
 
 const $ = id => document.getElementById(id);
 
@@ -1457,1391 +693,317 @@ function escapeHTML(value) {
   })[char]);
 }
 
-function safeJSON(value) {
-  try {
-    return JSON.stringify(value ?? {});
-  } catch (_) {
-    return "{}";
-  }
-}
-
 function formatDate(value) {
   if (!value) return "—";
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return "—";
-  return date.toLocaleString();
-}
 
-function formatShortDate(value) {
-  if (!value) return "—";
   const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return "—";
-  return date.toLocaleDateString();
-}
 
-function formatNumber(value) {
-  const number = Number(value);
-  if (!Number.isFinite(number)) return "—";
-  return number.toLocaleString(undefined, { maximumFractionDigits: 4 });
+  return Number.isNaN(date.getTime())
+    ? "—"
+    : date.toLocaleDateString();
 }
 
 function normalizeStatus(value) {
   return String(value ?? "UNKNOWN").trim().toUpperCase();
 }
 
-function statusClass(value) {
-  const status = normalizeStatus(value);
-
-  if (["ACTIVE", "APPROVED", "CONFIRMED", "COMPLETED", "CLOSED", "CREDITED", "SUCCESS"].includes(status)) {
-    return "pill-success";
-  }
-
-  if (["PENDING", "OPEN", "UNDER_REVIEW", "PROCESSING", "QUOTE_PENDING"].includes(status)) {
-    return "pill-warning";
-  }
-
-  if (["REJECTED", "FAILED", "SUSPENDED", "CANCELLED", "REVERSED"].includes(status)) {
-    return "pill-danger";
-  }
-
-  if (["NEW", "VERIFIED"].includes(status)) return "pill-blue";
-  return "";
-}
-
 function statusPill(value) {
-  const status = normalizeStatus(value);
-  return `<span class="pill ${statusClass(status)}">${escapeHTML(status.replaceAll("_", " "))}</span>`;
-}
+  const current = normalizeStatus(value);
 
-function initials(user) {
-  const value = String(user?.email || user?.full_name || user?.id || "U");
-  const name = value.includes("@") ? value.split("@")[0] : value;
-  const parts = name.replace(/[._-]+/g, " ").trim().split(/\s+/);
-  return parts.slice(0, 2).map(part => part[0] || "").join("").toUpperCase() || "U";
-}
+  let className = "";
 
-function showToast(message, type = "success") {
-  const toast = document.createElement("div");
-  toast.className = "toast " + (type === "error" ? "error" : "success");
-  toast.setAttribute("role", "status");
-  toast.textContent = message;
-  $("toastContainer").appendChild(toast);
-
-  setTimeout(() => toast.remove(), 4500);
-}
-
-function showMessage(id, message, type = "") {
-  const el = $(id);
-  if (!el) return;
-
-  el.textContent = message;
-  el.classList.remove("hidden", "error", "success");
-
-  if (type) el.classList.add(type);
-}
-
-function hideMessage(id) {
-  const el = $(id);
-  if (el) el.classList.add("hidden");
-}
-
-function showGlobalError(message) {
-  showMessage("globalMessage", message, "error");
-}
-
-function friendlyError(error) {
-  const message = error?.message || String(error || "Unknown error");
-  return message.length > 350 ? message.slice(0, 350) + "…" : message;
-}
-
-function setTheme(theme) {
-  const selected = theme === "light" ? "light" : "dark";
-  document.documentElement.dataset.theme = selected;
-
-  try {
-    localStorage.setItem("aitivest_admin_theme", selected);
-  } catch (_) {}
-
-  $("themeToggle").textContent = selected === "dark" ? "☼" : "◐";
-  $("themeToggle").setAttribute(
-    "aria-label",
-    selected === "dark" ? "Switch to light theme" : "Switch to dark theme"
-  );
-}
-
-function toggleTheme() {
-  setTheme(document.documentElement.dataset.theme === "dark" ? "light" : "dark");
-}
-
-function navigate(page) {
-  const allowed = ["overview", "users", "requests", "support", "security"];
-  if (!allowed.includes(page)) page = "overview";
-
-  document.querySelectorAll(".page").forEach(section => {
-    section.classList.toggle("active", section.id === "page-" + page);
-  });
-
-  document.querySelectorAll("[data-page]").forEach(button => {
-    button.classList.toggle("active", button.dataset.page === page);
-  });
-
-  if (page === "security") loadSecurityLogs();
-  if (page === "support") loadTickets();
-  if (page === "requests") renderRequests();
-
-  if (window.matchMedia("(max-width: 899px)").matches) {
-    window.scrollTo({ top: 0, behavior: "auto" });
+  if (
+    ["ACTIVE", "APPROVED", "CONFIRMED", "COMPLETED", "SUCCESS"]
+      .includes(current)
+  ) {
+    className = "pill-good";
+  } else if (
+    ["PENDING", "UNDER_REVIEW", "PROCESSING"]
+      .includes(current)
+  ) {
+    className = "pill-pending";
+  } else if (
+    ["REJECTED", "FAILED", "CANCELLED", "SUSPENDED"]
+      .includes(current)
+  ) {
+    className = "pill-bad";
   }
+
+  return `<span class="pill ${className}">${escapeHTML(current.replaceAll("_", " "))}</span>`;
 }
 
-function adminReadyEvent() {
-  document.dispatchEvent(new Event("aitivest-admin-ready"));
+function showToast(message) {
+  const element = $("toast");
+
+  element.textContent = message;
+  element.classList.add("show");
+
+  clearTimeout(window.toastTimer);
+
+  window.toastTimer = setTimeout(() => {
+    element.classList.remove("show");
+  }, 3500);
 }
 
-function requireAdmin() {
-  if (!state.isAdmin || !state.session?.user?.id) {
-    throw new Error("Administrator authorization is required.");
-  }
+function showPageError(message) {
+  const element = $("pageError");
+
+  element.textContent = message;
+  element.classList.remove("hidden");
+}
+
+function clearPageError() {
+  $("pageError").textContent = "";
+  $("pageError").classList.add("hidden");
 }
 
 /*
-  Writes an event to the database through a restricted RPC.
-  Failure to write a log does not silently turn a failed transaction
-  into a successful one. Sensitive transaction operations still rely
-  on their own database-side authorization and validation.
-*/
-async function writeSecurityLog(action, targetType = null, targetId = null, details = {}, success = true) {
-  if (!state.isAdmin) return { ok: false };
-
-  try {
-    const { error } = await db.rpc("admin_write_security_log", {
-      p_action: action,
-      p_target_type: targetType,
-      p_target_id: targetId == null ? null : String(targetId),
-      p_details: details || {},
-      p_success: Boolean(success)
-    });
-
-    if (error) {
-      console.error("Security log write failed:", error.message);
-      return { ok: false, error };
-    }
-
-    return { ok: true };
-  } catch (error) {
-    console.error("Security log write failed:", error);
-    return { ok: false, error };
-  }
-}
-
+ * Security boundary:
+ * A valid login is not enough.
+ * Supabase must also confirm that the signed-in user is an admin.
+ */
 async function verifyAdmin() {
-  const { data: sessionData, error: sessionError } = await db.auth.getSession();
-
-  if (sessionError) throw sessionError;
-
-  state.session = sessionData?.session || null;
-
-  if (!state.session?.user?.id) {
-    state.isAdmin = false;
-    showLoginScreen();
-    return false;
-  }
-
-  const { data: adminResult, error: adminError } =
-    await db.rpc("is_current_user_admin");
-
-  if (adminError) {
-    throw new Error("Could not verify admin permissions: " + friendlyError(adminError));
-  }
-
-  const isAdmin = adminResult === true;
-
-  if (!isAdmin) {
-    state.isAdmin = false;
-    $("authHeading").textContent = "Access denied";
-    $("authDescription").textContent = "This account is not authorized to access the AITIVEST admin panel.";
-
-    await db.auth.signOut();
-    showLoginScreen(true);
-    return false;
-  }
-
-  state.isAdmin = true;
-  $("adminEmail").textContent = state.session.user.email || "Administrator";
-
-  $("authScreen").classList.add("hidden");
-  document.querySelector(".app").style.visibility = "visible";
-
-  await writeSecurityLog("ADMIN_SESSION_VERIFIED", "admin", state.session.user.id, {
-    method: "authenticated_session"
-  }, true);
-
-  return true;
-}
-
-function showLoginScreen(accessDenied = false) {
-  $("authScreen").classList.remove("hidden");
-  document.querySelector(".app").style.visibility = "hidden";
-
-  $("loginForm").classList.remove("hidden");
-  $("retryAuth").classList.add("hidden");
-
-  if (accessDenied) {
-    $("authHeading").textContent = "Access denied";
-    $("authDescription").textContent = "Sign in using an authorized administrator account.";
-  } else {
-    $("authHeading").textContent = "Sign in securely";
-    $("authDescription").textContent = "Sign in to continue to AITIVEST administration.";
-  }
-}
-
-async function signIn() {
-  const email = $("loginEmail").value.trim();
-  const password = $("loginPassword").value;
-
-  if (!email || !password) {
-    showToast("Enter your email and password.", "error");
-    return;
-  }
-
-  $("loginButton").disabled = true;
-  $("loginButton").textContent = "Signing in…";
-
-  try {
-    const { error } = await db.auth.signInWithPassword({ email, password });
-    if (error) throw error;
-
-    const ok = await verifyAdmin();
-
-    if (!ok) return;
-
-    await loadAll();
-    showToast("Administrator session verified.");
-  } catch (error) {
-    showToast(friendlyError(error), "error");
-  } finally {
-    $("loginButton").disabled = false;
-    $("loginButton").textContent = "Sign in securely";
-  }
-}
-
-async function signOut() {
-  if (!confirm("Sign out of AITIVEST administration?")) return;
-
-  try {
-    await writeSecurityLog("ADMIN_SIGN_OUT", "admin", state.session?.user?.id, {}, true);
-    const { error } = await db.auth.signOut();
-    if (error) throw error;
-
-    state.isAdmin = false;
-    state.session = null;
-    showLoginScreen();
-  } catch (error) {
-    showToast("Sign out error: " + friendlyError(error), "error");
-  }
-}
-
-/* USER MANAGEMENT */
-
-function getUserStatus(user) {
-  return normalizeStatus(user?.status || user?.account_status || user?.user_status || "ACTIVE");
-}
-
-function getUserBalance(user) {
-  const possible = [
-    user?.balance,
-    user?.total_balance,
-    user?.available_balance,
-    user?.wallet_balance
-  ];
-
-  for (const value of possible) {
-    if (value !== undefined && value !== null && Number.isFinite(Number(value))) {
-      return Number(value);
-    }
-  }
-
-  return null;
-}
-
-function userMatchesFilter(user) {
-  const filter = state.userFilter;
-  if (filter === "all") return true;
-
-  const status = getUserStatus(user).toLowerCase();
-
-  if (filter === "active") return ["active", "approved", "verified"].includes(status);
-  if (filter === "pending") return ["pending", "unverified", "awaiting_approval"].includes(status);
-  if (filter === "suspended") return ["suspended", "disabled", "blocked"].includes(status);
-
-  return true;
-}
-
-function renderUserRow(user) {
-  const userId = user.id || user.user_id || "";
-  const email = user.email || user.user_email || "Email unavailable";
-  const name = user.full_name || user.name || user.username || email.split("@")[0];
-  const joined = user.created_at || user.joined_at || user.createdAt;
-  const status = getUserStatus(user);
-  const balance = getUserBalance(user);
-
-  return `
-    <tr>
-      <td>
-        <div class="user-cell">
-          <div class="avatar">${escapeHTML(initials({ ...user, email }))}</div>
-          <div>
-            <div class="user-name">${escapeHTML(name)}</div>
-            <div class="user-email">${escapeHTML(email)}</div>
-            <div class="user-email">ID: ${escapeHTML(userId || "—")}</div>
-          </div>
-        </div>
-      </td>
-      <td class="nowrap">${escapeHTML(formatShortDate(joined))}</td>
-      <td>${statusPill(status)}</td>
-      <td class="nowrap">${balance === null ? "—" : escapeHTML(formatNumber(balance))}</td>
-      <td>
-        <button class="button button-secondary" data-user-detail="${escapeHTML(userId)}">
-          Details
-        </button>
-      </td>
-    </tr>
-  `;
-}
-
-async function loadAdminUsers(resetPage = false) {
-  requireAdmin();
-
-  if (resetPage) state.userPage = 0;
-
-  const search = $("userSearch").value.trim();
-  state.userSearch = search;
-  state.userFilter = $("userStatusFilter").value;
-
-  const offset = state.userPage * state.userPageSize;
-
-  $("usersBody").innerHTML =
-    `<tr><td colspan="5"><div class="empty">Loading users…</div></td></tr>`;
-
-  try {
-    const { data, error } = await db.rpc("admin_list_users", {
-      p_search: search,
-      p_limit: state.userPageSize,
-      p_offset: offset
-    });
-
-    if (error) throw error;
-
-    state.users = Array.isArray(data) ? data : (data ? [data] : []);
-
-    const filtered = state.users.filter(userMatchesFilter);
-
-    $("usersBody").innerHTML = filtered.length
-      ? filtered.map(renderUserRow).join("")
-      : `<tr><td colspan="5"><div class="empty">
-          <div class="empty-icon">⌕</div>
-          <strong>No users found</strong>
-          Try another search or status filter.
-        </div></td></tr>`;
-
-    $("userCount").textContent = state.users.length.toLocaleString();
-    $("kpiUsers").textContent = state.users.length.toLocaleString();
-
-    const activeCount = state.users.filter(user =>
-      ["ACTIVE", "APPROVED", "VERIFIED"].includes(getUserStatus(user))
-    ).length;
-
-    $("activeUsersCount").textContent = activeCount.toLocaleString();
-    $("usersPaginationText").textContent =
-      `Page ${state.userPage + 1} · ${state.users.length} users loaded`;
-
-    $("prevUsers").disabled = state.userPage === 0;
-    $("nextUsers").disabled = state.users.length < state.userPageSize;
-
-    $("newestUsersBody").innerHTML = state.users.length
-      ? state.users.slice(0, 5).map(user => `
-          <tr>
-            <td>${renderCompactUser(user)}</td>
-            <td class="nowrap">${escapeHTML(formatShortDate(user.created_at || user.joined_at))}</td>
-            <td>${statusPill(getUserStatus(user))}</td>
-            <td class="nowrap">—</td>
-          </tr>
-        `).join("")
-      : `<tr><td colspan="4"><div class="empty">No users available.</div></td></tr>`;
-
-    hideMessage("usersMessage");
-  } catch (error) {
-    console.error("Load users error:", error);
-    $("usersBody").innerHTML =
-      `<tr><td colspan="5"><div class="empty">Could not load users.</div></td></tr>`;
-
-    showMessage("usersMessage", "User loading failed: " + friendlyError(error), "error");
-    showToast("Could not load users.", "error");
-  }
-}
-
-function renderCompactUser(user) {
-  const email = user.email || user.user_email || "Email unavailable";
-  const name = user.full_name || user.name || user.username || email.split("@")[0];
-
-  return `
-    <div class="user-cell">
-      <div class="avatar">${escapeHTML(initials({ ...user, email }))}</div>
-      <div>
-        <div class="user-name">${escapeHTML(name)}</div>
-        <div class="user-email">${escapeHTML(email)}</div>
-      </div>
-    </div>
-  `;
-}
-
-function showUserDetails(userId) {
-  const user = state.users.find(item => String(item.id || item.user_id) === String(userId));
-
-  if (!user) {
-    showToast("User details are not in the current result set.", "error");
-    return;
-  }
-
-  const balance = getUserBalance(user);
-  const details = [
-    "User ID: " + (user.id || user.user_id || "—"),
-    "Email: " + (user.email || "—"),
-    "Status: " + getUserStatus(user),
-    "Joined: " + formatDate(user.created_at || user.joined_at),
-    "Balance: " + (balance === null ? "Not provided by the user-list RPC" : formatNumber(balance))
-  ].join("\n");
-
-  alert(details);
-}
-
-/*
-  Request data is loaded from the actual database.
-  Only known existing deposit approval/rejection RPCs are called.
-*/
-
-async function loadDeposits() {
-  requireAdmin();
-
-  const { data, error } = await db
-    .from("deposits")
-    .select("id,user_id,asset,network,amount,credited_amount,status,external_reference,notes,created_at")
-    .order("created_at", { ascending: false })
-    .limit(500);
+  const { data, error } = await db.auth.getSession();
 
   if (error) throw error;
 
-  state.deposits = Array.isArray(data) ? data : [];
+  if (!data.session) {
+    location.replace("admin-login.html");
+    return false;
+  }
+
+  const result = await db.rpc("is_current_user_admin");
+
+  if (result.error) {
+    throw result.error;
+  }
+
+  if (result.data !== true) {
+    await db.auth.signOut();
+
+    location.replace("admin-login.html?denied=1");
+
+    return false;
+  }
+
+  $("adminEmail").textContent =
+    data.session.user.email || "Administrator";
+
+  return true;
 }
 
-async function loadWithdrawals() {
-  requireAdmin();
+/*
+ * Load dashboard information.
+ * No hardcoded sample financial figures are used.
+ */
+async function loadDashboard() {
+  clearPageError();
+
+  $("totalUsers").textContent = "—";
+  $("confirmedDeposits").textContent = "—";
+  $("pendingDeposits").textContent = "—";
+  $("pendingWithdrawals").textContent = "—";
+
+  $("newUsers").innerHTML =
+    '<tr><td colspan="3" class="empty">Loading users...</td></tr>';
+
+  $("reviewList").innerHTML =
+    '<li><span>Loading requests...</span><span>—</span></li>';
+
+  const errors = [];
 
   /*
-    The existing withdrawal table's exact columns and admin RPC names
-    must be verified before transaction decisions are enabled.
-    A failed read is displayed instead of fabricating request records.
-  */
+   * The existing project should expose this admin-only RPC.
+   * If the actual parameter names differ, use the signature
+   * already configured in your database.
+   */
+  try {
+    const result = await db.rpc("admin_list_users", {
+      p_search: "",
+      p_limit: 10,
+      p_offset: 0
+    });
 
-  const { data, error } = await db
-    .from("withdrawals")
-    .select("*")
-    .order("created_at", { ascending: false })
-    .limit(500);
+    if (result.error) throw result.error;
 
-  if (error) {
-    state.withdrawals = [];
-    state.withdrawalsReadError = friendlyError(error);
-    return;
-  }
+    const users = Array.isArray(result.data)
+      ? result.data
+      : result.data
+        ? [result.data]
+        : [];
 
-  state.withdrawals = Array.isArray(data) ? data : [];
-  state.withdrawalsReadError = "";
-}
+    $("totalUsers").textContent = users.length.toLocaleString();
 
-function isPending(record) {
-  return normalizeStatus(record?.status) === "PENDING";
-}
+    if (!users.length) {
+      $("newUsers").innerHTML =
+        '<tr><td colspan="3" class="empty">No user records returned.</td></tr>';
+    } else {
+      $("newUsers").innerHTML = users.slice(0, 5).map(user => {
+        const email =
+          user.email ||
+          user.user_email ||
+          "Email unavailable";
 
-function getWithdrawalAmount(record) {
-  return record.amount ?? record.requested_amount ?? record.withdrawal_amount ?? record.net_amount ?? "—";
-}
+        const name =
+          user.full_name ||
+          user.name ||
+          user.username ||
+          email.split("@")[0];
 
-function getWithdrawalAsset(record) {
-  return record.asset || record.currency || record.coin || "Asset unavailable";
-}
+        const joined =
+          user.created_at ||
+          user.joined_at;
 
-function renderDepositRequest(deposit) {
-  const pending = isPending(deposit);
-  const status = normalizeStatus(deposit.status);
+        const userStatus =
+          user.status ||
+          user.account_status ||
+          user.user_status ||
+          "UNKNOWN";
 
-  return `
-    <article class="request-card">
-      <div class="request-top">
-        <div>
-          <div class="request-title">Deposit #${escapeHTML(deposit.id)}</div>
-          <div class="request-meta">${escapeHTML(formatDate(deposit.created_at))}</div>
-        </div>
-        ${statusPill(status)}
-      </div>
+        return `
+          <tr>
+            <td>
+              <div class="user">
+                <div class="avatar">
+                  ${escapeHTML(name.slice(0, 2).toUpperCase())}
+                </div>
 
-      <div class="request-amount">
-        ${escapeHTML(formatNumber(deposit.amount))} ${escapeHTML(deposit.asset || "")}
-      </div>
-
-      <div class="request-details">
-        <div>
-          <div class="detail-label">Network</div>
-          <div class="detail-value">${escapeHTML(deposit.network || "—")}</div>
-        </div>
-        <div>
-          <div class="detail-label">User ID</div>
-          <div class="detail-value">${escapeHTML(deposit.user_id || "—")}</div>
-        </div>
-        <div>
-          <div class="detail-label">Transaction reference</div>
-          <div class="detail-value">${escapeHTML(deposit.external_reference || "Not supplied")}</div>
-        </div>
-        <div>
-          <div class="detail-label">Credited amount</div>
-          <div class="detail-value">${deposit.credited_amount == null ? "Not credited" : escapeHTML(formatNumber(deposit.credited_amount))}</div>
-        </div>
-      </div>
-
-      ${deposit.notes ? `<div class="request-meta" style="margin-bottom:12px;">Notes: ${escapeHTML(deposit.notes)}</div>` : ""}
-
-      ${pending ? `
-        <div class="button-row">
-          <button class="button button-success" data-approve-deposit="${escapeHTML(deposit.id)}">Approve verified deposit</button>
-          <button class="button button-danger" data-reject-deposit="${escapeHTML(deposit.id)}">Reject deposit</button>
-        </div>
-        <div class="muted small" style="margin-top:10px;">
-          Verify the transaction independently on the correct blockchain before approval.
-        </div>
-      ` : `
-        <div class="muted small">No action available for this request status.</div>
-      `}
-    </article>
-  `;
-}
-  function renderWithdrawalRequest(record) {
-  const status = normalizeStatus(record.status);
-  const amount = getWithdrawalAmount(record);
-  const asset = getWithdrawalAsset(record);
-  const withdrawalId = record.id ?? record.withdrawal_id;
-
-  const userId = record.user_id || record.profile_id || "—";
-
-  const destination =
-    record.wallet_address ||
-    record.address ||
-    record.destination_address ||
-    record.bank_account ||
-    "Not supplied";
-
-  const source =
-    record.withdrawal_source ||
-    record.source ||
-    "Not supplied";
-
-  const canReview = [
-    "PENDING",
-    "UNDER_REVIEW"
-  ].includes(status);
-
-  const canRelease = [
-    "APPROVED",
-    "PROCESSING"
-  ].includes(status);
-
-  return `
-    <article class="request-card">
-
-      <div class="request-top">
-        <div>
-          <div class="request-title">
-            Withdrawal #${escapeHTML(withdrawalId ?? "—")}
-          </div>
-
-          <div class="request-meta">
-            ${escapeHTML(formatDate(record.created_at))}
-          </div>
-        </div>
-
-        ${statusPill(status)}
-      </div>
-
-      <div class="request-amount">
-        ${escapeHTML(formatNumber(amount))}
-        ${escapeHTML(asset)}
-      </div>
-
-      <div class="request-details">
-
-        <div>
-          <div class="detail-label">User ID</div>
-          <div class="detail-value">
-            ${escapeHTML(userId)}
-          </div>
-        </div>
-
-        <div>
-          <div class="detail-label">Withdrawal source</div>
-          <div class="detail-value">
-            ${escapeHTML(source)}
-          </div>
-        </div>
-
-        <div style="grid-column:1/-1;">
-          <div class="detail-label">Destination</div>
-          <div class="detail-value">
-            ${escapeHTML(destination)}
-          </div>
-        </div>
-
-      </div>
-
-      ${
-        canReview
-          ? `
-            <div class="button-row">
-
-              <button
-                class="button button-success"
-                data-approve-withdrawal="${escapeHTML(withdrawalId)}">
-                Approve request
-              </button>
-
-              <button
-                class="button button-danger"
-                data-reject-withdrawal="${escapeHTML(withdrawalId)}">
-                Reject request
-              </button>
-
-              <button
-                class="button button-secondary"
-                data-cancel-withdrawal="${escapeHTML(withdrawalId)}">
-                Cancel request
-              </button>
-
-            </div>
-
-            <div class="muted small" style="margin-top:10px;">
-              Approval records the decision; it does not send cryptocurrency.
-            </div>
-          `
-          : canRelease
-            ? `
-              <div class="button-row">
-
-                <button
-                  class="button button-danger"
-                  data-cancel-withdrawal="${escapeHTML(withdrawalId)}">
-                  Cancel and release funds
-                </button>
-
+                <div>
+                  <div class="user-name">${escapeHTML(name)}</div>
+                  <div class="user-email">${escapeHTML(email)}</div>
+                </div>
               </div>
+            </td>
 
-              <div class="muted small" style="margin-top:10px;">
-                Confirm that the withdrawal has not been paid before cancelling.
-              </div>
-            `
-            : `
-              <div class="muted small">
-                No action is available for this request's current status.
-              </div>
-            `
-      }
+            <td>${escapeHTML(formatDate(joined))}</td>
 
-    </article>
-  `;
-}
-function renderRequests() {
-  const type = $("requestTypeFilter").value;
-  const statusFilter = $("requestStatusFilter").value;
-  let records = [];
-
-  if (type === "all" || type === "deposits") {
-    records = records.concat(state.deposits.map(item => ({ ...item, _type: "deposit" })));
-  }
-
-  if (type === "all" || type === "withdrawals") {
-    records = records.concat(state.withdrawals.map(item => ({ ...item, _type: "withdrawal" })));
-  }
-
-  if (statusFilter !== "all") {
-    records = records.filter(item => normalizeStatus(item.status) === statusFilter);
-  }
-
-  records.sort((a, b) =>
-    new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime()
-  );
-
-  $("pendingDepositsCount").textContent = state.deposits.filter(isPending).length.toLocaleString();
-  $("pendingWithdrawalsCount").textContent = state.withdrawals.filter(isPending).length.toLocaleString();
-
-  const pendingCount =
-    state.deposits.filter(isPending).length +
-    state.withdrawals.filter(isPending).length;
-
-  $("kpiPending").textContent = pendingCount.toLocaleString();
-  $("sidebarPending").textContent = pendingCount.toLocaleString();
-  $("mobilePending").textContent = pendingCount.toLocaleString();
-  $("needsDeposits").textContent = state.deposits.filter(isPending).length.toLocaleString();
-  $("needsWithdrawals").textContent = state.withdrawals.filter(isPending).length.toLocaleString();
-
-  if (state.withdrawalsReadError) {
-    showMessage(
-      "requestsMessage",
-      "Withdrawal records could not be loaded. " + state.withdrawalsReadError,
-      "error"
-    );
-  } else {
-    hideMessage("requestsMessage");
-  }
-
-  $("requestsList").innerHTML = records.length
-    ? records.map(record =>
-        record._type === "deposit"
-          ? renderDepositRequest(record)
-          : renderWithdrawalRequest(record)
-      ).join("")
-    : `<div class="card" style="grid-column:1/-1;">
-        <div class="empty">
-          <div class="empty-icon">✓</div>
-          <strong>No matching requests</strong>
-          There are no requests matching the selected filters.
-        </div>
-      </div>`;
-}
-
-async function approveDeposit(id) {
-  requireAdmin();
-
-  const deposit = state.deposits.find(item => String(item.id) === String(id));
-
-  if (!deposit || !isPending(deposit)) {
-    showToast("This deposit is no longer pending.", "error");
-    return;
-  }
-
-  const entered = prompt(
-    "Enter the amount independently verified on-chain for deposit #" +
-    id + ". Do not enter the user's claimed amount unless it is verified."
-  );
-
-  if (entered === null) return;
-
-  const amount = Number(entered);
-
-  if (!Number.isFinite(amount) || amount <= 0) {
-    showToast("Enter a valid positive verified amount.", "error");
-    return;
-  }
-
-  if (amount > Number(deposit.amount)) {
-    showToast("The verified amount cannot exceed the submitted amount.", "error");
-    return;
-  }
-
-  if (!confirm(
-    "Confirm approval of deposit #" + id +
-    " for " + amount + " " + (deposit.asset || "") +
-    "?\n\nEnsure the network, asset, destination, transaction confirmation and duplicate transaction checks are complete."
-  )) return;
-
-  try {
-    const { error } = await db.rpc("admin_approve_deposit", {
-      p_deposit_id: Number(id),
-      p_credited_amount: amount
-    });
-
-    if (error) throw error;
-
-    await writeSecurityLog(
-      "DEPOSIT_APPROVED",
-      "deposit",
-      id,
-      {
-        asset: deposit.asset,
-        network: deposit.network,
-        credited_amount: amount
-      },
-      true
-    );
-
-    showToast("Deposit approval recorded.");
-    await loadRequests();
+            <td>${statusPill(userStatus)}</td>
+          </tr>
+        `;
+      }).join("");
+    }
   } catch (error) {
-    console.error("Deposit approval error:", error);
+    errors.push("Users: " + (error.message || String(error)));
 
-    await writeSecurityLog(
-      "DEPOSIT_APPROVAL_FAILED",
-      "deposit",
-      id,
-      { error: friendlyError(error) },
-      false
-    );
-
-    showToast("Deposit approval failed: " + friendlyError(error), "error");
-  }
-}
-
-async function rejectDeposit(id) {
-  requireAdmin();
-
-  const deposit = state.deposits.find(item => String(item.id) === String(id));
-
-  if (!deposit || !isPending(deposit)) {
-    showToast("This deposit is no longer pending.", "error");
-    return;
+    $("newUsers").innerHTML =
+      '<tr><td colspan="3" class="empty">User records could not be loaded.</td></tr>';
   }
 
-  const reason = prompt("Enter the reason for rejecting deposit #" + id + ":");
-
-  if (reason === null) return;
-
-  if (!reason.trim()) {
-    showToast("A rejection reason is required.", "error");
-    return;
-  }
-
-  if (!confirm("Reject deposit #" + id + "?\nReason: " + reason.trim())) return;
-
+  /*
+   * The following queries depend on the existing deposits
+   * and withdrawals tables and their column names.
+   */
   try {
-    const { error } = await db.rpc("admin_reject_deposit", {
-      p_deposit_id: Number(id),
-      p_reason: reason.trim()
-    });
-
-    if (error) throw error;
-
-    await writeSecurityLog(
-      "DEPOSIT_REJECTED",
-      "deposit",
-      id,
-      { reason: reason.trim() },
-      true
-    );
-
-    showToast("Deposit rejected.");
-    await loadRequests();
-  } catch (error) {
-    console.error("Deposit rejection error:", error);
-
-    await writeSecurityLog(
-      "DEPOSIT_REJECTION_FAILED",
-      "deposit",
-      id,
-      { error: friendlyError(error) },
-      false
-    );
-
-    showToast("Deposit rejection failed: " + friendlyError(error), "error");
-  }
-}
-
-async function loadRequests() {
-  requireAdmin();
-
-  const results = await Promise.allSettled([
-    loadDeposits(),
-    loadWithdrawals()
-  ]);
-
-  const depositResult = results[0];
-
-  if (depositResult.status === "rejected") {
-    state.deposits = [];
-    showMessage("requestsMessage", "Could not load deposits: " + friendlyError(depositResult.reason), "error");
-  }
-
-  renderRequests();
-
-  const confirmedDeposits = state.deposits.filter(item =>
-    normalizeStatus(item.status) === "CONFIRMED"
-  );
-
-  $("kpiDeposits").textContent = confirmedDeposits.length.toLocaleString();
-}
-
-/* SUPPORT TICKETS */
-
-function ticketStatus(ticket) {
-  return normalizeStatus(ticket.status || ticket.ticket_status || "OPEN");
-}
-
-function ticketMatches(ticket) {
-  const query = $("ticketSearch").value.trim().toLowerCase();
-  const filter = $("ticketStatusFilter").value;
-  const status = ticketStatus(ticket).toLowerCase();
-
-  const searchable = [
-    ticket.id,
-    ticket.user_id,
-    ticket.subject,
-    ticket.message,
-    ticket.email,
-    ticket.category,
-    ticket.status
-  ].join(" ").toLowerCase();
-
-  if (query && !searchable.includes(query)) return false;
-
-  if (filter !== "all") {
-    if (filter === "open" && !["open", "new"].includes(status)) return false;
-    if (filter === "pending" && !["pending", "in_progress", "under_review"].includes(status)) return false;
-    if (filter === "closed" && !["closed", "resolved"].includes(status)) return false;
-  }
-
-  return true;
-}
-
-function renderTicket(ticket) {
-  const id = ticket.id;
-  const subject = ticket.subject || ticket.title || "Support request";
-  const content = ticket.message || ticket.description || ticket.body || "";
-  const status = ticketStatus(ticket);
-
-  return `
-    <article class="ticket-card">
-      <div class="request-top">
-        <div>
-          <div class="request-title">${escapeHTML(subject)}</div>
-          <div class="request-meta">Ticket #${escapeHTML(id)} · ${escapeHTML(formatDate(ticket.created_at))}</div>
-        </div>
-        ${statusPill(status)}
-      </div>
-
-      <div class="request-meta">User: ${escapeHTML(ticket.user_id || ticket.email || "—")}</div>
-      <div class="ticket-content">${escapeHTML(content || "No message supplied.")}</div>
-
-      <div class="form-group">
-        <label class="form-label" for="reply-${escapeHTML(id)}">Reply to user</label>
-        <textarea class="field" id="reply-${escapeHTML(id)}" rows="3" placeholder="Write a helpful response..."></textarea>
-      </div>
-
-      <div class="button-row">
-        <button class="button button-primary" data-reply-ticket="${escapeHTML(id)}">Send reply</button>
-        <button class="button button-secondary" data-ticket-status="${escapeHTML(id)}" data-status="IN_PROGRESS">Mark in progress</button>
-        <button class="button button-secondary" data-ticket-status="${escapeHTML(id)}" data-status="CLOSED">Close ticket</button>
-      </div>
-    </article>
-  `;
-}
-
-async function loadTickets() {
-  requireAdmin();
-
-  $("ticketsList").innerHTML = `<div class="card"><div class="empty">Loading tickets…</div></div>`;
-
-  try {
-    const { data, error } = await db
-      .from("support_tickets")
-      .select("*")
-      .order("created_at", { ascending: false })
-      .limit(200);
-
-    if (error) throw error;
-
-    state.tickets = Array.isArray(data) ? data : [];
-
-    const open = state.tickets.filter(ticket =>
-      ["OPEN", "NEW", "PENDING", "IN_PROGRESS", "UNDER_REVIEW"].includes(ticketStatus(ticket))
-    ).length;
-
-    $("ticketCount").textContent = state.tickets.length.toLocaleString();
-    $("openTicketCount").textContent = open.toLocaleString();
-    $("sidebarTickets").textContent = open.toLocaleString();
-    $("needsTickets").textContent = open.toLocaleString();
-
-    const filtered = state.tickets.filter(ticketMatches);
-
-    $("ticketsList").innerHTML = filtered.length
-      ? filtered.map(renderTicket).join("")
-      : `<div class="card"><div class="empty">
-          <div class="empty-icon">✉</div>
-          <strong>No matching tickets</strong>
-          No tickets match your current filter.
-        </div></div>`;
-
-    hideMessage("supportMessage");
-  } catch (error) {
-    console.error("Load tickets error:", error);
-    $("ticketsList").innerHTML = `<div class="card"><div class="empty">Could not load support tickets.</div></div>`;
-    showMessage("supportMessage", "Support loading failed: " + friendlyError(error), "error");
-  }
-}
-
-async function replyToTicket(id) {
-  requireAdmin();
-
-  const textarea = $("reply-" + id);
-  const reply = textarea?.value.trim();
-
-  if (!reply) {
-    showToast("Enter a reply first.", "error");
-    return;
-  }
-
-  if (!confirm("Send this reply to the user?")) return;
-
-  try {
-    const { error } = await db.rpc("admin_reply_to_ticket", {
-      p_ticket_id: Number(id),
-      p_message: reply
-    });
-
-    if (error) throw error;
-
-    await writeSecurityLog("SUPPORT_REPLY_SENT", "support_ticket", id, {}, true);
-
-    showToast("Reply sent.");
-    await loadTickets();
-  } catch (error) {
-    console.error("Reply error:", error);
-
-    await writeSecurityLog("SUPPORT_REPLY_FAILED", "support_ticket", id, {
-      error: friendlyError(error)
-    }, false);
-
-    showToast("Could not send reply: " + friendlyError(error), "error");
-  }
-}
-
-async function setTicketStatus(id, status) {
-  requireAdmin();
-
-  if (!confirm("Change ticket #" + id + " status to " + status + "?")) return;
-
-  try {
-    const { error } = await db.rpc("admin_set_ticket_status", {
-      p_ticket_id: Number(id),
-      p_status: status
-    });
-
-    if (error) throw error;
-
-    await writeSecurityLog("SUPPORT_STATUS_CHANGED", "support_ticket", id, {
-      new_status: status
-    }, true);
-
-    showToast("Ticket status updated.");
-    await loadTickets();
-  } catch (error) {
-    console.error("Ticket status error:", error);
-
-    await writeSecurityLog("SUPPORT_STATUS_CHANGE_FAILED", "support_ticket", id, {
-      requested_status: status,
-      error: friendlyError(error)
-    }, false);
-
-    showToast("Could not update ticket: " + friendlyError(error), "error");
-  }
-}
-
-/* SECURITY LOG VIEW */
-
-function securityLogMatches(log) {
-  const query = $("securitySearch").value.trim().toLowerCase();
-  const resultFilter = $("securityResultFilter").value;
-
-  if (resultFilter === "success" && !log.success) return false;
-  if (resultFilter === "failed" && log.success) return false;
-
-  if (query) {
-    const text = [
-      log.action,
-      log.target_type,
-      log.target_id,
-      log.admin_user_id,
-      safeJSON(log.details)
-    ].join(" ").toLowerCase();
-
-    if (!text.includes(query)) return false;
-  }
-
-  return true;
-}
-
-function renderSecurityLog(log) {
-  return `
-    <tr>
-      <td class="nowrap">${escapeHTML(formatDate(log.created_at))}</td>
-      <td class="nowrap">${escapeHTML(log.admin_user_id || "—")}</td>
-      <td>${escapeHTML(log.action || "—")}</td>
-      <td>${escapeHTML([log.target_type, log.target_id].filter(Boolean).join(" · ") || "—")}</td>
-      <td>
-        <span class="pill ${log.success ? "pill-success" : "pill-danger"}">
-          ${log.success ? "Success" : "Failed"}
-        </span>
-      </td>
-      <td style="max-width:320px;overflow-wrap:anywhere;">${escapeHTML(safeJSON(log.details))}</td>
-    </tr>
-  `;
-}
-
-async function loadSecurityLogs() {
-  if (!state.isAdmin) return;
-
-  try {
-    const { data, error } = await db
-      .from("admin_security_logs")
-      .select("id,admin_user_id,action,target_type,target_id,details,success,created_at")
-      .order("created_at", { ascending: false })
-      .limit(200);
-
-    if (error) throw error;
-
-    state.securityLogs = Array.isArray(data) ? data : [];
-
-    const filtered = state.securityLogs.filter(securityLogMatches);
-
-    $("securityLogsBody").innerHTML = filtered.length
-      ? filtered.map(renderSecurityLog).join("")
-      : `<tr><td colspan="6"><div class="empty">
-          <div class="empty-icon">▣</div>
-          <strong>No matching security logs</strong>
-          No recorded events match the current filter.
-        </div></td></tr>`;
-
-    hideMessage("securityMessage");
-  } catch (error) {
-    console.error("Security log loading error:", error);
-
-    $("securityLogsBody").innerHTML =
-      `<tr><td colspan="6"><div class="empty">Could not load security logs.</div></td></tr>`;
-
-    showMessage(
-      "securityMessage",
-      "Could not load security logs: " + friendlyError(error),
-      "error"
-    );
-  }
-}
-
-/* OVERVIEW */
-
-function renderRevenueChart(rows) {
-  const chart = $("revenueChart");
-
-  if (!Array.isArray(rows) || rows.length === 0) {
-    chart.innerHTML = `<div class="empty" style="width:100%;">
-      <div class="empty-icon">◇</div>
-      <strong>Revenue data unavailable</strong>
-      Connect a trusted revenue source to show the 12-week chart.
-    </div>`;
-    $("chartFootnote").textContent = "No revenue values have been loaded.";
-    return;
-  }
-
-  const values = rows.map(row => Number(row.value)).filter(Number.isFinite);
-  const maximum = Math.max(...values, 1);
-
-  chart.innerHTML = rows.map((row, index) => {
-    const value = Number(row.value);
-    const height = Math.max(3, (value / maximum) * 100);
-    const latest = index === rows.length - 1;
-
-    return `
-      <div class="chart-column">
-        <span class="chart-value">${escapeHTML(formatNumber(value))}</span>
-        <div class="chart-bar ${latest ? "latest" : ""}"
-          style="height:${height}%;"
-          title="${escapeHTML(row.label)}: ${escapeHTML(formatNumber(value))}">
-        </div>
-        <span class="chart-label">${escapeHTML(row.label)}</span>
-      </div>
-    `;
-  }).join("");
-
-  $("chartFootnote").textContent =
-    "Values shown are from the supplied revenue dataset.";
-}
-
-async function loadAll() {
-  requireAdmin();
-
-  $("refreshAll").disabled = true;
-
-  try {
-    const results = await Promise.allSettled([
-      loadAdminUsers(true),
-      loadRequests(),
-      loadTickets(),
-      loadSecurityLogs()
+    const [depositResult, withdrawalResult] = await Promise.all([
+      db.from("deposits")
+        .select("id,status")
+        .limit(500),
+
+      db.from("withdrawals")
+        .select("id,status")
+        .limit(500)
     ]);
 
-    const failures = results.filter(result => result.status === "rejected");
+    if (depositResult.error) throw depositResult.error;
+    if (withdrawalResult.error) throw withdrawalResult.error;
 
-    if (failures.length) {
-      showGlobalError("Some sections could not be refreshed. Open each section for its specific error.");
-    } else {
-      hideMessage("globalMessage");
-    }
+    const deposits = depositResult.data || [];
+    const withdrawals = withdrawalResult.data || [];
 
-    renderRequests();
+    const confirmed = deposits.filter(
+      item => normalizeStatus(item.status) === "CONFIRMED"
+    ).length;
+
+    const pendingDep = deposits.filter(
+      item => normalizeStatus(item.status) === "PENDING"
+    ).length;
+
+    const pendingWith = withdrawals.filter(
+      item => normalizeStatus(item.status) === "PENDING"
+    ).length;
+
+    $("confirmedDeposits").textContent = confirmed.toLocaleString();
+    $("pendingDeposits").textContent = pendingDep.toLocaleString();
+    $("pendingWithdrawals").textContent = pendingWith.toLocaleString();
+
+    $("reviewList").innerHTML = `
+      <li>
+        <span>Pending deposits</span>
+        <strong>${pendingDep}</strong>
+      </li>
+
+      <li>
+        <span>Pending withdrawals</span>
+        <strong>${pendingWith}</strong>
+      </li>
+    `;
   } catch (error) {
-    showGlobalError(friendlyError(error));
-  } finally {
-    $("refreshAll").disabled = false;
-  }
-}
+    errors.push("Requests: " + (error.message || String(error)));
 
-/* EVENTS */
-
-document.addEventListener("click", async event => {
-  const pageButton = event.target.closest("[data-page]");
-  if (pageButton) {
-    navigate(pageButton.dataset.page);
-    return;
+    $("reviewList").innerHTML =
+      '<li><span>Request counts unavailable</span><span>—</span></li>';
   }
 
-  const approveButton = event.target.closest("[data-approve-deposit]");
-  if (approveButton) {
-    await approveDeposit(approveButton.dataset.approveDeposit);
-    return;
-  }
-
-  const rejectButton = event.target.closest("[data-reject-deposit]");
-  if (rejectButton) {
-    await rejectDeposit(rejectButton.dataset.rejectDeposit);
-    return;
-  }
-
-  const detailButton = event.target.closest("[data-user-detail]");
-  if (detailButton) {
-    showUserDetails(detailButton.dataset.userDetail);
-    return;
-  }
-
-  const replyButton = event.target.closest("[data-reply-ticket]");
-  if (replyButton) {
-    await replyToTicket(replyButton.dataset.replyTicket);
-    return;
-  }
-
-  const statusButton = event.target.closest("[data-ticket-status]");
-  if (statusButton) {
-    await setTicketStatus(statusButton.dataset.ticketStatus, statusButton.dataset.status);
-  }
-});
-
-$("themeToggle").addEventListener("click", toggleTheme);
-$("sidebarTheme").addEventListener("click", toggleTheme);
-
-$("signOutButton").addEventListener("click", signOut);
-$("sidebarSignOut").addEventListener("click", signOut);
-
-$("refreshAll").addEventListener("click", loadAll);
-$("overviewRefresh").addEventListener("click", loadAll);
-
-$("refreshUsers").addEventListener("click", () => loadAdminUsers(true));
-$("searchUsers").addEventListener("click", () => loadAdminUsers(true));
-
-$("userSearch").addEventListener("keydown", event => {
-  if (event.key === "Enter") loadAdminUsers(true);
-});
-
-$("userStatusFilter").addEventListener("change", () => loadAdminUsers(true));
-
-$("prevUsers").addEventListener("click", async () => {
-  if (state.userPage > 0) {
-    state.userPage--;
-    await loadAdminUsers();
-  }
-});
-
-$("nextUsers").addEventListener("click", async () => {
-  if (state.users.length >= state.userPageSize) {
-    state.userPage++;
-    await loadAdminUsers();
-  }
-});
-
-$("refreshRequests").addEventListener("click", loadRequests);
-$("requestTypeFilter").addEventListener("change", renderRequests);
-$("requestStatusFilter").addEventListener("change", renderRequests);
-
-$("refreshSupport").addEventListener("click", loadTickets);
-$("ticketSearch").addEventListener("input", () => {
-  clearTimeout(window.ticketSearchTimer);
-  window.ticketSearchTimer = setTimeout(loadTickets, 250);
-});
-$("ticketStatusFilter").addEventListener("change", loadTickets);
-
-$("refreshSecurityLogs").addEventListener("click", loadSecurityLogs);
-$("securitySearch").addEventListener("input", () => {
-  clearTimeout(window.securitySearchTimer);
-  window.securitySearchTimer = setTimeout(loadSecurityLogs, 250);
-});
-$("securityResultFilter").addEventListener("change", loadSecurityLogs);
-
-$("loginButton").addEventListener("click", signIn);
-$("loginPassword").addEventListener("keydown", event => {
-  if (event.key === "Enter") signIn();
-});
-$("loginEmail").addEventListener("keydown", event => {
-  if (event.key === "Enter") $("loginPassword").focus();
-});
-
-$("retryAuth").addEventListener("click", async () => {
-  $("retryAuth").disabled = true;
-  try {
-    const ok = await verifyAdmin();
-    if (ok) await loadAll();
-  } catch (error) {
-    $("authHeading").textContent = "Verification failed";
-    $("authDescription").textContent = friendlyError(error);
-    $("retryAuth").classList.remove("hidden");
-  } finally {
-    $("retryAuth").disabled = false;
-  }
-});
-
-/* BOOT */
-
-async function boot() {
-  try {
-    const savedTheme = localStorage.getItem("aitivest_admin_theme");
-    setTheme(savedTheme || "dark");
-  } catch (_) {
-    setTheme("dark");
-  }
-
-  document.querySelector(".app").style.visibility = "hidden";
-
-  try {
-    const ok = await verifyAdmin();
-
-    if (!ok) return;
-
-    await loadAll();
-    adminReadyEvent();
-  } catch (error) {
-    console.error("Admin initialization error:", error);
-
-    $("authHeading").textContent = "Unable to verify access";
-    $("authDescription").textContent = friendlyError(error);
-    $("loginForm").classList.add("hidden");
-    $("retryAuth").classList.remove("hidden");
+  if (errors.length) {
+    showPageError(
+      "Some dashboard information could not be loaded. " +
+      errors.join(" | ")
+    );
   }
 }
 
 /*
-  Keep the panel in a verified session. The database must still enforce
-  admin permissions on every sensitive RPC and table operation.
-*/
-db.auth.onAuthStateChange((event, session) => {
-  if (event === "SIGNED_OUT" || !session) {
-    state.isAdmin = false;
-    state.session = null;
-    showLoginScreen();
+ * Sign-out action.
+ */
+async function signOut() {
+  if (!confirm("Are you sure you want to sign out?")) return;
+
+  try {
+    const { data } = await db.auth.getSession();
+
+    if (data.session) {
+      await db.rpc("admin_write_security_log", {
+        p_action: "ADMIN_SIGN_OUT",
+        p_target_type: "admin",
+        p_target_id: String(data.session.user.id),
+        p_details: {},
+        p_success: true
+      });
+    }
+  } catch (error) {
+    console.error("Security log error:", error);
   }
-});
 
-boot();
+  await db.auth.signOut();
+
+  location.replace("admin-login.html");
+}
+
+/*
+ * Start only after server-side admin verification.
+ */
+async function startDashboard() {
+  try {
+    const authorized = await verifyAdmin();
+
+    if (!authorized) return;
+
+    await loadDashboard();
+  } catch (error) {
+    console.error("Dashboard initialization failed:", error);
+
+    showPageError(
+      "Admin verification or dashboard loading failed: " +
+      (error.message || String(error))
+    );
+  }
+}
+
+$("refreshButton").addEventListener("click", loadDashboard);
+$("signOutButton").addEventListener("click", signOut);
+$("topSignOut").addEventListener("click", signOut);
+
+startDashboard();
 </script>
-
 </body>
 </html>
