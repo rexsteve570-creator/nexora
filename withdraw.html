@@ -9,7 +9,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-:root {
+:root{
   --bg:#07111f;
   --card:#0d1b2d;
   --card2:#112238;
@@ -23,9 +23,7 @@
 }
 
 *{box-sizing:border-box}
-
 html{background:var(--bg);color-scheme:dark}
-
 body{
   margin:0;
   background:var(--bg);
@@ -34,7 +32,6 @@ body{
   font-size:14px;
   padding-bottom:calc(92px + env(safe-area-inset-bottom));
 }
-
 button,input,select{font:inherit}
 button{cursor:pointer}
 button:disabled{opacity:.55;cursor:not-allowed}
@@ -54,14 +51,12 @@ a{color:inherit;text-decoration:none}
   padding:0 16px;
   backdrop-filter:blur(16px);
 }
-
 .header-left,.header-right{
   width:70px;
   display:flex;
   align-items:center;
 }
 .header-right{justify-content:flex-end}
-
 .menu-button{
   width:40px;
   height:40px;
@@ -71,7 +66,6 @@ a{color:inherit;text-decoration:none}
   border-radius:12px;
   font-size:22px;
 }
-
 .brand{
   display:flex;
   align-items:center;
@@ -81,7 +75,6 @@ a{color:inherit;text-decoration:none}
   font-weight:900;
   letter-spacing:1.5px;
 }
-
 .brand-mark{
   width:31px;
   height:31px;
@@ -92,9 +85,7 @@ a{color:inherit;text-decoration:none}
   color:var(--gold2);
   font-weight:900;
 }
-
 .brand-vest{color:var(--gold2)}
-
 .avatar{
   display:grid;
   place-items:center;
@@ -116,9 +107,7 @@ a{color:inherit;text-decoration:none}
   visibility:hidden;
   transition:.2s;
 }
-
 .drawer-overlay.open{opacity:1;visibility:visible}
-
 .drawer{
   position:fixed;
   top:0;
@@ -133,9 +122,7 @@ a{color:inherit;text-decoration:none}
   transition:transform .25s ease;
   overflow-y:auto;
 }
-
 .drawer.open{transform:translateX(0)}
-
 .drawer-head{
   display:flex;
   align-items:center;
@@ -144,14 +131,12 @@ a{color:inherit;text-decoration:none}
   border-bottom:1px solid var(--border);
   margin-bottom:16px;
 }
-
 .close-drawer{
   background:transparent;
   border:0;
   color:var(--muted);
   font-size:25px;
 }
-
 .drawer-link{
   display:flex;
   align-items:center;
@@ -162,12 +147,10 @@ a{color:inherit;text-decoration:none}
   color:var(--muted);
   font-size:14px;
 }
-
 .drawer-link.active,.drawer-link:hover{
   background:rgba(217,164,65,.1);
   color:var(--gold2);
 }
-
 .drawer-link.logout{color:var(--red);margin-top:20px}
 
 main{
@@ -176,11 +159,17 @@ main{
   margin:0 auto;
   padding:22px 16px;
 }
-
 .page-heading{margin-bottom:22px}
-.page-heading h1{font-size:25px;margin:0 0 8px;letter-spacing:-.5px}
-.page-heading p{color:var(--muted);margin:0;line-height:1.6}
-
+.page-heading h1{
+  font-size:25px;
+  margin:0 0 8px;
+  letter-spacing:-.5px;
+}
+.page-heading p{
+  color:var(--muted);
+  margin:0;
+  line-height:1.6;
+}
 .card{
   background:var(--card);
   border:1px solid var(--border);
@@ -188,33 +177,26 @@ main{
   padding:18px;
   margin-bottom:17px;
 }
-
 .card-title{margin:0 0 18px;font-size:15px;font-weight:800}
-
 .balance-card{
   background:
     radial-gradient(ellipse at top right,rgba(217,164,65,.14),transparent 58%),
     var(--card);
 }
-
 .balance-label{color:var(--muted);font-size:12px;margin-bottom:10px}
-
 .balance-row{
   display:flex;
   justify-content:space-between;
   align-items:center;
   gap:12px;
 }
-
 .balance-amount{
   font-size:28px;
   font-weight:800;
   letter-spacing:-.7px;
   overflow-wrap:anywhere;
 }
-
 .balance-asset{color:var(--gold2);font-size:13px;margin-top:7px}
-
 .max-button{
   flex-shrink:0;
   border:1px solid rgba(217,164,65,.5);
@@ -225,10 +207,8 @@ main{
   font-size:12px;
   font-weight:800;
 }
-
 .field{margin-bottom:18px}
 .field:last-child{margin-bottom:0}
-
 .field label{
   display:block;
   color:#d9e1ed;
@@ -236,7 +216,6 @@ main{
   font-weight:700;
   margin-bottom:9px;
 }
-
 input,select{
   width:100%;
   min-height:49px;
@@ -247,14 +226,11 @@ input,select{
   padding:13px;
   outline:none;
 }
-
 input:focus,select:focus{
   border-color:rgba(217,164,65,.8);
   box-shadow:0 0 0 3px rgba(217,164,65,.08);
 }
-
 input::placeholder{color:#718096}
-
 .asset-select{
   display:flex;
   align-items:center;
@@ -264,7 +240,6 @@ input::placeholder{color:#718096}
   border-radius:11px;
   padding:7px 12px;
 }
-
 .asset-select select{
   border:0;
   box-shadow:none;
@@ -273,8 +248,6 @@ input::placeholder{color:#718096}
   flex:1;
   min-width:0;
 }
-
-/* Real coin images only: no letter or emoji logo substitutes */
 .coin-logo{
   display:block;
   width:34px;
@@ -282,11 +255,8 @@ input::placeholder{color:#718096}
   flex:0 0 34px;
   object-fit:contain;
 }
-
 .amount-input{padding-right:72px}
-
 .input-wrap{position:relative}
-
 .amount-suffix{
   position:absolute;
   right:13px;
@@ -297,7 +267,6 @@ input::placeholder{color:#718096}
   font-weight:700;
   pointer-events:none;
 }
-
 .primary-button{
   width:100%;
   min-height:51px;
@@ -309,9 +278,7 @@ input::placeholder{color:#718096}
   font-weight:900;
   font-size:14px;
 }
-
 .primary-button:active{transform:scale(.99)}
-
 .status-message{
   display:none;
   padding:12px 13px;
@@ -320,32 +287,25 @@ input::placeholder{color:#718096}
   line-height:1.5;
   overflow-wrap:anywhere;
 }
-
 .status-message.success{
   display:block;
   background:rgba(83,214,160,.1);
   border:1px solid rgba(83,214,160,.25);
   color:var(--green);
 }
-
 .status-message.error{
   display:block;
   background:rgba(255,119,127,.1);
   border:1px solid rgba(255,119,127,.25);
   color:var(--red);
 }
-
 .network-caption{color:var(--muted);font-size:11px;margin-top:8px}
-
 .history-list{display:flex;flex-direction:column}
-
 .history-item{
   padding:14px 0;
   border-bottom:1px solid var(--border);
 }
-
 .history-item:last-child{border-bottom:0;padding-bottom:0}
-
 .history-top{
   display:flex;
   align-items:center;
@@ -353,9 +313,7 @@ input::placeholder{color:#718096}
   gap:12px;
   margin-bottom:8px;
 }
-
 .history-amount{font-weight:800;font-size:14px}
-
 .status-pill{
   padding:5px 8px;
   border-radius:20px;
@@ -365,36 +323,30 @@ input::placeholder{color:#718096}
   background:rgba(154,167,184,.1);
   color:var(--muted);
 }
-
-.status-pill.pending,.status-pill.under_review,.status-pill.processing{
+.status-pill.pending,.status-pill.under_review,.status-pill.processing,.status-pill.queued{
   color:var(--gold2);
   background:rgba(217,164,65,.1);
 }
-
 .status-pill.completed,.status-pill.approved{
   color:var(--green);
   background:rgba(83,214,160,.1);
 }
-
 .status-pill.rejected,.status-pill.failed,.status-pill.cancelled{
   color:var(--red);
   background:rgba(255,119,127,.1);
 }
-
 .history-meta{
   color:var(--muted);
   font-size:11px;
   line-height:1.7;
   overflow-wrap:anywhere;
 }
-
 .empty-state{
   color:var(--muted);
   text-align:center;
   padding:22px 5px;
   line-height:1.6;
 }
-
 .bottom-nav{
   position:fixed;
   left:50%;
@@ -411,7 +363,6 @@ input::placeholder{color:#718096}
   display:grid;
   grid-template-columns:repeat(4,1fr);
 }
-
 .bottom-link{
   display:flex;
   flex-direction:column;
@@ -424,10 +375,8 @@ input::placeholder{color:#718096}
   font-size:10px;
   font-weight:700;
 }
-
 .bottom-link.active{color:var(--gold2)}
 .bottom-icon{font-size:20px;line-height:1}
-
 .loading-screen{
   position:fixed;
   inset:0;
@@ -439,9 +388,7 @@ input::placeholder{color:#718096}
   color:var(--gold2);
   font-size:13px;
 }
-
 .loading-screen.hidden{display:none}
-
 @media(min-width:600px){
   main{padding:28px 22px}
   .card{padding:22px}
@@ -455,7 +402,7 @@ input::placeholder{color:#718096}
 
 <header class="header">
   <div class="header-left">
-    <button class="menu-button" id="menuButton" aria-label="Open menu">☰</button>
+    <button class="menu-button" id="menuButton" type="button" aria-label="Open menu">☰</button>
   </div>
 
   <a class="brand" href="dashboard.html" aria-label="AITIVEST home">
@@ -464,19 +411,19 @@ input::placeholder{color:#718096}
   </a>
 
   <div class="header-right">
-    <a class="avatar" id="profileAvatar" href="profile.html">A</a>
+    <a class="avatar" id="profileAvatar" href="profile.html" aria-label="Your profile">A</a>
   </div>
 </header>
 
 <div class="drawer-overlay" id="drawerOverlay"></div>
 
-<aside class="drawer" id="drawer">
+<aside class="drawer" id="drawer" aria-label="Main navigation">
   <div class="drawer-head">
     <div class="brand">
       <span class="brand-mark">A</span>
       <span><span>AITI</span><span class="brand-vest">VEST</span></span>
     </div>
-    <button class="close-drawer" id="closeDrawer" aria-label="Close menu">×</button>
+    <button class="close-drawer" id="closeDrawer" type="button" aria-label="Close menu">×</button>
   </div>
 
   <a class="drawer-link" href="dashboard.html">⌂ <span>Portfolio</span></a>
@@ -509,7 +456,6 @@ input::placeholder{color:#718096}
 
   <section class="card">
     <h2 class="card-title">Withdrawal Details</h2>
-
     <div class="status-message" id="statusMessage" role="status" aria-live="polite"></div>
 
     <form id="withdrawForm">
@@ -591,16 +537,16 @@ input::placeholder{color:#718096}
 </main>
 
 <nav class="bottom-nav" aria-label="Bottom navigation">
-  <button class="bottom-link" onclick="go('dashboard.html')">
+  <button class="bottom-link" type="button" onclick="go('dashboard.html')">
     <span class="bottom-icon">⌂</span><span>Portfolio</span>
   </button>
-  <button class="bottom-link" onclick="go('deposit.html')">
+  <button class="bottom-link" type="button" onclick="go('deposit.html')">
     <span class="bottom-icon">＋</span><span>Deposit</span>
   </button>
-  <button class="bottom-link active" onclick="go('transactions.html')">
+  <button class="bottom-link" type="button" onclick="go('transactions.html')">
     <span class="bottom-icon">≡</span><span>History</span>
   </button>
-  <button class="bottom-link" onclick="go('profile.html')">
+  <button class="bottom-link" type="button" onclick="go('profile.html')">
     <span class="bottom-icon">○</span><span>Account</span>
   </button>
 </nav>
@@ -608,23 +554,14 @@ input::placeholder{color:#718096}
 <script>
 "use strict";
 
-const SUPABASE_URL =
-  "https://rihvvwktvgytbqzazage.supabase.co";
-
-const SUPABASE_ANON_KEY =
-  "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
+const SUPABASE_URL = "https://rihvvwktvgytbqzazage.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
 
 const db = window.supabase.createClient(
   SUPABASE_URL,
   SUPABASE_ANON_KEY
 );
 
-/*
- * Network mappings are UI options, not proof that the backend
- * can process withdrawals on every listed network.
- *
- * Keep only networks actually supported by your withdrawal provider.
- */
 const ASSETS = [
   {symbol:"BTC",name:"Bitcoin",networks:[
     {value:"BTC",label:"Bitcoin Network (BTC)"}
@@ -716,66 +653,27 @@ const ASSETS = [
   ]}
 ];
 
-/*
- * Primary source: the crypto-logo CDN used for the AITIVEST dashboard.
- * Fallback source: CryptoLogos.cc asset images.
- * Both sources serve image files, not text or emoji substitutes.
- */
+/* Actual cryptocurrency image files; no emoji/letter substitutes. */
 const LOGO_BASE =
   "https://cdn.jsdelivr.net/gh/madenix/Crypto-logo-cdn@main/Logos/";
 
 const LOGO_FILES = {
-  BTC:"BTC.svg",
-  ETH:"ETH.svg",
-  USDT:"USDT.svg",
-  USDC:"USDC.svg",
-  BNB:"BNB.svg",
-  SOL:"SOL.svg",
-  XRP:"XRP.svg",
-  TON:"TON.svg",
-  DOGE:"DOGE.svg",
-  ADA:"ADA.svg",
-  TRX:"TRON.svg",
-  LTC:"LTC.svg",
-  AVAX:"AVAX.svg",
-  DOT:"DOT.svg",
-  LINK:"LINK.svg",
-  POL:"MATIC.svg",
-  SHIB:"SHIB.svg",
-  BCH:"BCH.svg",
-  XLM:"XLM.svg",
-  ATOM:"ATOM.svg",
-  NEAR:"NEAR.svg",
-  APT:"APT.svg",
-  ARB:"ARB.svg",
-  OP:"OP.svg"
+  BTC:"BTC.svg",ETH:"ETH.svg",USDT:"USDT.svg",USDC:"USDC.svg",
+  BNB:"BNB.svg",SOL:"SOL.svg",XRP:"XRP.svg",TON:"TON.svg",
+  DOGE:"DOGE.svg",ADA:"ADA.svg",TRX:"TRON.svg",LTC:"LTC.svg",
+  AVAX:"AVAX.svg",DOT:"DOT.svg",LINK:"LINK.svg",POL:"MATIC.svg",
+  SHIB:"SHIB.svg",BCH:"BCH.svg",XLM:"XLM.svg",ATOM:"ATOM.svg",
+  NEAR:"NEAR.svg",APT:"APT.svg",ARB:"ARB.svg",OP:"OP.svg"
 };
 
 const FALLBACK_LOGO_FILES = {
-  BTC:"btc",
-  ETH:"eth",
-  USDT:"usdt",
-  USDC:"usdc",
-  BNB:"bnb",
-  SOL:"sol",
-  XRP:"xrp",
-  TON:"ton",
-  DOGE:"doge",
-  ADA:"ada",
-  TRX:"trx",
-  LTC:"ltc",
-  AVAX:"avax",
-  DOT:"dot",
-  LINK:"link",
-  POL:"pol",
-  SHIB:"shib",
-  BCH:"bch",
-  XLM:"xlm",
-  ATOM:"atom",
-  NEAR:"near",
-  APT:"apt",
-  ARB:"arb",
-  OP:"op"
+  BTC:"btc",ETH:"eth",USDT:"usdt",USDC:"usd-coin",
+  BNB:"bnb",SOL:"solana",XRP:"xrp",TON:"toncoin",
+  DOGE:"dogecoin",ADA:"cardano",TRX:"tron",LTC:"litecoin",
+  AVAX:"avalanche",DOT:"polkadot",LINK:"chainlink",POL:"polygon",
+  SHIB:"shiba-inu",BCH:"bitcoin-cash",XLM:"stellar",
+  ATOM:"cosmos",NEAR:"near-protocol",APT:"aptos",
+  ARB:"arbitrum",OP:"optimism"
 };
 
 let currentUser = null;
@@ -835,11 +733,20 @@ $("menuButton").addEventListener("click",openDrawer);
 $("closeDrawer").addEventListener("click",closeDrawer);
 $("drawerOverlay").addEventListener("click",closeDrawer);
 
+document.addEventListener("keydown",event=>{
+  if(event.key==="Escape")closeDrawer();
+});
+
 $("logoutButton").addEventListener("click",async event=>{
   event.preventDefault();
+
+  const button=$("logoutButton");
+  button.style.pointerEvents="none";
+
   const {error}=await db.auth.signOut();
 
   if(error){
+    button.style.pointerEvents="";
     showMessage("Unable to log out. Please try again.");
     return;
   }
@@ -862,7 +769,6 @@ function getProfitBalance(symbol){
   return Math.max(0,Number(wallet?.profit_balance||0));
 }
 
-/* Load actual image files. If the primary URL fails, try the fallback. */
 function updateLogo(symbol){
   const img=$("coinLogo");
   const filename=LOGO_FILES[symbol];
@@ -887,7 +793,7 @@ $("coinLogo").addEventListener("error",function(){
   if(!fallback)return;
 
   logoFallbackTried=true;
-  this.src="https://cryptologos.cc/logos/"+fallback+"-"+symbol.toLowerCase()+"-logo.svg";
+  this.src="https://cdn.jsdelivr.net/gh/madenix/Crypto-logo-cdn@main/Logos/"+fallback+".svg";
 });
 
 function populateAssets(){
@@ -942,8 +848,8 @@ function updateSelectedAsset(){
     :"Memo";
 
   $("memoInput").placeholder=asset.symbol==="XRP"
-    ?"Enter destination tag if required"
-    :"Enter memo if required";
+    ?"Enter destination tag"
+    :"Enter memo";
 
   $("addressInput").value="";
   $("memoInput").value="";
@@ -977,32 +883,49 @@ async function loadWallets(){
     .select("id,asset,available_balance,locked_balance,principal_balance,profit_balance")
     .eq("user_id",currentUser.id);
 
-  if(error)throw new Error("Unable to load your wallet balances.");
+  if(error){
+    throw new Error("Unable to load your wallet balances. Please refresh the page.");
+  }
 
   wallets=data||[];
   updateBalanceDisplay();
 }
 
 async function loadProfile(){
-  const {data,error}=await db
-    .from("profiles")
-    .select("full_name")
-    .eq("id",currentUser.id)
-    .maybeSingle();
+  const avatar=$("profileAvatar");
+  let fullName="";
 
-  if(error){
-    console.warn("Profile could not be loaded:",error.message);
+  try{
+    const {data,error}=await db
+      .from("profiles")
+      .select("full_name")
+      .eq("id",currentUser.id)
+      .maybeSingle();
+
+    if(error){
+      console.warn("Profile could not be loaded:",error.message);
+    }
+
+    fullName=data?.full_name?.trim()||"";
+  }catch(error){
+    console.warn("Unable to retrieve profile name:",error);
   }
 
-  if(data?.full_name){
-    const initials=data.full_name.trim()
-      .split(/\s+/)
-      .slice(0,2)
-      .map(part=>part.charAt(0).toUpperCase())
-      .join("");
-
-    $("profileAvatar").textContent=initials||"A";
+  if(!fullName){
+    const metadata=currentUser.user_metadata||{};
+    fullName=metadata.full_name||metadata.name||metadata.username||"";
   }
+
+  if(!fullName){
+    fullName=currentUser.email?.split("@")[0]||"AITIVEST";
+  }
+
+  const parts=fullName.trim().split(/\s+/);
+  const initials=parts.length>1
+    ?parts[0][0]+parts[parts.length-1][0]
+    :parts[0].slice(0,2);
+
+  avatar.textContent=initials.toUpperCase();
 }
 
 function displayHistory(rows){
@@ -1049,6 +972,7 @@ async function loadHistory(){
     .limit(20);
 
   if(error){
+    console.error("Unable to load withdrawal history:",error);
     $("historyList").innerHTML=
       '<div class="empty-state">Unable to load withdrawal history.</div>';
     return;
@@ -1057,62 +981,58 @@ async function loadHistory(){
   displayHistory(data||[]);
 }
 
-/*
- * These checks catch obvious mistakes. They do not replace a
- * proper blockchain address/network validator on the server.
- */
 function validateAddress(network,address){
   const value=address.trim();
 
   if(!value)return "Enter your receiving wallet address.";
 
-  if(network==="BTC" &&
+  if(network==="BTC"&&
      !/^(bc1|[13])[a-zA-HJ-NP-Z0-9]{20,90}$/.test(value)){
     return "Enter a valid-looking Bitcoin address.";
   }
 
-  if(network==="TRC20" &&
+  if(network==="TRC20"&&
      !/^T[1-9A-HJ-NP-Za-km-z]{33}$/.test(value)){
     return "Enter a valid-looking TRON address.";
   }
 
   if(["ERC20","BEP20","POLYGON","ARBITRUM","OPTIMISM",
-      "BASE","AVAX_C"].includes(network) &&
+      "BASE","AVAX_C"].includes(network)&&
      !/^0x[a-fA-F0-9]{40}$/.test(value)){
     return "Enter a valid-looking address for this network.";
   }
 
-  if(network==="XRP" &&
+  if(network==="XRP"&&
      !/^r[1-9A-HJ-NP-Za-km-z]{24,34}$/.test(value)){
     return "Enter a valid-looking XRP Ledger address.";
   }
 
-  if(network==="SOL" &&
+  if(network==="SOL"&&
      !/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(value)){
     return "Enter a valid-looking Solana address.";
   }
 
-  if(network==="XLM" &&
+  if(network==="XLM"&&
      !/^G[A-Z2-7]{55}$/.test(value)){
     return "Enter a valid-looking Stellar address.";
   }
 
-  if(network==="DOGE" &&
+  if(network==="DOGE"&&
      !/^[DA9][1-9A-HJ-NP-Za-km-z]{25,40}$/.test(value)){
     return "Enter a valid-looking Dogecoin address.";
   }
 
-  if(network==="LTC" &&
+  if(network==="LTC"&&
      !/^(ltc1|[LM3])[a-zA-HJ-NP-Z0-9]{20,90}$/.test(value)){
     return "Enter a valid-looking Litecoin address.";
   }
 
-  if(network==="BCH" &&
+  if(network==="BCH"&&
      !/^(bitcoincash:)?(q|p)[a-z0-9]{20,60}$/i.test(value)){
     return "Enter a valid-looking Bitcoin Cash address.";
   }
 
-  if(network==="ADA" &&
+  if(network==="ADA"&&
      !/^(addr1|Ae2)[a-zA-Z0-9]{20,110}$/.test(value)){
     return "Enter a valid-looking Cardano address.";
   }
@@ -1175,7 +1095,7 @@ $("withdrawForm").addEventListener("submit",async event=>{
   }
 
   if(["XRP","XLM"].includes(asset.symbol)&&!memo){
-    showMessage("Enter the destination tag or memo if your receiving wallet requires one.");
+    showMessage("Enter the destination tag or memo required by your receiving wallet.");
     return;
   }
 
@@ -1196,7 +1116,7 @@ $("withdrawForm").addEventListener("submit",async event=>{
     "Coin: "+asset.symbol+"\n"+
     "Network: "+network+"\n"+
     "Amount: "+amount+" "+asset.symbol+"\n\n"+
-    "Confirm the address and network match your receiving wallet."
+    "Confirm that the address and network match your receiving wallet."
   );
 
   if(!confirmed)return;
@@ -1206,11 +1126,6 @@ $("withdrawForm").addEventListener("submit",async event=>{
   $("submitButton").textContent="Submitting...";
 
   try{
-    /*
-     * The existing RPC must support these exact argument names.
-     * The server must independently enforce profit-only withdrawals,
-     * check the coin/network pair, and calculate fees securely.
-     */
     const {error}=await db.rpc("request_withdrawal",{
       p_asset:asset.symbol,
       p_network:network,
@@ -1222,17 +1137,23 @@ $("withdrawForm").addEventListener("submit",async event=>{
 
     if(error){
       console.error("Withdrawal request failed:",error);
-      throw new Error(error.message||"Unable to submit withdrawal request.");
+      throw new Error(
+        error.message||"Unable to submit withdrawal request."
+      );
     }
 
-    showMessage("Your withdrawal request has been submitted successfully.","success");
+    showMessage(
+      "Your withdrawal request has been submitted successfully.",
+      "success"
+    );
 
     $("addressInput").value="";
     $("memoInput").value="";
     $("amountInput").value="";
 
-    await Promise.all([loadWallets(),loadHistory()]);
+    await Promise.allSettled([loadWallets(),loadHistory()]);
   }catch(error){
+    console.error("Withdrawal submission error:",error);
     showMessage(error.message||"Something went wrong. Please try again.");
   }finally{
     requestInProgress=false;
@@ -1256,11 +1177,20 @@ async function init(){
 
     populateAssets();
 
-    await Promise.all([
+    const results=await Promise.allSettled([
       loadWallets(),
       loadProfile(),
       loadHistory()
     ]);
+
+    const walletResult=results[0];
+
+    if(walletResult.status==="rejected"){
+      showMessage(
+        walletResult.reason?.message||
+        "Unable to load wallet balances."
+      );
+    }
   }catch(error){
     console.error("Page initialization failed:",error);
     showMessage(error.message||"Unable to load your account.");
