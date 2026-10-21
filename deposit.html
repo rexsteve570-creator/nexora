@@ -4,836 +4,810 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#07111f">
-<title>Deposit | AITIVEST</title>
+<title>AITIVEST — Deposit</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
 
 <style>
 :root{
-  --bg:#07111f;
-  --bg2:#091626;
-  --card:#0d1b2d;
-  --card2:#112238;
-  --border:rgba(255,255,255,.08);
-  --text:#f5f7fa;
-  --muted:#9aa7b8;
-  --gold:#d9a441;
-  --gold2:#f0c866;
-  --green:#32c48d;
-  --red:#ef6b73;
-  --blue:#5b8def;
-  --purple:#a78bfa;
-  --shadow:0 18px 50px rgba(0,0,0,.25);
+  --bg:#07111f;--bg2:#091626;--card:#0d1b2d;--card2:#112238;
+  --border:rgba(255,255,255,.08);--text:#f5f7fa;--muted:#9aa7b8;
+  --gold:#d9a441;--gold2:#f0c866;--green:#32c48d;--red:#ef6b73;
+  --blue:#5b8def;--purple:#a78bfa;--shadow:0 18px 50px rgba(0,0,0,.25);
 }
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
+*{box-sizing:border-box;margin:0;padding:0}
 body{
-  margin:0;
-  color:var(--text);
-  background:
-    radial-gradient(circle at 90% 0%,rgba(217,164,65,.10),transparent 30%),
-    linear-gradient(180deg,var(--bg),#060d18 100%);
-  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   min-height:100vh;
+  background:radial-gradient(circle at 90% 0%,rgba(217,164,65,.09),transparent 30%),linear-gradient(180deg,#07111f,#050c15);
+  color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
 }
 button,input,select{font:inherit}
 button{cursor:pointer}
-a{color:inherit;text-decoration:none}
-.app{max-width:760px;margin:auto;min-height:100vh;padding-bottom:100px}
-.topbar{
-  height:68px;position:sticky;top:0;z-index:30;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 18px;background:rgba(7,17,31,.94);
-  backdrop-filter:blur(18px);border-bottom:1px solid var(--border);
-}
-.icon-btn{
-  width:42px;height:42px;border:1px solid var(--border);
-  background:var(--card);color:var(--text);border-radius:13px;
-  display:grid;place-items:center;font-size:20px;
-}
-.brand{display:flex;align-items:center;gap:9px;font-size:21px;font-weight:850;letter-spacing:-.7px}
-.brand-mark{
-  width:33px;height:33px;display:grid;place-items:center;
-  border:2px solid var(--gold);border-radius:12px 12px 12px 3px;
-  color:var(--gold2);font-weight:900;transform:rotate(-5deg);
-  font-size:18px;
-}
-.brand-name span{color:var(--gold2)}
-.top-status{
-  font-size:11px;font-weight:800;color:var(--green);
-  background:rgba(50,196,141,.09);border:1px solid rgba(50,196,141,.2);
-  padding:7px 9px;border-radius:20px;
-}
-main{padding:23px 18px}
-.page-heading{margin-bottom:23px}
-.eyebrow{
-  color:var(--gold2);font-size:10px;font-weight:900;
-  letter-spacing:2px;text-transform:uppercase;margin-bottom:9px;
-}
-h1{font-size:29px;line-height:1.15;margin:0 0 9px;letter-spacing:-1px}
-.page-heading p{margin:0;color:var(--muted);font-size:13px;line-height:1.7}
-.card{
-  background:linear-gradient(145deg,rgba(17,34,56,.98),rgba(13,27,45,.98));
-  border:1px solid var(--border);border-radius:20px;
-  padding:18px;margin-bottom:17px;box-shadow:var(--shadow);
-}
-.section-title{
-  font-size:15px;font-weight:800;margin:0 0 6px;
-  display:flex;align-items:center;gap:9px;
-}
-.section-subtitle{color:var(--muted);font-size:12px;line-height:1.6;margin:0 0 17px}
-.step-badge{
-  width:27px;height:27px;border-radius:9px;background:rgba(217,164,65,.12);
-  border:1px solid rgba(217,164,65,.24);color:var(--gold2);
-  display:grid;place-items:center;font-size:12px;flex-shrink:0;
-}
+button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
+.app{width:100%;max-width:760px;min-height:100vh;margin:auto;padding-bottom:95px}
+.loading-screen{position:fixed;inset:0;background:#07111f;display:flex;align-items:center;justify-content:center;z-index:9999}
+.loading-box{text-align:center}
+.brand-logo{display:flex;align-items:center;justify-content:center;gap:10px}
+.brand-mark{width:38px;height:38px;border:2px solid var(--gold);border-radius:12px 12px 12px 3px;display:flex;align-items:center;justify-content:center;color:var(--gold2);font-size:20px;font-weight:900;transform:rotate(-3deg)}
+.brand-name{font-size:22px;font-weight:900;letter-spacing:2px;white-space:nowrap}
+.brand-name span{color:var(--gold)}
+.loading-logo .brand-name{font-size:29px}
+.spinner{width:28px;height:28px;border:3px solid rgba(217,164,65,.18);border-top-color:var(--gold);border-radius:50%;margin:20px auto 0;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.topbar{height:68px;position:sticky;top:0;z-index:100;background:rgba(7,17,31,.96);backdrop-filter:blur(18px);border-bottom:1px solid var(--border)}
+.topbar-inner{height:100%;padding:0 18px;display:flex;align-items:center;justify-content:space-between;position:relative}
+.menu-btn{width:42px;height:42px;border:0;background:transparent;color:#fff;font-size:25px}
+.topbar .brand-logo{position:absolute;left:50%;transform:translateX(-50%)}
+.topbar .brand-mark{width:31px;height:31px;border-radius:9px 9px 9px 2px;font-size:16px}
+.topbar .brand-name{font-size:18px;letter-spacing:1.5px}
+.profile-initial{width:38px;height:38px;border-radius:50%;background:linear-gradient(145deg,#efc25e,#987021);color:#07111f;font-size:12px;font-weight:850;display:flex;align-items:center;justify-content:center}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:190;display:none}
+.overlay.show{display:block}
+.drawer{position:fixed;left:-320px;top:0;width:290px;max-width:86%;height:100vh;height:100dvh;background:#091625;border-right:1px solid var(--border);z-index:200;transition:left .25s ease;padding:22px 15px;overflow-y:auto}
+.drawer.open{left:0}
+.drawer-head{display:flex;align-items:center;justify-content:space-between;padding:8px 7px 25px;border-bottom:1px solid var(--border)}
+.drawer-head .brand-name{font-size:19px}
+.close-drawer{border:0;background:none;color:#fff;font-size:27px}
+.drawer-nav{padding-top:18px}
+.drawer-link{width:100%;border:0;background:transparent;color:#d7dce4;padding:14px 13px;border-radius:11px;display:flex;align-items:center;gap:13px;text-align:left;margin-bottom:4px}
+.drawer-link:hover,.drawer-link.active{background:rgba(217,164,65,.08);color:var(--gold2)}
+.drawer-icon{width:22px;text-align:center;color:var(--gold)}
+.drawer-link.logout{margin-top:15px;color:#ef8990}
+.content{padding:23px 18px 0}
+.greeting{margin-bottom:20px}
+.greeting small{color:var(--muted);font-size:13px}
+.greeting h1{margin-top:4px;font-size:24px;font-weight:760;overflow-wrap:anywhere}
+.section{margin-top:22px}
+.section-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+.section-title h2{font-size:16px;font-weight:750}
+.section-title span{color:var(--muted);font-size:11px}
+.panel{background:linear-gradient(145deg,#102238,#0b1829);border:1px solid var(--border);border-radius:18px;padding:19px;box-shadow:var(--shadow)}
+.panel-intro{font-size:12px;line-height:1.8;color:var(--muted);margin-bottom:16px}
+.step-label{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:800;margin-bottom:8px}
+.step-number{width:30px;height:30px;border-radius:10px;background:rgba(217,164,65,.12);border:1px solid rgba(217,164,65,.25);display:grid;place-items:center;color:var(--gold2);font-size:12px}
 .asset-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
-.asset{
-  min-width:0;text-align:left;padding:12px 9px;border-radius:14px;
-  background:rgba(5,14,26,.48);border:1px solid var(--border);
-  color:var(--text);position:relative;transition:.18s;
-}
-.asset:hover{border-color:rgba(217,164,65,.4)}
-.asset.active{
-  background:rgba(217,164,65,.09);
-  border-color:var(--gold);box-shadow:inset 0 0 0 1px rgba(217,164,65,.12);
-}
-.asset.unavailable{opacity:.48}
-.asset-top{display:flex;align-items:center;gap:8px;margin-bottom:10px}
-.coin-logo{
-  width:29px;height:29px;border-radius:50%;background:#fff;
-  object-fit:contain;flex-shrink:0;
-}
-.coin-fallback{
-  width:29px;height:29px;border-radius:50%;background:var(--card2);
-  border:1px solid var(--border);display:grid;place-items:center;
-  color:var(--gold2);font-weight:900;font-size:10px;flex-shrink:0;
-}
-.coin-symbol{font-size:12px;font-weight:850;overflow-wrap:anywhere}
-.coin-name{font-size:10px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.asset-state{font-size:9px;color:var(--green);font-weight:800}
-.asset.unavailable .asset-state{color:var(--muted)}
-.field{margin-bottom:15px}
-label{display:block;font-size:12px;font-weight:750;color:#dfe6f0;margin-bottom:9px}
-select,input{
-  width:100%;padding:14px 13px;background:#071321;color:var(--text);
-  border:1px solid rgba(255,255,255,.11);border-radius:12px;
-  outline:none;font-size:13px;
-}
-select:focus,input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(217,164,65,.08)}
+.asset-button{border:1px solid var(--border);border-radius:14px;background:var(--card);color:white;min-width:0;padding:13px 7px;display:flex;flex-direction:column;align-items:center;gap:8px;transition:.2s}
+.asset-button:hover,.asset-button.active{border-color:var(--gold);background:rgba(217,164,65,.09)}
+.asset-button.active{box-shadow:inset 0 0 0 1px rgba(217,164,65,.15)}
+.coin-logo{width:37px;height:37px;object-fit:contain}
+.coin-symbol{font-size:12px;font-weight:850}
+.coin-name{font-size:10px;color:var(--muted);text-align:center;overflow-wrap:anywhere}
+.asset-button.unavailable{opacity:.55}
+.asset-button.unavailable .coin-symbol::after{content:"";display:block}
+.asset-step-note{color:var(--muted);font-size:11px;line-height:1.7;margin-top:13px}
+.step-panel{display:none}
+.step-panel.show{display:block;animation:appear .22s ease}
+@keyframes appear{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.field{margin-top:15px}
+label{display:block;font-size:12px;font-weight:750;margin-bottom:8px;color:#dfe6f0}
+input,select{width:100%;background:#071321;color:#fff;border:1px solid rgba(255,255,255,.11);border-radius:12px;padding:14px 13px;font-size:13px;outline:none}
+input:focus,select:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(217,164,65,.08)}
 select option{background:#0d1b2d;color:white}
-.hint{color:var(--muted);font-size:11px;line-height:1.6;margin-top:8px}
-.address-box{
-  padding:15px;border:1px dashed rgba(217,164,65,.45);
-  background:rgba(217,164,65,.045);border-radius:15px;margin-bottom:15px;
-}
-.address-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
-.address-head strong{font-size:12px}
-.network-pill{
-  background:rgba(217,164,65,.12);color:var(--gold2);
-  border:1px solid rgba(217,164,65,.22);border-radius:20px;
-  padding:6px 9px;font-size:10px;font-weight:800;
-}
-.address-value{
-  font-size:12px;line-height:1.7;overflow-wrap:anywhere;
-  color:#f8e6bd;word-break:break-word;
-}
-.copy-btn{
-  padding:10px 12px;border-radius:10px;border:1px solid rgba(217,164,65,.3);
-  background:rgba(217,164,65,.1);color:var(--gold2);
-  font-size:11px;font-weight:800;white-space:nowrap;
-}
-.address-actions{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px}
-.qr-wrap{
-  width:164px;height:164px;background:white;padding:10px;border-radius:14px;
-  margin:17px auto;display:grid;place-items:center;
-}
-.qr-wrap canvas{max-width:100%;height:auto!important}
-.memo-box{
-  background:rgba(91,141,239,.08);border:1px solid rgba(91,141,239,.22);
-  border-radius:12px;padding:13px;margin-top:13px;
-}
-.memo-label{font-size:11px;color:#a9c5ff;font-weight:800;margin-bottom:7px}
-.notice{
-  padding:13px;border-radius:12px;font-size:11px;line-height:1.7;
-  margin:14px 0;background:rgba(217,164,65,.07);
-  border:1px solid rgba(217,164,65,.16);color:#d7c9a8;
-}
-.notice.danger{
-  background:rgba(239,107,115,.07);border-color:rgba(239,107,115,.2);
-  color:#ffb4b8;
-}
-.primary-btn{
-  width:100%;border:0;border-radius:13px;padding:15px;
-  background:linear-gradient(135deg,var(--gold),var(--gold2));
-  color:#17130a;font-weight:900;font-size:13px;
-  box-shadow:0 8px 25px rgba(217,164,65,.12);
-}
+.hint{font-size:11px;color:var(--muted);line-height:1.7;margin-top:7px}
+.primary-btn{width:100%;padding:15px;border:0;border-radius:12px;background:linear-gradient(135deg,#d9a441,#f0c866);color:#17130a;font-size:13px;font-weight:900;margin-top:17px}
 .primary-btn:disabled{opacity:.55;cursor:not-allowed}
-.secondary-btn{
-  background:var(--card2);border:1px solid var(--border);
-  color:var(--text);border-radius:11px;padding:11px 13px;font-size:11px;font-weight:800;
-}
-.message{display:none;padding:13px;border-radius:12px;font-size:12px;line-height:1.6;margin-bottom:14px}
+.secondary-btn{border:1px solid var(--border);background:var(--card2);color:#fff;padding:11px 13px;border-radius:11px;font-size:11px;font-weight:800}
+.back-btn{background:transparent;color:var(--gold2);border:1px solid rgba(217,164,65,.25);padding:10px 13px;border-radius:11px;font-size:11px;font-weight:800}
+.button-row{display:flex;gap:9px;margin-top:15px}
+.button-row button{flex:1}
+.network-option{width:100%;padding:15px 13px;margin-top:9px;border-radius:13px;border:1px solid var(--border);background:var(--card);color:#fff;display:flex;align-items:center;justify-content:space-between;gap:12px;text-align:left}
+.network-option:hover,.network-option.active{border-color:var(--gold);background:rgba(217,164,65,.08)}
+.network-name{font-size:13px;font-weight:800}
+.network-caption{font-size:10px;color:var(--muted);margin-top:4px}
+.network-arrow{font-size:19px;color:var(--gold2)}
+.address-box{border:1px solid rgba(217,164,65,.22);border-radius:15px;padding:15px;background:rgba(217,164,65,.035);margin-top:14px}
+.address-heading{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}
+.address-heading strong{font-size:12px}
+.network-pill{padding:6px 9px;border-radius:20px;background:rgba(217,164,65,.12);color:var(--gold2);font-size:10px;font-weight:800}
+.address-value{font-size:12px;line-height:1.8;overflow-wrap:anywhere;word-break:break-word;color:#f8e6bd}
+.copy-row{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:11px}
+.copy-btn{background:rgba(217,164,65,.1);border:1px solid rgba(217,164,65,.28);color:var(--gold2);padding:9px 12px;border-radius:9px;font-size:11px;font-weight:800}
+.qr-box{width:174px;height:174px;margin:17px auto 9px;padding:10px;background:white;border-radius:13px;display:grid;place-items:center}
+.qr-box canvas{max-width:100%;height:auto!important}
+.qr-caption{text-align:center;color:var(--muted);font-size:10px;line-height:1.7}
+.memo-box{padding:12px;border:1px solid rgba(91,141,239,.24);background:rgba(91,141,239,.07);border-radius:12px;margin-top:12px}
+.memo-label{color:#a9c5ff;font-size:11px;font-weight:850;margin-bottom:7px}
+.notice{padding:13px;border:1px solid rgba(217,164,65,.18);background:rgba(217,164,65,.055);border-radius:12px;color:#d7c9a8;font-size:11px;line-height:1.8;margin-top:15px}
+.notice.danger{background:rgba(239,107,115,.06);border-color:rgba(239,107,115,.2);color:#ffb5ba}
+.message{display:none;padding:13px;border-radius:12px;font-size:12px;line-height:1.7;margin-top:14px;overflow-wrap:anywhere}
 .message.show{display:block}
-.message.success{color:#9cf0ce;background:rgba(50,196,141,.09);border:1px solid rgba(50,196,141,.22)}
-.message.error{color:#ffb5ba;background:rgba(239,107,115,.09);border:1px solid rgba(239,107,115,.22)}
-.message.info{color:#c1d5ff;background:rgba(91,141,239,.09);border:1px solid rgba(91,141,239,.22)}
-.history-item{
-  padding:14px 0;border-bottom:1px solid var(--border);
-}
-.history-item:last-child{border-bottom:0;padding-bottom:0}
+.message.success{background:rgba(50,196,141,.09);border:1px solid rgba(50,196,141,.22);color:#9cf0ce}
+.message.error{background:rgba(239,107,115,.09);border:1px solid rgba(239,107,115,.22);color:#ffb5ba}
+.message.info{background:rgba(91,141,239,.09);border:1px solid rgba(91,141,239,.22);color:#c1d5ff}
+.history-item{padding:15px 0;border-bottom:1px solid var(--border)}
+.history-item:last-child{border-bottom:0}
 .history-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
-.history-amount{font-weight:850;font-size:14px}
-.history-coin{font-size:11px;color:var(--muted);margin-top:5px}
-.status{
-  display:inline-flex;align-items:center;gap:5px;
-  padding:6px 9px;border-radius:20px;font-size:9px;font-weight:900;
-  text-transform:uppercase;letter-spacing:.3px;
-}
+.history-amount{font-size:14px;font-weight:850;overflow-wrap:anywhere}
+.history-network{font-size:11px;color:var(--muted);margin-top:5px}
+.status{display:inline-flex;padding:6px 9px;border-radius:20px;font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.3px}
 .status.pending{color:#f3d18b;background:rgba(217,164,65,.12)}
-.status.approved,.status.confirmed,.status.completed{color:#8be7c0;background:rgba(50,196,141,.11)}
-.status.rejected,.status.failed{color:#ffabb0;background:rgba(239,107,115,.11)}
+.status.confirmed,.status.approved,.status.completed,.status.credited{color:#8be7c0;background:rgba(50,196,141,.11)}
+.status.rejected,.status.failed,.status.cancelled{color:#ffabb0;background:rgba(239,107,115,.11)}
 .status.other{color:#b9ccf7;background:rgba(91,141,239,.11)}
 .history-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:9px;font-size:10px;color:var(--muted)}
-.empty-state{text-align:center;padding:25px 10px;color:var(--muted);font-size:12px;line-height:1.8}
-.loader{
-  width:19px;height:19px;border:2px solid rgba(23,19,10,.3);
-  border-top-color:#17130a;border-radius:50%;display:inline-block;
-  vertical-align:middle;animation:spin .7s linear infinite;margin-right:8px;
-}
-@keyframes spin{to{transform:rotate(360deg)}}
-.loading-screen{
-  position:fixed;inset:0;z-index:100;background:var(--bg);
-  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:15px;
-}
-.loading-screen.hidden{display:none}
-.spinner{width:34px;height:34px;border:3px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite}
-.loading-text{font-size:12px;color:var(--muted)}
-.overlay{
-  position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:49;
-  opacity:0;visibility:hidden;transition:.25s;
-}
-.overlay.show{opacity:1;visibility:visible}
-.drawer{
-  position:fixed;top:0;bottom:0;left:0;z-index:50;width:min(290px,85vw);
-  background:#091625;border-right:1px solid var(--border);
-  padding:23px 17px;transform:translateX(-105%);transition:.25s;overflow-y:auto;
-}
-.drawer.show{transform:translateX(0)}
-.drawer-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:25px}
-.drawer-label{font-size:10px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin:21px 10px 9px}
-.drawer-link{
-  display:flex;align-items:center;gap:12px;padding:13px 12px;border-radius:12px;
-  color:#b6c2d3;font-size:13px;font-weight:650;margin-bottom:4px;
-}
-.drawer-link.active,.drawer-link:hover{background:rgba(217,164,65,.09);color:var(--gold2)}
-.drawer-icon{width:21px;text-align:center;font-size:16px}
-.bottom-nav{
-  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
-  width:100%;max-width:760px;z-index:35;
-  display:grid;grid-template-columns:repeat(4,1fr);
-  padding:10px 8px calc(10px + env(safe-area-inset-bottom));
-  background:rgba(7,17,31,.96);backdrop-filter:blur(18px);
-  border-top:1px solid var(--border);
-}
-.nav-item{display:flex;flex-direction:column;align-items:center;gap:5px;color:var(--muted);font-size:10px;font-weight:700;padding:4px}
-.nav-item .nav-icon{font-size:19px}
-.nav-item.active{color:var(--gold2)}
-@media(min-width:560px){
-  main{padding:27px 24px}
-  .asset-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
-  .card{padding:21px}
-}
-@media(max-width:360px){
-  .brand{font-size:18px}
-  .topbar{padding:0 12px}
-  main{padding:18px 12px}
-  .asset-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-}
+.empty-state{text-align:center;padding:23px 9px;color:var(--muted);font-size:12px;line-height:1.8}
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:760px;min-height:70px;padding-bottom:env(safe-area-inset-bottom);background:rgba(8,18,31,.98);backdrop-filter:blur(18px);border-top:1px solid var(--border);z-index:120;display:grid;grid-template-columns:repeat(4,1fr)}
+.bottom-link{border:0;background:transparent;color:#7e8998;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;font-size:10px}
+.bottom-link.active{color:var(--gold2)}
+.bottom-icon{font-size:20px}
+.toast{position:fixed;left:50%;bottom:85px;transform:translateX(-50%) translateY(15px);background:#142337;border:1px solid var(--border);color:#fff;padding:12px 16px;border-radius:10px;font-size:12px;opacity:0;pointer-events:none;transition:.25s;z-index:500;width:max-content;max-width:90%;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(min-width:560px){.asset-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:400px){.content{padding-left:14px;padding-right:14px}.topbar .brand-name{font-size:15px}.topbar .brand-mark{width:27px;height:27px}.asset-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 </style>
 </head>
 
 <body>
-<div class="loading-screen" id="loadingScreen">
-  <div class="brand"><div class="brand-mark">A</div><div class="brand-name">AITI<span>VEST</span></div></div>
-  <div class="spinner"></div>
-  <div class="loading-text" id="loadingText">Loading your deposit page...</div>
+
+<div id="loadingScreen" class="loading-screen">
+  <div class="loading-box">
+    <div class="brand-logo loading-logo">
+      <div class="brand-mark">A</div>
+      <div class="brand-name">AITI<span>VEST</span></div>
+    </div>
+    <div class="spinner"></div>
+  </div>
 </div>
+
+<div class="app">
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
+    <div class="brand-logo">
+      <div class="brand-mark">A</div>
+      <div class="brand-name">AITI<span>VEST</span></div>
+    </div>
+    <div class="profile-initial" id="profileInitial">AV</div>
+  </div>
+</header>
 
 <div class="overlay" id="overlay"></div>
 
-<aside class="drawer" id="drawer">
+<aside class="drawer" id="drawer" aria-label="Main navigation">
   <div class="drawer-head">
-    <div class="brand"><div class="brand-mark">A</div><div class="brand-name">AITI<span>VEST</span></div></div>
-    <button class="icon-btn" id="closeDrawer" aria-label="Close menu">×</button>
-  </div>
-  <div class="drawer-label">Main menu</div>
-  <a class="drawer-link" href="dashboard.html"><span class="drawer-icon">⌂</span>Dashboard</a>
-  <a class="drawer-link active" href="deposit.html"><span class="drawer-icon">＋</span>Deposit</a>
-  <a class="drawer-link" href="withdraw.html"><span class="drawer-icon">↗</span>Withdraw</a>
-  <a class="drawer-link" href="transactions.html"><span class="drawer-icon">⇄</span>Transactions</a>
-  <a class="drawer-link" href="referrals.html"><span class="drawer-icon">♧</span>Referrals</a>
-  <div class="drawer-label">Account</div>
-  <a class="drawer-link" href="profile.html"><span class="drawer-icon">♙</span>Profile & Security</a>
-  <a class="drawer-link" href="support.html"><span class="drawer-icon">◉</span>Support</a>
-  <a class="drawer-link" href="notifications.html"><span class="drawer-icon">♢</span>Notifications</a>
-  <a class="drawer-link" href="#" id="logoutLink"><span class="drawer-icon">⇥</span>Log out</a>
-</aside>
-
-<div class="app">
-  <header class="topbar">
-    <button class="icon-btn" id="openDrawer" aria-label="Open menu">☰</button>
-    <a class="brand" href="dashboard.html">
+    <div class="brand-logo">
       <div class="brand-mark">A</div>
       <div class="brand-name">AITI<span>VEST</span></div>
-    </a>
-    <div class="top-status">● SECURE</div>
-  </header>
+    </div>
+    <button class="close-drawer" id="closeDrawer" aria-label="Close menu">×</button>
+  </div>
+  <nav class="drawer-nav">
+    <button class="drawer-link" onclick="go('dashboard.html')"><span class="drawer-icon">⌂</span>Portfolio</button>
+    <button class="drawer-link active" onclick="go('deposit.html')"><span class="drawer-icon">＋</span>Deposit</button>
+    <button class="drawer-link" onclick="go('withdraw.html')"><span class="drawer-icon">↗</span>Withdraw</button>
+    <button class="drawer-link" onclick="go('transactions.html')"><span class="drawer-icon">≡</span>Transactions</button>
+    <button class="drawer-link" onclick="go('referrals.html')"><span class="drawer-icon">♧</span>Referrals</button>
+    <button class="drawer-link" onclick="go('profile.html')"><span class="drawer-icon">○</span>Profile</button>
+    <button class="drawer-link" onclick="go('support.html')"><span class="drawer-icon">?</span>Support</button>
+    <button class="drawer-link" onclick="go('notifications.html')"><span class="drawer-icon">♢</span>Notifications</button>
+    <button class="drawer-link logout" id="logoutBtn"><span class="drawer-icon">↪</span>Logout</button>
+  </nav>
+</aside>
 
-  <main>
-    <section class="page-heading">
-      <div class="eyebrow">Fund your account</div>
-      <h1>Make a deposit</h1>
-      <p>Select a cryptocurrency and network, send your funds to the displayed address, and submit your transaction details for review.</p>
-    </section>
+<main class="content">
 
-    <div class="message" id="pageMessage" role="status" aria-live="polite"></div>
+  <div class="greeting">
+    <small id="greetingText">Account funding</small>
+    <h1>Deposit Funds</h1>
+  </div>
 
-    <section class="card">
-      <h2 class="section-title"><span class="step-badge">01</span> Choose an asset</h2>
-      <p class="section-subtitle">Select the cryptocurrency you want to deposit.</p>
-      <div class="asset-grid" id="assetGrid"></div>
-    </section>
+  <section class="panel">
+    <div class="section-title">
+      <h2>Make a Deposit</h2>
+      <span>Secure deposit</span>
+    </div>
+    <p class="panel-intro">Choose your cryptocurrency, select one of its available networks, then view the correct address or scan its QR code.</p>
 
-    <section class="card">
-      <h2 class="section-title"><span class="step-badge">02</span> Select network</h2>
-      <p class="section-subtitle">Choose the exact network you will use to send your deposit.</p>
-      <div class="field">
-        <label for="networkSelect">Deposit network</label>
-        <select id="networkSelect" disabled>
-          <option value="">Select an asset first</option>
-        </select>
-        <div class="hint">Only send funds using a network supported by the displayed deposit address.</div>
-      </div>
+    <div class="step-label"><span class="step-number">01</span> Choose cryptocurrency</div>
+    <div class="asset-grid" id="assetGrid"></div>
+    <div class="asset-step-note">Tap a coin logo to continue to its available deposit networks.</div>
+  </section>
 
-      <div id="addressSection" hidden>
-        <div class="address-box">
-          <div class="address-head">
-            <strong>Deposit address</strong>
-            <span class="network-pill" id="networkPill">NETWORK</span>
-          </div>
-          <div class="address-value" id="depositAddress">Choose an available asset and network.</div>
-          <div class="address-actions">
-            <span class="hint" style="margin:0">Copy the complete address</span>
-            <button class="copy-btn" id="copyAddressBtn" type="button">Copy address</button>
-          </div>
+  <section class="section step-panel" id="networkPanel">
+    <div class="panel">
+      <div class="step-label"><span class="step-number">02</span> Choose network</div>
+      <p class="panel-intro" id="networkIntro">Select the network you will use to send your funds.</p>
+      <div id="networkList"></div>
+      <div class="message" id="networkMessage"></div>
+      <button class="back-btn" type="button" id="backToCoins" style="margin-top:15px">← Back to coins</button>
+    </div>
+  </section>
 
-          <div class="qr-wrap" id="qrWrap" hidden>
-            <canvas id="qrCanvas" aria-label="Deposit address QR code"></canvas>
-          </div>
+  <section class="section step-panel" id="addressPanel">
+    <div class="panel">
+      <div class="step-label"><span class="step-number">03</span> Deposit address</div>
+      <p class="panel-intro">Send only the selected asset over the selected network. Verify the details before transferring.</p>
 
-          <div class="memo-box" id="memoBox" hidden>
-            <div class="memo-label">MEMO / TAG — REQUIRED WHEN DISPLAYED</div>
-            <div class="address-value" id="memoValue"></div>
-            <div class="address-actions">
-              <span class="hint" style="margin:0">Include this if required</span>
-              <button class="copy-btn" id="copyMemoBtn" type="button">Copy memo</button>
-            </div>
-          </div>
+      <div class="address-box">
+        <div class="address-heading">
+          <strong id="addressAssetTitle">Deposit address</strong>
+          <span class="network-pill" id="networkPill">NETWORK</span>
+        </div>
+        <div class="address-value" id="depositAddress"></div>
+
+        <div class="copy-row">
+          <span class="hint" style="margin:0">Wallet address</span>
+          <button type="button" class="copy-btn" id="copyAddressBtn">Copy address</button>
         </div>
 
-        <div class="notice danger">
-          <strong>Important:</strong> Verify the asset and network before sending. Transfers sent through an unsupported network or to an incorrect address may be permanently lost. Check any minimum deposit requirements before transferring.
+        <div class="qr-box" id="qrBox">
+          <canvas id="qrCanvas" aria-label="Deposit QR code"></canvas>
+        </div>
+        <div class="qr-caption">Open your sending wallet and scan this QR code if supported.</div>
+
+        <div class="memo-box" id="memoBox" hidden>
+          <div class="memo-label">MEMO / DESTINATION TAG</div>
+          <div class="address-value" id="memoValue"></div>
+          <div class="copy-row">
+            <span class="hint" style="margin:0">Include when required</span>
+            <button type="button" class="copy-btn" id="copyMemoBtn">Copy memo</button>
+          </div>
         </div>
       </div>
 
-      <div class="empty-state" id="addressEmpty">
-        Select an asset above to check which deposit networks are currently available for your account.
-      </div>
-    </section>
+      <div class="notice danger"><strong>Important:</strong> Sending the wrong asset or using the wrong network may result in permanent loss. Check any minimum deposit requirements. Never share your wallet recovery phrase or private keys.</div>
 
-    <section class="card">
-      <h2 class="section-title"><span class="step-badge">03</span> Submit transaction</h2>
-      <p class="section-subtitle">After sending your crypto, enter the amount and transaction hash. Submitting a request does not mean your deposit has been confirmed.</p>
+      <div class="button-row">
+        <button type="button" class="back-btn" id="backToNetworks">← Change network</button>
+        <button type="button" class="primary-btn" id="continueToForm" style="margin-top:0">Continue →</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section step-panel" id="formPanel">
+    <div class="panel">
+      <div class="step-label"><span class="step-number">04</span> Transaction details</div>
+      <p class="panel-intro">After sending the crypto, enter the amount sent and the transaction hash from your wallet.</p>
+
+      <div class="address-box" style="margin-bottom:15px">
+        <div class="address-heading">
+          <strong id="formAssetTitle">Selected asset</strong>
+          <span class="network-pill" id="formNetworkPill">NETWORK</span>
+        </div>
+        <div class="address-value" id="formAddressPreview"></div>
+      </div>
 
       <form id="depositForm">
         <div class="field">
           <label for="amountInput">Amount sent</label>
-          <input id="amountInput" type="number" inputmode="decimal" min="0" step="any" placeholder="0.00" required>
-          <div class="hint">Enter the amount you actually sent, in the selected cryptocurrency.</div>
+          <input id="amountInput" type="number" min="0" step="any" inputmode="decimal" placeholder="Enter amount" required>
+          <div class="hint">Enter the amount you actually sent in the selected cryptocurrency.</div>
         </div>
 
         <div class="field">
           <label for="txHashInput">Transaction hash / TXID</label>
-          <input id="txHashInput" type="text" autocomplete="off" placeholder="Paste your transaction hash" minlength="8" maxlength="200" required>
-          <div class="hint">You can usually find this in your sending wallet or on the blockchain explorer.</div>
+          <input id="txHashInput" type="text" minlength="8" maxlength="200" autocomplete="off" placeholder="Paste transaction hash" required>
+          <div class="hint">Find the transaction hash in your sending wallet or blockchain explorer.</div>
         </div>
 
-        <div class="notice">
-          Deposits are credited after verification according to the platform's deposit review process. Do not submit a transaction hash for a transfer you have not made.
-        </div>
+        <div class="notice">Submitting a request does not automatically confirm a blockchain payment. Your deposit is subject to the platform's verification process.</div>
+        <div class="message" id="formMessage" role="status" aria-live="polite"></div>
 
-        <button class="primary-btn" id="submitDepositBtn" type="submit">Submit deposit request</button>
+        <button class="primary-btn" type="submit" id="submitDepositBtn">Submit deposit request</button>
+        <button class="back-btn" type="button" id="backToAddress" style="width:100%;margin-top:10px">← Back to address</button>
       </form>
-    </section>
+    </div>
+  </section>
 
-    <section class="card">
-      <h2 class="section-title">Deposit history</h2>
-      <p class="section-subtitle">Your latest deposit requests and their current statuses.</p>
-      <div id="depositHistory">
-        <div class="empty-state">Loading deposit history...</div>
-      </div>
-      <button class="secondary-btn" id="refreshHistoryBtn" type="button" style="width:100%;margin-top:15px">Refresh history</button>
-    </section>
-  </main>
+  <section class="section">
+    <div class="section-title">
+      <h2>Deposit History</h2>
+      <button type="button" class="secondary-btn" id="refreshHistoryBtn">Refresh ↻</button>
+    </div>
+    <div class="panel" id="depositHistory">
+      <div class="empty-state">Loading deposit history...</div>
+    </div>
+  </section>
 
-  <nav class="bottom-nav">
-    <a class="nav-item" href="dashboard.html"><span class="nav-icon">⌂</span><span>Home</span></a>
-    <a class="nav-item active" href="deposit.html"><span class="nav-icon">＋</span><span>Deposit</span></a>
-    <a class="nav-item" href="withdraw.html"><span class="nav-icon">↗</span><span>Withdraw</span></a>
-    <a class="nav-item" href="profile.html"><span class="nav-icon">♙</span><span>Account</span></a>
-  </nav>
+</main>
+
+<nav class="bottom-nav" aria-label="Bottom navigation">
+  <button class="bottom-link" onclick="go('dashboard.html')"><span class="bottom-icon">⌂</span><span>Portfolio</span></button>
+  <button class="bottom-link active" onclick="go('deposit.html')"><span class="bottom-icon">＋</span><span>Deposit</span></button>
+  <button class="bottom-link" onclick="go('transactions.html')"><span class="bottom-icon">≡</span><span>History</span></button>
+  <button class="bottom-link" onclick="go('profile.html')"><span class="bottom-icon">○</span><span>Account</span></button>
+</nav>
+
 </div>
 
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
 <script>
-(() => {
-  "use strict";
+"use strict";
 
-  const SUPABASE_URL = "https://rihvvwktvgytbqzazage.supabase.co";
-  const SUPABASE_ANON_KEY = "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
+const SUPABASE_URL = "https://rihvvwktvgytbqzazage.supabase.co";
+const SUPABASE_KEY = "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-  const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const LOGO_BASE = "https://cdn.jsdelivr.net/gh/madenix/Crypto-logo-cdn@main/Logos/";
 
-  const assets = [
-    {symbol:"BTC",name:"Bitcoin",logo:"BTC.svg"},
-    {symbol:"ETH",name:"Ethereum",logo:"ETH.svg"},
-    {symbol:"USDT",name:"Tether",logo:"USDT.svg"},
-    {symbol:"USDC",name:"USD Coin",logo:"USDC.svg"},
-    {symbol:"BNB",name:"BNB",logo:"BNB.svg"},
-    {symbol:"SOL",name:"Solana",logo:"SOL.svg"},
-    {symbol:"XRP",name:"XRP",logo:"XRP.svg"},
-    {symbol:"TON",name:"Toncoin",logo:"TON.svg"},
-    {symbol:"DOGE",name:"Dogecoin",logo:"DOGE.svg"},
-    {symbol:"ADA",name:"Cardano",logo:"ADA.svg"},
-    {symbol:"TRX",name:"TRON",logo:"TRON.svg"},
-    {symbol:"LTC",name:"Litecoin",logo:"LTC.svg"},
-    {symbol:"AVAX",name:"Avalanche",logo:"AVAX.svg"},
-    {symbol:"DOT",name:"Polkadot",logo:"DOT.svg"},
-    {symbol:"LINK",name:"Chainlink",logo:"LINK.svg"},
-    {symbol:"POL",name:"Polygon",logo:"MATIC.svg"},
-    {symbol:"SHIB",name:"Shiba Inu",logo:"SHIB.svg"},
-    {symbol:"BCH",name:"Bitcoin Cash",logo:"BCH.svg"},
-    {symbol:"XLM",name:"Stellar",logo:"XLM.svg"},
-    {symbol:"ATOM",name:"Cosmos",logo:"ATOM.svg"},
-    {symbol:"NEAR",name:"NEAR Protocol",logo:"NEAR.svg"},
-    {symbol:"APT",name:"Aptos",logo:"APT.svg"},
-    {symbol:"ARB",name:"Arbitrum",logo:"ARB.svg"},
-    {symbol:"OP",name:"Optimism",logo:"OP.svg"}
-  ];
+const assets = [
+  ["BTC","Bitcoin","BTC.svg"],
+  ["ETH","Ethereum","ETH.svg"],
+  ["USDT","Tether","USDT.svg"],
+  ["USDC","USD Coin","USDC.svg"],
+  ["BNB","BNB","BNB.svg"],
+  ["SOL","Solana","SOL.svg"],
+  ["XRP","XRP","XRP.svg"],
+  ["TON","Toncoin","TON.svg"],
+  ["DOGE","Dogecoin","DOGE.svg"],
+  ["ADA","Cardano","ADA.svg"],
+  ["TRX","TRON","TRON.svg"],
+  ["LTC","Litecoin","LTC.svg"],
+  ["AVAX","Avalanche","AVAX.svg"],
+  ["DOT","Polkadot","DOT.svg"],
+  ["LINK","Chainlink","LINK.svg"],
+  ["POL","Polygon","MATIC.svg"],
+  ["SHIB","Shiba Inu","SHIB.svg"],
+  ["BCH","Bitcoin Cash","BCH.svg"],
+  ["XLM","Stellar","XLM.svg"],
+  ["ATOM","Cosmos","ATOM.svg"],
+  ["NEAR","NEAR Protocol","NEAR.svg"],
+  ["APT","Aptos","APT.svg"],
+  ["ARB","Arbitrum","ARB.svg"],
+  ["OP","Optimism","OP.svg"]
+];
 
-  const logoBase = "https://cdn.jsdelivr.net/gh/madenix/Crypto-logo-cdn@main/Logos/";
+const $ = id => document.getElementById(id);
 
-  let currentUser = null;
-  let profile = null;
-  let depositAddresses = [];
-  let selectedAsset = null;
-  let selectedAddress = null;
-  let submitting = false;
+let currentUser = null;
+let depositAddresses = [];
+let selectedAsset = null;
+let selectedAddress = null;
+let submitting = false;
 
-  const $ = id => document.getElementById(id);
+function go(page){ location.href = page; }
 
-  function escapeHTML(value) {
-    return String(value ?? "").replace(/[&<>"']/g, char => ({
-      "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
-    })[char]);
-  }
+function escapeHTML(value){
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  })[char]);
+}
 
-  function showMessage(message, type = "info") {
-    const el = $("pageMessage");
-    el.textContent = message;
-    el.className = "message show " + type;
-    el.scrollIntoView({behavior:"smooth", block:"nearest"});
-  }
+function formatAmount(value){
+  const n = Number(value);
+  if(!Number.isFinite(n)) return "—";
+  return n.toLocaleString(undefined,{maximumFractionDigits:8});
+}
 
-  function hideMessage() {
-    $("pageMessage").className = "message";
-    $("pageMessage").textContent = "";
-  }
+function initials(name){
+  const parts = String(name || "").trim().split(/\s+/).filter(Boolean);
+  if(!parts.length) return "AV";
+  return parts.length === 1 ? parts[0].slice(0,2).toUpperCase() :
+    (parts[0][0] + parts[parts.length-1][0]).toUpperCase();
+}
 
-  function hideLoading() {
-    $("loadingScreen").classList.add("hidden");
-  }
+function toast(message){
+  const el = $("toast");
+  el.textContent = message;
+  el.classList.add("show");
+  clearTimeout(toast.timeout);
+  toast.timeout = setTimeout(()=>el.classList.remove("show"),2800);
+}
 
-  function toggleDrawer(open) {
-    $("drawer").classList.toggle("show", open);
-    $("overlay").classList.toggle("show", open);
-  }
+function showMessage(id,message,type="info"){
+  const el = $(id);
+  el.textContent = message;
+  el.className = "message show " + type;
+}
 
-  $("openDrawer").addEventListener("click", () => toggleDrawer(true));
-  $("closeDrawer").addEventListener("click", () => toggleDrawer(false));
-  $("overlay").addEventListener("click", () => toggleDrawer(false));
+function clearMessage(id){
+  const el = $(id);
+  el.textContent = "";
+  el.className = "message";
+}
 
-  $("logoutLink").addEventListener("click", async event => {
-    event.preventDefault();
-    await db.auth.signOut();
-    location.href = "signin.html";
-  });
+function hideLoading(){
+  $("loadingScreen").style.display = "none";
+}
 
-  function renderAssets() {
-    $("assetGrid").innerHTML = assets.map(asset => {
-      const available = depositAddresses.some(a =>
-        a.asset?.toUpperCase() === asset.symbol && a.is_active === true
-      );
+/* EXACT DASHBOARD DRAWER BEHAVIOUR */
 
-      return `
-        <button type="button"
-          class="asset ${available ? "" : "unavailable"}"
-          data-asset="${escapeHTML(asset.symbol)}"
-          aria-pressed="false">
-          <div class="asset-top">
-            <img class="coin-logo"
-              src="${logoBase + encodeURIComponent(asset.logo)}"
-              alt=""
-              loading="lazy"
-              onerror="this.style.display='none';this.nextElementSibling.style.display='grid'">
-            <span class="coin-fallback" style="display:none">${escapeHTML(asset.symbol.slice(0,3))}</span>
-            <div style="min-width:0">
-              <div class="coin-symbol">${escapeHTML(asset.symbol)}</div>
-              <div class="coin-name">${escapeHTML(asset.name)}</div>
-            </div>
-          </div>
-          <div class="asset-state">${available ? "● Available" : "○ Unavailable"}</div>
-        </button>`;
-    }).join("");
+function openDrawer(){
+  $("drawer").classList.add("open");
+  $("overlay").classList.add("show");
+}
+function closeDrawer(){
+  $("drawer").classList.remove("open");
+  $("overlay").classList.remove("show");
+}
 
-    $("assetGrid").querySelectorAll("[data-asset]").forEach(button => {
-      button.addEventListener("click", () => selectAsset(button.dataset.asset));
-    });
-  }
+$("menuBtn").addEventListener("click",openDrawer);
+$("closeDrawer").addEventListener("click",closeDrawer);
+$("overlay").addEventListener("click",closeDrawer);
 
-  function selectAsset(symbol) {
-    selectedAsset = symbol;
-    selectedAddress = null;
+document.addEventListener("keydown",e=>{
+  if(e.key === "Escape") closeDrawer();
+});
 
-    $("assetGrid").querySelectorAll("[data-asset]").forEach(button => {
-      const active = button.dataset.asset === symbol;
-      button.classList.toggle("active", active);
-      button.setAttribute("aria-pressed", String(active));
-    });
+$("logoutBtn").addEventListener("click",async()=>{
+  const {error} = await db.auth.signOut();
+  if(error){toast("Unable to log out. Try again.");return;}
+  location.replace("signin.html");
+});
 
-    const options = depositAddresses.filter(address =>
-      address.asset?.toUpperCase() === symbol && address.is_active === true
+/* CRYPTO COIN SELECTION */
+
+function renderAssets(){
+  $("assetGrid").innerHTML = assets.map(([symbol,name,logo])=>{
+    const available = depositAddresses.some(a=>
+      String(a.asset || "").toUpperCase() === symbol && a.is_active === true
     );
 
-    const select = $("networkSelect");
-    select.innerHTML = "";
+    return `
+      <button type="button" class="asset-button ${available ? "" : "unavailable"}"
+        data-asset="${symbol}" aria-label="Choose ${name}">
+        <img class="coin-logo" src="${LOGO_BASE + encodeURIComponent(logo)}"
+          alt="" loading="lazy" onerror="this.style.visibility='hidden'">
+        <span class="coin-symbol">${symbol}</span>
+        <span class="coin-name">${escapeHTML(name)}</span>
+      </button>`;
+  }).join("");
 
-    if (!options.length) {
-      select.disabled = true;
-      select.innerHTML = '<option value="">No active deposit network available</option>';
-      $("addressSection").hidden = true;
-      $("addressEmpty").hidden = false;
-      $("addressEmpty").textContent =
-        `Deposits for ${symbol} are not currently available. Please contact support if you need assistance.`;
-      return;
-    }
+  $("assetGrid").querySelectorAll("[data-asset]").forEach(button=>{
+    button.addEventListener("click",()=>selectAsset(button.dataset.asset));
+  });
+}
 
-    select.disabled = false;
-    select.appendChild(new Option("Choose a network", ""));
+function showStep(step){
+  ["networkPanel","addressPanel","formPanel"].forEach(id=>{
+    $(id).classList.toggle("show",id === step);
+  });
 
-    options.forEach((address, index) => {
-      const network = address.network || "Network";
-      const option = new Option(network, String(index));
-      select.appendChild(option);
-    });
-
-    $("addressSection").hidden = true;
-    $("addressEmpty").hidden = false;
-    $("addressEmpty").textContent = "Choose a network to display its deposit address.";
+  const target = step ? $(step) : $("assetGrid");
+  if(target){
+    setTimeout(()=>target.scrollIntoView({behavior:"smooth",block:"start"}),40);
   }
+}
 
-  function renderAddress(address) {
-    selectedAddress = address;
+function selectAsset(symbol){
+  selectedAsset = symbol;
+  selectedAddress = null;
 
-    $("addressSection").hidden = false;
-    $("addressEmpty").hidden = true;
-    $("depositAddress").textContent = address.address || "No address configured";
-    $("networkPill").textContent = address.network || "NETWORK";
+  $("assetGrid").querySelectorAll("[data-asset]").forEach(button=>{
+    button.classList.toggle("active",button.dataset.asset === symbol);
+  });
 
-    const memo = address.memo_tag == null ? "" : String(address.memo_tag).trim();
-    $("memoBox").hidden = !memo;
-    $("memoValue").textContent = memo;
+  const [assetSymbol,assetName] = assets.find(a=>a[0] === symbol);
+  const networks = depositAddresses.filter(a=>
+    String(a.asset || "").toUpperCase() === symbol && a.is_active === true
+  );
 
-    $("qrWrap").hidden = !address.address;
+  $("networkIntro").textContent =
+    "Choose the network for " + assetName + " (" + assetSymbol + "). Only use a network listed below.";
 
-    if (address.address && window.QRious) {
-      try {
-        new QRious({
-          element: $("qrCanvas"),
-          value: address.address,
-          size: 144,
-          level: "H",
-          background: "white",
-          foreground: "#07111f"
-        });
-      } catch (error) {
-        $("qrWrap").hidden = true;
-      }
-    } else {
-      $("qrWrap").hidden = true;
-    }
-  }
+  $("networkList").replaceChildren();
+  clearMessage("networkMessage");
 
-  $("networkSelect").addEventListener("change", event => {
-    const index = event.target.value;
-    if (index === "" || !selectedAsset) {
-      selectedAddress = null;
-      $("addressSection").hidden = true;
-      $("addressEmpty").hidden = false;
-      return;
-    }
-
-    const options = depositAddresses.filter(address =>
-      address.asset?.toUpperCase() === selectedAsset && address.is_active === true
+  if(!networks.length){
+    showMessage("networkMessage",
+      "No active deposit network is configured for " + symbol + " on your account. Please contact support.",
+      "error"
     );
+  }else{
+    networks.forEach(address=>{
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "network-option";
 
-    const address = options[Number(index)];
-    if (address) renderAddress(address);
-  });
+      const left = document.createElement("div");
+      const name = document.createElement("div");
+      name.className = "network-name";
+      name.textContent = address.network || "Network";
 
-  async function copyText(text, successMessage) {
-    if (!text) {
-      showMessage("There is nothing to copy.", "error");
-      return;
-    }
+      const caption = document.createElement("div");
+      caption.className = "network-caption";
+      caption.textContent = "Tap to view deposit address and QR code";
 
-    try {
-      if (navigator.clipboard && window.isSecureContext) {
-        await navigator.clipboard.writeText(text);
-      } else {
-        const textarea = document.createElement("textarea");
-        textarea.value = text;
-        textarea.style.position = "fixed";
-        textarea.style.opacity = "0";
-        document.body.appendChild(textarea);
-        textarea.select();
-        const copied = document.execCommand("copy");
-        textarea.remove();
-        if (!copied) throw new Error("Copy failed");
-      }
-      showMessage(successMessage, "success");
-    } catch (error) {
-      showMessage("Copy failed. Please select and copy the text manually.", "error");
-    }
-  }
+      left.append(name,caption);
 
-  $("copyAddressBtn").addEventListener("click", () => {
-    if (selectedAddress) {
-      copyText(selectedAddress.address, "Deposit address copied.");
-    }
-  });
+      const arrow = document.createElement("span");
+      arrow.className = "network-arrow";
+      arrow.textContent = "›";
 
-  $("copyMemoBtn").addEventListener("click", () => {
-    if (selectedAddress) {
-      copyText(String(selectedAddress.memo_tag ?? ""), "Memo/tag copied.");
-    }
-  });
-
-  function statusClass(status) {
-    const value = String(status || "").toLowerCase();
-    if (["approved","confirmed","completed","credited","success"].includes(value)) return "approved";
-    if (["rejected","failed","cancelled","canceled"].includes(value)) return "rejected";
-    if (["pending","under_review","processing","awaiting_confirmation"].includes(value)) return "pending";
-    return "other";
-  }
-
-  function formatDate(value) {
-    if (!value) return "Date unavailable";
-    const date = new Date(value);
-    if (Number.isNaN(date.getTime())) return "Date unavailable";
-    return date.toLocaleString(undefined, {
-      year:"numeric", month:"short", day:"numeric",
-      hour:"2-digit", minute:"2-digit"
+      button.append(left,arrow);
+      button.addEventListener("click",()=>selectNetwork(address,button));
+      $("networkList").appendChild(button);
     });
   }
 
-  function formatAmount(value) {
-    const number = Number(value);
-    if (!Number.isFinite(number)) return "—";
-    return number.toLocaleString(undefined, {maximumFractionDigits:8});
-  }
+  showStep("networkPanel");
+}
 
-  async function loadHistory() {
-    const container = $("depositHistory");
-    container.innerHTML = '<div class="empty-state">Loading deposit history...</div>';
+function selectNetwork(address,button){
+  selectedAddress = address;
 
-    const {data, error} = await db
-      .from("deposits")
-      .select("id,asset,network,amount,credited_amount,status,created_at,external_reference")
-      .eq("user_id", currentUser.id)
-      .order("created_at", {ascending:false})
-      .limit(20);
+  document.querySelectorAll(".network-option").forEach(item=>
+    item.classList.toggle("active",item === button)
+  );
 
-    if (error) {
-      console.error("Deposit history error:", error);
-      container.innerHTML = '<div class="empty-state">Could not load deposit history. Please try refreshing.</div>';
-      return;
-    }
+  renderAddress();
+  showStep("addressPanel");
+}
 
-    if (!data || !data.length) {
-      container.innerHTML = '<div class="empty-state">No deposit requests yet.<br>Your submitted deposit requests will appear here.</div>';
-      return;
-    }
+/* ADDRESS AND QR */
 
-    container.innerHTML = data.map(item => {
-      const status = String(item.status || "unknown");
-      const amount = formatAmount(item.amount);
-      const credited = item.credited_amount == null ? "" : formatAmount(item.credited_amount);
+function renderAddress(){
+  const address = selectedAddress;
+  if(!address) return;
 
-      return `
-        <div class="history-item">
-          <div class="history-top">
-            <div>
-              <div class="history-amount">${escapeHTML(amount)} ${escapeHTML(item.asset || "")}</div>
-              <div class="history-coin">${escapeHTML(item.network || "Network not specified")}</div>
-            </div>
-            <span class="status ${statusClass(status)}">${escapeHTML(status.replace(/_/g," "))}</span>
-          </div>
-          <div class="history-meta">
-            <span>${escapeHTML(formatDate(item.created_at))}</span>
-            ${credited !== "" ? `<span>Credited: ${escapeHTML(credited)} ${escapeHTML(item.asset || "")}</span>` : ""}
-          </div>
-          ${item.external_reference ? `<div class="history-meta"><span>Reference: ${escapeHTML(item.external_reference)}</span></div>` : ""}
-        </div>`;
-    }).join("");
-  }
+  const symbol = String(address.asset || selectedAsset).toUpperCase();
+  const asset = assets.find(a=>a[0] === symbol);
+  const name = asset ? asset[1] : symbol;
 
-  $("refreshHistoryBtn").addEventListener("click", loadHistory);
+  $("addressAssetTitle").textContent = name + " (" + symbol + ")";
+  $("networkPill").textContent = address.network || "NETWORK";
+  $("depositAddress").textContent = address.address || "Address unavailable";
 
-  $("depositForm").addEventListener("submit", async event => {
-    event.preventDefault();
-    hideMessage();
+  const memo = String(address.memo_tag ?? "").trim();
+  $("memoBox").hidden = !memo;
+  $("memoValue").textContent = memo;
 
-    if (submitting) return;
+  $("qrBox").hidden = !address.address;
 
-    if (!selectedAsset || !selectedAddress) {
-      showMessage("Please select an available asset and network first.", "error");
-      return;
-    }
-
-    const amount = Number($("amountInput").value);
-    const txHash = $("txHashInput").value.trim();
-
-    if (!Number.isFinite(amount) || amount <= 0) {
-      showMessage("Enter a valid amount greater than zero.", "error");
-      return;
-    }
-
-    if (txHash.length < 8 || txHash.length > 200) {
-      showMessage("Enter a valid transaction hash between 8 and 200 characters.", "error");
-      return;
-    }
-
-    if (!selectedAddress.id) {
-      showMessage("This deposit address is missing its database ID. Please contact support.", "error");
-      return;
-    }
-
-    submitting = true;
-    const button = $("submitDepositBtn");
-    button.disabled = true;
-    button.innerHTML = '<span class="loader"></span>Submitting request...';
-
-    try {
-      const {error} = await db.rpc("submit_deposit_request", {
-        p_deposit_address_id: selectedAddress.id,
-        p_amount: amount,
-        p_tx_hash: txHash
+  if(address.address && window.QRious){
+    try{
+      new QRious({
+        element:$("qrCanvas"),
+        value:address.address,
+        size:154,
+        level:"H",
+        background:"#ffffff",
+        foreground:"#07111f"
       });
-
-      if (error) throw error;
-
-      showMessage(
-        "Your deposit request was submitted. It will be reviewed according to the platform's verification process.",
-        "success"
-      );
-
-      $("amountInput").value = "";
-      $("txHashInput").value = "";
-      await loadHistory();
-    } catch (error) {
-      console.error("Deposit submission error:", error);
-      showMessage(
-        error.message || "We could not submit your deposit request. Please check the details and try again.",
-        "error"
-      );
-    } finally {
-      submitting = false;
-      button.disabled = false;
-      button.textContent = "Submit deposit request";
+    }catch(error){
+      console.error("QR generation failed:",error);
+      $("qrBox").hidden = true;
     }
-  });
-
-  async function initialize() {
-    try {
-      const {data: sessionData, error: sessionError} = await db.auth.getSession();
-
-      if (sessionError) throw sessionError;
-
-      currentUser = sessionData?.session?.user;
-
-      if (!currentUser) {
-        location.replace("signin.html");
-        return;
-      }
-
-      $("loadingText").textContent = "Loading your account...";
-
-      const profileResult = await db
-        .from("profiles")
-        .select("full_name,email")
-        .eq("id", currentUser.id)
-        .maybeSingle();
-
-      if (profileResult.error) {
-        console.warn("Profile could not be loaded:", profileResult.error);
-      } else {
-        profile = profileResult.data;
-      }
-
-      $("loadingText").textContent = "Loading deposit networks...";
-
-      const addressResult = await db
-        .from("deposit_addresses")
-        .select("id,asset,network,address,memo_tag,is_active")
-        .eq("user_id", currentUser.id)
-        .eq("is_active", true);
-
-      if (addressResult.error) {
-        console.error("Deposit address error:", addressResult.error);
-        depositAddresses = [];
-        showMessage(
-          "Deposit networks could not be loaded. Check your database permissions and active deposit-address records.",
-          "error"
-        );
-      } else {
-        depositAddresses = addressResult.data || [];
-      }
-
-      renderAssets();
-      await loadHistory();
-    } catch (error) {
-      console.error("Deposit page initialization error:", error);
-      showMessage("We could not load your account. Please refresh the page or sign in again.", "error");
-    } finally {
-      hideLoading();
-    }
+  }else{
+    $("qrBox").hidden = true;
   }
 
-  initialize();
-})();
+  $("formAssetTitle").textContent = name + " (" + symbol + ")";
+  $("formNetworkPill").textContent = address.network || "NETWORK";
+  $("formAddressPreview").textContent = address.address || "";
+}
+
+async function copyText(value,label){
+  if(!value){toast("Nothing to copy.");return;}
+
+  try{
+    if(navigator.clipboard && window.isSecureContext){
+      await navigator.clipboard.writeText(value);
+    }else{
+      const textarea = document.createElement("textarea");
+      textarea.value = value;
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
+      document.body.appendChild(textarea);
+      textarea.select();
+      const success = document.execCommand("copy");
+      textarea.remove();
+      if(!success) throw new Error("Copy failed");
+    }
+    toast(label + " copied.");
+  }catch(error){
+    toast("Copy failed. Please copy it manually.");
+  }
+}
+
+$("copyAddressBtn").addEventListener("click",()=>{
+  if(selectedAddress) copyText(selectedAddress.address,"Address");
+});
+
+$("copyMemoBtn").addEventListener("click",()=>{
+  if(selectedAddress) copyText(String(selectedAddress.memo_tag ?? ""),"Memo/tag");
+});
+
+/* STEP NAVIGATION */
+
+$("backToCoins").addEventListener("click",()=>{
+  showStep(null);
+});
+
+$("backToNetworks").addEventListener("click",()=>{
+  showStep("networkPanel");
+});
+
+$("continueToForm").addEventListener("click",()=>{
+  if(!selectedAddress || !selectedAddress.address){
+    toast("This network has no deposit address configured.");
+    return;
+  }
+
+  showStep("formPanel");
+});
+
+$("backToAddress").addEventListener("click",()=>{
+  showStep("addressPanel");
+});
+
+/* DEPOSIT HISTORY */
+
+function statusClass(status){
+  const s = String(status || "").toLowerCase();
+
+  if(["confirmed","approved","completed","credited","success"].includes(s)) return s === "confirmed" ? "confirmed" : "completed";
+  if(["rejected","failed","cancelled","canceled"].includes(s)) return s === "cancelled" || s === "canceled" ? "cancelled" : "rejected";
+  if(["pending","under_review","processing","awaiting_confirmation"].includes(s)) return "pending";
+  return "other";
+}
+
+function formatDate(value){
+  if(!value) return "Date unavailable";
+  const d = new Date(value);
+  if(Number.isNaN(d.getTime())) return "Date unavailable";
+  return d.toLocaleString(undefined,{
+    year:"numeric",month:"short",day:"numeric",
+    hour:"2-digit",minute:"2-digit"
+  });
+}
+
+async function loadHistory(){
+  const container = $("depositHistory");
+  container.innerHTML = '<div class="empty-state">Loading deposit history...</div>';
+
+  const {data,error} = await db
+    .from("deposits")
+    .select("id,asset,network,amount,credited_amount,status,created_at,external_reference")
+    .eq("user_id",currentUser.id)
+    .order("created_at",{ascending:false})
+    .limit(20);
+
+  if(error){
+    console.error("Deposit history error:",error);
+    container.innerHTML = '<div class="empty-state">Unable to load deposit history. Tap Refresh to try again.</div>';
+    return;
+  }
+
+  if(!data || !data.length){
+    container.innerHTML = '<div class="empty-state">No deposit requests yet.<br>Your deposit history will appear here.</div>';
+    return;
+  }
+
+  container.innerHTML = data.map(item=>{
+    const status = String(item.status || "unknown");
+    const amount = formatAmount(item.amount);
+    const credited = item.credited_amount == null ? null : formatAmount(item.credited_amount);
+
+    return `
+      <div class="history-item">
+        <div class="history-top">
+          <div>
+            <div class="history-amount">${escapeHTML(amount)} ${escapeHTML(item.asset || "")}</div>
+            <div class="history-network">${escapeHTML(item.network || "Network not specified")}</div>
+          </div>
+          <span class="status ${statusClass(status)}">${escapeHTML(status.replace(/_/g," "))}</span>
+        </div>
+        <div class="history-meta">
+          <span>${escapeHTML(formatDate(item.created_at))}</span>
+          ${credited !== null ? `<span>Credited: ${escapeHTML(credited)} ${escapeHTML(item.asset || "")}</span>` : ""}
+        </div>
+        ${item.external_reference ? `<div class="history-meta"><span>Reference: ${escapeHTML(item.external_reference)}</span></div>` : ""}
+      </div>`;
+  }).join("");
+}
+
+$("refreshHistoryBtn").addEventListener("click",loadHistory);
+
+/* SUBMIT DEPOSIT REQUEST — EXISTING RPC */
+
+$("depositForm").addEventListener("submit",async event=>{
+  event.preventDefault();
+  clearMessage("formMessage");
+
+  if(submitting) return;
+
+  if(!selectedAddress || !selectedAddress.id){
+    showMessage("formMessage","Select a valid deposit network and address first.","error");
+    return;
+  }
+
+  const amount = Number($("amountInput").value);
+  const txHash = $("txHashInput").value.trim();
+
+  if(!Number.isFinite(amount) || amount <= 0){
+    showMessage("formMessage","Enter an amount greater than zero.","error");
+    return;
+  }
+
+  if(txHash.length < 8 || txHash.length > 200){
+    showMessage("formMessage","Enter a transaction hash between 8 and 200 characters.","error");
+    return;
+  }
+
+  submitting = true;
+  const button = $("submitDepositBtn");
+  button.disabled = true;
+  button.textContent = "Submitting request...";
+
+  try{
+    const {error} = await db.rpc("submit_deposit_request",{
+      p_deposit_address_id:selectedAddress.id,
+      p_amount:amount,
+      p_tx_hash:txHash
+    });
+
+    if(error) throw error;
+
+    showMessage(
+      "formMessage",
+      "Your deposit request has been submitted successfully. The transaction will be reviewed for confirmation.",
+      "success"
+    );
+
+    $("amountInput").value = "";
+    $("txHashInput").value = "";
+
+    await loadHistory();
+  }catch(error){
+    console.error("Deposit submission error:",error);
+    showMessage(
+      "formMessage",
+      error.message || "Unable to submit the deposit request. Please check the details and try again.",
+      "error"
+    );
+  }finally{
+    submitting = false;
+    button.disabled = false;
+    button.textContent = "Submit deposit request";
+  }
+});
+
+/* LOAD ACCOUNT AND DEPOSIT ADDRESSES */
+
+async function initialize(){
+  try{
+    const {data:sessionData,error:sessionError} = await db.auth.getSession();
+
+    if(sessionError) throw sessionError;
+
+    currentUser = sessionData?.session?.user;
+
+    if(!currentUser){
+      location.replace("signin.html");
+      return;
+    }
+
+    const {data:profile,error:profileError} = await db
+      .from("profiles")
+      .select("full_name")
+      .eq("id",currentUser.id)
+      .maybeSingle();
+
+    if(profileError) console.warn("Profile lookup:",profileError);
+
+    const name = profile?.full_name || currentUser.user_metadata?.full_name || "";
+    $("profileInitial").textContent = initials(name);
+
+    const {data:addresses,error:addressError} = await db
+      .from("deposit_addresses")
+      .select("id,asset,network,address,memo_tag,is_active")
+      .eq("user_id",currentUser.id)
+      .eq("is_active",true);
+
+    if(addressError){
+      console.error("Deposit address loading error:",addressError);
+      depositAddresses = [];
+      showMessage("networkMessage","Unable to load your deposit networks. Please contact support if this continues.","error");
+    }else{
+      depositAddresses = addresses || [];
+    }
+
+    renderAssets();
+    await loadHistory();
+
+  }catch(error){
+    console.error("Deposit initialization error:",error);
+    toast("Unable to load the deposit page. Please refresh.");
+  }finally{
+    hideLoading();
+  }
+}
+
+initialize();
 </script>
 </body>
 </html>
