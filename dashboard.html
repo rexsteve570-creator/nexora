@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NEXORA — Portfolio</title>
+<meta name="theme-color" content="#07111f">
+<title>AITIVEST — Portfolio</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -44,6 +45,11 @@ body{
 button{
   font:inherit;
   cursor:pointer;
+}
+
+button:focus-visible{
+  outline:2px solid var(--gold2);
+  outline-offset:3px;
 }
 
 .app{
@@ -171,6 +177,7 @@ button{
   width:290px;
   max-width:86%;
   height:100vh;
+  height:100dvh;
   background:#091625;
   border-right:1px solid var(--border);
   z-index:200;
@@ -261,6 +268,7 @@ button{
   margin-top:4px;
   font-size:24px;
   font-weight:760;
+  overflow-wrap:anywhere;
 }
 
 /* PORTFOLIO */
@@ -285,6 +293,7 @@ button{
   font-weight:800;
   margin-top:7px;
   letter-spacing:-1px;
+  overflow-wrap:anywhere;
 }
 
 .portfolio-sub{
@@ -300,6 +309,7 @@ button{
   display:flex;
   align-items:center;
   justify-content:space-between;
+  gap:10px;
 }
 
 .status-label{
@@ -319,7 +329,8 @@ button{
   width:8px;
   height:8px;
   border-radius:50%;
-  background:var(--green);
+  background:var(--gold);
+  flex:none;
 }
 
 /* SECTIONS */
@@ -332,6 +343,7 @@ button{
   display:flex;
   align-items:center;
   justify-content:space-between;
+  gap:12px;
   margin-bottom:11px;
 }
 
@@ -498,6 +510,7 @@ button{
   display:flex;
   align-items:center;
   justify-content:space-between;
+  gap:12px;
 }
 
 .asset-left{
@@ -528,6 +541,7 @@ button{
 .asset-balance{
   text-align:right;
   overflow-wrap:anywhere;
+  min-width:0;
 }
 
 .asset-balance strong{
@@ -572,6 +586,7 @@ button{
   color:var(--muted);
   font-size:11px;
   margin-top:6px;
+  line-height:1.6;
 }
 
 .timer{
@@ -591,7 +606,7 @@ button{
 }
 
 .countdown-hidden{
-  display:none;
+  display:none !important;
 }
 
 /* QUICK ACTIONS */
@@ -647,6 +662,7 @@ button{
   width:100%;
   max-width:760px;
   height:70px;
+  padding-bottom:env(safe-area-inset-bottom);
   background:rgba(8,18,31,.97);
   backdrop-filter:blur(18px);
   border-top:1px solid var(--border);
@@ -710,6 +726,15 @@ button{
     font-size:27px;
   }
 }
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms !important;
+    animation-iteration-count:1 !important;
+    scroll-behavior:auto !important;
+    transition-duration:.01ms !important;
+  }
+}
 </style>
 </head>
 
@@ -717,7 +742,7 @@ button{
 
 <div id="loadingScreen" class="loading-screen">
   <div class="loading-box">
-    <div class="loading-logo">NEX<span>ORA</span></div>
+    <div class="loading-logo">AITI<span>VEST</span></div>
     <div class="spinner"></div>
   </div>
 </div>
@@ -726,10 +751,8 @@ button{
 
 <header class="topbar">
   <div class="topbar-inner">
-    <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
-
-    <div class="logo">NEX<span>ORA</span></div>
-
+    <button type="button" class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
+    <div class="logo">AITI<span>VEST</span></div>
     <div class="profile-initial" id="profileInitial">—</div>
   </div>
 </header>
@@ -739,55 +762,46 @@ button{
 <aside class="drawer" id="drawer" aria-label="Main navigation">
 
   <div class="drawer-head">
-    <div class="drawer-brand">NEX<span>ORA</span></div>
-    <button class="close-drawer" id="closeDrawer" aria-label="Close menu">×</button>
+    <div class="drawer-brand">AITI<span>VEST</span></div>
+    <button type="button" class="close-drawer" id="closeDrawer" aria-label="Close menu">×</button>
   </div>
 
   <nav class="drawer-nav">
 
-    <button class="drawer-link" onclick="go('dashboard.html')">
-      <span class="drawer-icon">⌂</span>
-      <span>Portfolio</span>
+    <button type="button" class="drawer-link" onclick="go('dashboard.html')">
+      <span class="drawer-icon">⌂</span><span>Portfolio</span>
     </button>
 
-    <button class="drawer-link" onclick="go('deposit.html')">
-      <span class="drawer-icon">＋</span>
-      <span>Deposit</span>
+    <button type="button" class="drawer-link" onclick="go('deposit.html')">
+      <span class="drawer-icon">＋</span><span>Deposit</span>
     </button>
 
-    <button class="drawer-link" onclick="go('withdraw.html')">
-      <span class="drawer-icon">↗</span>
-      <span>Withdraw</span>
+    <button type="button" class="drawer-link" onclick="go('withdraw.html')">
+      <span class="drawer-icon">↗</span><span>Withdraw</span>
     </button>
 
-    <button class="drawer-link" onclick="go('transactions.html')">
-      <span class="drawer-icon">≡</span>
-      <span>Transactions</span>
+    <button type="button" class="drawer-link" onclick="go('transactions.html')">
+      <span class="drawer-icon">≡</span><span>Transactions</span>
     </button>
 
-    <button class="drawer-link" onclick="go('referrals.html')">
-      <span class="drawer-icon">♧</span>
-      <span>Referrals</span>
+    <button type="button" class="drawer-link" onclick="go('referrals.html')">
+      <span class="drawer-icon">♧</span><span>Referrals</span>
     </button>
 
-    <button class="drawer-link" onclick="go('profile.html')">
-      <span class="drawer-icon">○</span>
-      <span>Profile</span>
+    <button type="button" class="drawer-link" onclick="go('profile.html')">
+      <span class="drawer-icon">○</span><span>Profile</span>
     </button>
 
-    <button class="drawer-link" onclick="go('support.html')">
-      <span class="drawer-icon">?</span>
-      <span>Support</span>
+    <button type="button" class="drawer-link" onclick="go('support.html')">
+      <span class="drawer-icon">?</span><span>Support</span>
     </button>
 
-    <button class="drawer-link" onclick="go('notifications.html')">
-      <span class="drawer-icon">♢</span>
-      <span>Notifications</span>
+    <button type="button" class="drawer-link" onclick="go('notifications.html')">
+      <span class="drawer-icon">♢</span><span>Notifications</span>
     </button>
 
-    <button class="drawer-link logout" id="logoutBtn">
-      <span class="drawer-icon">↪</span>
-      <span>Logout</span>
+    <button type="button" class="drawer-link logout" id="logoutBtn">
+      <span class="drawer-icon">↪</span><span>Logout</span>
     </button>
 
   </nav>
@@ -800,62 +814,47 @@ button{
     <h1 id="userName">Welcome</h1>
   </div>
 
-  <!-- PORTFOLIO -->
-
   <section class="portfolio-card">
-
     <div class="card-label">Portfolio</div>
-
-    <div class="portfolio-value" id="portfolioValue">$0.00</div>
-
-    <div class="portfolio-sub">Available USDT balance</div>
+    <div class="portfolio-value" id="portfolioValue">—</div>
+    <div class="portfolio-sub">Available + locked USDT · locked funds may not be withdrawable</div>
 
     <div class="status-row">
       <div class="status-label">Account status</div>
-
       <div class="status" id="accountStatus">
         <span class="status-dot"></span>
         <span>Loading...</span>
       </div>
     </div>
-
   </section>
 
-  <!-- CRYPTO ASSETS -->
-
   <section class="section">
-
     <div class="section-title">
       <h2>Crypto Assets</h2>
       <span>Wallet</span>
     </div>
 
     <div class="crypto-picker" id="cryptoPicker">
-
       <button type="button" class="crypto-selected" id="cryptoSelected"
         aria-expanded="false" aria-controls="cryptoMenu">
 
         <div class="selected-left">
-          <img id="selectedLogo" class="selected-logo" src="" alt="Crypto logo">
-
+          <img id="selectedLogo" class="selected-logo" src="" alt="">
           <div class="selected-info">
             <div class="selected-symbol" id="selectedSymbol">USDT</div>
             <div class="selected-name" id="selectedName">Tether</div>
           </div>
         </div>
 
-        <div class="selected-arrow">⌄</div>
+        <div class="selected-arrow" aria-hidden="true">⌄</div>
       </button>
 
       <div class="crypto-menu" id="cryptoMenu"></div>
-
     </div>
 
     <div class="asset-preview">
-
       <div class="asset-left">
-        <img id="previewLogo" class="preview-logo" src="" alt="Crypto logo">
-
+        <img id="previewLogo" class="preview-logo" src="" alt="">
         <div>
           <div class="asset-name" id="previewName">Tether</div>
           <div class="asset-network" id="previewNetwork">Wallet</div>
@@ -863,100 +862,71 @@ button{
       </div>
 
       <div class="asset-balance">
-        <strong id="previewBalance">0</strong>
+        <strong id="previewBalance">—</strong>
         <small id="previewSymbol">USDT</small>
       </div>
-
     </div>
-
   </section>
 
-  <!-- PROFIT COUNTDOWN -->
-
   <section class="section">
-
     <div class="section-title">
       <h2>Profit Countdown</h2>
       <span id="countdownAsset">—</span>
     </div>
 
     <div class="countdown-card">
-
-      <div class="countdown-icon">◷</div>
-
+      <div class="countdown-icon" aria-hidden="true">◷</div>
       <div class="countdown-title">Next profit calculation</div>
 
-      <div class="countdown-state" id="countdownState">
-        Awaiting confirmed deposit
+      <div class="countdown-state" id="countdownState" role="status" aria-live="polite">
+        Checking confirmed deposits...
       </div>
 
       <div id="timerBox" class="countdown-hidden">
-
         <div class="timer" id="timer">24:00:00</div>
-
-        <div class="timer-label">
-          HOURS &nbsp; : &nbsp; MINUTES &nbsp; : &nbsp; SECONDS
-        </div>
-
+        <div class="timer-label">HOURS &nbsp; : &nbsp; MINUTES &nbsp; : &nbsp; SECONDS</div>
       </div>
-
     </div>
-
   </section>
 
-  <!-- QUICK ACTIONS -->
-
   <section class="section">
-
     <div class="section-title">
       <h2>Quick Actions</h2>
     </div>
 
     <div class="quick-grid">
-
-      <button class="quick-btn" onclick="go('swap.html')">
-        <span class="quick-icon">⇄</span>
-        <span>Market</span>
+      <button type="button" class="quick-btn" onclick="go('swap.html')">
+        <span class="quick-icon">⇄</span><span>Market</span>
       </button>
 
-      <button class="quick-btn" onclick="go('deposit.html')">
-        <span class="quick-icon">＋</span>
-        <span>Add Funds</span>
+      <button type="button" class="quick-btn" onclick="go('deposit.html')">
+        <span class="quick-icon">＋</span><span>Add Funds</span>
       </button>
 
-      <button class="quick-btn" onclick="go('withdraw.html')">
-        <span class="quick-icon">↗</span>
-        <span>Withdraw</span>
+      <button type="button" class="quick-btn" onclick="go('withdraw.html')">
+        <span class="quick-icon">↗</span><span>Withdraw</span>
       </button>
-
     </div>
-
   </section>
 
 </main>
 
 <nav class="bottom-nav" aria-label="Bottom navigation">
-
-  <button class="bottom-link active" onclick="go('dashboard.html')">
-    <span class="bottom-icon">⌂</span>
-    <span>Portfolio</span>
+  <button type="button" class="bottom-link active" onclick="go('dashboard.html')">
+    <span class="bottom-icon">⌂</span><span>Portfolio</span>
   </button>
 
-  <button class="bottom-link" onclick="go('deposit.html')">
-    <span class="bottom-icon">＋</span>
-    <span>Deposit</span>
+  <button type="button" class="bottom-link" onclick="go('deposit.html')">
+    <span class="bottom-icon">＋</span><span>Deposit</span>
   </button>
 
-  <button class="bottom-link" onclick="go('transactions.html')">
-    <span class="bottom-icon">≡</span>
-    <span>History</span>
+  <button type="button" class="bottom-link" onclick="go('transactions.html')">
+    <span class="bottom-icon">≡</span><span>History</span>
   </button>
 
-  <button class="bottom-link" onclick="go('profile.html')">
-    <span class="bottom-icon">○</span>
-    <span>Account</span>
+  <button type="button" class="bottom-link" onclick="go('profile.html')">
+    <span class="bottom-icon">○</span><span>Account</span>
   </button>
-
 </nav>
 
 </div>
@@ -964,29 +934,18 @@ button{
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
+"use strict";
 
-/* =========================================================
-   SUPABASE
-========================================================= */
+/* SUPABASE */
 
-const SUPABASE_URL =
-  "https://rihvvwktvgytbqzazage.supabase.co";
+const SUPABASE_URL = "https://rihvvwktvgytbqzazage.supabase.co";
+const SUPABASE_KEY = "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
 
-const SUPABASE_KEY =
-  "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
+const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-const db = supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
+/* CRYPTO LOGOS */
 
-
-/* =========================================================
-   CRYPTO LOGOS
-========================================================= */
-
-const LOGO_BASE =
-  "https://cdn.jsdelivr.net/gh/madenix/Crypto-logo-cdn@main/Logos/";
+const LOGO_BASE = "https://cdn.jsdelivr.net/gh/madenix/Crypto-logo-cdn@main/Logos/";
 
 const logoFiles = {
   BTC:"BTC.svg",
@@ -1015,10 +974,7 @@ const logoFiles = {
   OP:"OP.svg"
 };
 
-
-/* =========================================================
-   ASSETS
-========================================================= */
+/* ASSETS */
 
 const assets = [
   ["BTC","Bitcoin"],
@@ -1047,10 +1003,7 @@ const assets = [
   ["OP","Optimism"]
 ];
 
-
-/* =========================================================
-   STATE
-========================================================= */
+/* STATE */
 
 let currentUser = null;
 let wallets = [];
@@ -1058,11 +1011,9 @@ let activeDeposits = [];
 let selectedAsset = "USDT";
 let countdownTarget = null;
 let countdownInterval = null;
+let toastTimeout = null;
 
-
-/* =========================================================
-   HELPERS
-========================================================= */
+/* HELPERS */
 
 function $(id){
   return document.getElementById(id);
@@ -1078,7 +1029,13 @@ function logoURL(symbol){
 }
 
 function formatNumber(value,max=8){
-  return Number(value || 0).toLocaleString("en-US",{
+  const number = Number(value);
+
+  if(!Number.isFinite(number)){
+    return "—";
+  }
+
+  return number.toLocaleString("en-US",{
     minimumFractionDigits:0,
     maximumFractionDigits:max
   });
@@ -1088,7 +1045,7 @@ function initials(name){
   const value = String(name || "").trim();
 
   if(!value){
-    return "N";
+    return "A";
   }
 
   const parts = value.split(/\s+/);
@@ -1097,10 +1054,7 @@ function initials(name){
     return parts[0].slice(0,2).toUpperCase();
   }
 
-  return (
-    parts[0][0] +
-    parts[parts.length-1][0]
-  ).toUpperCase();
+  return (parts[0][0] + parts[parts.length-1][0]).toUpperCase();
 }
 
 function showToast(message){
@@ -1109,26 +1063,28 @@ function showToast(message){
   toast.textContent = message;
   toast.classList.add("show");
 
-  setTimeout(()=>{
+  clearTimeout(toastTimeout);
+
+  toastTimeout = setTimeout(()=>{
     toast.classList.remove("show");
-  },2500);
+  },3000);
 }
 
-
-/* =========================================================
-   DRAWER
-========================================================= */
+/* DRAWER */
 
 function openDrawer(){
   $("drawer").classList.add("open");
   $("overlay").classList.add("show");
+  $("menuBtn").setAttribute("aria-expanded","true");
 }
 
 function closeDrawer(){
   $("drawer").classList.remove("open");
   $("overlay").classList.remove("show");
+  $("menuBtn").setAttribute("aria-expanded","false");
 }
 
+$("menuBtn").setAttribute("aria-expanded","false");
 $("menuBtn").addEventListener("click",openDrawer);
 $("closeDrawer").addEventListener("click",closeDrawer);
 $("overlay").addEventListener("click",closeDrawer);
@@ -1140,10 +1096,7 @@ document.addEventListener("keydown",event=>{
   }
 });
 
-
-/* =========================================================
-   CRYPTO MENU
-========================================================= */
+/* CRYPTO MENU */
 
 function buildCryptoMenu(){
   const menu = $("cryptoMenu");
@@ -1151,7 +1104,6 @@ function buildCryptoMenu(){
 
   assets.forEach(([symbol,name])=>{
     const button = document.createElement("button");
-
     button.type = "button";
     button.className = "crypto-option";
     button.dataset.asset = symbol;
@@ -1177,16 +1129,14 @@ function buildCryptoMenu(){
     nameElement.className = "crypto-name";
     nameElement.textContent = name;
 
-    details.appendChild(symbolElement);
-    details.appendChild(nameElement);
+    details.append(symbolElement,nameElement);
 
     const check = document.createElement("div");
     check.className = "crypto-option-check";
     check.textContent = "✓";
+    check.setAttribute("aria-hidden","true");
 
-    button.appendChild(logo);
-    button.appendChild(details);
-    button.appendChild(check);
+    button.append(logo,details,check);
 
     button.addEventListener("click",()=>{
       selectedAsset = symbol;
@@ -1200,10 +1150,7 @@ function buildCryptoMenu(){
   updateActiveCryptoOption();
 }
 
-
-/* =========================================================
-   OPEN/CLOSE CRYPTO PICKER
-========================================================= */
+/* OPEN/CLOSE CRYPTO PICKER */
 
 function openCryptoPicker(){
   $("cryptoPicker").classList.add("open");
@@ -1224,9 +1171,7 @@ function closeCryptoPicker(){
 $("cryptoSelected").addEventListener("click",event=>{
   event.stopPropagation();
 
-  const picker = $("cryptoPicker");
-
-  if(picker.classList.contains("open")){
+  if($("cryptoPicker").classList.contains("open")){
     closeCryptoPicker();
   }else{
     openCryptoPicker();
@@ -1239,36 +1184,26 @@ document.addEventListener("click",event=>{
   }
 });
 
-
-/* =========================================================
-   ACTIVE COIN
-========================================================= */
+/* ACTIVE COIN */
 
 function updateActiveCryptoOption(){
   document.querySelectorAll(".crypto-option").forEach(button=>{
-    button.classList.toggle(
-      "active",
-      button.dataset.asset === selectedAsset
-    );
+    const active = button.dataset.asset === selectedAsset;
+
+    button.classList.toggle("active",active);
+    button.setAttribute("aria-pressed",String(active));
   });
 }
 
-
-/* =========================================================
-   GET WALLET
-========================================================= */
+/* GET WALLET */
 
 function getWallet(symbol){
   return wallets.find(wallet=>
-    String(wallet.asset).toUpperCase() ===
-    String(symbol).toUpperCase()
+    String(wallet.asset).toUpperCase() === String(symbol).toUpperCase()
   ) || null;
 }
 
-
-/* =========================================================
-   RENDER SELECTED ASSET
-========================================================= */
+/* RENDER SELECTED ASSET */
 
 function renderSelectedAsset(){
   const asset = assets.find(item=>item[0] === selectedAsset);
@@ -1277,8 +1212,7 @@ function renderSelectedAsset(){
     return;
   }
 
-  const symbol = asset[0];
-  const name = asset[1];
+  const [symbol,name] = asset;
   const wallet = getWallet(symbol);
   const imageURL = logoURL(symbol);
 
@@ -1290,20 +1224,16 @@ function renderSelectedAsset(){
   $("previewName").textContent = name;
   $("previewNetwork").textContent = "Wallet";
 
-  $("previewBalance").textContent = formatNumber(
-    wallet?.available_balance || 0,
-    8
-  );
+  $("previewBalance").textContent = wallet
+    ? formatNumber(wallet.available_balance)
+    : wallets.length ? "0" : "—";
 
   $("previewSymbol").textContent = symbol;
 
   updateActiveCryptoOption();
 }
 
-
-/* =========================================================
-   LOAD PROFILE
-========================================================= */
+/* LOAD PROFILE */
 
 async function loadProfile(){
   const {data,error} = await db
@@ -1313,7 +1243,10 @@ async function loadProfile(){
     .maybeSingle();
 
   if(error){
-    console.error("Profile error:",error);
+    console.error("Profile loading error:",error);
+    $("userName").textContent = "Welcome";
+    $("accountStatus").lastElementChild.textContent = "UNVERIFIED";
+    showToast("Unable to verify profile information");
     return;
   }
 
@@ -1325,18 +1258,14 @@ async function loadProfile(){
   $("userName").textContent = name;
   $("profileInitial").textContent = initials(name);
 
-  const status = String(
-    data?.account_status || "PENDING"
-  ).toUpperCase();
+  const status = String(data?.account_status || "PENDING").toUpperCase();
 
   const statusColor =
-    status === "ACTIVE"
-      ? "var(--green)"
-      : status === "SUSPENDED"
-      ? "var(--red)"
-      : "var(--gold)";
+    status === "ACTIVE" ? "var(--green)" :
+    status === "SUSPENDED" ? "var(--red)" :
+    "var(--gold)";
 
-  $("accountStatus").innerHTML = "";
+  $("accountStatus").replaceChildren();
 
   const dot = document.createElement("span");
   dot.className = "status-dot";
@@ -1345,14 +1274,10 @@ async function loadProfile(){
   const label = document.createElement("span");
   label.textContent = status;
 
-  $("accountStatus").appendChild(dot);
-  $("accountStatus").appendChild(label);
+  $("accountStatus").append(dot,label);
 }
 
-
-/* =========================================================
-   LOAD WALLETS
-========================================================= */
+/* LOAD WALLETS */
 
 async function loadWallets(){
   const {data,error} = await db
@@ -1368,46 +1293,45 @@ async function loadWallets(){
     .eq("user_id",currentUser.id);
 
   if(error){
-    console.error("Wallet error:",error);
-    showToast("Unable to load wallets");
+    console.error("Wallet loading error:",error);
+    $("portfolioValue").textContent = "Unavailable";
+    $("previewBalance").textContent = "Unavailable";
+    showToast("Unable to verify wallet balances");
     return;
   }
 
   wallets = data || [];
-
   renderPortfolio();
   renderSelectedAsset();
 }
 
-
-/* =========================================================
-   PORTFOLIO
-========================================================= */
+/* PORTFOLIO */
 
 function renderPortfolio(){
   const usdt = getWallet("USDT");
 
-  const available = Number(
-    usdt?.available_balance || 0
-  );
+  if(!usdt){
+    $("portfolioValue").textContent = "$0.00";
+    return;
+  }
 
-  const locked = Number(
-    usdt?.locked_balance || 0
-  );
+  const available = Number(usdt.available_balance);
+  const locked = Number(usdt.locked_balance);
+
+  if(!Number.isFinite(available) || !Number.isFinite(locked)){
+    $("portfolioValue").textContent = "Unavailable";
+    return;
+  }
 
   const total = available + locked;
 
-  $("portfolioValue").textContent =
-    "$" + total.toLocaleString("en-US",{
-      minimumFractionDigits:2,
-      maximumFractionDigits:2
-    });
+  $("portfolioValue").textContent = "$" + total.toLocaleString("en-US",{
+    minimumFractionDigits:2,
+    maximumFractionDigits:2
+  });
 }
 
-
-/* =========================================================
-   LOAD CONFIRMED ACTIVE DEPOSITS
-========================================================= */
+/* LOAD CONFIRMED ACTIVE DEPOSITS */
 
 async function loadActiveDeposits(){
   const {data,error} = await db
@@ -1428,9 +1352,16 @@ async function loadActiveDeposits(){
     .is("earning_ended_at",null);
 
   if(error){
-    console.error("Deposit error:",error);
+    console.error("Deposit verification error:",error);
+
     activeDeposits = [];
-    setupCountdown();
+    stopCountdown();
+
+    $("countdownState").textContent =
+      "Unable to verify active deposits. Please refresh.";
+
+    $("countdownAsset").textContent = "—";
+    $("timerBox").classList.add("countdown-hidden");
     return;
   }
 
@@ -1438,10 +1369,7 @@ async function loadActiveDeposits(){
   setupCountdown();
 }
 
-
-/* =========================================================
-   CALCULATE NEXT 24H TARGET
-========================================================= */
+/* CALCULATE NEXT 24-HOUR TARGET */
 
 function getNextCalculationTime(startedAt,nowMs){
   const start = new Date(startedAt).getTime();
@@ -1456,24 +1384,18 @@ function getNextCalculationTime(startedAt,nowMs){
     return start;
   }
 
-  const elapsed = nowMs - start;
-  const completed = Math.floor(elapsed / cycle);
+  const completed = Math.floor((nowMs-start)/cycle);
 
-  return start + (completed + 1) * cycle;
+  return start + (completed+1)*cycle;
 }
 
-
-/* =========================================================
-   COUNTDOWN
-========================================================= */
+/* COUNTDOWN */
 
 function setupCountdown(){
   stopCountdown();
 
   if(!activeDeposits.length){
-    $("countdownState").textContent =
-      "Awaiting confirmed deposit";
-
+    $("countdownState").textContent = "Awaiting confirmed deposit";
     $("countdownAsset").textContent = "—";
     $("timerBox").classList.add("countdown-hidden");
     return;
@@ -1484,17 +1406,15 @@ function setupCountdown(){
   const prepared = activeDeposits
     .map(deposit=>({
       ...deposit,
-      target:getNextCalculationTime(
-        deposit.earning_started_at,
-        now
-      )
+      target:getNextCalculationTime(deposit.earning_started_at,now)
     }))
     .filter(item=>Number.isFinite(item.target));
 
   if(!prepared.length){
     $("countdownState").textContent =
-      "Awaiting confirmed deposit";
+      "No valid earning start time found. Please contact support.";
 
+    $("countdownAsset").textContent = "—";
     $("timerBox").classList.add("countdown-hidden");
     return;
   }
@@ -1502,36 +1422,26 @@ function setupCountdown(){
   prepared.sort((a,b)=>a.target-b.target);
 
   const next = prepared[0];
-
   countdownTarget = next.target;
 
-  $("countdownAsset").textContent =
-    next.asset || "—";
-
+  $("countdownAsset").textContent = next.asset || "—";
   $("countdownState").textContent =
-    "Active deposit confirmed";
+    "Active deposit detected. This timer does not confirm that earnings have been credited.";
 
   $("timerBox").classList.remove("countdown-hidden");
 
   updateCountdown();
-
   countdownInterval = setInterval(updateCountdown,1000);
 }
 
-
-/* =========================================================
-   UPDATE COUNTDOWN
-========================================================= */
+/* UPDATE COUNTDOWN */
 
 function updateCountdown(){
   if(!countdownTarget){
     return;
   }
 
-  const remaining = Math.max(
-    0,
-    countdownTarget - Date.now()
-  );
+  const remaining = Math.max(0,countdownTarget-Date.now());
 
   if(remaining <= 0){
     $("timer").textContent = "00:00:00";
@@ -1541,14 +1451,20 @@ function updateCountdown(){
       countdownInterval = null;
     }
 
-    setTimeout(refreshDashboardData,1500);
+    $("countdownState").textContent =
+      "Calculation time reached. Verifying deposit status...";
+
+    setTimeout(()=>{
+      refreshDashboardData();
+    },1500);
+
     return;
   }
 
-  const seconds = Math.floor(remaining / 1000);
-  const hours = Math.floor(seconds / 3600);
-  const minutes = Math.floor((seconds % 3600) / 60);
-  const secs = seconds % 60;
+  const seconds = Math.floor(remaining/1000);
+  const hours = Math.floor(seconds/3600);
+  const minutes = Math.floor((seconds%3600)/60);
+  const secs = seconds%60;
 
   $("timer").textContent =
     String(hours).padStart(2,"0") + ":" +
@@ -1556,10 +1472,7 @@ function updateCountdown(){
     String(secs).padStart(2,"0");
 }
 
-
-/* =========================================================
-   STOP COUNTDOWN
-========================================================= */
+/* STOP COUNTDOWN */
 
 function stopCountdown(){
   if(countdownInterval){
@@ -1570,33 +1483,35 @@ function stopCountdown(){
   countdownTarget = null;
 }
 
+/* REFRESH */
 
-/* =========================================================
-   REFRESH
-========================================================= */
+let refreshInProgress = false;
 
 async function refreshDashboardData(){
-  if(!currentUser){
+  if(!currentUser || refreshInProgress){
     return;
   }
 
-  await Promise.all([
-    loadProfile(),
-    loadWallets(),
-    loadActiveDeposits()
-  ]);
+  refreshInProgress = true;
+
+  try{
+    await Promise.all([
+      loadProfile(),
+      loadWallets(),
+      loadActiveDeposits()
+    ]);
+  }finally{
+    refreshInProgress = false;
+  }
 }
 
-
-/* =========================================================
-   AUTH
-========================================================= */
+/* AUTH */
 
 async function checkAuth(){
   const {data,error} = await db.auth.getSession();
 
   if(error){
-    console.error("Auth error:",error);
+    console.error("Authentication check error:",error);
   }
 
   currentUser = data?.session?.user || null;
@@ -1609,59 +1524,54 @@ async function checkAuth(){
   return true;
 }
 
-
-/* =========================================================
-   LOGOUT
-========================================================= */
+/* LOGOUT */
 
 $("logoutBtn").addEventListener("click",async()=>{
-  const {error} = await db.auth.signOut();
+  $("logoutBtn").disabled = true;
 
-  if(error){
-    console.error("Logout error:",error);
+  try{
+    const {error} = await db.auth.signOut();
+
+    if(error){
+      console.error("Logout error:",error);
+      showToast("Unable to log out. Please try again.");
+      $("logoutBtn").disabled = false;
+      return;
+    }
+
+    window.location.href = "signin.html";
+  }catch(error){
+    console.error("Unexpected logout error:",error);
     showToast("Unable to log out. Please try again.");
-    return;
+    $("logoutBtn").disabled = false;
   }
-
-  window.location.href = "signin.html";
 });
 
-
-/* =========================================================
-   GREETING
-========================================================= */
+/* GREETING */
 
 function setGreeting(){
   const hour = new Date().getHours();
 
-  let text = "Welcome back";
-
-  if(hour < 12){
-    text = "Good morning";
-  }else if(hour < 18){
-    text = "Good afternoon";
-  }else{
-    text = "Good evening";
-  }
-
-  $("greetingText").textContent = text;
+  $("greetingText").textContent =
+    hour < 12 ? "Good morning" :
+    hour < 18 ? "Good afternoon" :
+    "Good evening";
 }
 
-
-/* =========================================================
-   VISIBILITY
-========================================================= */
+/* VISIBILITY */
 
 document.addEventListener("visibilitychange",()=>{
   if(document.visibilityState === "visible"){
     refreshDashboardData();
+  }else{
+    if(countdownInterval){
+      clearInterval(countdownInterval);
+      countdownInterval = null;
+    }
   }
 });
 
-
-/* =========================================================
-   AUTO REFRESH
-========================================================= */
+/* AUTO REFRESH */
 
 setInterval(()=>{
   if(document.visibilityState === "visible"){
@@ -1669,10 +1579,7 @@ setInterval(()=>{
   }
 },30000);
 
-
-/* =========================================================
-   INITIALIZE
-========================================================= */
+/* INITIALIZE */
 
 (async function init(){
   try{
@@ -1690,7 +1597,7 @@ setInterval(()=>{
 
   }catch(error){
     console.error("Dashboard initialization error:",error);
-    showToast("Unable to load dashboard");
+    showToast("Unable to load dashboard. Please refresh.");
 
   }finally{
     setTimeout(()=>{
@@ -1698,7 +1605,6 @@ setInterval(()=>{
     },250);
   }
 })();
-
 </script>
 
 </body>
