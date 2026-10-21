@@ -10,564 +10,441 @@
 
 <style>
 :root {
-  --bg: #07111f;
-  --card: #0d1b2d;
-  --card2: #112238;
-  --gold: #d9a441;
-  --gold2: #f0c866;
-  --text: #f5f7fa;
-  --muted: #9aa7b8;
-  --border: rgba(255,255,255,.08);
-  --green: #53d6a0;
-  --red: #ff777f;
+  --bg:#07111f;
+  --card:#0d1b2d;
+  --card2:#112238;
+  --gold:#d9a441;
+  --gold2:#f0c866;
+  --text:#f5f7fa;
+  --muted:#9aa7b8;
+  --border:rgba(255,255,255,.08);
+  --green:#53d6a0;
+  --red:#ff777f;
 }
 
-* {
-  box-sizing: border-box;
+*{box-sizing:border-box}
+
+html{background:var(--bg);color-scheme:dark}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:14px;
+  padding-bottom:calc(92px + env(safe-area-inset-bottom));
 }
 
-html {
-  background: var(--bg);
-  color-scheme: dark;
+button,input,select{font:inherit}
+button{cursor:pointer}
+button:disabled{opacity:.55;cursor:not-allowed}
+a{color:inherit;text-decoration:none}
+[hidden]{display:none!important}
+
+.header{
+  position:sticky;
+  top:0;
+  z-index:100;
+  height:68px;
+  background:rgba(7,17,31,.97);
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 16px;
+  backdrop-filter:blur(16px);
 }
 
-body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 14px;
-  padding-bottom: calc(92px + env(safe-area-inset-bottom));
+.header-left,.header-right{
+  width:70px;
+  display:flex;
+  align-items:center;
+}
+.header-right{justify-content:flex-end}
+
+.menu-button{
+  width:40px;
+  height:40px;
+  border:1px solid var(--border);
+  background:var(--card);
+  color:var(--text);
+  border-radius:12px;
+  font-size:22px;
 }
 
-button, input, select {
-  font: inherit;
+.brand{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  font-size:18px;
+  font-weight:900;
+  letter-spacing:1.5px;
 }
 
-button {
-  cursor: pointer;
+.brand-mark{
+  width:31px;
+  height:31px;
+  display:grid;
+  place-items:center;
+  border:1.5px solid var(--gold);
+  border-radius:9px 9px 9px 2px;
+  color:var(--gold2);
+  font-weight:900;
 }
 
-button:disabled {
-  opacity: .55;
-  cursor: not-allowed;
+.brand-vest{color:var(--gold2)}
+
+.avatar{
+  display:grid;
+  place-items:center;
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  border:1px solid rgba(217,164,65,.5);
+  background:var(--card2);
+  color:var(--gold2);
+  font-weight:800;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+.drawer-overlay{
+  position:fixed;
+  inset:0;
+  z-index:200;
+  background:rgba(0,0,0,.65);
+  opacity:0;
+  visibility:hidden;
+  transition:.2s;
 }
 
-.header {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  height: 68px;
-  background: rgba(7,17,31,.97);
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 16px;
-  backdrop-filter: blur(16px);
+.drawer-overlay.open{opacity:1;visibility:visible}
+
+.drawer{
+  position:fixed;
+  top:0;
+  left:0;
+  bottom:0;
+  z-index:201;
+  width:min(290px,85vw);
+  padding:22px 16px;
+  background:#0a1628;
+  border-right:1px solid var(--border);
+  transform:translateX(-105%);
+  transition:transform .25s ease;
+  overflow-y:auto;
 }
 
-.header-left,
-.header-right {
-  width: 70px;
-  display: flex;
-  align-items: center;
+.drawer.open{transform:translateX(0)}
+
+.drawer-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:4px 0 22px;
+  border-bottom:1px solid var(--border);
+  margin-bottom:16px;
 }
 
-.header-right {
-  justify-content: flex-end;
+.close-drawer{
+  background:transparent;
+  border:0;
+  color:var(--muted);
+  font-size:25px;
 }
 
-.menu-button {
-  width: 40px;
-  height: 40px;
-  border: 1px solid var(--border);
-  background: var(--card);
-  color: var(--text);
-  border-radius: 12px;
-  font-size: 22px;
+.drawer-link{
+  display:flex;
+  align-items:center;
+  gap:13px;
+  padding:14px 13px;
+  margin-bottom:5px;
+  border-radius:10px;
+  color:var(--muted);
+  font-size:14px;
 }
 
-.brand {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  font-size: 18px;
-  font-weight: 900;
-  letter-spacing: 1.5px;
+.drawer-link.active,.drawer-link:hover{
+  background:rgba(217,164,65,.1);
+  color:var(--gold2);
 }
 
-.brand-mark {
-  width: 31px;
-  height: 31px;
-  display: grid;
-  place-items: center;
-  border: 1.5px solid var(--gold);
-  border-radius: 9px 9px 9px 2px;
-  color: var(--gold2);
-  font-weight: 900;
+.drawer-link.logout{color:var(--red);margin-top:20px}
+
+main{
+  width:100%;
+  max-width:760px;
+  margin:0 auto;
+  padding:22px 16px;
 }
 
-.brand-vest {
-  color: var(--gold2);
+.page-heading{margin-bottom:22px}
+.page-heading h1{font-size:25px;margin:0 0 8px;letter-spacing:-.5px}
+.page-heading p{color:var(--muted);margin:0;line-height:1.6}
+
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:17px;
+  padding:18px;
+  margin-bottom:17px;
 }
 
-.avatar {
-  display: grid;
-  place-items: center;
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  border: 1px solid rgba(217,164,65,.5);
-  background: var(--card2);
-  color: var(--gold2);
-  font-weight: 800;
-}
+.card-title{margin:0 0 18px;font-size:15px;font-weight:800}
 
-.drawer-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 200;
-  background: rgba(0,0,0,.65);
-  opacity: 0;
-  visibility: hidden;
-  transition: .2s;
-}
-
-.drawer-overlay.open {
-  opacity: 1;
-  visibility: visible;
-}
-
-.drawer {
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  z-index: 201;
-  width: min(290px, 85vw);
-  padding: 22px 16px;
-  background: #0a1628;
-  border-right: 1px solid var(--border);
-  transform: translateX(-105%);
-  transition: transform .25s ease;
-  overflow-y: auto;
-}
-
-.drawer.open {
-  transform: translateX(0);
-}
-
-.drawer-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 4px 0 22px;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 16px;
-}
-
-.close-drawer {
-  background: transparent;
-  border: 0;
-  color: var(--muted);
-  font-size: 25px;
-}
-
-.drawer-link {
-  display: flex;
-  align-items: center;
-  gap: 13px;
-  padding: 14px 13px;
-  margin-bottom: 5px;
-  border-radius: 10px;
-  color: var(--muted);
-  font-size: 14px;
-}
-
-.drawer-link.active,
-.drawer-link:hover {
-  background: rgba(217,164,65,.1);
-  color: var(--gold2);
-}
-
-.drawer-link.logout {
-  color: var(--red);
-  margin-top: 20px;
-}
-
-main {
-  width: 100%;
-  max-width: 760px;
-  margin: 0 auto;
-  padding: 22px 16px;
-}
-
-.page-heading {
-  margin-bottom: 22px;
-}
-
-.page-heading h1 {
-  font-size: 25px;
-  margin: 0 0 8px;
-  letter-spacing: -.5px;
-}
-
-.page-heading p {
-  color: var(--muted);
-  margin: 0;
-  line-height: 1.6;
-}
-
-.card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 17px;
-  padding: 18px;
-  margin-bottom: 17px;
-}
-
-.card-title {
-  margin: 0 0 18px;
-  font-size: 15px;
-  font-weight: 800;
-}
-
-.balance-card {
+.balance-card{
   background:
-    radial-gradient(ellipse at top right, rgba(217,164,65,.14), transparent 58%),
+    radial-gradient(ellipse at top right,rgba(217,164,65,.14),transparent 58%),
     var(--card);
 }
 
-.balance-label {
-  color: var(--muted);
-  font-size: 12px;
-  margin-bottom: 10px;
+.balance-label{color:var(--muted);font-size:12px;margin-bottom:10px}
+
+.balance-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
 }
 
-.balance-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
+.balance-amount{
+  font-size:28px;
+  font-weight:800;
+  letter-spacing:-.7px;
+  overflow-wrap:anywhere;
 }
 
-.balance-amount {
-  font-size: 28px;
-  font-weight: 800;
-  letter-spacing: -.7px;
-  overflow-wrap: anywhere;
+.balance-asset{color:var(--gold2);font-size:13px;margin-top:7px}
+
+.max-button{
+  flex-shrink:0;
+  border:1px solid rgba(217,164,65,.5);
+  color:var(--gold2);
+  background:rgba(217,164,65,.09);
+  border-radius:9px;
+  padding:9px 14px;
+  font-size:12px;
+  font-weight:800;
 }
 
-.balance-asset {
-  color: var(--gold2);
-  font-size: 13px;
-  margin-top: 7px;
+.field{margin-bottom:18px}
+.field:last-child{margin-bottom:0}
+
+.field label{
+  display:block;
+  color:#d9e1ed;
+  font-size:12px;
+  font-weight:700;
+  margin-bottom:9px;
 }
 
-.max-button {
-  flex-shrink: 0;
-  border: 1px solid rgba(217,164,65,.5);
-  color: var(--gold2);
-  background: rgba(217,164,65,.09);
-  border-radius: 9px;
-  padding: 9px 14px;
-  font-size: 12px;
-  font-weight: 800;
+input,select{
+  width:100%;
+  min-height:49px;
+  background:#091626;
+  color:var(--text);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:11px;
+  padding:13px;
+  outline:none;
 }
 
-.field {
-  margin-bottom: 18px;
+input:focus,select:focus{
+  border-color:rgba(217,164,65,.8);
+  box-shadow:0 0 0 3px rgba(217,164,65,.08);
 }
 
-.field:last-child {
-  margin-bottom: 0;
+input::placeholder{color:#718096}
+
+.asset-select{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  background:#091626;
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:11px;
+  padding:7px 12px;
 }
 
-.field label {
-  display: block;
-  color: #d9e1ed;
-  font-size: 12px;
-  font-weight: 700;
-  margin-bottom: 9px;
+.asset-select select{
+  border:0;
+  box-shadow:none;
+  background:transparent;
+  padding-left:0;
+  flex:1;
+  min-width:0;
 }
 
-.input-wrap {
-  position: relative;
+/* Real coin images only: no letter or emoji logo substitutes */
+.coin-logo{
+  display:block;
+  width:34px;
+  height:34px;
+  flex:0 0 34px;
+  object-fit:contain;
 }
 
-input,
-select {
-  width: 100%;
-  min-height: 49px;
-  background: #091626;
-  color: var(--text);
-  border: 1px solid rgba(255,255,255,.1);
-  border-radius: 11px;
-  padding: 13px;
-  outline: none;
+.amount-input{padding-right:72px}
+
+.input-wrap{position:relative}
+
+.amount-suffix{
+  position:absolute;
+  right:13px;
+  top:50%;
+  transform:translateY(-50%);
+  color:var(--muted);
+  font-size:12px;
+  font-weight:700;
+  pointer-events:none;
 }
 
-input:focus,
-select:focus {
-  border-color: rgba(217,164,65,.8);
-  box-shadow: 0 0 0 3px rgba(217,164,65,.08);
+.primary-button{
+  width:100%;
+  min-height:51px;
+  margin-top:5px;
+  border:0;
+  border-radius:12px;
+  background:linear-gradient(135deg,var(--gold2),var(--gold));
+  color:#17130b;
+  font-weight:900;
+  font-size:14px;
 }
 
-select {
-  appearance: auto;
+.primary-button:active{transform:scale(.99)}
+
+.status-message{
+  display:none;
+  padding:12px 13px;
+  border-radius:10px;
+  margin-bottom:15px;
+  line-height:1.5;
+  overflow-wrap:anywhere;
 }
 
-input::placeholder {
-  color: #718096;
+.status-message.success{
+  display:block;
+  background:rgba(83,214,160,.1);
+  border:1px solid rgba(83,214,160,.25);
+  color:var(--green);
 }
 
-.asset-select {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  background: #091626;
-  border: 1px solid rgba(255,255,255,.1);
-  border-radius: 11px;
-  padding: 7px 12px;
+.status-message.error{
+  display:block;
+  background:rgba(255,119,127,.1);
+  border:1px solid rgba(255,119,127,.25);
+  color:var(--red);
 }
 
-.asset-select select {
-  border: 0;
-  box-shadow: none;
-  background: transparent;
-  padding-left: 0;
-  flex: 1;
-  min-width: 0;
+.network-caption{color:var(--muted);font-size:11px;margin-top:8px}
+
+.history-list{display:flex;flex-direction:column}
+
+.history-item{
+  padding:14px 0;
+  border-bottom:1px solid var(--border);
 }
 
-.coin-logo {
-  width: 31px;
-  height: 31px;
-  flex-shrink: 0;
-  object-fit: contain;
+.history-item:last-child{border-bottom:0;padding-bottom:0}
+
+.history-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:8px;
 }
 
-.coin-fallback {
-  display: none;
-  width: 31px;
-  height: 31px;
-  flex-shrink: 0;
-  border-radius: 50%;
-  background: var(--card2);
-  border: 1px solid rgba(217,164,65,.4);
-  color: var(--gold2);
-  font-size: 10px;
-  font-weight: 900;
-  align-items: center;
-  justify-content: center;
+.history-amount{font-weight:800;font-size:14px}
+
+.status-pill{
+  padding:5px 8px;
+  border-radius:20px;
+  font-size:10px;
+  font-weight:800;
+  text-transform:uppercase;
+  background:rgba(154,167,184,.1);
+  color:var(--muted);
 }
 
-.amount-input {
-  padding-right: 72px;
+.status-pill.pending,.status-pill.under_review,.status-pill.processing{
+  color:var(--gold2);
+  background:rgba(217,164,65,.1);
 }
 
-.amount-suffix {
-  position: absolute;
-  right: 13px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--muted);
-  font-size: 12px;
-  font-weight: 700;
-  pointer-events: none;
+.status-pill.completed,.status-pill.approved{
+  color:var(--green);
+  background:rgba(83,214,160,.1);
 }
 
-.address-input {
-  overflow-wrap: anywhere;
+.status-pill.rejected,.status-pill.failed,.status-pill.cancelled{
+  color:var(--red);
+  background:rgba(255,119,127,.1);
 }
 
-.primary-button {
-  width: 100%;
-  min-height: 51px;
-  margin-top: 5px;
-  border: 0;
-  border-radius: 12px;
-  background: linear-gradient(135deg, var(--gold2), var(--gold));
-  color: #17130b;
-  font-weight: 900;
-  font-size: 14px;
+.history-meta{
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.7;
+  overflow-wrap:anywhere;
 }
 
-.primary-button:active {
-  transform: scale(.99);
+.empty-state{
+  color:var(--muted);
+  text-align:center;
+  padding:22px 5px;
+  line-height:1.6;
 }
 
-.status-message {
-  display: none;
-  padding: 12px 13px;
-  border-radius: 10px;
-  margin-bottom: 15px;
-  line-height: 1.5;
-  overflow-wrap: anywhere;
+.bottom-nav{
+  position:fixed;
+  left:50%;
+  bottom:0;
+  transform:translateX(-50%);
+  width:100%;
+  max-width:760px;
+  min-height:70px;
+  padding:8px 5px calc(8px + env(safe-area-inset-bottom));
+  background:rgba(8,18,31,.98);
+  backdrop-filter:blur(18px);
+  border-top:1px solid var(--border);
+  z-index:120;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
 }
 
-.status-message.success {
-  display: block;
-  background: rgba(83,214,160,.1);
-  border: 1px solid rgba(83,214,160,.25);
-  color: var(--green);
+.bottom-link{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:5px;
+  border:0;
+  background:transparent;
+  color:#7e8998;
+  font-size:10px;
+  font-weight:700;
 }
 
-.status-message.error {
-  display: block;
-  background: rgba(255,119,127,.1);
-  border: 1px solid rgba(255,119,127,.25);
-  color: var(--red);
+.bottom-link.active{color:var(--gold2)}
+.bottom-icon{font-size:20px;line-height:1}
+
+.loading-screen{
+  position:fixed;
+  inset:0;
+  z-index:500;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--bg);
+  color:var(--gold2);
+  font-size:13px;
 }
 
-.network-caption {
-  color: var(--muted);
-  font-size: 11px;
-  margin-top: 8px;
-}
+.loading-screen.hidden{display:none}
 
-.history-list {
-  display: flex;
-  flex-direction: column;
-}
-
-.history-item {
-  padding: 14px 0;
-  border-bottom: 1px solid var(--border);
-}
-
-.history-item:last-child {
-  border-bottom: 0;
-  padding-bottom: 0;
-}
-
-.history-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 8px;
-}
-
-.history-amount {
-  font-weight: 800;
-  font-size: 14px;
-}
-
-.status-pill {
-  padding: 5px 8px;
-  border-radius: 20px;
-  font-size: 10px;
-  font-weight: 800;
-  text-transform: uppercase;
-  background: rgba(154,167,184,.1);
-  color: var(--muted);
-}
-
-.status-pill.pending,
-.status-pill.under_review,
-.status-pill.processing {
-  color: var(--gold2);
-  background: rgba(217,164,65,.1);
-}
-
-.status-pill.completed,
-.status-pill.approved {
-  color: var(--green);
-  background: rgba(83,214,160,.1);
-}
-
-.status-pill.rejected,
-.status-pill.failed,
-.status-pill.cancelled {
-  color: var(--red);
-  background: rgba(255,119,127,.1);
-}
-
-.history-meta {
-  color: var(--muted);
-  font-size: 11px;
-  line-height: 1.7;
-  overflow-wrap: anywhere;
-}
-
-.empty-state {
-  color: var(--muted);
-  text-align: center;
-  padding: 22px 5px;
-  line-height: 1.6;
-}
-
-.bottom-nav {
-  position: fixed;
-  left: 50%;
-  bottom: 0;
-  transform: translateX(-50%);
-  width: 100%;
-  max-width: 760px;
-  min-height: 70px;
-  padding: 8px 5px calc(8px + env(safe-area-inset-bottom));
-  background: rgba(8,18,31,.98);
-  backdrop-filter: blur(18px);
-  border-top: 1px solid var(--border);
-  z-index: 120;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-}
-
-.bottom-link {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  border: 0;
-  background: transparent;
-  color: #7e8998;
-  font-size: 10px;
-  font-weight: 700;
-}
-
-.bottom-link.active {
-  color: var(--gold2);
-}
-
-.bottom-icon {
-  font-size: 20px;
-  line-height: 1;
-}
-
-.loading-screen {
-  position: fixed;
-  inset: 0;
-  z-index: 500;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--bg);
-  color: var(--gold2);
-  font-size: 13px;
-}
-
-.loading-screen.hidden {
-  display: none;
-}
-
-@media (min-width: 600px) {
-  main {
-    padding: 28px 22px;
-  }
-
-  .card {
-    padding: 22px;
-  }
+@media(min-width:600px){
+  main{padding:28px 22px}
+  .card{padding:22px}
 }
 </style>
 </head>
@@ -623,7 +500,7 @@ input::placeholder {
     <div class="balance-label">Available Profit</div>
     <div class="balance-row">
       <div>
-        <div class="balance-amount" id="balanceAmount">0.00000000</div>
+        <div class="balance-amount" id="balanceAmount">0.00</div>
         <div class="balance-asset" id="balanceAsset">USDT available</div>
       </div>
       <button class="max-button" id="maxButton" type="button">MAX</button>
@@ -639,8 +516,12 @@ input::placeholder {
       <div class="field">
         <label for="assetSelect">Cryptocurrency</label>
         <div class="asset-select">
-          <img class="coin-logo" id="coinLogo" src="" alt="">
-          <span class="coin-fallback" id="coinFallback">USDT</span>
+          <img
+            class="coin-logo"
+            id="coinLogo"
+            src="https://cdn.jsdelivr.net/gh/madenix/Crypto-logo-cdn@main/Logos/USDT.svg"
+            alt="USDT cryptocurrency logo"
+          >
           <select id="assetSelect" required aria-label="Cryptocurrency"></select>
         </div>
       </div>
@@ -727,9 +608,11 @@ input::placeholder {
 <script>
 "use strict";
 
-/* AITIVEST Supabase configuration */
-const SUPABASE_URL = "https://rihvvwktvgytbqzazage.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
+const SUPABASE_URL =
+  "https://rihvvwktvgytbqzazage.supabase.co";
+
+const SUPABASE_ANON_KEY =
+  "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
 
 const db = window.supabase.createClient(
   SUPABASE_URL,
@@ -737,296 +620,226 @@ const db = window.supabase.createClient(
 );
 
 /*
- * Only offer networks configured for the selected asset.
- * The backend must independently validate every asset/network pair.
+ * Network mappings are UI options, not proof that the backend
+ * can process withdrawals on every listed network.
  *
- * These are proposed network mappings. Remove any network that
- * your AITIVEST withdrawal infrastructure does not actually support.
+ * Keep only networks actually supported by your withdrawal provider.
  */
 const ASSETS = [
-  {
-    symbol: "BTC",
-    name: "Bitcoin",
-    networks: [
-      { value: "BTC", label: "Bitcoin Network (BTC)" }
-    ]
-  },
-  {
-    symbol: "ETH",
-    name: "Ethereum",
-    networks: [
-      { value: "ERC20", label: "Ethereum (ERC-20)" }
-    ]
-  },
-  {
-    symbol: "USDT",
-    name: "Tether",
-    networks: [
-      { value: "ERC20", label: "Ethereum (ERC-20)" },
-      { value: "TRC20", label: "TRON (TRC-20)" },
-      { value: "BEP20", label: "BNB Smart Chain (BEP-20)" },
-      { value: "SOL", label: "Solana (SPL)" },
-      { value: "TON", label: "TON Network" },
-      { value: "POLYGON", label: "Polygon Network" },
-      { value: "ARBITRUM", label: "Arbitrum One" },
-      { value: "OPTIMISM", label: "Optimism" },
-      { value: "BASE", label: "Base Network" },
-      { value: "AVAX_C", label: "Avalanche C-Chain" }
-    ]
-  },
-  {
-    symbol: "USDC",
-    name: "USD Coin",
-    networks: [
-      { value: "ERC20", label: "Ethereum (ERC-20)" },
-      { value: "SOL", label: "Solana (SPL)" },
-      { value: "BASE", label: "Base Network" },
-      { value: "POLYGON", label: "Polygon Network" },
-      { value: "ARBITRUM", label: "Arbitrum One" },
-      { value: "OPTIMISM", label: "Optimism" },
-      { value: "BEP20", label: "BNB Smart Chain (BEP-20)" },
-      { value: "AVAX_C", label: "Avalanche C-Chain" }
-    ]
-  },
-  {
-    symbol: "BNB",
-    name: "BNB",
-    networks: [
-      { value: "BEP20", label: "BNB Smart Chain (BEP-20)" }
-    ]
-  },
-  {
-    symbol: "SOL",
-    name: "Solana",
-    networks: [
-      { value: "SOL", label: "Solana Network (SPL)" }
-    ]
-  },
-  {
-    symbol: "XRP",
-    name: "XRP",
-    networks: [
-      { value: "XRP", label: "XRP Ledger" }
-    ]
-  },
-  {
-    symbol: "TON",
-    name: "Toncoin",
-    networks: [
-      { value: "TON", label: "TON Network" }
-    ]
-  },
-  {
-    symbol: "DOGE",
-    name: "Dogecoin",
-    networks: [
-      { value: "DOGE", label: "Dogecoin Network" }
-    ]
-  },
-  {
-    symbol: "ADA",
-    name: "Cardano",
-    networks: [
-      { value: "ADA", label: "Cardano Network" }
-    ]
-  },
-  {
-    symbol: "TRX",
-    name: "TRON",
-    networks: [
-      { value: "TRX", label: "TRON Network" }
-    ]
-  },
-  {
-    symbol: "LTC",
-    name: "Litecoin",
-    networks: [
-      { value: "LTC", label: "Litecoin Network" }
-    ]
-  },
-  {
-    symbol: "AVAX",
-    name: "Avalanche",
-    networks: [
-      { value: "AVAX_C", label: "Avalanche C-Chain" }
-    ]
-  },
-  {
-    symbol: "DOT",
-    name: "Polkadot",
-    networks: [
-      { value: "DOT", label: "Polkadot Network" }
-    ]
-  },
-  {
-    symbol: "LINK",
-    name: "Chainlink",
-    networks: [
-      { value: "ERC20", label: "Ethereum (ERC-20)" }
-    ]
-  },
-  {
-    symbol: "POL",
-    name: "Polygon",
-    networks: [
-      { value: "POLYGON", label: "Polygon Network" }
-    ]
-  },
-  {
-    symbol: "SHIB",
-    name: "Shiba Inu",
-    networks: [
-      { value: "ERC20", label: "Ethereum (ERC-20)" }
-    ]
-  },
-  {
-    symbol: "BCH",
-    name: "Bitcoin Cash",
-    networks: [
-      { value: "BCH", label: "Bitcoin Cash Network" }
-    ]
-  },
-  {
-    symbol: "XLM",
-    name: "Stellar",
-    networks: [
-      { value: "XLM", label: "Stellar Network" }
-    ]
-  },
-  {
-    symbol: "ATOM",
-    name: "Cosmos",
-    networks: [
-      { value: "COSMOS", label: "Cosmos Hub" }
-    ]
-  },
-  {
-    symbol: "NEAR",
-    name: "NEAR Protocol",
-    networks: [
-      { value: "NEAR", label: "NEAR Network" }
-    ]
-  },
-  {
-    symbol: "APT",
-    name: "Aptos",
-    networks: [
-      { value: "APTOS", label: "Aptos Network" }
-    ]
-  },
-  {
-    symbol: "ARB",
-    name: "Arbitrum",
-    networks: [
-      { value: "ARBITRUM", label: "Arbitrum One" }
-    ]
-  },
-  {
-    symbol: "OP",
-    name: "Optimism",
-    networks: [
-      { value: "OPTIMISM", label: "Optimism" }
-    ]
-  }
+  {symbol:"BTC",name:"Bitcoin",networks:[
+    {value:"BTC",label:"Bitcoin Network (BTC)"}
+  ]},
+  {symbol:"ETH",name:"Ethereum",networks:[
+    {value:"ERC20",label:"Ethereum (ERC-20)"}
+  ]},
+  {symbol:"USDT",name:"Tether",networks:[
+    {value:"ERC20",label:"Ethereum (ERC-20)"},
+    {value:"TRC20",label:"TRON (TRC-20)"},
+    {value:"BEP20",label:"BNB Smart Chain (BEP-20)"},
+    {value:"SOL",label:"Solana (SPL)"},
+    {value:"TON",label:"TON Network"},
+    {value:"POLYGON",label:"Polygon Network"},
+    {value:"ARBITRUM",label:"Arbitrum One"},
+    {value:"OPTIMISM",label:"Optimism"},
+    {value:"BASE",label:"Base Network"},
+    {value:"AVAX_C",label:"Avalanche C-Chain"}
+  ]},
+  {symbol:"USDC",name:"USD Coin",networks:[
+    {value:"ERC20",label:"Ethereum (ERC-20)"},
+    {value:"SOL",label:"Solana (SPL)"},
+    {value:"BASE",label:"Base Network"},
+    {value:"POLYGON",label:"Polygon Network"},
+    {value:"ARBITRUM",label:"Arbitrum One"},
+    {value:"OPTIMISM",label:"Optimism"},
+    {value:"BEP20",label:"BNB Smart Chain (BEP-20)"},
+    {value:"AVAX_C",label:"Avalanche C-Chain"}
+  ]},
+  {symbol:"BNB",name:"BNB",networks:[
+    {value:"BEP20",label:"BNB Smart Chain (BEP-20)"}
+  ]},
+  {symbol:"SOL",name:"Solana",networks:[
+    {value:"SOL",label:"Solana Network (SPL)"}
+  ]},
+  {symbol:"XRP",name:"XRP",networks:[
+    {value:"XRP",label:"XRP Ledger"}
+  ]},
+  {symbol:"TON",name:"Toncoin",networks:[
+    {value:"TON",label:"TON Network"}
+  ]},
+  {symbol:"DOGE",name:"Dogecoin",networks:[
+    {value:"DOGE",label:"Dogecoin Network"}
+  ]},
+  {symbol:"ADA",name:"Cardano",networks:[
+    {value:"ADA",label:"Cardano Network"}
+  ]},
+  {symbol:"TRX",name:"TRON",networks:[
+    {value:"TRX",label:"TRON Network"}
+  ]},
+  {symbol:"LTC",name:"Litecoin",networks:[
+    {value:"LTC",label:"Litecoin Network"}
+  ]},
+  {symbol:"AVAX",name:"Avalanche",networks:[
+    {value:"AVAX_C",label:"Avalanche C-Chain"}
+  ]},
+  {symbol:"DOT",name:"Polkadot",networks:[
+    {value:"DOT",label:"Polkadot Network"}
+  ]},
+  {symbol:"LINK",name:"Chainlink",networks:[
+    {value:"ERC20",label:"Ethereum (ERC-20)"}
+  ]},
+  {symbol:"POL",name:"Polygon",networks:[
+    {value:"POLYGON",label:"Polygon Network"}
+  ]},
+  {symbol:"SHIB",name:"Shiba Inu",networks:[
+    {value:"ERC20",label:"Ethereum (ERC-20)"}
+  ]},
+  {symbol:"BCH",name:"Bitcoin Cash",networks:[
+    {value:"BCH",label:"Bitcoin Cash Network"}
+  ]},
+  {symbol:"XLM",name:"Stellar",networks:[
+    {value:"XLM",label:"Stellar Network"}
+  ]},
+  {symbol:"ATOM",name:"Cosmos",networks:[
+    {value:"COSMOS",label:"Cosmos Hub"}
+  ]},
+  {symbol:"NEAR",name:"NEAR Protocol",networks:[
+    {value:"NEAR",label:"NEAR Network"}
+  ]},
+  {symbol:"APT",name:"Aptos",networks:[
+    {value:"APTOS",label:"Aptos Network"}
+  ]},
+  {symbol:"ARB",name:"Arbitrum",networks:[
+    {value:"ARBITRUM",label:"Arbitrum One"}
+  ]},
+  {symbol:"OP",name:"Optimism",networks:[
+    {value:"OPTIMISM",label:"Optimism"}
+  ]}
 ];
 
+/*
+ * Primary source: the crypto-logo CDN used for the AITIVEST dashboard.
+ * Fallback source: CryptoLogos.cc asset images.
+ * Both sources serve image files, not text or emoji substitutes.
+ */
 const LOGO_BASE =
   "https://cdn.jsdelivr.net/gh/madenix/Crypto-logo-cdn@main/Logos/";
 
 const LOGO_FILES = {
-  BTC: "BTC.svg",
-  ETH: "ETH.svg",
-  USDT: "USDT.svg",
-  USDC: "USDC.svg",
-  BNB: "BNB.svg",
-  SOL: "SOL.svg",
-  XRP: "XRP.svg",
-  TON: "TON.svg",
-  DOGE: "DOGE.svg",
-  ADA: "ADA.svg",
-  TRX: "TRON.svg",
-  LTC: "LTC.svg",
-  AVAX: "AVAX.svg",
-  DOT: "DOT.svg",
-  LINK: "LINK.svg",
-  POL: "MATIC.svg",
-  SHIB: "SHIB.svg",
-  BCH: "BCH.svg",
-  XLM: "XLM.svg",
-  ATOM: "ATOM.svg",
-  NEAR: "NEAR.svg",
-  APT: "APT.svg",
-  ARB: "ARB.svg",
-  OP: "OP.svg"
+  BTC:"BTC.svg",
+  ETH:"ETH.svg",
+  USDT:"USDT.svg",
+  USDC:"USDC.svg",
+  BNB:"BNB.svg",
+  SOL:"SOL.svg",
+  XRP:"XRP.svg",
+  TON:"TON.svg",
+  DOGE:"DOGE.svg",
+  ADA:"ADA.svg",
+  TRX:"TRON.svg",
+  LTC:"LTC.svg",
+  AVAX:"AVAX.svg",
+  DOT:"DOT.svg",
+  LINK:"LINK.svg",
+  POL:"MATIC.svg",
+  SHIB:"SHIB.svg",
+  BCH:"BCH.svg",
+  XLM:"XLM.svg",
+  ATOM:"ATOM.svg",
+  NEAR:"NEAR.svg",
+  APT:"APT.svg",
+  ARB:"ARB.svg",
+  OP:"OP.svg"
+};
+
+const FALLBACK_LOGO_FILES = {
+  BTC:"btc",
+  ETH:"eth",
+  USDT:"usdt",
+  USDC:"usdc",
+  BNB:"bnb",
+  SOL:"sol",
+  XRP:"xrp",
+  TON:"ton",
+  DOGE:"doge",
+  ADA:"ada",
+  TRX:"trx",
+  LTC:"ltc",
+  AVAX:"avax",
+  DOT:"dot",
+  LINK:"link",
+  POL:"pol",
+  SHIB:"shib",
+  BCH:"bch",
+  XLM:"xlm",
+  ATOM:"atom",
+  NEAR:"near",
+  APT:"apt",
+  ARB:"arb",
+  OP:"op"
 };
 
 let currentUser = null;
 let wallets = [];
-let currentWallet = null;
 let requestInProgress = false;
+let logoFallbackTried = false;
 
 const $ = id => document.getElementById(id);
 
-function go(page) {
+function go(page){
   window.location.href = page;
 }
 
-function formatNumber(value, maxDecimals = 8) {
-  const number = Number(value || 0);
-
-  return number.toLocaleString("en-US", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: maxDecimals
+function formatNumber(value,maxDecimals=8){
+  return Number(value||0).toLocaleString("en-US",{
+    minimumFractionDigits:2,
+    maximumFractionDigits:maxDecimals
   });
 }
 
-function escapeHTML(value) {
-  return String(value ?? "").replace(/[&<>"']/g, char => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#39;"
+function escapeHTML(value){
+  return String(value??"").replace(/[&<>"']/g,char=>({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#39;"
   })[char]);
 }
 
-function showMessage(message, type = "error") {
-  const box = $("statusMessage");
-  box.textContent = message;
-  box.className = "status-message " + type;
-  box.scrollIntoView({ behavior: "smooth", block: "nearest" });
+function showMessage(message,type="error"){
+  const box=$("statusMessage");
+  box.textContent=message;
+  box.className="status-message "+type;
 }
 
-function clearMessage() {
-  const box = $("statusMessage");
-  box.textContent = "";
-  box.className = "status-message";
+function clearMessage(){
+  $("statusMessage").textContent="";
+  $("statusMessage").className="status-message";
 }
 
-function setLoading(loading) {
-  $("loadingScreen").classList.toggle("hidden", !loading);
+function setLoading(loading){
+  $("loadingScreen").classList.toggle("hidden",!loading);
 }
 
-function openDrawer() {
+function openDrawer(){
   $("drawer").classList.add("open");
   $("drawerOverlay").classList.add("open");
 }
 
-function closeDrawer() {
+function closeDrawer(){
   $("drawer").classList.remove("open");
   $("drawerOverlay").classList.remove("open");
 }
 
-$("menuButton").addEventListener("click", openDrawer);
-$("closeDrawer").addEventListener("click", closeDrawer);
-$("drawerOverlay").addEventListener("click", closeDrawer);
+$("menuButton").addEventListener("click",openDrawer);
+$("closeDrawer").addEventListener("click",closeDrawer);
+$("drawerOverlay").addEventListener("click",closeDrawer);
 
-$("logoutButton").addEventListener("click", async event => {
+$("logoutButton").addEventListener("click",async event=>{
   event.preventDefault();
+  const {error}=await db.auth.signOut();
 
-  const { error } = await db.auth.signOut();
-
-  if (error) {
+  if(error){
     showMessage("Unable to log out. Please try again.");
     return;
   }
@@ -1034,202 +847,192 @@ $("logoutButton").addEventListener("click", async event => {
   window.location.replace("signin.html");
 });
 
-function selectedAsset() {
-  return ASSETS.find(asset => asset.symbol === $("assetSelect").value);
+function selectedAsset(){
+  return ASSETS.find(asset=>asset.symbol===$("assetSelect").value);
 }
 
-function getWallet(symbol) {
-  return wallets.find(wallet =>
-    String(wallet.asset || "").toUpperCase() === symbol.toUpperCase()
-  ) || null;
+function getWallet(symbol){
+  return wallets.find(wallet=>
+    String(wallet.asset||"").toUpperCase()===symbol.toUpperCase()
+  )||null;
 }
 
-function getProfitBalance(symbol) {
-  const wallet = getWallet(symbol);
-  return Math.max(0, Number(wallet?.profit_balance || 0));
+function getProfitBalance(symbol){
+  const wallet=getWallet(symbol);
+  return Math.max(0,Number(wallet?.profit_balance||0));
 }
 
-function updateLogo(symbol) {
-  const image = $("coinLogo");
-  const fallback = $("coinFallback");
-  const filename = LOGO_FILES[symbol];
+/* Load actual image files. If the primary URL fails, try the fallback. */
+function updateLogo(symbol){
+  const img=$("coinLogo");
+  const filename=LOGO_FILES[symbol];
 
-  fallback.textContent = symbol;
+  logoFallbackTried=false;
+  img.alt=symbol+" cryptocurrency logo";
+  img.dataset.symbol=symbol;
 
-  if (!filename) {
-    image.style.display = "none";
-    fallback.style.display = "flex";
-    return;
+  if(filename){
+    img.src=LOGO_BASE+filename;
+  }else{
+    img.removeAttribute("src");
   }
-
-  fallback.style.display = "none";
-  image.style.display = "block";
-  image.alt = symbol + " logo";
-  image.src = LOGO_BASE + filename;
 }
 
-$("coinLogo").addEventListener("error", () => {
-  $("coinLogo").style.display = "none";
-  $("coinFallback").style.display = "flex";
+$("coinLogo").addEventListener("error",function(){
+  if(logoFallbackTried)return;
+
+  const symbol=this.dataset.symbol;
+  const fallback=FALLBACK_LOGO_FILES[symbol];
+
+  if(!fallback)return;
+
+  logoFallbackTried=true;
+  this.src="https://cryptologos.cc/logos/"+fallback+"-"+symbol.toLowerCase()+"-logo.svg";
 });
 
-function populateAssets() {
-  const select = $("assetSelect");
-  select.innerHTML = "";
+function populateAssets(){
+  const select=$("assetSelect");
+  select.innerHTML="";
 
-  ASSETS.forEach(asset => {
-    const option = document.createElement("option");
-    option.value = asset.symbol;
-    option.textContent = asset.symbol + " — " + asset.name;
+  ASSETS.forEach(asset=>{
+    const option=document.createElement("option");
+    option.value=asset.symbol;
+    option.textContent=asset.symbol+" — "+asset.name;
     select.appendChild(option);
   });
 
-  select.value = "USDT";
+  select.value="USDT";
   updateSelectedAsset();
 }
 
-function updateSelectedAsset() {
-  const asset = selectedAsset();
-
-  if (!asset) return;
+function updateSelectedAsset(){
+  const asset=selectedAsset();
+  if(!asset)return;
 
   updateLogo(asset.symbol);
+  $("amountSuffix").textContent=asset.symbol;
 
-  $("amountSuffix").textContent = asset.symbol;
+  const networkSelect=$("networkSelect");
+  networkSelect.innerHTML="";
 
-  const networkSelect = $("networkSelect");
-  networkSelect.innerHTML = "";
-
-  const placeholder = document.createElement("option");
-  placeholder.value = "";
-  placeholder.textContent = "Select network";
+  const placeholder=document.createElement("option");
+  placeholder.value="";
+  placeholder.textContent="Select network";
   networkSelect.appendChild(placeholder);
 
-  asset.networks.forEach(network => {
-    const option = document.createElement("option");
-    option.value = network.value;
-    option.textContent = network.label;
+  asset.networks.forEach(network=>{
+    const option=document.createElement("option");
+    option.value=network.value;
+    option.textContent=network.label;
     networkSelect.appendChild(option);
   });
 
-  networkSelect.selectedIndex = 0;
+  networkSelect.selectedIndex=0;
 
-  $("networkCaption").textContent =
-    asset.networks.length === 1
-      ? "Only the network listed above is available for this coin."
-      : "Choose the exact network supported by your receiving wallet.";
+  $("networkCaption").textContent=asset.networks.length===1
+    ?"Only the listed network is available for this coin."
+    :"Select the same network that your receiving wallet supports.";
 
-  const memoRequired = ["XRP", "XLM"].includes(asset.symbol);
+  const memoRequired=["XRP","XLM"].includes(asset.symbol);
+  $("memoField").hidden=!memoRequired;
+  $("memoInput").required=memoRequired;
 
-  $("memoField").hidden = !memoRequired;
-  $("memoInput").required = memoRequired;
+  $("memoLabel").textContent=asset.symbol==="XRP"
+    ?"Destination Tag"
+    :"Memo";
 
-  $("memoLabel").textContent =
-    asset.symbol === "XRP"
-      ? "Destination Tag (if required)"
-      : "Memo (if required)";
+  $("memoInput").placeholder=asset.symbol==="XRP"
+    ?"Enter destination tag if required"
+    :"Enter memo if required";
 
-  $("memoInput").placeholder =
-    asset.symbol === "XRP"
-      ? "Enter destination tag if required"
-      : "Enter memo if required";
-
-  $("addressInput").value = "";
-  $("memoInput").value = "";
-  $("amountInput").value = "";
+  $("addressInput").value="";
+  $("memoInput").value="";
+  $("amountInput").value="";
 
   updateBalanceDisplay();
   clearMessage();
 }
 
-function updateBalanceDisplay() {
-  const symbol = $("assetSelect").value || "USDT";
-  const balance = getProfitBalance(symbol);
+function updateBalanceDisplay(){
+  const symbol=$("assetSelect").value||"USDT";
+  const balance=getProfitBalance(symbol);
 
-  $("balanceAmount").textContent = formatNumber(balance, 8);
-  $("balanceAsset").textContent = symbol + " available";
-  $("amountSuffix").textContent = symbol;
-
-  $("amountInput").max = String(balance);
-  $("maxButton").disabled = balance <= 0;
+  $("balanceAmount").textContent=formatNumber(balance,8);
+  $("balanceAsset").textContent=symbol+" available";
+  $("amountSuffix").textContent=symbol;
+  $("amountInput").max=String(balance);
+  $("maxButton").disabled=balance<=0;
 }
 
-$("assetSelect").addEventListener("change", updateSelectedAsset);
+$("assetSelect").addEventListener("change",updateSelectedAsset);
 
-$("maxButton").addEventListener("click", () => {
-  const symbol = $("assetSelect").value;
-  const balance = getProfitBalance(symbol);
-
-  $("amountInput").value = balance > 0 ? String(balance) : "";
+$("maxButton").addEventListener("click",()=>{
+  const balance=getProfitBalance($("assetSelect").value);
+  $("amountInput").value=balance>0?String(balance):"";
 });
 
-async function loadWallets() {
-  const { data, error } = await db
+async function loadWallets(){
+  const {data,error}=await db
     .from("wallets")
     .select("id,asset,available_balance,locked_balance,principal_balance,profit_balance")
-    .eq("user_id", currentUser.id);
+    .eq("user_id",currentUser.id);
 
-  if (error) {
-    throw new Error("Unable to load your wallet balances.");
-  }
+  if(error)throw new Error("Unable to load your wallet balances.");
 
-  wallets = data || [];
+  wallets=data||[];
   updateBalanceDisplay();
 }
 
-async function loadProfile() {
-  const { data, error } = await db
+async function loadProfile(){
+  const {data,error}=await db
     .from("profiles")
     .select("full_name")
-    .eq("id", currentUser.id)
+    .eq("id",currentUser.id)
     .maybeSingle();
 
-  if (error) {
-    console.warn("Profile could not be loaded:", error.message);
+  if(error){
+    console.warn("Profile could not be loaded:",error.message);
   }
 
-  if (data?.full_name) {
-    const initials = data.full_name
-      .trim()
+  if(data?.full_name){
+    const initials=data.full_name.trim()
       .split(/\s+/)
-      .slice(0, 2)
-      .map(part => part.charAt(0).toUpperCase())
+      .slice(0,2)
+      .map(part=>part.charAt(0).toUpperCase())
       .join("");
 
-    $("profileAvatar").textContent = initials || "A";
+    $("profileAvatar").textContent=initials||"A";
   }
 }
 
-function displayHistory(rows) {
-  const list = $("historyList");
+function displayHistory(rows){
+  const list=$("historyList");
 
-  if (!rows || rows.length === 0) {
-    list.innerHTML =
-      '<div class="empty-state">No withdrawals yet.</div>';
+  if(!rows||rows.length===0){
+    list.innerHTML='<div class="empty-state">No withdrawals yet.</div>';
     return;
   }
 
-  list.innerHTML = rows.map(row => {
-    const status = String(row.status || "PENDING").toLowerCase();
-    const safeStatus = escapeHTML(status);
-    const network = row.network || "—";
-    const created = row.created_at
-      ? new Date(row.created_at).toLocaleString()
-      : "—";
+  list.innerHTML=rows.map(row=>{
+    const status=String(row.status||"PENDING").toLowerCase();
+    const safeStatus=/^[a-z_]+$/.test(status)?status:"pending";
+    const created=row.created_at
+      ?new Date(row.created_at).toLocaleString()
+      :"—";
 
     return `
       <div class="history-item">
         <div class="history-top">
           <div class="history-amount">
-            ${escapeHTML(formatNumber(row.amount, 8))}
-            ${escapeHTML(row.asset || "")}
+            ${escapeHTML(formatNumber(row.amount,8))}
+            ${escapeHTML(row.asset||"")}
           </div>
           <span class="status-pill ${safeStatus}">
-            ${escapeHTML(row.status || "PENDING")}
+            ${escapeHTML(row.status||"PENDING")}
           </span>
         </div>
         <div class="history-meta">
-          Network: ${escapeHTML(network)}<br>
+          Network: ${escapeHTML(row.network||"—")}<br>
           ${escapeHTML(created)}
         </div>
       </div>
@@ -1237,237 +1040,216 @@ function displayHistory(rows) {
   }).join("");
 }
 
-async function loadHistory() {
-  const { data, error } = await db
+async function loadHistory(){
+  const {data,error}=await db
     .from("withdrawals")
     .select("id,asset,network,amount,fee,net_amount,status,withdrawal_source,created_at")
-    .eq("user_id", currentUser.id)
-    .order("created_at", { ascending: false })
+    .eq("user_id",currentUser.id)
+    .order("created_at",{ascending:false})
     .limit(20);
 
-  if (error) {
-    $("historyList").innerHTML =
+  if(error){
+    $("historyList").innerHTML=
       '<div class="empty-state">Unable to load withdrawal history.</div>';
     return;
   }
 
-  displayHistory(data || []);
+  displayHistory(data||[]);
 }
 
-function validateAddress(asset, network, address, memo) {
-  if (!address || !address.trim()) {
-    return "Enter your receiving wallet address.";
-  }
+/*
+ * These checks catch obvious mistakes. They do not replace a
+ * proper blockchain address/network validator on the server.
+ */
+function validateAddress(network,address){
+  const value=address.trim();
 
-  const value = address.trim();
+  if(!value)return "Enter your receiving wallet address.";
 
-  /*
-   * Basic format checks only. These do not prove that an address
-   * belongs to the selected network or that the wallet accepts it.
-   */
-  if (network === "BTC" && !/^(bc1|[13])[a-zA-HJ-NP-Z0-9]{20,90}$/.test(value)) {
+  if(network==="BTC" &&
+     !/^(bc1|[13])[a-zA-HJ-NP-Z0-9]{20,90}$/.test(value)){
     return "Enter a valid-looking Bitcoin address.";
   }
 
-  if (network === "TRC20" && !/^T[1-9A-HJ-NP-Za-km-z]{33}$/.test(value)) {
+  if(network==="TRC20" &&
+     !/^T[1-9A-HJ-NP-Za-km-z]{33}$/.test(value)){
     return "Enter a valid-looking TRON address.";
   }
 
-  if (
-    ["ERC20", "BEP20", "POLYGON", "ARBITRUM", "OPTIMISM",
-     "BASE", "AVAX_C"].includes(network) &&
-    !/^0x[a-fA-F0-9]{40}$/.test(value)
-  ) {
-    return "Enter a valid-looking EVM wallet address.";
+  if(["ERC20","BEP20","POLYGON","ARBITRUM","OPTIMISM",
+      "BASE","AVAX_C"].includes(network) &&
+     !/^0x[a-fA-F0-9]{40}$/.test(value)){
+    return "Enter a valid-looking address for this network.";
   }
 
-  if (network === "XRP" && !/^r[1-9A-HJ-NP-Za-km-z]{24,34}$/.test(value)) {
+  if(network==="XRP" &&
+     !/^r[1-9A-HJ-NP-Za-km-z]{24,34}$/.test(value)){
     return "Enter a valid-looking XRP Ledger address.";
   }
 
-  if (network === "SOL" && !/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(value)) {
+  if(network==="SOL" &&
+     !/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(value)){
     return "Enter a valid-looking Solana address.";
   }
 
-  if (network === "TON" && value.length < 20) {
-    return "Check your TON receiving address.";
-  }
-
-  if (network === "XLM" && !/^G[A-Z2-7]{55}$/.test(value)) {
+  if(network==="XLM" &&
+     !/^G[A-Z2-7]{55}$/.test(value)){
     return "Enter a valid-looking Stellar address.";
   }
 
-  if (network === "DOGE" && !/^[DA9][1-9A-HJ-NP-Za-km-z]{25,40}$/.test(value)) {
+  if(network==="DOGE" &&
+     !/^[DA9][1-9A-HJ-NP-Za-km-z]{25,40}$/.test(value)){
     return "Enter a valid-looking Dogecoin address.";
   }
 
-  if (network === "LTC" && !/^(ltc1|[LM3])[a-zA-HJ-NP-Z0-9]{20,90}$/.test(value)) {
+  if(network==="LTC" &&
+     !/^(ltc1|[LM3])[a-zA-HJ-NP-Z0-9]{20,90}$/.test(value)){
     return "Enter a valid-looking Litecoin address.";
   }
 
-  if (network === "BCH" && !/^(bitcoincash:)?(q|p)[a-z0-9]{20,60}$/i.test(value)) {
+  if(network==="BCH" &&
+     !/^(bitcoincash:)?(q|p)[a-z0-9]{20,60}$/i.test(value)){
     return "Enter a valid-looking Bitcoin Cash address.";
   }
 
-  if (network === "ADA" && !/^(addr1|Ae2)[a-zA-Z0-9]{20,110}$/.test(value)) {
+  if(network==="ADA" &&
+     !/^(addr1|Ae2)[a-zA-Z0-9]{20,110}$/.test(value)){
     return "Enter a valid-looking Cardano address.";
   }
 
-  if (network === "DOT" && value.length < 20) {
-    return "Check your Polkadot receiving address.";
-  }
-
-  if (network === "COSMOS" && !value.startsWith("cosmos1")) {
+  if(network==="COSMOS"&&!value.startsWith("cosmos1")){
     return "Enter a Cosmos Hub address beginning with cosmos1.";
   }
 
-  if (network === "NEAR" && value.length < 2) {
-    return "Enter your NEAR receiving address.";
-  }
-
-  if (network === "APTOS" && !/^0x[a-fA-F0-9]{1,64}$/.test(value)) {
+  if(network==="APTOS"&&!/^0x[a-fA-F0-9]{1,64}$/.test(value)){
     return "Enter a valid-looking Aptos address.";
   }
 
-  if (["ERC20", "BEP20", "POLYGON", "ARBITRUM", "OPTIMISM",
-       "BASE", "AVAX_C"].includes(network) &&
-      ["LINK", "SHIB", "ETH", "USDT", "USDC", "BNB", "POL", "AVAX", "ARB", "OP"].includes(asset) &&
-      !/^0x[a-fA-F0-9]{40}$/.test(value)) {
-    return "Enter a valid-looking wallet address.";
+  if(network==="TON"&&value.length<20){
+    return "Check your TON receiving address.";
+  }
+
+  if(network==="NEAR"&&value.length<2){
+    return "Enter your NEAR receiving address.";
+  }
+
+  if(network==="DOT"&&value.length<20){
+    return "Check your Polkadot receiving address.";
   }
 
   return null;
 }
 
-$("withdrawForm").addEventListener("submit", async event => {
+$("withdrawForm").addEventListener("submit",async event=>{
   event.preventDefault();
 
-  if (requestInProgress) return;
-
+  if(requestInProgress)return;
   clearMessage();
 
-  const asset = selectedAsset();
-  const network = $("networkSelect").value;
-  const address = $("addressInput").value.trim();
-  const memo = $("memoInput").value.trim();
-  const amount = Number($("amountInput").value);
+  const asset=selectedAsset();
+  const network=$("networkSelect").value;
+  const address=$("addressInput").value.trim();
+  const memo=$("memoInput").value.trim();
+  const amount=Number($("amountInput").value);
 
-  if (!asset) {
+  if(!asset){
     showMessage("Select a cryptocurrency.");
     return;
   }
 
-  const networkIsSupported = asset.networks.some(
-    item => item.value === network
-  );
-
-  if (!networkIsSupported) {
+  if(!asset.networks.some(item=>item.value===network)){
     showMessage("Select a supported network for this cryptocurrency.");
     return;
   }
 
-  if (!Number.isFinite(amount) || amount <= 0) {
+  if(!Number.isFinite(amount)||amount<=0){
     showMessage("Enter a withdrawal amount greater than zero.");
     return;
   }
 
-  const availableProfit = getProfitBalance(asset.symbol);
+  const availableProfit=getProfitBalance(asset.symbol);
 
-  if (amount > availableProfit) {
-    showMessage("Your withdrawal amount exceeds your available profit balance.");
+  if(amount>availableProfit){
+    showMessage("Your withdrawal exceeds your available profit balance.");
     return;
   }
 
-  if (["XRP", "XLM"].includes(asset.symbol) && !memo) {
-    showMessage("Enter the destination tag or memo required by your receiving wallet.");
+  if(["XRP","XLM"].includes(asset.symbol)&&!memo){
+    showMessage("Enter the destination tag or memo if your receiving wallet requires one.");
     return;
   }
 
-  const addressError = validateAddress(
-    asset.symbol,
-    network,
-    address,
-    memo
-  );
+  const addressError=validateAddress(network,address);
 
-  if (addressError) {
+  if(addressError){
     showMessage(addressError);
     return;
   }
 
-  const wallet = getWallet(asset.symbol);
-
-  if (!wallet) {
+  if(!getWallet(asset.symbol)){
     showMessage("No wallet was found for this cryptocurrency.");
     return;
   }
 
-  const confirmed = window.confirm(
-    "Submit a profit withdrawal request?\n\n" +
-    "Coin: " + asset.symbol + "\n" +
-    "Network: " + network + "\n" +
-    "Amount: " + amount + " " + asset.symbol + "\n\n" +
-    "Confirm that the receiving address belongs to this network."
+  const confirmed=window.confirm(
+    "Submit this withdrawal request?\n\n"+
+    "Coin: "+asset.symbol+"\n"+
+    "Network: "+network+"\n"+
+    "Amount: "+amount+" "+asset.symbol+"\n\n"+
+    "Confirm the address and network match your receiving wallet."
   );
 
-  if (!confirmed) return;
+  if(!confirmed)return;
 
-  requestInProgress = true;
-  $("submitButton").disabled = true;
-  $("submitButton").textContent = "Submitting...";
+  requestInProgress=true;
+  $("submitButton").disabled=true;
+  $("submitButton").textContent="Submitting...";
 
-  try {
+  try{
     /*
-     * The server-side RPC MUST enforce profit-only withdrawals.
-     * A browser-provided source value is not a security boundary.
+     * The existing RPC must support these exact argument names.
+     * The server must independently enforce profit-only withdrawals,
+     * check the coin/network pair, and calculate fees securely.
      */
-    const { error } = await db.rpc("request_withdrawal", {
-      p_asset: asset.symbol,
-      p_network: network,
-      p_address: address,
-      p_memo_tag: memo || null,
-      p_amount: amount,
-      p_withdrawal_source: "PROFIT"
+    const {error}=await db.rpc("request_withdrawal",{
+      p_asset:asset.symbol,
+      p_network:network,
+      p_address:address,
+      p_memo_tag:memo||null,
+      p_amount:amount,
+      p_withdrawal_source:"PROFIT"
     });
 
-    if (error) {
-      console.error("Withdrawal request failed:", error);
-      throw new Error(
-        error.message || "Unable to submit the withdrawal request."
-      );
+    if(error){
+      console.error("Withdrawal request failed:",error);
+      throw new Error(error.message||"Unable to submit withdrawal request.");
     }
 
-    showMessage(
-      "Your withdrawal request has been submitted successfully.",
-      "success"
-    );
+    showMessage("Your withdrawal request has been submitted successfully.","success");
 
-    $("withdrawForm").reset();
-    $("assetSelect").value = asset.symbol;
-    updateSelectedAsset();
+    $("addressInput").value="";
+    $("memoInput").value="";
+    $("amountInput").value="";
 
-    await Promise.all([
-      loadWallets(),
-      loadHistory()
-    ]);
-  } catch (error) {
-    showMessage(error.message || "Something went wrong. Please try again.");
-  } finally {
-    requestInProgress = false;
-    $("submitButton").disabled = false;
-    $("submitButton").textContent = "Request Withdrawal";
+    await Promise.all([loadWallets(),loadHistory()]);
+  }catch(error){
+    showMessage(error.message||"Something went wrong. Please try again.");
+  }finally{
+    requestInProgress=false;
+    $("submitButton").disabled=false;
+    $("submitButton").textContent="Request Withdrawal";
   }
 });
 
-async function init() {
-  try {
-    const { data, error } = await db.auth.getSession();
+async function init(){
+  try{
+    const {data,error}=await db.auth.getSession();
 
-    if (error) throw error;
+    if(error)throw error;
 
-    currentUser = data?.session?.user || null;
+    currentUser=data?.session?.user||null;
 
-    if (!currentUser) {
+    if(!currentUser){
       window.location.replace("signin.html");
       return;
     }
@@ -1479,10 +1261,10 @@ async function init() {
       loadProfile(),
       loadHistory()
     ]);
-  } catch (error) {
-    console.error("Page initialization failed:", error);
-    showMessage(error.message || "Unable to load your account.");
-  } finally {
+  }catch(error){
+    console.error("Page initialization failed:",error);
+    showMessage(error.message||"Unable to load your account.");
+  }finally{
     setLoading(false);
   }
 }
