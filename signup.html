@@ -7,465 +7,415 @@
 <meta name="description" content="Create your AITIVEST account securely.">
 
 <title>Create Account — AITIVEST</title>
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 :root {
-    --bar: #0a1628;
-    --bg: #07111f;
-    --card: #0d1b2c;
-    --text: #f5f7fb;
-    --muted: #93a1b5;
-    --gold: #d8b15a;
-    --border: #26384e;
-    --input: #081522;
-    --error: #ff9292;
-    --success: #8be6aa;
+    --bar:#0a1628;
+    --bg:#07111f;
+    --card:#0d1b2c;
+    --text:#f5f7fb;
+    --muted:#93a1b5;
+    --gold:#d8b15a;
+    --border:#26384e;
+    --input:#081522;
+    --error:#ff9292;
+    --success:#8be6aa;
 }
 
-* {
-    box-sizing: border-box;
+*{box-sizing:border-box}
+
+body{
+    margin:0;
+    min-height:100vh;
+    font-family:Arial,Helvetica,sans-serif;
+    background:var(--bg);
+    color:var(--text);
 }
 
-body {
-    margin: 0;
-    min-height: 100vh;
-    font-family: Arial, Helvetica, sans-serif;
-    background: var(--bg);
-    color: var(--text);
+a{text-decoration:none}
+
+.topbar{
+    min-height:43px;
+    background:#050b15;
+    border-bottom:1px solid rgba(216,177,90,.15);
+    display:flex;
+    align-items:center;
+    gap:24px;
+    padding:10px max(16px,calc((100% - 760px)/2));
 }
 
-a {
-    text-decoration: none;
+.topbar a{font-size:13px;color:#aeb9c9}
+.topbar a.active,.topbar a:hover{color:var(--gold)}
+
+.header{
+    height:68px;
+    padding:0 18px;
+    background:var(--bar);
+    border-bottom:1px solid rgba(216,177,90,.15);
 }
 
-.topbar {
-    min-height: 43px;
-    background: #050b15;
-    border-bottom: 1px solid rgba(216,177,90,.15);
-    display: flex;
-    align-items: center;
-    gap: 24px;
-    padding: 10px max(16px, calc((100% - 760px) / 2));
+.header-inner{
+    width:100%;
+    max-width:760px;
+    height:100%;
+    margin:auto;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
 }
 
-.topbar a {
-    font-size: 13px;
-    color: #aeb9c9;
+.brand{
+    display:inline-flex;
+    align-items:center;
+    gap:9px;
+    font-size:21px;
+    font-weight:900;
+    letter-spacing:2px;
 }
 
-.topbar a.active,
-.topbar a:hover {
-    color: var(--gold);
+.brand-mark{
+    width:32px;
+    height:32px;
+    display:inline-flex;
+    justify-content:center;
+    align-items:center;
+    color:var(--gold);
+    border:1.5px solid var(--gold);
+    clip-path:polygon(50% 0,100% 100%,0 100%);
+    font-size:18px;
+    padding-top:6px;
 }
 
-.header {
-    height: 68px;
-    padding: 0 18px;
-    background: var(--bar);
-    border-bottom: 1px solid rgba(216,177,90,.15);
+.brand-aiti{color:#fff}
+.brand-vest{color:var(--gold)}
+
+.header-actions{
+    display:flex;
+    align-items:center;
+    gap:13px;
 }
 
-.header-inner {
-    width: 100%;
-    max-width: 760px;
-    height: 100%;
-    margin: auto;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
+.language{
+    color:#e7edf6;
+    background:#0b192b;
+    border:1px solid var(--border);
+    border-radius:5px;
+    padding:8px 9px;
+    font-size:12px;
+    outline:none;
 }
 
-.brand {
-    display: inline-flex;
-    align-items: center;
-    gap: 9px;
-    font-size: 21px;
-    font-weight: 900;
-    letter-spacing: 2px;
+.menu{
+    width:38px;
+    height:38px;
+    border:1px solid var(--border);
+    border-radius:6px;
+    background:#0b192b;
+    color:var(--gold);
+    font-size:22px;
+    cursor:pointer;
 }
 
-.brand-mark {
-    width: 32px;
-    height: 32px;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    color: var(--gold);
-    border: 1.5px solid var(--gold);
-    clip-path: polygon(50% 0, 100% 100%, 0 100%);
-    font-size: 18px;
-    padding-top: 6px;
+main{
+    min-height:calc(100vh - 111px);
+    padding:38px 16px 32px;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
 }
 
-.brand-aiti {
-    color: #fff;
+.card{
+    width:100%;
+    max-width:440px;
+    padding:27px 24px 25px;
+    background:var(--card);
+    border:1px solid rgba(216,177,90,.22);
+    border-radius:5px;
+    box-shadow:0 18px 55px rgba(0,0,0,.22);
 }
 
-.brand-vest {
-    color: var(--gold);
+h1{margin:0 0 9px;font-size:25px;font-weight:700}
+
+.subtitle{
+    margin:0 0 24px;
+    font-size:13px;
+    line-height:1.6;
+    color:var(--muted);
 }
 
-.header-actions {
-    display: flex;
-    align-items: center;
-    gap: 13px;
+.divider{
+    height:1px;
+    background:var(--border);
+    margin-bottom:22px;
 }
 
-.language {
-    color: #e7edf6;
-    background: #0b192b;
-    border: 1px solid var(--border);
-    border-radius: 5px;
-    padding: 8px 9px;
-    font-size: 12px;
-    outline: none;
+.field{margin-bottom:14px}
+
+label{
+    display:block;
+    font-size:13px;
+    color:#cbd5e1;
+    margin:0 0 7px;
 }
 
-.menu {
-    width: 38px;
-    height: 38px;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    background: #0b192b;
-    color: var(--gold);
-    font-size: 22px;
-    cursor: pointer;
-}
-
-main {
-    min-height: calc(100vh - 111px);
-    padding: 38px 16px 32px;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-}
-
-.card {
-    width: 100%;
-    max-width: 440px;
-    padding: 27px 24px 25px;
-    background: var(--card);
-    border: 1px solid rgba(216,177,90,.22);
-    border-radius: 5px;
-    box-shadow: 0 18px 55px rgba(0,0,0,.22);
-}
-
-h1 {
-    margin: 0 0 9px;
-    font-size: 25px;
-    font-weight: 700;
-}
-
-.subtitle {
-    margin: 0 0 24px;
-    font-size: 13px;
-    line-height: 1.6;
-    color: var(--muted);
-}
-
-.divider {
-    height: 1px;
-    background: var(--border);
-    margin-bottom: 22px;
-}
-
-.field {
-    margin-bottom: 14px;
-}
-
-label {
-    display: block;
-    font-size: 13px;
-    color: #cbd5e1;
-    margin: 0 0 7px;
-}
-
-.input-wrap {
-    position: relative;
-}
+.input-wrap{position:relative}
 
 input[type="text"],
 input[type="email"],
-input[type="password"] {
-    display: block;
-    width: 100%;
-    height: 47px;
-    padding: 0 13px;
-    font-size: 14px;
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    background: var(--input);
-    color: #fff;
-    outline: none;
+input[type="password"]{
+    display:block;
+    width:100%;
+    height:47px;
+    padding:0 13px;
+    font-size:14px;
+    border:1px solid var(--border);
+    border-radius:4px;
+    background:var(--input);
+    color:#fff;
+    outline:none;
 }
 
-input::placeholder {
-    color: #637286;
+input::placeholder{color:#637286}
+
+input:focus{
+    border-color:var(--gold);
+    box-shadow:0 0 0 2px rgba(216,177,90,.08);
 }
 
-input:focus {
-    border-color: var(--gold);
-    box-shadow: 0 0 0 2px rgba(216,177,90,.08);
+.password-input{padding-right:65px!important}
+
+.toggle{
+    position:absolute;
+    right:11px;
+    top:50%;
+    transform:translateY(-50%);
+    background:none;
+    border:0;
+    color:var(--gold);
+    font-size:12px;
+    font-weight:700;
+    cursor:pointer;
 }
 
-.password-input {
-    padding-right: 65px !important;
+.strength{
+    height:4px;
+    width:100%;
+    background:#172536;
+    border-radius:10px;
+    margin-top:8px;
+    overflow:hidden;
 }
 
-.toggle {
-    position: absolute;
-    right: 11px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: 0;
-    color: var(--gold);
-    font-size: 12px;
-    font-weight: 700;
-    cursor: pointer;
+.strength-bar{
+    height:100%;
+    width:0;
+    background:var(--gold);
+    transition:width .2s,background .2s;
 }
 
-.strength {
-    height: 4px;
-    width: 100%;
-    background: #172536;
-    border-radius: 10px;
-    margin-top: 8px;
-    overflow: hidden;
+.strength-text{
+    font-size:11px;
+    color:#7f8da0;
+    margin-top:6px;
 }
 
-.strength-bar {
-    height: 100%;
-    width: 0;
-    background: var(--gold);
-    transition: width .2s, background .2s;
+.error{
+    color:var(--error);
+    font-size:11px;
+    text-align:right;
+    margin-top:4px;
+    min-height:0;
 }
 
-.strength-text {
-    font-size: 11px;
-    color: #7f8da0;
-    margin-top: 6px;
+/* CAPTCHA — MATCHING DARK NAVY AND GOLD THEME */
+.captcha{
+    display:flex;
+    align-items:center;
+    gap:10px;
 }
 
-.error {
-    color: var(--error);
-    font-size: 11px;
-    text-align: right;
-    margin-top: 4px;
-    min-height: 0;
+.captcha-code{
+    position:relative;
+    isolation:isolate;
+    overflow:hidden;
+    flex:1;
+    height:44px;
+    border:1px solid #26384e;
+    border-radius:4px;
+    background:#081522;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:10px;
+    user-select:none;
 }
 
-.captcha {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+.captcha-digit{
+    position:relative;
+    z-index:2;
+    color:#d8b15a;
+    font-family:Georgia,serif;
+    font-size:25px;
+    font-weight:900;
+    text-shadow:0 0 8px rgba(216,177,90,.22);
 }
 
-.captcha-code {
-    position: relative;
-    isolation: isolate;
-    overflow: hidden;
-    flex: 1;
-    height: 44px;
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    background: #f4f5f7;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    user-select: none;
+.captcha-noise{
+    position:absolute;
+    inset:0;
+    z-index:1;
+    pointer-events:none;
 }
 
-.captcha-digit {
-    position: relative;
-    z-index: 2;
-    color: #263548;
-    font-family: Georgia, serif;
-    font-size: 25px;
-    font-weight: 900;
-    text-shadow: 1px 1px 0 white;
+.captcha-line{
+    position:absolute;
+    height:1px;
+    background:rgba(216,177,90,.42);
 }
 
-.captcha-noise {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    pointer-events: none;
+.captcha-dot{
+    position:absolute;
+    width:3px;
+    height:3px;
+    border-radius:50%;
+    background:#d8b15a;
+    opacity:.5;
 }
 
-.captcha-line {
-    position: absolute;
-    height: 1px;
-    background: rgba(142,65,45,.65);
+.refresh-btn{
+    width:44px;
+    height:44px;
+    flex-shrink:0;
+    border-radius:4px;
+    border:1px solid #26384e;
+    background:#081522;
+    color:#d8b15a;
+    font-size:22px;
+    cursor:pointer;
 }
 
-.captcha-dot {
-    position: absolute;
-    width: 3px;
-    height: 3px;
-    border-radius: 50%;
-    background: #26384e;
+.refresh-btn:hover{background:#14253a}
+
+.captcha-input{margin-top:9px}
+
+.captcha-help{
+    color:#7f8da0;
+    font-size:11px;
+    line-height:1.5;
+    margin-top:6px;
 }
 
-.refresh-btn {
-    width: 44px;
-    height: 44px;
-    flex-shrink: 0;
-    border-radius: 4px;
-    border: 1px solid var(--border);
-    background: var(--input);
-    color: var(--gold);
-    font-size: 22px;
-    cursor: pointer;
+.terms{
+    display:flex;
+    align-items:flex-start;
+    gap:9px;
+    margin:17px 0;
 }
 
-.refresh-btn:hover {
-    background: #14253a;
+.terms input{
+    width:16px;
+    height:16px;
+    margin-top:2px;
+    flex-shrink:0;
+    accent-color:var(--gold);
 }
 
-.captcha-input {
-    margin-top: 9px;
+.terms label{
+    margin:0;
+    font-size:12px;
+    line-height:1.6;
+    color:#8998aa;
 }
 
-.captcha-help {
-    color: #7f8da0;
-    font-size: 11px;
-    line-height: 1.5;
-    margin-top: 6px;
+.terms a{color:var(--gold)}
+
+.submit{
+    width:100%;
+    min-height:48px;
+    margin-top:5px;
+    padding:12px;
+    border:0;
+    border-radius:4px;
+    background:var(--gold);
+    color:#07111f;
+    font-size:14px;
+    font-weight:800;
+    cursor:pointer;
 }
 
-.terms {
-    display: flex;
-    align-items: flex-start;
-    gap: 9px;
-    margin: 17px 0;
+.submit:hover{background:#edc96f}
+.submit:disabled{opacity:.6;cursor:not-allowed}
+
+.message{
+    display:none;
+    padding:11px;
+    border-radius:4px;
+    margin-bottom:17px;
+    font-size:12px;
+    line-height:1.6;
+    overflow-wrap:anywhere;
 }
 
-.terms input {
-    width: 16px;
-    height: 16px;
-    margin-top: 2px;
-    flex-shrink: 0;
-    accent-color: var(--gold);
+.message.error{
+    display:block;
+    background:rgba(220,38,38,.08);
+    border:1px solid rgba(255,146,146,.25);
+    color:var(--error);
+    text-align:left;
 }
 
-.terms label {
-    margin: 0;
-    font-size: 12px;
-    line-height: 1.6;
-    color: #8998aa;
+.message.success{
+    display:block;
+    background:rgba(34,197,94,.08);
+    border:1px solid rgba(139,230,170,.25);
+    color:var(--success);
 }
 
-.terms a {
-    color: var(--gold);
+.bottom{
+    margin-top:23px;
+    text-align:center;
+    color:var(--muted);
+    font-size:12px;
+    line-height:1.8;
 }
 
-.submit {
-    width: 100%;
-    min-height: 48px;
-    margin-top: 5px;
-    padding: 12px;
-    border: 0;
-    border-radius: 4px;
-    background: var(--gold);
-    color: #07111f;
-    font-size: 14px;
-    font-weight: 800;
-    cursor: pointer;
+.bottom a{color:var(--gold);font-weight:700}
+
+.back{margin-top:18px;text-align:center}
+.back a{color:#8391a5;font-size:12px}
+
+.footer{
+    padding:15px 16px 24px;
+    text-align:center;
+    color:#627187;
+    font-size:11px;
 }
 
-.submit:hover {
-    background: #edc96f;
+.loading{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
 }
 
-.submit:disabled {
-    opacity: .6;
-    cursor: not-allowed;
+.spinner{
+    width:14px;
+    height:14px;
+    border:2px solid rgba(7,17,31,.3);
+    border-top-color:#07111f;
+    border-radius:50%;
+    animation:spin .7s linear infinite;
 }
 
-.message {
-    display: none;
-    padding: 11px;
-    border-radius: 4px;
-    margin-bottom: 17px;
-    font-size: 12px;
-    line-height: 1.6;
-    overflow-wrap: anywhere;
-}
+@keyframes spin{to{transform:rotate(360deg)}}
 
-.message.error {
-    display: block;
-    background: rgba(220,38,38,.08);
-    border: 1px solid rgba(255,146,146,.25);
-    color: var(--error);
-}
-
-.message.success {
-    display: block;
-    background: rgba(34,197,94,.08);
-    border: 1px solid rgba(139,230,170,.25);
-    color: var(--success);
-}
-
-.bottom {
-    margin-top: 23px;
-    text-align: center;
-    color: var(--muted);
-    font-size: 12px;
-    line-height: 1.8;
-}
-
-.bottom a {
-    color: var(--gold);
-    font-weight: 700;
-}
-
-.back {
-    margin-top: 18px;
-    text-align: center;
-}
-
-.back a {
-    color: #8391a5;
-    font-size: 12px;
-}
-
-.footer {
-    padding: 15px 16px 24px;
-    text-align: center;
-    color: #627187;
-    font-size: 11px;
-}
-
-.loading {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-}
-
-.spinner {
-    width: 14px;
-    height: 14px;
-    border: 2px solid rgba(7,17,31,.3);
-    border-top-color: #07111f;
-    border-radius: 50%;
-    animation: spin .7s linear infinite;
-}
-
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
-
-@media(max-width:380px) {
-    .card { padding: 23px 17px; }
-    h1 { font-size: 23px; }
-    .brand { font-size: 18px; }
-    .header { padding: 0 12px; }
+@media(max-width:380px){
+    .card{padding:23px 17px}
+    h1{font-size:23px}
+    .brand{font-size:18px}
+    .header{padding:0 12px}
 }
 </style>
 </head>
@@ -479,7 +429,6 @@ input:focus {
 
 <header class="header">
     <div class="header-inner">
-
         <a href="index.html" class="brand" aria-label="AITIVEST home">
             <span class="brand-mark">A</span>
             <span><span class="brand-aiti">AITI</span><span class="brand-vest">VEST</span></span>
@@ -489,17 +438,14 @@ input:focus {
             <select class="language" aria-label="Language">
                 <option value="en">EN</option>
             </select>
-
             <button class="menu" id="menuButton" type="button"
                     aria-label="Go to homepage">☰</button>
         </div>
-
     </div>
 </header>
 
 <main>
     <div class="card">
-
         <h1>Create Your Account</h1>
 
         <p class="subtitle">
@@ -508,52 +454,34 @@ input:focus {
 
         <div class="divider"></div>
 
-        <div id="message" class="message"
-             role="status" aria-live="polite"></div>
+        <div id="message" class="message" role="status" aria-live="polite"></div>
 
         <form id="signupForm" novalidate>
-
             <div class="field">
                 <label for="fullName">Full Name</label>
-                <input
-                    type="text"
-                    id="fullName"
-                    placeholder="Enter your full name"
-                    autocomplete="name"
-                    minlength="2"
-                    maxlength="100"
-                    required
-                >
+                <input type="text" id="fullName"
+                       placeholder="Enter your full name"
+                       autocomplete="name" minlength="2"
+                       maxlength="100" required>
                 <div class="error" id="nameError"></div>
             </div>
 
             <div class="field">
                 <label for="email">Email Address</label>
-                <input
-                    type="email"
-                    id="email"
-                    placeholder="Enter your email address"
-                    autocomplete="email"
-                    maxlength="254"
-                    required
-                >
+                <input type="email" id="email"
+                       placeholder="Enter your email address"
+                       autocomplete="email" maxlength="254" required>
                 <div class="error" id="emailError"></div>
             </div>
 
             <div class="field">
                 <label for="password">Password</label>
-
                 <div class="input-wrap">
-                    <input
-                        type="password"
-                        id="password"
-                        class="password-input"
-                        placeholder="Create a password"
-                        autocomplete="new-password"
-                        minlength="8"
-                        maxlength="128"
-                        required
-                    >
+                    <input type="password" id="password"
+                           class="password-input"
+                           placeholder="Create a password"
+                           autocomplete="new-password"
+                           minlength="8" maxlength="128" required>
                     <button type="button" class="toggle"
                             id="togglePassword">Show</button>
                 </div>
@@ -570,26 +498,20 @@ input:focus {
 
             <div class="field">
                 <label for="confirmPassword">Confirm Password</label>
-
                 <div class="input-wrap">
-                    <input
-                        type="password"
-                        id="confirmPassword"
-                        class="password-input"
-                        placeholder="Confirm your password"
-                        autocomplete="new-password"
-                        maxlength="128"
-                        required
-                    >
+                    <input type="password" id="confirmPassword"
+                           class="password-input"
+                           placeholder="Confirm your password"
+                           autocomplete="new-password"
+                           maxlength="128" required>
                     <button type="button" class="toggle"
                             id="toggleConfirm">Show</button>
                 </div>
-
                 <div class="error" id="confirmError"></div>
             </div>
 
             <div class="field">
-                <label>Security Check</label>
+                <label for="captchaInput">Security Check</label>
 
                 <div class="captcha">
                     <div id="captchaCode" class="captcha-code"
@@ -600,28 +522,22 @@ input:focus {
                             aria-label="Refresh security code">↻</button>
                 </div>
 
-                <input
-                    type="text"
-                    id="captchaInput"
-                    class="captcha-input"
-                    placeholder="code"
-                    inputmode="numeric"
-                    pattern="[0-9]{3}"
-                    maxlength="3"
-                    autocomplete="off"
-                    required
-                >
+                <input type="text" id="captchaInput"
+                       class="captcha-input"
+                       placeholder="code"
+                       inputmode="numeric"
+                       pattern="[0-9]{3}"
+                       maxlength="3"
+                       autocomplete="off" required>
 
                 <p class="captcha-help">
-                    Enter the three digits shown above.
-                    Tap ↻ to generate a new code.
+                    Enter the three digits shown above. Tap ↻ to generate a new code.
                 </p>
                 <div class="error" id="captchaError"></div>
             </div>
 
             <div class="terms">
                 <input type="checkbox" id="terms" required>
-
                 <label for="terms">
                     I agree to the
                     <a href="index.html#terms">Terms</a>,
@@ -636,7 +552,6 @@ input:focus {
             <button type="submit" class="submit" id="submitBtn">
                 Create Account
             </button>
-
         </form>
 
         <div class="bottom">
@@ -647,7 +562,6 @@ input:focus {
         <div class="back">
             <a href="index.html">← Back to AITIVEST</a>
         </div>
-
     </div>
 </main>
 
@@ -658,7 +572,6 @@ input:focus {
 <script>
 "use strict";
 
-/* SUPABASE */
 const SUPABASE_URL =
     "https://rihvvwktvgytbqzazage.supabase.co";
 
@@ -669,15 +582,14 @@ const db = window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_PUBLISHABLE_KEY,
     {
-        auth: {
-            autoRefreshToken: true,
-            persistSession: true,
-            detectSessionInUrl: true
+        auth:{
+            autoRefreshToken:true,
+            persistSession:true,
+            detectSessionInUrl:true
         }
     }
 );
 
-/* ELEMENTS */
 const form = document.getElementById("signupForm");
 const fullName = document.getElementById("fullName");
 const email = document.getElementById("email");
@@ -694,101 +606,88 @@ const strengthText = document.getElementById("strengthText");
 let captchaValue = "";
 let signupInProgress = false;
 
-/* REFERRAL CODE CAPTURE */
 const REFERRAL_KEY = "aitivest_signup_referral";
 
-function getReferralCode() {
+function getReferralCode(){
     const params = new URLSearchParams(location.search);
     const incoming = params.get("ref");
 
-    if (incoming) {
+    if(incoming){
         const cleaned = incoming.trim().toUpperCase();
 
-        if (/^[A-Z0-9_-]{3,64}$/.test(cleaned)) {
-            try {
-                sessionStorage.setItem(REFERRAL_KEY, cleaned);
-            } catch (_) {}
-
+        if(/^[A-Z0-9_-]{3,64}$/.test(cleaned)){
+            try{sessionStorage.setItem(REFERRAL_KEY,cleaned)}catch(_){}
             return cleaned;
         }
     }
 
-    try {
+    try{
         const saved = sessionStorage.getItem(REFERRAL_KEY);
-
-        if (saved && /^[A-Z0-9_-]{3,64}$/.test(saved)) {
-            return saved;
-        }
-    } catch (_) {}
+        if(saved && /^[A-Z0-9_-]{3,64}$/.test(saved)) return saved;
+    }catch(_){}
 
     return "";
 }
 
 const referralCode = getReferralCode();
 
-/* MESSAGES AND FIELD ERRORS */
-function showMessage(text, type) {
+function showMessage(text,type){
     message.className = "message " + type;
     message.textContent = text;
 }
 
-function clearMessage() {
+function clearMessage(){
     message.className = "message";
     message.textContent = "";
 }
 
-function setError(id, text) {
+function setError(id,text){
     document.getElementById(id).textContent = text || "";
 }
 
-function clearErrors() {
+function clearErrors(){
     [
-        "nameError",
-        "emailError",
-        "passwordError",
-        "confirmError",
-        "captchaError",
-        "termsError"
-    ].forEach(id => setError(id, ""));
+        "nameError","emailError","passwordError",
+        "confirmError","captchaError","termsError"
+    ].forEach(id=>setError(id,""));
 }
 
-/* CAPTCHA */
-function generateCaptcha() {
-    captchaValue = String(Math.floor(100 + Math.random() * 900));
-
+/* CAPTCHA GENERATOR */
+function generateCaptcha(){
+    captchaValue = String(Math.floor(100 + Math.random()*900));
     captchaCode.replaceChildren();
 
     const noise = document.createElement("div");
     noise.className = "captcha-noise";
-    noise.setAttribute("aria-hidden", "true");
+    noise.setAttribute("aria-hidden","true");
 
-    for (let i = 0; i < 8; i++) {
+    for(let i=0;i<8;i++){
         const line = document.createElement("span");
         line.className = "captcha-line";
-        line.style.width = (20 + Math.random() * 60) + "px";
-        line.style.left = (Math.random() * 90) + "%";
-        line.style.top = (Math.random() * 100) + "%";
+        line.style.width = (20+Math.random()*60)+"px";
+        line.style.left = (Math.random()*90)+"%";
+        line.style.top = (Math.random()*100)+"%";
         line.style.transform =
-            "rotate(" + (Math.random() * 150 - 75) + "deg)";
+            "rotate("+(Math.random()*150-75)+"deg)";
         noise.appendChild(line);
     }
 
-    for (let i = 0; i < 25; i++) {
+    for(let i=0;i<25;i++){
         const dot = document.createElement("span");
         dot.className = "captcha-dot";
-        dot.style.left = (Math.random() * 97) + "%";
-        dot.style.top = (Math.random() * 95) + "%";
+        dot.style.left = (Math.random()*97)+"%";
+        dot.style.top = (Math.random()*95)+"%";
         noise.appendChild(dot);
     }
 
     captchaCode.appendChild(noise);
 
-    for (const digit of captchaValue) {
+    for(const digit of captchaValue){
         const character = document.createElement("span");
         character.className = "captcha-digit";
         character.textContent = digit;
         character.style.transform =
-            "rotate(" + (Math.random() * 36 - 18) + "deg)";
+            "rotate("+(Math.random()*36-18)+"deg)";
         captchaCode.appendChild(character);
     }
 
@@ -796,84 +695,78 @@ function generateCaptcha() {
 }
 
 document.getElementById("refreshCaptcha")
-    .addEventListener("click", generateCaptcha);
+    .addEventListener("click",generateCaptcha);
 
 generateCaptcha();
 
 /* PASSWORD VISIBILITY */
 document.getElementById("togglePassword")
-    .addEventListener("click", function() {
-        const showing = password.type === "password";
-        password.type = showing ? "text" : "password";
-        this.textContent = showing ? "Hide" : "Show";
-    });
+.addEventListener("click",function(){
+    const showing = password.type === "password";
+    password.type = showing ? "text" : "password";
+    this.textContent = showing ? "Hide" : "Show";
+});
 
 document.getElementById("toggleConfirm")
-    .addEventListener("click", function() {
-        const showing = confirmPassword.type === "password";
-        confirmPassword.type = showing ? "text" : "password";
-        this.textContent = showing ? "Hide" : "Show";
-    });
+.addEventListener("click",function(){
+    const showing = confirmPassword.type === "password";
+    confirmPassword.type = showing ? "text" : "password";
+    this.textContent = showing ? "Hide" : "Show";
+});
 
 /* PASSWORD STRENGTH */
-password.addEventListener("input", function() {
+password.addEventListener("input",function(){
     const value = this.value;
     let score = 0;
 
-    if (value.length >= 8) score++;
-    if (/[a-z]/.test(value)) score++;
-    if (/[A-Z]/.test(value)) score++;
-    if (/[0-9]/.test(value)) score++;
-    if (/[^A-Za-z0-9]/.test(value)) score++;
+    if(value.length>=8) score++;
+    if(/[a-z]/.test(value)) score++;
+    if(/[A-Z]/.test(value)) score++;
+    if(/[0-9]/.test(value)) score++;
+    if(/[^A-Za-z0-9]/.test(value)) score++;
 
     const levels = [
-        ["0%", "#172536", "Use at least 8 characters."],
-        ["20%", "#ef6b73", "Very weak password."],
-        ["40%", "#ef6b73", "Weak password."],
-        ["60%", "#d8b15a", "Moderate password."],
-        ["80%", "#32c48d", "Strong password."],
-        ["100%", "#32c48d", "Very strong password."]
+        ["0%","#172536","Use at least 8 characters."],
+        ["20%","#ef6b73","Very weak password."],
+        ["40%","#ef6b73","Weak password."],
+        ["60%","#d8b15a","Moderate password."],
+        ["80%","#32c48d","Strong password."],
+        ["100%","#32c48d","Very strong password."]
     ];
 
-    const level = value.length === 0 ? levels[0] : levels[score];
+    const level = value.length===0 ? levels[0] : levels[score];
 
     strengthBar.style.width = level[0];
     strengthBar.style.background = level[1];
     strengthText.textContent = level[2];
 
-    if (confirmPassword.value) {
+    if(confirmPassword.value){
         setError(
             "confirmError",
-            confirmPassword.value === value
-                ? ""
-                : "Passwords do not match."
+            confirmPassword.value===value ? "" : "Passwords do not match."
         );
     }
 });
 
-/* CLEAR ERRORS AS THE USER EDITS */
-fullName.addEventListener("input", () => setError("nameError", ""));
-email.addEventListener("input", () => setError("emailError", ""));
-password.addEventListener("input", () => setError("passwordError", ""));
+fullName.addEventListener("input",()=>setError("nameError",""));
+email.addEventListener("input",()=>setError("emailError",""));
+password.addEventListener("input",()=>setError("passwordError",""));
 
-confirmPassword.addEventListener("input", () => {
+confirmPassword.addEventListener("input",()=>{
     setError(
         "confirmError",
-        confirmPassword.value === password.value
-            ? ""
-            : "Passwords do not match."
+        confirmPassword.value===password.value ? "" : "Passwords do not match."
     );
 });
 
-captchaInput.addEventListener("input", () => {
-    captchaInput.value = captchaInput.value.replace(/\D/g, "").slice(0, 3);
-    setError("captchaError", "");
+captchaInput.addEventListener("input",()=>{
+    captchaInput.value=captchaInput.value.replace(/\D/g,"").slice(0,3);
+    setError("captchaError","");
 });
 
-terms.addEventListener("change", () => setError("termsError", ""));
+terms.addEventListener("change",()=>setError("termsError",""));
 
-/* LOADING STATE */
-function setLoading(loading) {
+function setLoading(loading){
     signupInProgress = loading;
     submitBtn.disabled = loading;
 
@@ -882,11 +775,11 @@ function setLoading(loading) {
         : "Create Account";
 }
 
-/* REGISTER */
-form.addEventListener("submit", async function(event) {
+/* REGISTRATION */
+form.addEventListener("submit",async function(event){
     event.preventDefault();
 
-    if (signupInProgress) return;
+    if(signupInProgress) return;
 
     clearMessage();
     clearErrors();
@@ -899,146 +792,116 @@ form.addEventListener("submit", async function(event) {
 
     let valid = true;
 
-    if (name.length < 2) {
-        setError("nameError", "Enter your full name.");
-        valid = false;
+    if(name.length<2){
+        setError("nameError","Enter your full name.");
+        valid=false;
     }
 
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)) {
-        setError("emailError", "Enter a valid email address.");
-        valid = false;
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)){
+        setError("emailError","Enter a valid email address.");
+        valid=false;
     }
 
-    if (passwordValue.length < 8) {
-        setError("passwordError", "Password must be at least 8 characters.");
-        valid = false;
+    if(passwordValue.length<8){
+        setError("passwordError","Password must be at least 8 characters.");
+        valid=false;
     }
 
-    if (confirmValue !== passwordValue) {
-        setError("confirmError", "Passwords do not match.");
-        valid = false;
+    if(confirmValue!==passwordValue){
+        setError("confirmError","Passwords do not match.");
+        valid=false;
     }
 
-    if (codeValue !== captchaValue) {
-        setError("captchaError", "Incorrect code. Please try again.");
+    if(codeValue!==captchaValue){
+        setError("captchaError","Incorrect code. Please try again.");
         generateCaptcha();
-        valid = false;
+        valid=false;
     }
 
-    if (!terms.checked) {
-        setError("termsError", "Please accept the terms to continue.");
-        valid = false;
+    if(!terms.checked){
+        setError("termsError","Please accept the terms to continue.");
+        valid=false;
     }
 
-    if (!valid) return;
+    if(!valid) return;
 
     setLoading(true);
 
-    try {
-        const metadata = {
-            full_name: name
-        };
+    try{
+        const metadata = {full_name:name};
 
-        /*
-         * Pass the referral code as signup metadata.
-         * Actual referral attribution must be implemented
-         * and validated by a trusted database trigger/RPC.
-         */
-        if (referralCode) {
+        if(referralCode){
             metadata.referral_code = referralCode;
         }
 
-        const { data, error } = await db.auth.signUp({
-            email: emailValue,
-            password: passwordValue,
-            options: {
-                data: metadata,
-                emailRedirectTo: new URL(
+        const {data,error} = await db.auth.signUp({
+            email:emailValue,
+            password:passwordValue,
+            options:{
+                data:metadata,
+                emailRedirectTo:new URL(
                     "dashboard.html",
                     location.href
                 ).href
             }
         });
 
-        if (error) throw error;
+        if(error) throw error;
 
-        if (!data || !data.user) {
+        if(!data || !data.user){
             throw new Error("Registration could not be completed.");
         }
 
-        if (data.session) {
+        if(data.session){
             showMessage(
                 "Your account has been created successfully. Redirecting to your dashboard...",
                 "success"
             );
 
-            try {
-                sessionStorage.removeItem(REFERRAL_KEY);
-            } catch (_) {}
+            try{sessionStorage.removeItem(REFERRAL_KEY)}catch(_){}
 
-            setTimeout(() => {
-                location.replace("dashboard.html");
-            }, 1200);
-
-        } else {
+            setTimeout(()=>location.replace("dashboard.html"),1200);
+        }else{
             showMessage(
                 "Your registration was accepted. Please check your email and confirm your address before signing in.",
                 "success"
             );
 
-            /*
-             * Do not redirect immediately: the user needs
-             * time to read the email-confirmation message.
-             */
             form.reset();
             generateCaptcha();
-
-            strengthBar.style.width = "0%";
-            strengthText.textContent = "Use at least 8 characters.";
+            strengthBar.style.width="0%";
+            strengthText.textContent="Use at least 8 characters.";
         }
 
-    } catch (error) {
-        console.error("AITIVEST registration error:", error);
+    }catch(error){
+        console.error("AITIVEST registration error:",error);
 
         const detail = String(error?.message || "").toLowerCase();
+        let friendly = "Unable to create your account. Please try again.";
 
-        let friendly =
-            "Unable to create your account. Please try again.";
-
-        if (
+        if(
             detail.includes("user already registered") ||
             detail.includes("already been registered")
-        ) {
+        ){
             friendly =
                 "An account with this email may already exist. Try signing in or resetting your password.";
-        } else if (
-            detail.includes("password") ||
-            detail.includes("email")
-        ) {
-            friendly = error.message;
-        } else if (
-            detail.includes("failed to fetch") ||
-            detail.includes("network")
-        ) {
+        }else if(detail.includes("failed to fetch") || detail.includes("network")){
             friendly =
                 "Network error. Check your internet connection and try again.";
-        } else if (error?.message) {
-            friendly = error.message;
+        }else if(error?.message){
+            friendly=error.message;
         }
 
-        showMessage(friendly, "error");
+        showMessage(friendly,"error");
         generateCaptcha();
 
-    } finally {
+    }finally{
         setLoading(false);
     }
 });
 
-/* HEADER MENU */
 document.getElementById("menuButton")
-    .addEventListener("click", () => {
-        location.href = "index.html";
-    });
+.addEventListener("click",()=>location.href="index.html");
 </script>
 
 </body>
