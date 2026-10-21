@@ -3,55 +3,42 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Withdraw — NEXORA</title>
+<meta name="theme-color" content="#07111f">
+<title>Withdraw — AITIVEST</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 :root{
   --bg:#07111f;
-  --bg2:#0b1728;
+  --bg2:#091626;
   --card:#0d1b2d;
-  --card2:#102238;
+  --card2:#112238;
   --border:rgba(255,255,255,.08);
   --text:#f5f7fa;
-  --muted:#91a0b5;
-  --gold:#d8ad4c;
-  --gold2:#f0cf78;
-  --danger:#ef6b73;
-  --success:#4fd18b;
-  --white:#fff;
+  --muted:#9aa7b8;
+  --gold:#d9a441;
+  --gold2:#f0c866;
+  --green:#32c48d;
+  --red:#ef6b73;
+  --shadow:0 18px 50px rgba(0,0,0,.25);
 }
 
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-}
+*{box-sizing:border-box;margin:0;padding:0}
 
-html,body{
-  min-height:100%;
-}
+html,body{min-height:100%;scroll-behavior:smooth}
 
 body{
   font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  background:var(--bg);
+  background:radial-gradient(circle at 95% 0%,rgba(217,164,65,.08),transparent 28%),linear-gradient(180deg,#07111f,#091524);
   color:var(--text);
-  padding-bottom:82px;
+  padding-bottom:88px;
 }
 
-button,input{
-  font:inherit;
-}
-
-button{
-  cursor:pointer;
-}
-
-a{
-  color:inherit;
-  text-decoration:none;
-}
+button,input{font:inherit}
+button{cursor:pointer}
+button:disabled{opacity:.45;cursor:not-allowed}
+a{color:inherit;text-decoration:none}
 
 .topbar{
   height:68px;
@@ -73,531 +60,255 @@ a{
   align-items:center;
 }
 
-.menu-btn,
-.profile-mini{
-  width:40px;
-  height:40px;
-  border:0;
-  border-radius:50%;
-  background:transparent;
-  color:var(--text);
-  display:flex;
-  align-items:center;
-  justify-content:center;
+.menu-btn,.profile-mini{
+  width:40px;height:40px;border:0;border-radius:50%;
+  background:transparent;color:var(--text);
+  display:flex;align-items:center;justify-content:center;
 }
 
-.menu-btn{
-  font-size:25px;
-}
+.menu-btn{font-size:25px}
 
 .logo{
   justify-self:center;
-  font-size:22px;
-  font-weight:800;
-  letter-spacing:1.5px;
+  display:flex;align-items:center;gap:9px;
+  font-size:22px;font-weight:800;letter-spacing:1.5px;
 }
 
-.logo span{
-  color:var(--gold);
+.logo-mark{
+  width:31px;height:31px;
+  display:flex;align-items:center;justify-content:center;
+  border:1.5px solid var(--gold);
+  border-radius:10px 10px 10px 3px;
+  color:var(--gold2);
+  font-size:19px;
+  transform:rotate(-3deg);
 }
+
+.logo-word span,.drawer-logo span{color:var(--gold)}
 
 .profile-mini{
-  background:rgba(216,173,76,.14);
+  background:rgba(217,164,65,.14);
   color:var(--gold2);
-  font-size:13px;
-  font-weight:800;
+  font-size:13px;font-weight:800;
 }
 
 .page{
-  width:100%;
-  max-width:760px;
-  margin:0 auto;
+  width:100%;max-width:760px;margin:0 auto;
   padding:24px 18px 30px;
 }
 
-.page-head{
-  margin-bottom:22px;
-}
+.page-head{margin-bottom:22px}
+.page-head h1{font-size:28px;line-height:1.15;margin-bottom:7px}
+.page-head p{color:var(--muted);font-size:14px;line-height:1.6}
 
-.page-head h1{
-  font-size:28px;
-  line-height:1.15;
-  margin-bottom:7px;
-}
-
-.page-head p{
-  color:var(--muted);
-  font-size:14px;
-  line-height:1.55;
-}
-
-/* DRAWER */
+/* Drawer */
 
 .drawer-overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.62);
-  z-index:90;
-  display:none;
+  position:fixed;inset:0;background:rgba(0,0,0,.65);
+  z-index:90;display:none;
 }
-
-.drawer-overlay.show{
-  display:block;
-}
+.drawer-overlay.show{display:block}
 
 .drawer{
-  position:fixed;
-  left:0;
-  top:0;
-  bottom:0;
+  position:fixed;left:0;top:0;bottom:0;
   width:min(310px,86vw);
-  background:#091522;
+  background:#091625;
   border-right:1px solid var(--border);
   z-index:100;
   transform:translateX(-105%);
-  transition:.25s ease;
-  overflow-y:auto;
-  padding:22px 16px;
+  transition:transform .25s ease;
+  overflow-y:auto;padding:22px 16px;
 }
-
-.drawer.show{
-  transform:translateX(0);
-}
+.drawer.show{transform:translateX(0)}
 
 .drawer-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
+  display:flex;align-items:center;justify-content:space-between;
   margin-bottom:25px;
 }
-
-.drawer-logo{
-  font-size:22px;
-  font-weight:800;
-  letter-spacing:1.5px;
+.drawer-logo{display:flex;align-items:center;gap:8px;font-size:21px;font-weight:800;letter-spacing:1.3px}
+.drawer-mark{
+  width:29px;height:29px;border:1px solid var(--gold);
+  border-radius:9px 9px 9px 3px;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--gold2);
 }
-
-.drawer-logo span{
-  color:var(--gold);
-}
-
 .close-drawer{
-  width:38px;
-  height:38px;
-  border:1px solid var(--border);
-  border-radius:50%;
-  background:var(--card);
-  color:var(--text);
-  font-size:20px;
+  width:38px;height:38px;border:1px solid var(--border);
+  border-radius:50%;background:var(--card);color:var(--text);font-size:20px;
 }
-
 .drawer-user{
-  padding:15px;
-  border:1px solid var(--border);
-  background:var(--card);
-  border-radius:15px;
-  margin-bottom:18px;
+  padding:15px;border:1px solid var(--border);
+  background:var(--card);border-radius:15px;margin-bottom:18px;
 }
-
-.drawer-user-name{
-  font-weight:700;
-  margin-bottom:4px;
-}
-
+.drawer-user-name{font-weight:700;margin-bottom:4px}
 .drawer-user-email{
-  color:var(--muted);
-  font-size:12px;
-  overflow:hidden;
-  text-overflow:ellipsis;
+  color:var(--muted);font-size:12px;overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap;
 }
-
 .drawer-link{
-  display:flex;
-  align-items:center;
-  gap:13px;
-  padding:13px 12px;
-  border-radius:12px;
-  color:#d9e0e9;
-  margin-bottom:4px;
-  font-size:14px;
+  display:flex;align-items:center;gap:13px;
+  padding:13px 12px;border-radius:12px;
+  color:#d9e0e9;margin-bottom:4px;font-size:14px;
 }
-
-.drawer-link:hover{
-  background:rgba(216,173,76,.08);
-  color:var(--gold2);
+.drawer-link:hover,.drawer-link.active{
+  background:rgba(217,164,65,.10);color:var(--gold2);
 }
-
-.drawer-link.active{
-  background:rgba(216,173,76,.12);
-  color:var(--gold2);
-}
-
-.drawer-icon{
-  width:23px;
-  text-align:center;
-  font-size:17px;
-}
-
+.drawer-icon{width:23px;text-align:center;font-size:17px}
 .logout-link{
-  margin-top:15px;
-  border-top:1px solid var(--border);
-  padding-top:18px;
-  color:#f09a9f;
+  margin-top:15px;border-top:1px solid var(--border);
+  padding-top:18px;color:#f09a9f;
 }
 
-/* CARDS */
+/* Cards */
 
 .card{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:18px;
-  padding:18px;
-  margin-bottom:16px;
+  background:linear-gradient(145deg,rgba(17,34,56,.96),rgba(13,27,45,.98));
+  border:1px solid var(--border);border-radius:18px;
+  padding:18px;margin-bottom:16px;box-shadow:var(--shadow);
 }
+.card-title{font-size:15px;font-weight:750;margin-bottom:5px}
+.card-subtitle{color:var(--muted);font-size:12px;line-height:1.6}
 
-.card-title{
-  font-size:15px;
-  font-weight:750;
-  margin-bottom:5px;
-}
-
-.card-subtitle{
-  color:var(--muted);
-  font-size:12px;
-  line-height:1.5;
-}
-
-/* SOURCE */
+/* Source */
 
 .source-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-  margin-top:15px;
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:15px;
 }
-
 .source-btn{
-  border:1px solid var(--border);
-  background:var(--card2);
-  border-radius:15px;
-  padding:16px 13px;
-  color:var(--text);
-  text-align:left;
+  border:1px solid var(--border);background:var(--card2);
+  border-radius:15px;padding:16px 13px;color:var(--text);text-align:left;
 }
-
-.source-btn.active{
-  border-color:var(--gold);
-  background:rgba(216,173,76,.10);
-}
-
-.source-name{
-  font-weight:750;
-  margin-bottom:5px;
-}
-
-.source-balance{
-  font-size:12px;
-  color:var(--muted);
-}
-
-.source-btn.active .source-balance{
-  color:var(--gold2);
-}
-
-/* BALANCE */
+.source-btn.active{border-color:var(--gold);background:rgba(217,164,65,.10)}
+.source-name{font-weight:750;margin-bottom:5px}
+.source-balance{font-size:12px;color:var(--muted);overflow-wrap:anywhere}
+.source-btn.active .source-balance{color:var(--gold2)}
 
 .balance-box{
-  margin-top:15px;
-  border:1px solid var(--border);
-  border-radius:15px;
-  padding:15px;
-  background:rgba(255,255,255,.025);
+  margin-top:15px;border:1px solid var(--border);
+  border-radius:15px;padding:15px;background:rgba(255,255,255,.025);
 }
+.balance-label{color:var(--muted);font-size:12px;margin-bottom:6px}
+.balance-value{font-size:25px;font-weight:800;overflow-wrap:anywhere}
+.balance-value span{color:var(--gold2);font-size:13px;margin-left:4px}
 
-.balance-label{
-  color:var(--muted);
-  font-size:12px;
-  margin-bottom:6px;
-}
-
-.balance-value{
-  font-size:25px;
-  font-weight:800;
-}
-
-.balance-value span{
-  color:var(--gold2);
-  font-size:13px;
-  margin-left:4px;
-}
-
-/* ASSET */
+/* Assets */
 
 .asset-list{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:9px;
-  margin-top:14px;
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:9px;margin-top:14px;
 }
-
 .asset-btn{
-  border:1px solid var(--border);
-  background:var(--card2);
-  border-radius:13px;
-  padding:11px;
-  color:var(--text);
-  display:flex;
-  align-items:center;
-  gap:9px;
-  text-align:left;
+  min-width:0;border:1px solid var(--border);background:var(--card2);
+  border-radius:13px;padding:11px;color:var(--text);
+  display:flex;align-items:center;gap:9px;text-align:left;
 }
-
-.asset-btn.active{
-  border-color:var(--gold);
-  background:rgba(216,173,76,.08);
-}
-
+.asset-btn.active{border-color:var(--gold);background:rgba(217,164,65,.08)}
 .asset-logo{
-  width:28px;
-  height:28px;
-  object-fit:contain;
-  flex-shrink:0;
+  width:28px;height:28px;object-fit:contain;flex-shrink:0;
 }
+.asset-symbol{font-size:13px;font-weight:750}
+.asset-name{display:block;color:var(--muted);font-size:10px;margin-top:2px}
+.asset-text{min-width:0;overflow-wrap:anywhere}
 
-.asset-symbol{
-  font-size:13px;
-  font-weight:750;
-}
+/* Form */
 
-.asset-name{
-  display:block;
-  color:var(--muted);
-  font-size:10px;
-  margin-top:2px;
-}
-
-/* FORM */
-
-.field{
-  margin-top:15px;
-}
-
-.field label{
-  display:block;
-  font-size:12px;
-  color:var(--muted);
-  margin-bottom:7px;
-}
-
+.field{margin-top:15px}
+.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:7px}
 .field input{
-  width:100%;
-  height:48px;
-  border-radius:13px;
-  border:1px solid var(--border);
-  background:#091625;
-  color:var(--text);
-  padding:0 13px;
-  outline:none;
+  width:100%;height:48px;border-radius:13px;
+  border:1px solid var(--border);background:#091625;
+  color:var(--text);padding:0 13px;outline:none;
 }
+.field input:focus{border-color:var(--gold)}
+.field input::placeholder{color:#718096}
 
-.field input:focus{
-  border-color:var(--gold);
-}
-
-.amount-row{
-  position:relative;
-}
-
+.amount-row{position:relative}
+.amount-row input{padding-right:76px}
 .max-btn{
-  position:absolute;
-  right:8px;
-  top:7px;
-  height:34px;
-  border:1px solid rgba(216,173,76,.35);
-  background:rgba(216,173,76,.10);
-  color:var(--gold2);
-  border-radius:9px;
-  padding:0 10px;
-  font-size:11px;
-  font-weight:750;
+  position:absolute;right:8px;top:7px;height:34px;
+  border:1px solid rgba(217,164,65,.35);
+  background:rgba(217,164,65,.10);color:var(--gold2);
+  border-radius:9px;padding:0 10px;font-size:11px;font-weight:750;
 }
+.network-note{margin-top:9px;color:var(--muted);font-size:11px;line-height:1.6}
 
-.network-note{
-  margin-top:9px;
-  color:var(--muted);
-  font-size:11px;
-  line-height:1.5;
+.warning,.success{
+  display:none;margin-top:13px;padding:12px;border-radius:12px;
+  font-size:12px;line-height:1.6;overflow-wrap:anywhere;
 }
-
 .warning{
-  display:none;
-  margin-top:13px;
-  padding:12px;
-  border-radius:12px;
   background:rgba(239,107,115,.08);
-  border:1px solid rgba(239,107,115,.25);
-  color:#f5a8ad;
-  font-size:12px;
-  line-height:1.5;
+  border:1px solid rgba(239,107,115,.25);color:#f5a8ad;
 }
-
-.warning.show{
-  display:block;
-}
-
+.warning.show{display:block}
 .success{
-  display:none;
-  margin-top:13px;
-  padding:12px;
-  border-radius:12px;
-  background:rgba(79,209,139,.08);
-  border:1px solid rgba(79,209,139,.25);
-  color:#8be6b5;
-  font-size:12px;
-  line-height:1.5;
+  background:rgba(50,196,141,.08);
+  border:1px solid rgba(50,196,141,.25);color:#8be6b5;
 }
-
-.success.show{
-  display:block;
-}
+.success.show{display:block}
 
 .primary-btn{
-  width:100%;
-  height:50px;
-  border:0;
-  border-radius:14px;
-  background:var(--gold);
-  color:#101722;
-  font-weight:800;
-  margin-top:18px;
+  width:100%;min-height:50px;border:0;border-radius:14px;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  color:#101722;font-weight:800;margin-top:18px;
 }
+.primary-btn:disabled{opacity:.5;cursor:not-allowed}
 
-.primary-btn:disabled{
-  opacity:.45;
-  cursor:not-allowed;
-}
+/* Recent withdrawals */
 
-/* WITHDRAWALS */
-
-.withdrawal-item{
-  padding:14px 0;
-  border-bottom:1px solid var(--border);
-}
-
-.withdrawal-item:last-child{
-  border-bottom:0;
-  padding-bottom:0;
-}
-
-.withdrawal-top{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-}
-
-.withdrawal-amount{
-  font-weight:750;
-}
-
+.withdrawal-item{padding:14px 0;border-bottom:1px solid var(--border)}
+.withdrawal-item:last-child{border-bottom:0;padding-bottom:0}
+.withdrawal-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.withdrawal-amount{font-weight:750;overflow-wrap:anywhere}
 .withdrawal-status{
-  font-size:10px;
-  font-weight:800;
-  padding:5px 8px;
-  border-radius:999px;
-  background:rgba(216,173,76,.10);
-  color:var(--gold2);
+  font-size:10px;font-weight:800;padding:5px 8px;border-radius:999px;
+  background:rgba(217,164,65,.10);color:var(--gold2);white-space:nowrap;
 }
-
+.withdrawal-status.approved,.withdrawal-status.completed,.withdrawal-status.paid{
+  background:rgba(50,196,141,.12);color:#74e0af;
+}
+.withdrawal-status.rejected,.withdrawal-status.failed,.withdrawal-status.cancelled{
+  background:rgba(239,107,115,.12);color:#ff9da3;
+}
 .withdrawal-meta{
-  display:flex;
-  flex-wrap:wrap;
-  gap:7px;
-  color:var(--muted);
-  font-size:11px;
-  margin-top:7px;
+  display:flex;flex-wrap:wrap;gap:7px;color:var(--muted);
+  font-size:11px;margin-top:7px;overflow-wrap:anywhere;
 }
+.empty,.loading{color:var(--muted);font-size:13px;padding:8px 0;line-height:1.6}
 
-.empty{
-  color:var(--muted);
-  font-size:13px;
-  padding:8px 0;
-}
-
-.loading{
-  color:var(--muted);
-  font-size:13px;
-}
-
-/* BOTTOM NAV */
+/* Bottom nav */
 
 .bottom-nav{
-  position:fixed;
-  left:0;
-  right:0;
-  bottom:0;
-  height:70px;
-  z-index:60;
-  background:rgba(7,17,31,.97);
-  border-top:1px solid var(--border);
+  position:fixed;left:0;right:0;bottom:0;height:70px;z-index:60;
+  background:rgba(7,17,31,.97);border-top:1px solid var(--border);
   backdrop-filter:blur(15px);
 }
-
 .bottom-inner{
-  max-width:760px;
-  height:70px;
-  margin:auto;
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
+  max-width:760px;height:70px;margin:auto;
+  display:grid;grid-template-columns:repeat(4,1fr);
 }
-
 .bottom-link{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:4px;
-  color:#7f8da1;
-  font-size:10px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:4px;color:#7f8da1;font-size:10px;
 }
-
-.bottom-link .bottom-icon{
-  font-size:19px;
-  line-height:1;
-}
-
-.bottom-link.active{
-  color:var(--gold2);
-}
+.bottom-link .bottom-icon{font-size:19px;line-height:1}
+.bottom-link.active{color:var(--gold2)}
 
 .toast{
-  position:fixed;
-  left:50%;
-  bottom:88px;
+  position:fixed;left:50%;bottom:88px;
   transform:translateX(-50%) translateY(20px);
-  background:#132238;
-  border:1px solid var(--border);
-  color:var(--text);
-  padding:11px 15px;
-  border-radius:12px;
-  font-size:12px;
-  z-index:200;
-  opacity:0;
-  pointer-events:none;
-  transition:.2s ease;
-  max-width:90%;
-  text-align:center;
+  background:#132238;border:1px solid var(--border);color:var(--text);
+  padding:11px 15px;border-radius:12px;font-size:12px;z-index:200;
+  opacity:0;pointer-events:none;transition:.2s;max-width:90%;text-align:center;
 }
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
-.toast.show{
-  opacity:1;
-  transform:translateX(-50%) translateY(0);
-}
-
-@media(max-width:430px){
-  .asset-list{
-    grid-template-columns:1fr 1fr;
-  }
+@media(max-width:380px){
+  .page{padding-left:12px;padding-right:12px}
+  .card{padding:14px}
+  .asset-list{gap:7px}
+  .asset-btn{padding:9px;gap:7px}
+  .asset-logo{width:24px;height:24px}
 }
 </style>
 </head>
@@ -607,454 +318,196 @@ a{
 <header class="topbar">
   <div class="topbar-inner">
     <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
-
-    <a href="dashboard.html" class="logo">
-      NEX<span>ORA</span>
+    <a href="dashboard.html" class="logo" aria-label="AITIVEST home">
+      <span class="logo-mark">A</span>
+      <span class="logo-word">AITI<span>VEST</span></span>
     </a>
-
-    <div class="profile-mini" id="profileInitials">—</div>
+    <div class="profile-mini" id="profileInitials">A</div>
   </div>
 </header>
-
-<!-- DRAWER -->
 
 <div class="drawer-overlay" id="drawerOverlay"></div>
 
 <aside class="drawer" id="drawer">
-
   <div class="drawer-head">
-    <div class="drawer-logo">NEX<span>ORA</span></div>
-    <button class="close-drawer" id="closeDrawer">×</button>
+    <div class="drawer-logo">
+      <span class="drawer-mark">A</span>
+      <span>AITI<span>VEST</span></span>
+    </div>
+    <button class="close-drawer" id="closeDrawer" aria-label="Close menu">×</button>
   </div>
 
   <div class="drawer-user">
     <div class="drawer-user-name" id="drawerName">Account</div>
-    <div class="drawer-user-email" id="drawerEmail">—</div>
+    <div class="drawer-user-email" id="drawerEmail">Loading account…</div>
   </div>
 
-  <a class="drawer-link" href="dashboard.html">
-    <span class="drawer-icon">⌂</span>
-    <span>Portfolio</span>
-  </a>
-
-  <a class="drawer-link" href="deposit.html">
-    <span class="drawer-icon">＋</span>
-    <span>Deposit</span>
-  </a>
-
-  <a class="drawer-link active" href="withdraw.html">
-    <span class="drawer-icon">↓</span>
-    <span>Withdraw</span>
-  </a>
-
-  <a class="drawer-link" href="transactions.html">
-    <span class="drawer-icon">≡</span>
-    <span>Transactions</span>
-  </a>
-
-  <a class="drawer-link" href="referrals.html">
-    <span class="drawer-icon">♧</span>
-    <span>Referrals</span>
-  </a>
-
-  <a class="drawer-link" href="profile.html">
-    <span class="drawer-icon">○</span>
-    <span>Profile</span>
-  </a>
-
-  <a class="drawer-link" href="support.html">
-    <span class="drawer-icon">?</span>
-    <span>Support</span>
-  </a>
-
-  <a class="drawer-link" href="notifications.html">
-    <span class="drawer-icon">◌</span>
-    <span>Notifications</span>
-  </a>
-
-  <a class="drawer-link logout-link" href="#" id="logoutBtn">
-    <span class="drawer-icon">↪</span>
-    <span>Logout</span>
-  </a>
-
+  <a class="drawer-link" href="dashboard.html"><span class="drawer-icon">⌂</span><span>Portfolio</span></a>
+  <a class="drawer-link" href="deposit.html"><span class="drawer-icon">＋</span><span>Deposit</span></a>
+  <a class="drawer-link active" href="withdraw.html"><span class="drawer-icon">↓</span><span>Withdraw</span></a>
+  <a class="drawer-link" href="transactions.html"><span class="drawer-icon">≡</span><span>Transactions</span></a>
+  <a class="drawer-link" href="referrals.html"><span class="drawer-icon">♧</span><span>Referrals</span></a>
+  <a class="drawer-link" href="profile.html"><span class="drawer-icon">○</span><span>Profile</span></a>
+  <a class="drawer-link" href="support.html"><span class="drawer-icon">?</span><span>Support</span></a>
+  <a class="drawer-link" href="notifications.html"><span class="drawer-icon">◌</span><span>Notifications</span></a>
+  <a class="drawer-link logout-link" href="#" id="logoutBtn"><span class="drawer-icon">↪</span><span>Logout</span></a>
 </aside>
 
 <main class="page">
 
   <section class="page-head">
     <h1>Withdraw</h1>
-    <p>Choose what you want to withdraw, then enter your destination details.</p>
+    <p>Choose your withdrawal source and asset, then enter your destination details carefully.</p>
   </section>
 
-  <!-- SOURCE -->
-
   <section class="card">
-
     <div class="card-title">Withdrawal source</div>
-
-    <div class="card-subtitle">
-      Choose whether you want to withdraw earned profit or deposited principal.
-    </div>
+    <div class="card-subtitle">Choose whether to withdraw earned profit or eligible deposited principal.</div>
 
     <div class="source-grid">
-
-      <button class="source-btn active" id="profitSource">
+      <button type="button" class="source-btn active" id="profitSource">
         <div class="source-name">Profit</div>
-        <div class="source-balance" id="profitSourceBalance">
-          Available: —
-        </div>
+        <div class="source-balance" id="profitSourceBalance">Available: —</div>
       </button>
 
-      <button class="source-btn" id="principalSource">
+      <button type="button" class="source-btn" id="principalSource">
         <div class="source-name">Principal</div>
-        <div class="source-balance" id="principalSourceBalance">
-          Available: —
-        </div>
+        <div class="source-balance" id="principalSourceBalance">Available: —</div>
       </button>
-
     </div>
 
     <div class="balance-box">
-      <div class="balance-label" id="selectedBalanceLabel">
-        Available profit
-      </div>
-
-      <div class="balance-value">
-        <span id="selectedBalance">—</span>
-        <span>USDT</span>
-      </div>
+      <div class="balance-label" id="selectedBalanceLabel">Available profit</div>
+      <div class="balance-value"><span id="selectedBalance">—</span><span id="balanceAsset">USDT</span></div>
     </div>
-
   </section>
 
-  <!-- ASSET -->
-
   <section class="card">
-
-    <div class="card-title">Asset</div>
-
-    <div class="card-subtitle">
-      Select the asset you want to withdraw.
-    </div>
-
+    <div class="card-title">Select asset</div>
+    <div class="card-subtitle">Choose the cryptocurrency you want to withdraw. Only assets with available balances can be submitted.</div>
     <div class="asset-list" id="assetList"></div>
-
   </section>
 
-  <!-- WITHDRAWAL FORM -->
-
   <section class="card">
-
     <div class="card-title">Withdrawal details</div>
-
-    <div class="card-subtitle">
-      Make sure the address and network are correct before submitting.
-    </div>
+    <div class="card-subtitle">Check that the destination address and network match. Crypto transfers to the wrong network or address may be irreversible.</div>
 
     <div class="field">
       <label for="network">Network</label>
-      <input
-        id="network"
-        type="text"
-        placeholder="e.g. Ethereum / ERC20"
-        autocomplete="off"
-      >
+      <input id="network" type="text" placeholder="e.g. Ethereum / ERC20" autocomplete="off" maxlength="80">
     </div>
 
     <div class="field">
       <label for="address">Withdrawal address</label>
-      <input
-        id="address"
-        type="text"
-        placeholder="Enter destination address"
-        autocomplete="off"
-      >
+      <input id="address" type="text" placeholder="Enter destination address" autocomplete="off" maxlength="250">
     </div>
 
     <div class="field" id="memoField">
-      <label for="memoTag">Memo / Tag <span style="color:var(--muted)">(XRP when required)</span></label>
-      <input
-        id="memoTag"
-        type="text"
-        placeholder="Optional"
-        autocomplete="off"
-      >
+      <label for="memoTag">Memo / Tag (optional)</label>
+      <input id="memoTag" type="text" placeholder="Enter destination memo/tag if required" autocomplete="off" maxlength="120">
     </div>
 
     <div class="field">
-      <label for="amount">Amount</label>
-
+      <label for="amount">Amount (<span id="amountAsset">USDT</span>)</label>
       <div class="amount-row">
-        <input
-          id="amount"
-          type="number"
-          inputmode="decimal"
-          min="0"
-          step="any"
-          placeholder="0.00"
-        >
-
-        <button class="max-btn" id="maxBtn" type="button">
-          MAX
-        </button>
+        <input id="amount" type="number" inputmode="decimal" min="0" step="any" placeholder="0.00">
+        <button class="max-btn" id="maxBtn" type="button">MAX</button>
       </div>
-
-      <div class="network-note">
-        Withdrawal fee: 0 USDT. The amount entered is the amount reserved from your selected balance.
-      </div>
+      <div class="network-note" id="feeNote">Network fees, minimum withdrawal amounts, and processing rules are determined by the platform.</div>
     </div>
 
-    <div class="warning" id="warning"></div>
-    <div class="success" id="success"></div>
+    <div class="warning" id="warning" role="alert"></div>
+    <div class="success" id="success" role="status"></div>
 
-    <button class="primary-btn" id="withdrawBtn">
-      Request Withdrawal
-    </button>
-
+    <button class="primary-btn" id="withdrawBtn" type="button">Request Withdrawal</button>
   </section>
 
-  <!-- RECENT -->
-
   <section class="card">
-
     <div class="card-title">Recent withdrawals</div>
-
-    <div id="recentWithdrawals">
-      <div class="loading">Loading...</div>
-    </div>
-
+    <div class="card-subtitle">Your latest withdrawal requests and their current statuses.</div>
+    <div id="recentWithdrawals"><div class="loading">Loading withdrawals…</div></div>
   </section>
 
 </main>
 
-<!-- BOTTOM NAV -->
-
-<nav class="bottom-nav">
-
+<nav class="bottom-nav" aria-label="Bottom navigation">
   <div class="bottom-inner">
-
-    <a class="bottom-link" href="dashboard.html">
-      <span class="bottom-icon">⌂</span>
-      <span>Portfolio</span>
-    </a>
-
-    <a class="bottom-link" href="deposit.html">
-      <span class="bottom-icon">＋</span>
-      <span>Deposit</span>
-    </a>
-
-    <a class="bottom-link" href="transactions.html">
-      <span class="bottom-icon">≡</span>
-      <span>History</span>
-    </a>
-
-    <a class="bottom-link active" href="profile.html">
-      <span class="bottom-icon">○</span>
-      <span>Account</span>
-    </a>
-
+    <a class="bottom-link" href="dashboard.html"><span class="bottom-icon">⌂</span><span>Portfolio</span></a>
+    <a class="bottom-link" href="deposit.html"><span class="bottom-icon">＋</span><span>Deposit</span></a>
+    <a class="bottom-link" href="transactions.html"><span class="bottom-icon">≡</span><span>History</span></a>
+    <a class="bottom-link active" href="profile.html"><span class="bottom-icon">○</span><span>Account</span></a>
   </div>
-
 </nav>
 
-<div class="toast" id="toast"></div>
+<div class="toast" id="toast" role="status"></div>
 
 <script>
-/* =========================================================
-   SUPABASE
-========================================================= */
+"use strict";
 
-const SUPABASE_URL =
-  "https://rihvvwktvgytbqzazage.supabase.co";
+/* Supabase client */
+const SUPABASE_URL = "https://rihvvwktvgytbqzazage.supabase.co";
+const SUPABASE_KEY = "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
+const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-const SUPABASE_KEY =
-  "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
-
-const db =
-  supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
-
-
-/* =========================================================
-   CRYPTO LOGOS
-========================================================= */
-
-const LOGO_BASE =
-  "https://cdn.jsdelivr.net/gh/madenix/Crypto-logo-cdn@main/Logos/";
-
-const logoFiles = {
-  BTC:"BTC.svg",
-  ETH:"ETH.svg",
-  USDT:"USDT.svg",
-  USDC:"USDC.svg",
-  BNB:"BNB.svg",
-  SOL:"SOL.svg",
-  XRP:"XRP.svg",
-  TON:"TON.svg",
-  DOGE:"DOGE.svg",
-  ADA:"ADA.svg",
-  TRX:"TRON.svg",
-  LTC:"LTC.svg",
-  AVAX:"AVAX.svg",
-  DOT:"DOT.svg",
-  LINK:"LINK.svg",
-  POL:"MATIC.svg",
-  SHIB:"SHIB.svg",
-  BCH:"BCH.svg",
-  XLM:"XLM.svg",
-  ATOM:"ATOM.svg",
-  NEAR:"NEAR.svg",
-  APT:"APT.svg",
-  ARB:"ARB.svg",
-  OP:"OP.svg"
-};
+const LOGO_BASE = "https://cdn.jsdelivr.net/gh/madenix/Crypto-logo-cdn@main/Logos/";
 
 const assets = [
-  {
-    symbol:"USDT",
-    name:"Tether"
-  },
-  {
-    symbol:"USDC",
-    name:"USD Coin"
-  },
-  {
-    symbol:"BTC",
-    name:"Bitcoin"
-  },
-  {
-    symbol:"ETH",
-    name:"Ethereum"
-  },
-  {
-    symbol:"BNB",
-    name:"BNB"
-  },
-  {
-    symbol:"SOL",
-    name:"Solana"
-  },
-  {
-    symbol:"XRP",
-    name:"XRP"
-  },
-  {
-    symbol:"TON",
-    name:"Toncoin"
-  },
-  {
-    symbol:"DOGE",
-    name:"Dogecoin"
-  },
-  {
-    symbol:"ADA",
-    name:"Cardano"
-  },
-  {
-    symbol:"TRX",
-    name:"TRON"
-  },
-  {
-    symbol:"LTC",
-    name:"Litecoin"
-  },
-  {
-    symbol:"AVAX",
-    name:"Avalanche"
-  },
-  {
-    symbol:"DOT",
-    name:"Polkadot"
-  },
-  {
-    symbol:"LINK",
-    name:"Chainlink"
-  },
-  {
-    symbol:"POL",
-    name:"Polygon"
-  },
-  {
-    symbol:"SHIB",
-    name:"Shiba Inu"
-  },
-  {
-    symbol:"BCH",
-    name:"Bitcoin Cash"
-  },
-  {
-    symbol:"XLM",
-    name:"Stellar"
-  },
-  {
-    symbol:"ATOM",
-    name:"Cosmos"
-  },
-  {
-    symbol:"NEAR",
-    name:"NEAR Protocol"
-  },
-  {
-    symbol:"APT",
-    name:"Aptos"
-  },
-  {
-    symbol:"ARB",
-    name:"Arbitrum"
-  },
-  {
-    symbol:"OP",
-    name:"Optimism"
-  }
+  {symbol:"USDT",name:"Tether",logo:"USDT.svg"},
+  {symbol:"USDC",name:"USD Coin",logo:"USDC.svg"},
+  {symbol:"BTC",name:"Bitcoin",logo:"BTC.svg"},
+  {symbol:"ETH",name:"Ethereum",logo:"ETH.svg"},
+  {symbol:"BNB",name:"BNB",logo:"BNB.svg"},
+  {symbol:"SOL",name:"Solana",logo:"SOL.svg"},
+  {symbol:"XRP",name:"XRP",logo:"XRP.svg"},
+  {symbol:"TON",name:"Toncoin",logo:"TON.svg"},
+  {symbol:"DOGE",name:"Dogecoin",logo:"DOGE.svg"},
+  {symbol:"ADA",name:"Cardano",logo:"ADA.svg"},
+  {symbol:"TRX",name:"TRON",logo:"TRON.svg"},
+  {symbol:"LTC",name:"Litecoin",logo:"LTC.svg"},
+  {symbol:"AVAX",name:"Avalanche",logo:"AVAX.svg"},
+  {symbol:"DOT",name:"Polkadot",logo:"DOT.svg"},
+  {symbol:"LINK",name:"Chainlink",logo:"LINK.svg"},
+  {symbol:"POL",name:"Polygon",logo:"MATIC.svg"},
+  {symbol:"SHIB",name:"Shiba Inu",logo:"SHIB.svg"},
+  {symbol:"BCH",name:"Bitcoin Cash",logo:"BCH.svg"},
+  {symbol:"XLM",name:"Stellar",logo:"XLM.svg"},
+  {symbol:"ATOM",name:"Cosmos",logo:"ATOM.svg"},
+  {symbol:"NEAR",name:"NEAR Protocol",logo:"NEAR.svg"},
+  {symbol:"APT",name:"Aptos",logo:"APT.svg"},
+  {symbol:"ARB",name:"Arbitrum",logo:"ARB.svg"},
+  {symbol:"OP",name:"Optimism",logo:"OP.svg"}
 ];
 
-
-/* =========================================================
-   STATE
-========================================================= */
-
 let currentUser = null;
-
 let selectedSource = "PROFIT";
-
 let selectedAsset = "USDT";
-
 let wallets = {};
-
 let submitting = false;
+let walletLoadFailed = false;
+let withdrawalLoadFailed = false;
+let authRedirecting = false;
 
-
-/* =========================================================
-   HELPERS
-========================================================= */
-
-function $(id){
-  return document.getElementById(id);
-}
+const $ = id => document.getElementById(id);
 
 function escapeHtml(value){
-  return String(value ?? "")
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  })[char]);
+}
+
+function formatAmount(value){
+  if(value === null || value === undefined || value === "") return "—";
+  const number = Number(value);
+  if(!Number.isFinite(number)) return "—";
+  return number.toLocaleString(undefined,{minimumFractionDigits:0,maximumFractionDigits:8});
 }
 
 function showToast(message){
   const toast = $("toast");
-
   toast.textContent = message;
-
   toast.classList.add("show");
-
   clearTimeout(showToast.timer);
-
-  showToast.timer = setTimeout(() => {
-    toast.classList.remove("show");
-  },3000);
+  showToast.timer = setTimeout(() => toast.classList.remove("show"),3000);
 }
 
 function showWarning(message){
@@ -1074,244 +527,158 @@ function clearMessages(){
   $("success").classList.remove("show");
 }
 
-function formatAmount(value){
-  if(value === null || value === undefined || value === ""){
-    return "—";
-  }
-
-  const number = Number(value);
-
-  if(!Number.isFinite(number)){
-    return "—";
-  }
-
-  return number.toLocaleString(
-    undefined,
-    {
-      minimumFractionDigits:0,
-      maximumFractionDigits:8
-    }
-  );
-}
-
-
-/* =========================================================
-   DRAWER
-========================================================= */
-
+/* Drawer */
 function openDrawer(){
   $("drawer").classList.add("show");
   $("drawerOverlay").classList.add("show");
+  $("menuBtn").setAttribute("aria-expanded","true");
 }
-
 function closeDrawer(){
   $("drawer").classList.remove("show");
   $("drawerOverlay").classList.remove("show");
+  $("menuBtn").setAttribute("aria-expanded","false");
 }
-
 $("menuBtn").addEventListener("click",openDrawer);
-
 $("closeDrawer").addEventListener("click",closeDrawer);
-
 $("drawerOverlay").addEventListener("click",closeDrawer);
-
-
-/* =========================================================
-   LOGOUT
-========================================================= */
-
-$("logoutBtn").addEventListener("click",async e => {
-
-  e.preventDefault();
-
-  await db.auth.signOut();
-
-  window.location.href = "signin.html";
-
+document.addEventListener("keydown",event => {
+  if(event.key === "Escape") closeDrawer();
 });
 
+/* Logout */
+$("logoutBtn").addEventListener("click",async event => {
+  event.preventDefault();
+  const button = $("logoutBtn");
+  button.style.pointerEvents = "none";
+  try{
+    const {error} = await db.auth.signOut();
+    if(error) throw error;
+    window.location.replace("signin.html");
+  }catch(error){
+    console.error(error);
+    button.style.pointerEvents = "";
+    showToast("Unable to log out. Please try again.");
+  }
+});
 
-/* =========================================================
-   PROFILE
-========================================================= */
-
+/* Profile */
 async function loadProfile(){
-
-  const {
-    data,
-    error
-  } = await db
-    .from("profiles")
-    .select("full_name")
+  const {data,error} = await db.from("profiles")
+    .select("full_name,email")
     .eq("id",currentUser.id)
     .maybeSingle();
 
-  if(error){
-    console.error(error);
-    return;
-  }
+  if(error) console.warn("Profile load:",error.message);
 
-  const name =
-    data?.full_name ||
+  const name = data?.full_name ||
     currentUser.user_metadata?.full_name ||
-    "Account";
+    currentUser.email?.split("@")[0] || "Account";
 
-  const initials =
-    name
-      .trim()
-      .split(/\s+/)
-      .slice(0,2)
-      .map(word => word.charAt(0))
-      .join("")
-      .toUpperCase() || "A";
+  const initials = name.trim().split(/\s+/).slice(0,2)
+    .map(part => part.charAt(0)).join("").toUpperCase() || "A";
 
   $("profileInitials").textContent = initials;
-
   $("drawerName").textContent = name;
-
-  $("drawerEmail").textContent =
-    currentUser.email || "—";
+  $("drawerEmail").textContent = data?.email || currentUser.email || "—";
 }
 
-
-/* =========================================================
-   ASSET LIST
-========================================================= */
-
+/* Assets */
 function renderAssets(){
+  $("assetList").replaceChildren();
 
-  const container = $("assetList");
+  for(const asset of assets){
+    const wallet = wallets[asset.symbol];
+    const balance = selectedSource === "PROFIT"
+      ? Number(wallet?.profit_balance || 0)
+      : Number(wallet?.principal_balance || 0);
 
-  container.innerHTML = assets.map(asset => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "asset-btn" + (asset.symbol === selectedAsset ? " active" : "");
+    button.dataset.asset = asset.symbol;
+    button.setAttribute("aria-pressed",String(asset.symbol === selectedAsset));
 
-    const isComingSoon =
-      asset.symbol === "ARB" ||
-      asset.symbol === "OP";
+    const img = document.createElement("img");
+    img.className = "asset-logo";
+    img.src = LOGO_BASE + asset.logo;
+    img.alt = asset.symbol;
+    img.loading = "lazy";
+    img.onerror = () => {
+      img.style.display = "none";
+    };
 
-    return `
-      <button
-        type="button"
-        class="asset-btn ${asset.symbol === selectedAsset ? "active" : ""}"
-        data-asset="${escapeHtml(asset.symbol)}"
-        ${isComingSoon ? "disabled" : ""}
-        style="${isComingSoon ? "opacity:.45;cursor:not-allowed;" : ""}"
-      >
+    const text = document.createElement("span");
+    text.className = "asset-text";
 
-        <img
-          class="asset-logo"
-          src="${LOGO_BASE}${logoFiles[asset.symbol]}"
-          alt="${escapeHtml(asset.symbol)}"
-        >
+    const symbol = document.createElement("span");
+    symbol.className = "asset-symbol";
+    symbol.textContent = asset.symbol;
 
-        <span>
-          <span class="asset-symbol">
-            ${escapeHtml(asset.symbol)}
-          </span>
+    const name = document.createElement("span");
+    name.className = "asset-name";
+    name.textContent = `${asset.name} · ${formatAmount(balance)}`;
 
-          <span class="asset-name">
-            ${isComingSoon ? "Coming Soon" : escapeHtml(asset.name)}
-          </span>
-        </span>
+    text.append(symbol,name);
+    button.append(img,text);
 
-      </button>
-    `;
-  }).join("");
-
-  document
-    .querySelectorAll(".asset-btn:not([disabled])")
-    .forEach(button => {
-
-      button.addEventListener("click",() => {
-
-        selectedAsset =
-          button.dataset.asset;
-
-        renderAssets();
-
-        clearMessages();
-
-      });
-
+    button.addEventListener("click",() => {
+      selectedAsset = asset.symbol;
+      $("amount").value = "";
+      clearMessages();
+      renderAssets();
+      updateSourceDisplay();
+      updateMemoField();
     });
+
+    $("assetList").append(button);
+  }
 }
 
-
-/* =========================================================
-   LOAD WALLETS
-========================================================= */
-
+/* Wallet balances */
 async function loadWallets(){
+  walletLoadFailed = false;
 
-  const {
-    data,
-    error
-  } = await db
-    .from("wallets")
-    .select(`
-      id,
-      asset,
-      available_balance,
-      principal_balance,
-      profit_balance,
-      locked_balance
-    `)
+  const {data,error} = await db.from("wallets")
+    .select("id,asset,available_balance,principal_balance,profit_balance,locked_balance")
     .eq("user_id",currentUser.id);
 
   if(error){
-
-    console.error(error);
-
-    showWarning(
-      "Unable to load your wallet balance. Please refresh and try again."
-    );
-
-    return;
+    console.error("Wallet query failed:",error);
+    walletLoadFailed = true;
+    wallets = {};
+    updateSourceDisplay();
+    showWarning("Your balances could not be loaded. Refresh the page before requesting a withdrawal.");
+    return false;
   }
 
   wallets = {};
-
-  for(const wallet of data || []){
-    wallets[wallet.asset] = wallet;
-  }
+  for(const wallet of data || []) wallets[String(wallet.asset).toUpperCase()] = wallet;
 
   updateSourceDisplay();
+  renderAssets();
+  return true;
 }
 
-
-/* =========================================================
-   SOURCE DISPLAY
-========================================================= */
-
 function getSelectedWallet(){
-
   return wallets[selectedAsset] || null;
 }
 
 function getSourceBalance(){
-
   const wallet = getSelectedWallet();
+  if(!wallet) return 0;
 
-  if(!wallet){
-    return 0;
-  }
+  const column = selectedSource === "PRINCIPAL"
+    ? wallet.principal_balance
+    : wallet.profit_balance;
 
-  if(selectedSource === "PRINCIPAL"){
-    return Number(wallet.principal_balance || 0);
-  }
-
-  return Number(wallet.profit_balance || 0);
+  const value = Number(column ?? 0);
+  return Number.isFinite(value) && value > 0 ? value : 0;
 }
 
 function updateSourceDisplay(){
-
-  const wallet =
-    wallets[selectedAsset] || null;
-
-  const profit =
-    Number(wallet?.profit_balance || 0);
-
-  const principal =
-    Number(wallet?.principal_balance || 0);
+  const wallet = getSelectedWallet();
+  const profit = Number(wallet?.profit_balance || 0);
+  const principal = Number(wallet?.principal_balance || 0);
 
   $("profitSourceBalance").textContent =
     `Available: ${formatAmount(profit)} ${selectedAsset}`;
@@ -1320,511 +687,282 @@ function updateSourceDisplay(){
     `Available: ${formatAmount(principal)} ${selectedAsset}`;
 
   $("selectedBalanceLabel").textContent =
-    selectedSource === "PRINCIPAL"
-      ? `Available principal`
-      : `Available profit`;
+    selectedSource === "PRINCIPAL" ? "Available principal" : "Available profit";
 
-  $("selectedBalance").textContent =
-    formatAmount(getSourceBalance());
+  $("selectedBalance").textContent = walletLoadFailed
+    ? "Unavailable"
+    : formatAmount(getSourceBalance());
 
-  $("maxBtn").disabled =
-    getSourceBalance() <= 0;
+  $("balanceAsset").textContent = selectedAsset;
+  $("amountAsset").textContent = selectedAsset;
+  $("maxBtn").disabled = walletLoadFailed || getSourceBalance() <= 0;
 }
 
-
-/* =========================================================
-   SOURCE BUTTONS
-========================================================= */
-
+/* Withdrawal source */
 function selectSource(source){
-
   selectedSource = source;
-
-  $("profitSource")
-    .classList.toggle(
-      "active",
-      source === "PROFIT"
-    );
-
-  $("principalSource")
-    .classList.toggle(
-      "active",
-      source === "PRINCIPAL"
-    );
-
-  updateSourceDisplay();
-
-  clearMessages();
-
+  $("profitSource").classList.toggle("active",source === "PROFIT");
+  $("principalSource").classList.toggle("active",source === "PRINCIPAL");
   $("amount").value = "";
+  clearMessages();
+  renderAssets();
+  updateSourceDisplay();
 }
 
-$("profitSource").addEventListener(
-  "click",
-  () => selectSource("PROFIT")
-);
+$("profitSource").addEventListener("click",() => selectSource("PROFIT"));
+$("principalSource").addEventListener("click",() => selectSource("PRINCIPAL"));
 
-$("principalSource").addEventListener(
-  "click",
-  () => selectSource("PRINCIPAL")
-);
-
-
-/* =========================================================
-   MAX
-========================================================= */
-
+/* Max button */
 $("maxBtn").addEventListener("click",() => {
-
-  const balance =
-    getSourceBalance();
-
-  if(balance <= 0){
-    showWarning(
-      `You do not have any ${selectedSource.toLowerCase()} available for withdrawal.`
-    );
+  if(walletLoadFailed){
+    showWarning("Balances are unavailable. Reload your wallet before continuing.");
     return;
   }
 
-  $("amount").value =
-    balance.toFixed(8)
-      .replace(/\.?0+$/,"");
+  const balance = getSourceBalance();
+  if(balance <= 0){
+    showWarning(`You have no available ${selectedSource.toLowerCase()} balance for ${selectedAsset}.`);
+    return;
+  }
 
+  $("amount").value = balance.toFixed(8).replace(/\.?0+$/,"");
+  clearMessages();
 });
 
-
-/* =========================================================
-   XRP MEMO
-========================================================= */
-
+/* Memo/tag hint */
 function updateMemoField(){
-
-  const label =
-    document.querySelector("#memoField label");
-
-  const input =
-    $("memoTag");
+  const label = $("memoField").querySelector("label");
+  const input = $("memoTag");
 
   if(selectedAsset === "XRP"){
-
-    label.innerHTML =
-      'Memo / Tag <span style="color:var(--gold2)">(optional)</span>';
-
-    input.placeholder =
-      "Enter destination tag if required";
-
+    label.textContent = "Memo / Destination Tag (if required)";
+    input.placeholder = "Enter destination tag if required";
+  }else if(selectedAsset === "XLM"){
+    label.textContent = "Memo / Memo ID (if required)";
+    input.placeholder = "Enter destination memo if required";
   }else{
-
-    label.innerHTML =
-      'Memo / Tag <span style="color:var(--muted)">(optional)</span>';
-
-    input.placeholder =
-      "Optional";
-
+    label.textContent = "Memo / Tag (optional)";
+    input.placeholder = "Enter destination memo/tag if required";
   }
 }
 
-
-/* =========================================================
-   NETWORK NORMALIZATION
-========================================================= */
-
-function normalizeNetwork(value){
-
-  return String(value || "")
-    .trim();
-
-}
-
-
-/* =========================================================
-   REQUEST WITHDRAWAL
-========================================================= */
-
+/*
+ * Withdrawal RPC
+ *
+ * This page uses the six-parameter request_withdrawal RPC.
+ * The RPC must validate ownership, source balance, asset, amount,
+ * network and destination, and reserve the balance atomically.
+ * If your deployed SQL function has different parameter names,
+ * update this call to match the installed function.
+ */
 async function requestWithdrawal(){
-
-  if(submitting){
-    return;
-  }
+  if(submitting) return;
 
   clearMessages();
 
-  const network =
-    normalizeNetwork(
-      $("network").value
-    );
+  if(!currentUser){
+    showWarning("Your session has expired. Please sign in again.");
+    return;
+  }
 
-  const address =
-    $("address").value.trim();
+  if(walletLoadFailed){
+    showWarning("Your wallet balance could not be verified. Please refresh and try again.");
+    return;
+  }
 
-  const memoTag =
-    $("memoTag").value.trim() || null;
-
-  const amount =
-    Number($("amount").value);
-
-  const balance =
-    getSourceBalance();
+  const network = $("network").value.trim();
+  const address = $("address").value.trim();
+  const memoTag = $("memoTag").value.trim() || null;
+  const rawAmount = $("amount").value.trim();
+  const amount = Number(rawAmount);
+  const balance = getSourceBalance();
 
   if(!network){
-
-    showWarning(
-      "Please enter the withdrawal network."
-    );
-
+    showWarning("Please enter the withdrawal network.");
+    $("network").focus();
     return;
   }
 
   if(!address){
-
-    showWarning(
-      "Please enter the withdrawal address."
-    );
-
+    showWarning("Please enter the destination wallet address.");
+    $("address").focus();
     return;
   }
 
   if(!Number.isFinite(amount) || amount <= 0){
-
-    showWarning(
-      "Please enter a valid withdrawal amount."
-    );
-
+    showWarning("Enter a valid withdrawal amount greater than zero.");
+    $("amount").focus();
     return;
   }
 
   if(amount > balance){
-
-    showWarning(
-      `Insufficient ${selectedSource.toLowerCase()} balance. Available: ${formatAmount(balance)} ${selectedAsset}.`
-    );
-
+    showWarning(`Insufficient ${selectedSource.toLowerCase()} balance. Available: ${formatAmount(balance)} ${selectedAsset}.`);
     return;
   }
 
-  if(
-    selectedSource === "PRINCIPAL" &&
-    amount > Number(
-      wallets[selectedAsset]?.principal_balance || 0
-    )
-  ){
-
-    showWarning(
-      "The requested amount is greater than your available principal."
-    );
-
+  const wallet = getSelectedWallet();
+  if(!wallet){
+    showWarning(`Your ${selectedAsset} wallet could not be found.`);
     return;
   }
 
-  if(
-    selectedSource === "PROFIT" &&
-    amount > Number(
-      wallets[selectedAsset]?.profit_balance || 0
-    )
-  ){
+  const confirmed = window.confirm(
+    `Confirm withdrawal request\n\nAsset: ${selectedAsset}\nSource: ${selectedSource}\nAmount: ${formatAmount(amount)} ${selectedAsset}\nNetwork: ${network}\nDestination: ${address}\n\nVerify the address and network before continuing.`
+  );
 
-    showWarning(
-      "The requested amount is greater than your available profit."
-    );
-
-    return;
-  }
-
-  const confirmed =
-    window.confirm(
-      `Request ${formatAmount(amount)} ${selectedAsset} from your ${selectedSource.toLowerCase()} balance?`
-    );
-
-  if(!confirmed){
-    return;
-  }
+  if(!confirmed) return;
 
   submitting = true;
-
-  const button =
-    $("withdrawBtn");
-
+  const button = $("withdrawBtn");
   button.disabled = true;
-
-  button.textContent =
-    "Submitting...";
+  button.textContent = "Submitting…";
 
   try{
+    const {data,error} = await db.rpc("request_withdrawal",{
+      p_asset:selectedAsset,
+      p_network:network,
+      p_address:address,
+      p_memo_tag:memoTag,
+      p_amount:amount,
+      p_withdrawal_source:selectedSource
+    });
 
-    /*
-     * IMPORTANT:
-     * This calls the new 6-parameter RPC.
-     */
-    const {
-      data,
-      error
-    } = await db.rpc(
-      "request_withdrawal",
-      {
-        p_asset:selectedAsset,
-        p_network:network,
-        p_address:address,
-        p_memo_tag:memoTag,
-        p_amount:amount,
-        p_withdrawal_source:selectedSource
-      }
-    );
+    if(error) throw error;
 
-    if(error){
-      throw error;
-    }
-
-    showSuccess(
-      `Withdrawal request submitted successfully. ${formatAmount(amount)} ${selectedAsset} has been reserved from your ${selectedSource.toLowerCase()} balance.`
-    );
+    showSuccess("Your withdrawal request was accepted by the database. Check the withdrawal history for its current status.");
 
     $("amount").value = "";
-
     $("address").value = "";
-
     $("memoTag").value = "";
 
     await loadWallets();
-
     await loadRecentWithdrawals();
 
   }catch(error){
+    console.error("Withdrawal request failed:",error);
 
-    console.error(error);
+    const message = String(error?.message || "");
 
-    showWarning(
-      error?.message ||
-      "Unable to submit withdrawal request."
-    );
-
+    if(/function .*request_withdrawal|schema cache|could not find the function|no function matches/i.test(message)){
+      showWarning("The withdrawal RPC parameters do not match the function installed in Supabase. No success was reported. Verify the exact request_withdrawal function signature before retrying.");
+    }else if(/insufficient|balance|principal|profit/i.test(message)){
+      showWarning(message || "The available balance is insufficient or has changed. Refresh your wallet and try again.");
+      await loadWallets();
+    }else{
+      showWarning(message || "The withdrawal request failed. Please try again later.");
+    }
   }finally{
-
     submitting = false;
-
     button.disabled = false;
-
-    button.textContent =
-      "Request Withdrawal";
-
+    button.textContent = "Request Withdrawal";
   }
-
 }
 
-$("withdrawBtn")
-  .addEventListener(
-    "click",
-    requestWithdrawal
-  );
+$("withdrawBtn").addEventListener("click",requestWithdrawal);
 
-
-/* =========================================================
-   RECENT WITHDRAWALS
-========================================================= */
-
+/* Recent withdrawals */
 async function loadRecentWithdrawals(){
+  const container = $("recentWithdrawals");
+  container.innerHTML = '<div class="loading">Loading withdrawals…</div>';
+  withdrawalLoadFailed = false;
 
-  const container =
-    $("recentWithdrawals");
-
-  container.innerHTML =
-    `<div class="loading">Loading...</div>`;
-
-  const {
-    data,
-    error
-  } = await db
-    .from("withdrawals")
-    .select(`
-      id,
-      asset,
-      network,
-      amount,
-      fee,
-      net_amount,
-      status,
-      withdrawal_source,
-      created_at
-    `)
+  const {data,error} = await db.from("withdrawals")
+    .select("id,asset,network,amount,fee,net_amount,status,withdrawal_source,created_at")
     .eq("user_id",currentUser.id)
-    .order(
-      "created_at",
-      {
-        ascending:false
-      }
-    )
+    .order("created_at",{ascending:false})
     .limit(20);
 
   if(error){
-
-    console.error(error);
-
-    container.innerHTML =
-      `<div class="empty">Unable to load withdrawals.</div>`;
-
+    console.error("Withdrawal history query failed:",error);
+    withdrawalLoadFailed = true;
+    container.innerHTML = '<div class="empty">Unable to load withdrawal history. Check the withdrawals table permissions and column names in Supabase.</div>';
     return;
   }
 
-  if(!data || data.length === 0){
-
-    container.innerHTML =
-      `<div class="empty">No withdrawals yet.</div>`;
-
+  if(!data?.length){
+    container.innerHTML = '<div class="empty">No withdrawals yet.</div>';
     return;
   }
 
-  container.innerHTML =
-    data.map(item => {
+  container.replaceChildren();
 
-      const date =
-        new Date(item.created_at)
-          .toLocaleString();
+  for(const item of data){
+    const row = document.createElement("div");
+    row.className = "withdrawal-item";
 
-      return `
-        <div class="withdrawal-item">
+    const top = document.createElement("div");
+    top.className = "withdrawal-top";
 
-          <div class="withdrawal-top">
+    const amount = document.createElement("div");
+    amount.className = "withdrawal-amount";
+    amount.textContent = `${formatAmount(item.amount)} ${item.asset || ""}`;
 
-            <div class="withdrawal-amount">
-              ${escapeHtml(
-                formatAmount(item.amount)
-              )}
-              ${escapeHtml(item.asset)}
-            </div>
+    const status = document.createElement("div");
+    const normalizedStatus = String(item.status || "PENDING").toLowerCase();
+    status.className = `withdrawal-status ${normalizedStatus}`;
+    status.textContent = String(item.status || "PENDING").replace(/_/g," ");
 
-            <div class="withdrawal-status">
-              ${escapeHtml(item.status)}
-            </div>
+    top.append(amount,status);
 
-          </div>
+    const meta = document.createElement("div");
+    meta.className = "withdrawal-meta";
 
-          <div class="withdrawal-meta">
+    const source = document.createElement("span");
+    source.textContent = item.withdrawal_source || "PROFIT";
 
-            <span>
-              ${escapeHtml(
-                item.withdrawal_source || "PROFIT"
-              )}
-            </span>
+    const network = document.createElement("span");
+    network.textContent = item.network || "Network not recorded";
 
-            <span>•</span>
+    const date = document.createElement("span");
+    const parsedDate = item.created_at ? new Date(item.created_at) : null;
+    date.textContent = parsedDate && !Number.isNaN(parsedDate.getTime())
+      ? parsedDate.toLocaleString()
+      : "Date unavailable";
 
-            <span>
-              ${escapeHtml(item.network)}
-            </span>
-
-            <span>•</span>
-
-            <span>
-              ${escapeHtml(date)}
-            </span>
-
-          </div>
-
-        </div>
-      `;
-
-    }).join("");
-
+    meta.append(source,document.createTextNode(" • "),network,document.createTextNode(" • "),date);
+    row.append(top,meta);
+    container.append(row);
+  }
 }
 
-
-/* =========================================================
-   AUTH
-========================================================= */
-
+/* Auth initialization */
 async function init(){
+  $("withdrawBtn").disabled = true;
 
-  const {
-    data,
-    error
-  } = await db.auth.getSession();
+  const {data,error} = await db.auth.getSession();
 
   if(error){
-    console.error(error);
+    console.error("Session error:",error);
+    showToast("Unable to verify your session.");
   }
 
-  currentUser =
-    data?.session?.user || null;
+  currentUser = data?.session?.user || null;
 
   if(!currentUser){
-
-    window.location.href =
-      "signin.html";
-
+    window.location.replace("signin.html");
     return;
   }
 
   await loadProfile();
-
-  renderAssets();
-
-  updateMemoField();
-
   await loadWallets();
-
+  renderAssets();
+  updateMemoField();
   await loadRecentWithdrawals();
 
+  $("withdrawBtn").disabled = false;
 }
 
-
-/* =========================================================
-   ASSET CHANGE HOOK
-========================================================= */
-
-const originalRenderAssets =
-  renderAssets;
-
-function refreshAssetDependentUI(){
-
-  updateSourceDisplay();
-
-  updateMemoField();
-
-}
-
-document.addEventListener(
-  "click",
-  event => {
-
-    const button =
-      event.target.closest(".asset-btn");
-
-    if(!button){
-      return;
-    }
-
-    setTimeout(
-      refreshAssetDependentUI,
-      0
-    );
-
+/* Sign-out/session expiration */
+db.auth.onAuthStateChange((event,session) => {
+  if(event === "SIGNED_OUT" && !authRedirecting){
+    authRedirecting = true;
+    window.location.replace("signin.html");
+  }else if(event === "TOKEN_REFRESHED" && !session){
+    window.location.replace("signin.html");
   }
-);
-
-
-/* =========================================================
-   AUTH STATE
-========================================================= */
-
-db.auth.onAuthStateChange(
-  (_event,session) => {
-
-    if(!session){
-
-      window.location.href =
-        "signin.html";
-
-    }
-
-  }
-);
-
-
-/* =========================================================
-   START
-========================================================= */
+});
 
 init();
-
 </script>
 
 </body>
