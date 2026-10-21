@@ -3,329 +3,1153 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Support | AITIVEST</title>
+<meta name="theme-color" content="#050b18">
+<title>Customer Support | AITIVEST</title>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
-:root{--bg:#050b18;--panel:#0d1b31;--panel2:#091426;--gold:#d6ad55;--gold2:#f0cf7a;--text:#f5f7fb;--muted:#9da8ba;--border:#20314b;--green:#36c98b;--red:#ff7777}
+:root{
+  --bg:#050b18;
+  --panel:#0d1b31;
+  --panel2:#091426;
+  --gold:#d6ad55;
+  --gold2:#f0cf7a;
+  --text:#f5f7fb;
+  --muted:#9da8ba;
+  --border:#20314b;
+  --green:#36c98b;
+  --red:#ff7777;
+}
+
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-serif}
-header{position:sticky;top:0;z-index:5;background:#071020;border-bottom:1px solid var(--border);padding:15px}
-.top{max-width:1000px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:12px}
-.brand{font-weight:800;letter-spacing:2px;color:var(--gold);font-size:20px}
-a{color:var(--gold2);text-decoration:none}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:14px;
+}
+
 button,input,select,textarea{font:inherit}
 button{cursor:pointer}
-.wrap{max-width:1000px;margin:28px auto;padding:0 15px 40px}
-h1{margin:0 0 8px;font-size:28px}
-.sub{color:var(--muted);line-height:1.6;margin:0 0 22px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-.card{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:20px;min-width:0}
-.card h2{font-size:18px;margin:0 0 16px}
-label{display:block;color:var(--muted);font-size:13px;margin:14px 0 7px}
-input,select,textarea{width:100%;padding:12px;background:var(--panel2);color:var(--text);border:1px solid var(--border);border-radius:9px;outline:none}
-textarea{resize:vertical;min-height:115px}
-input:focus,select:focus,textarea:focus{border-color:var(--gold)}
-.btn{border:0;border-radius:9px;padding:12px 15px;font-weight:700;background:var(--gold);color:#101522}
-.btn:disabled{opacity:.5;cursor:not-allowed}
-.btn.secondary{background:#182a43;color:var(--text);border:1px solid var(--border)}
-.full{width:100%;margin-top:15px}
-.notice{padding:12px;border-radius:9px;background:#182a43;color:var(--muted);font-size:13px;line-height:1.5;margin:12px 0}
-.status{font-size:11px;text-transform:uppercase;letter-spacing:.5px;padding:5px 8px;border-radius:20px;background:#20314b;color:var(--gold2)}
-.ticket{padding:14px 0;border-bottom:1px solid var(--border);cursor:pointer}
+a{color:var(--gold2);text-decoration:none}
+
+header{
+  position:sticky;
+  top:0;
+  z-index:10;
+  background:rgba(7,16,32,.97);
+  border-bottom:1px solid var(--border);
+  padding:14px 16px;
+  backdrop-filter:blur(12px);
+}
+
+.top{
+  max-width:1000px;
+  margin:auto;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  font-weight:900;
+  letter-spacing:1.5px;
+  font-size:19px;
+}
+
+.brand-icon{
+  display:grid;
+  place-items:center;
+  width:31px;
+  height:31px;
+  border:2px solid var(--gold);
+  border-radius:9px 9px 9px 3px;
+  color:var(--gold);
+  font-size:18px;
+}
+
+.brand .aiti{color:#fff}
+.brand .vest{color:var(--gold)}
+
+.dashboard-link{
+  font-size:12px;
+  border:1px solid var(--border);
+  border-radius:9px;
+  padding:10px 12px;
+  white-space:nowrap;
+}
+
+.wrap{
+  max-width:1000px;
+  margin:28px auto;
+  padding:0 15px 35px;
+}
+
+.eyebrow{
+  color:var(--gold);
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:2px;
+  font-weight:800;
+}
+
+h1{
+  margin:7px 0 8px;
+  font-size:28px;
+}
+
+.sub{
+  color:var(--muted);
+  line-height:1.7;
+  margin:0 0 22px;
+  max-width:700px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
+  align-items:start;
+}
+
+.card{
+  background:linear-gradient(145deg,var(--panel),#091426);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:20px;
+  min-width:0;
+}
+
+.card h2{
+  font-size:17px;
+  margin:0 0 7px;
+}
+
+.card-sub{
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.6;
+  margin:0 0 17px;
+}
+
+label{
+  display:block;
+  color:#dce4f2;
+  font-size:12px;
+  font-weight:700;
+  margin:15px 0 7px;
+}
+
+input,select,textarea{
+  width:100%;
+  padding:12px;
+  background:var(--panel2);
+  color:var(--text);
+  border:1px solid var(--border);
+  border-radius:10px;
+  outline:none;
+}
+
+input,select{min-height:45px}
+
+textarea{
+  resize:vertical;
+  min-height:125px;
+  line-height:1.6;
+}
+
+input:focus,select:focus,textarea:focus{
+  border-color:var(--gold);
+  box-shadow:0 0 0 3px rgba(214,173,85,.07);
+}
+
+input::placeholder,textarea::placeholder{color:#74839a}
+
+.btn{
+  border:0;
+  border-radius:10px;
+  padding:12px 15px;
+  font-weight:800;
+  background:linear-gradient(110deg,#c49a42,#f0cf7a);
+  color:#101522;
+  min-height:45px;
+}
+
+.btn:disabled{
+  opacity:.5;
+  cursor:not-allowed;
+}
+
+.btn.secondary{
+  background:#182a43;
+  color:var(--text);
+  border:1px solid var(--border);
+}
+
+.full{width:100%;margin-top:14px}
+
+.notice{
+  padding:12px;
+  border-radius:10px;
+  background:#182a43;
+  border:1px solid var(--border);
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.7;
+  margin-top:15px;
+}
+
+.notice strong{color:var(--gold2)}
+
+#alert{
+  display:none;
+  margin:0 0 17px;
+  padding:13px 14px;
+  border-radius:10px;
+  line-height:1.6;
+  overflow-wrap:anywhere;
+}
+
+#alert.ok{
+  display:block;
+  background:#123b30;
+  border:1px solid #225b49;
+  color:#a8f5d5;
+}
+
+#alert.err{
+  display:block;
+  background:#451f29;
+  border:1px solid #6a303c;
+  color:#ffd0d0;
+}
+
+#alert.info{
+  display:block;
+  background:#182a43;
+  border:1px solid var(--border);
+  color:#dce4f2;
+}
+
+.ticket{
+  padding:15px 0;
+  border-bottom:1px solid var(--border);
+}
+
 .ticket:last-child{border-bottom:0}
-.ticket-title{display:flex;justify-content:space-between;gap:8px;align-items:center;font-weight:700}
-.ticket-meta{font-size:12px;color:var(--muted);margin-top:7px;line-height:1.5}
-.empty{padding:25px 0;text-align:center;color:var(--muted);font-size:14px}
-#conversation{display:none;margin-top:18px}
-#messages{display:flex;flex-direction:column;gap:10px;margin:15px 0;max-height:380px;overflow-y:auto}
-.message{padding:12px;border:1px solid var(--border);background:var(--panel2);border-radius:10px;max-width:95%;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.5}
-.message.mine{align-self:flex-end;border-color:#806a36}
-.message small{display:block;color:var(--muted);font-size:11px;margin-bottom:6px}
-#alert{display:none;margin:0 0 16px;padding:12px;border-radius:9px;line-height:1.5}
-#alert.ok{display:block;background:#123b30;color:#a8f5d5}
-#alert.err{display:block;background:#451f29;color:#ffd0d0}
-footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
-@media(max-width:700px){.grid{grid-template-columns:1fr}.wrap{margin-top:22px}.card{padding:16px}h1{font-size:25px}}
+
+.ticket-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:10px;
+}
+
+.ticket-open{
+  flex:1;
+  padding:0;
+  border:0;
+  background:transparent;
+  color:var(--text);
+  text-align:left;
+  font-weight:800;
+  line-height:1.5;
+  overflow-wrap:anywhere;
+}
+
+.ticket-open:hover{color:var(--gold2)}
+
+.status{
+  flex-shrink:0;
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.5px;
+  padding:5px 8px;
+  border-radius:20px;
+  background:#20314b;
+  color:var(--gold2);
+}
+
+.status.open,.status.in_progress{
+  background:rgba(54,201,139,.12);
+  color:#72e4b3;
+}
+
+.status.closed,.status.resolved{
+  background:rgba(157,168,186,.13);
+  color:#c3ccda;
+}
+
+.ticket-meta{
+  font-size:11px;
+  color:var(--muted);
+  margin-top:7px;
+  line-height:1.7;
+}
+
+.empty{
+  padding:26px 5px;
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.7;
+}
+
+#conversation{
+  display:none;
+  margin-top:18px;
+  border-top:1px solid var(--border);
+  padding-top:20px;
+}
+
+.conversation-head{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  align-items:flex-start;
+}
+
+.conversation-head h2{
+  overflow-wrap:anywhere;
+  line-height:1.5;
+}
+
+#messages{
+  display:flex;
+  flex-direction:column;
+  gap:11px;
+  margin:16px 0;
+  max-height:400px;
+  overflow-y:auto;
+  padding:2px;
+}
+
+.message{
+  padding:12px;
+  border:1px solid var(--border);
+  background:var(--panel2);
+  border-radius:12px;
+  max-width:95%;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+  line-height:1.65;
+}
+
+.message.mine{
+  align-self:flex-end;
+  border-color:#806a36;
+  background:#171e2b;
+}
+
+.message.support{
+  align-self:flex-start;
+  border-color:#31517a;
+}
+
+.message small{
+  display:block;
+  color:var(--muted);
+  font-size:10px;
+  margin-bottom:7px;
+}
+
+.closed-note{
+  padding:12px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  background:var(--panel2);
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.6;
+  margin-top:12px;
+}
+
+.hidden{display:none!important}
+
+footer{
+  text-align:center;
+  color:var(--muted);
+  font-size:11px;
+  padding:22px 15px 35px;
+  border-top:1px solid rgba(32,49,75,.5);
+}
+
+@media(max-width:700px){
+  .grid{grid-template-columns:1fr}
+  .wrap{margin-top:23px}
+  .card{padding:16px}
+  h1{font-size:25px}
+}
+
+@media(max-width:380px){
+  .brand{font-size:16px}
+  .dashboard-link{font-size:11px;padding:9px}
+  .ticket-head{flex-direction:column}
+}
 </style>
 </head>
+
 <body>
+
 <header>
   <div class="top">
-    <a class="brand" href="dashboard.html">AITIVEST</a>
-    <a href="dashboard.html">← Dashboard</a>
+    <a class="brand" href="dashboard.html" aria-label="AITIVEST Dashboard">
+      <span class="brand-icon">A</span>
+      <span><span class="aiti">AITI</span><span class="vest">VEST</span></span>
+    </a>
+
+    <a class="dashboard-link" href="dashboard.html">← Dashboard</a>
   </div>
 </header>
 
 <main class="wrap">
+
+  <div class="eyebrow">We're here to help</div>
   <h1>Customer Support</h1>
-  <p class="sub">Need help with your account? Send us a message and follow your support ticket here.</p>
-  <div id="alert" role="status"></div>
+
+  <p class="sub">
+    Have a question about your account? Open a support ticket, send us a
+    message, and follow the conversation from this page.
+  </p>
+
+  <div id="alert" role="status" aria-live="polite"></div>
 
   <div class="grid">
-    <section class="card">
+
+    <!-- CREATE TICKET -->
+    <section class="card" id="createCard">
       <h2>Open a Support Ticket</h2>
+      <p class="card-sub">
+        Describe your issue clearly so the support team can assist you.
+      </p>
+
       <form id="ticketForm">
+
         <label for="subject">Subject</label>
-        <input id="subject" maxlength="150" minlength="3" required placeholder="Briefly describe your issue">
+        <input
+          id="subject"
+          type="text"
+          minlength="3"
+          maxlength="150"
+          required
+          placeholder="Briefly describe your issue"
+        >
 
         <label for="category">Category</label>
-        <select id="category">
-          <option>General</option>
-          <option>Deposit</option>
-          <option>Withdrawal</option>
-          <option>Account</option>
-          <option>Earnings</option>
-          <option>Referral</option>
-          <option>Technical</option>
+        <select id="category" required>
+          <option value="General">General</option>
+          <option value="Deposit">Deposit</option>
+          <option value="Withdrawal">Withdrawal</option>
+          <option value="Account">Account</option>
+          <option value="Earnings">Earnings</option>
+          <option value="Referral">Referral</option>
+          <option value="Technical">Technical</option>
         </select>
 
         <label for="firstMessage">Message</label>
-        <textarea id="firstMessage" maxlength="5000" required placeholder="Explain what happened and how we can help"></textarea>
-        <button class="btn full" id="createBtn" type="submit">Submit Ticket</button>
-      </form>
-      <div class="notice">Never share your password, login codes, or private keys with support.</div>
-    </section>
+        <textarea
+          id="firstMessage"
+          minlength="3"
+          maxlength="5000"
+          required
+          placeholder="Explain what happened and how we can help"
+        ></textarea>
 
-    <section class="card">
-      <h2>Your Tickets</h2>
-      <div id="ticketList"><div class="empty">Loading your tickets…</div></div>
-      <div id="conversation">
-        <hr style="border-color:var(--border);margin:20px 0">
-        <h2 id="conversationTitle">Conversation</h2>
-        <div id="messages"></div>
-        <form id="replyForm">
-          <label for="replyText">Your reply</label>
-          <textarea id="replyText" maxlength="5000" required placeholder="Write your message"></textarea>
-          <button class="btn full" id="replyBtn" type="submit">Send Reply</button>
-          <button class="btn secondary full" type="button" id="closeConversation">Back to Tickets</button>
-        </form>
+        <button class="btn full" id="createBtn" type="submit">
+          Submit Ticket
+        </button>
+      </form>
+
+      <div class="notice">
+        <strong>Security reminder</strong><br>
+        Never share your password, login codes, recovery codes, or private
+        cryptocurrency keys with anyone claiming to be support.
       </div>
     </section>
+
+    <!-- TICKET LIST AND CONVERSATION -->
+    <section class="card">
+
+      <h2>Your Support Tickets</h2>
+      <p class="card-sub">
+        Select a ticket to view messages and reply.
+      </p>
+
+      <div id="ticketList">
+        <div class="empty">Loading your tickets…</div>
+      </div>
+
+      <div id="conversation">
+
+        <div class="conversation-head">
+          <h2 id="conversationTitle">Conversation</h2>
+          <span id="conversationStatus" class="status">Open</span>
+        </div>
+
+        <div id="messages">
+          <div class="empty">Loading messages…</div>
+        </div>
+
+        <form id="replyForm">
+          <label for="replyText">Your Reply</label>
+          <textarea
+            id="replyText"
+            maxlength="5000"
+            minlength="1"
+            required
+            placeholder="Write your message"
+          ></textarea>
+
+          <button class="btn full" id="replyBtn" type="submit">
+            Send Reply
+          </button>
+
+          <button
+            class="btn secondary full"
+            type="button"
+            id="backBtn"
+          >
+            Back to Tickets
+          </button>
+        </form>
+
+        <div id="closedNote" class="closed-note hidden">
+          This ticket is closed. Replies are disabled. If you still need
+          assistance, open a new ticket.
+        </div>
+
+      </div>
+    </section>
+
   </div>
 </main>
-<footer>AITIVEST Support · Keep your account information secure.</footer>
+
+<footer>
+  AITIVEST Support · Keep your account information secure.
+</footer>
 
 <script>
-const SUPABASE_URL = "https://rihvvwktvgytbqzazage.supabase.co";
-const SUPABASE_KEY = "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
-const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+"use strict";
+
+/* =========================================================
+   AITIVEST SUPPORT
+   Supabase tables expected:
+     support_tickets:
+       id, user_id, ticket_number, subject, category,
+       status, created_at, updated_at, last_message_at
+
+     support_messages:
+       id, ticket_id, sender_id, message,
+       is_admin_reply, created_at
+
+   IMPORTANT:
+   Database RLS policies must enforce ownership and access.
+   Frontend checks are not a replacement for RLS.
+   ========================================================= */
+
+const SUPABASE_URL =
+  "https://rihvvwktvgytbqzazage.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
+
+const db = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+const $ = id => document.getElementById(id);
 
 let currentUser = null;
 let selectedTicket = null;
 let tickets = [];
+let loadingTickets = false;
+let creatingTicket = false;
+let sendingReply = false;
+let conversationRequest = 0;
 
-const $ = id => document.getElementById(id);
+const OPEN_STATUSES = ["open", "in_progress"];
 
-function showAlert(message, type="ok"){
-  $("alert").textContent = message;
-  $("alert").className = type;
-  $("alert").style.display = "block";
-  $("alert").scrollIntoView({behavior:"smooth",block:"nearest"});
+function normalizeStatus(status) {
+  return String(status || "open").trim().toLowerCase();
 }
-function clearAlert(){
-  $("alert").style.display="none";
-  $("alert").textContent="";
-  $("alert").className="";
+
+function isTicketOpen(ticket) {
+  return OPEN_STATUSES.includes(normalizeStatus(ticket.status));
 }
-function escapeHtml(value){
+
+function escapeHtml(value) {
   return String(value ?? "").replace(/[&<>"']/g, ch => ({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
   }[ch]));
 }
-function niceDate(value){
-  return new Date(value).toLocaleString();
-}
-function statusLabel(status){
-  return String(status || "open").replaceAll("_"," ");
+
+function niceDate(value) {
+  if (!value) return "Date unavailable";
+
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return "Date unavailable";
+  }
+
+  return date.toLocaleString();
 }
 
-async function requireLogin(){
-  const {data:{session},error} = await db.auth.getSession();
-  if(error) throw error;
-  if(!session){
+function statusLabel(status) {
+  return normalizeStatus(status).replaceAll("_", " ");
+}
+
+function showAlert(message, type = "ok") {
+  const alert = $("alert");
+
+  alert.textContent = message;
+  alert.className = type;
+  alert.style.display = "block";
+}
+
+function clearAlert() {
+  const alert = $("alert");
+
+  alert.style.display = "none";
+  alert.textContent = "";
+  alert.className = "";
+}
+
+function setButtonLoading(button, loading, loadingText, normalText) {
+  button.disabled = loading;
+  button.textContent = loading ? loadingText : normalText;
+}
+
+async function requireLogin() {
+  const { data, error } = await db.auth.getSession();
+
+  if (error) {
+    throw new Error("Unable to verify your session. Please refresh.");
+  }
+
+  if (!data.session) {
     location.replace("signin.html");
     return false;
   }
-  currentUser = session.user;
+
+  currentUser = data.session.user;
   return true;
 }
 
-async function loadTickets(){
-  const {data,error} = await db
-    .from("support_tickets")
-    .select("id,ticket_number,subject,category,status,created_at,updated_at,last_message_at")
-    .eq("user_id",currentUser.id)
-    .order("last_message_at",{ascending:false});
+/* =========================
+   LOAD USER'S OWN TICKETS
+   ========================= */
 
-  if(error) throw error;
-  tickets = data || [];
-  renderTickets();
+async function loadTickets(options = {}) {
+  if (!currentUser || loadingTickets) return;
+
+  loadingTickets = true;
+
+  const preserveConversation = options.preserveConversation === true;
+
+  try {
+    const { data, error } = await db
+      .from("support_tickets")
+      .select(
+        "id,ticket_number,subject,category,status,created_at,updated_at,last_message_at"
+      )
+      .eq("user_id", currentUser.id)
+      .order("last_message_at", { ascending: false, nullsFirst: false });
+
+    if (error) throw error;
+
+    tickets = data || [];
+
+    /*
+     * If a ticket was open, replace it with the fresh database row.
+     */
+    if (selectedTicket) {
+      const fresh = tickets.find(t => t.id === selectedTicket.id);
+
+      if (fresh) {
+        selectedTicket = fresh;
+      } else {
+        selectedTicket = null;
+        hideConversation();
+      }
+    }
+
+    renderTickets();
+
+    if (preserveConversation && selectedTicket) {
+      await openTicket(selectedTicket.id, { quiet: true });
+    }
+
+  } finally {
+    loadingTickets = false;
+  }
 }
 
-function renderTickets(){
+function renderTickets() {
   const list = $("ticketList");
-  if(!tickets.length){
-    list.innerHTML = '<div class="empty">You have no support tickets yet.</div>';
+
+  if (!tickets.length) {
+    list.innerHTML =
+      '<div class="empty">You have no support tickets yet.<br>Open a ticket if you need assistance.</div>';
     return;
   }
 
-  list.innerHTML = tickets.map(t => `
-    <div class="ticket" data-ticket-id="${escapeHtml(t.id)}" tabindex="0" role="button">
-      <div class="ticket-title">
-        <span>#${escapeHtml(t.ticket_number)} · ${escapeHtml(t.subject)}</span>
-        <span class="status">${escapeHtml(statusLabel(t.status))}</span>
-      </div>
-      <div class="ticket-meta">${escapeHtml(t.category)} · Created ${escapeHtml(niceDate(t.created_at))}</div>
-    </div>
-  `).join("");
+  list.innerHTML = tickets.map(ticket => {
+    const status = normalizeStatus(ticket.status);
 
-  list.querySelectorAll("[data-ticket-id]").forEach(el => {
-    const open = () => openTicket(el.dataset.ticketId);
-    el.addEventListener("click",open);
-    el.addEventListener("keydown",e => {
-      if(e.key==="Enter" || e.key===" "){e.preventDefault();open();}
+    return `
+      <div class="ticket">
+        <div class="ticket-head">
+          <button
+            type="button"
+            class="ticket-open"
+            data-open-ticket="${escapeHtml(ticket.id)}"
+          >
+            #${escapeHtml(ticket.ticket_number ?? ticket.id)}
+            · ${escapeHtml(ticket.subject)}
+          </button>
+
+          <span class="status ${escapeHtml(status)}">
+            ${escapeHtml(statusLabel(status))}
+          </span>
+        </div>
+
+        <div class="ticket-meta">
+          ${escapeHtml(ticket.category || "General")}
+          · Created ${escapeHtml(niceDate(ticket.created_at))}
+          <br>
+          Last activity: ${escapeHtml(
+            niceDate(ticket.last_message_at || ticket.updated_at || ticket.created_at)
+          )}
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  list.querySelectorAll("[data-open-ticket]").forEach(button => {
+    button.addEventListener("click", () => {
+      openTicket(button.dataset.openTicket);
     });
   });
 }
 
-async function createTicket(event){
+/* =========================
+   CREATE TICKET
+   ========================= */
+
+async function createTicket(event) {
   event.preventDefault();
   clearAlert();
+
+  if (creatingTicket) return;
 
   const subject = $("subject").value.trim();
   const category = $("category").value;
   const message = $("firstMessage").value.trim();
 
-  if(subject.length<3 || !message){
-    showAlert("Enter a subject and message before submitting.","err");
+  if (subject.length < 3) {
+    showAlert("Please enter a subject with at least 3 characters.", "err");
     return;
   }
 
-  $("createBtn").disabled=true;
-  try{
-    const {data:ticket,error:ticketError} = await db
+  if (message.length < 3) {
+    showAlert("Please describe your issue in more detail.", "err");
+    return;
+  }
+
+  if (subject.length > 150 || message.length > 5000) {
+    showAlert("Your message exceeds the allowed length.", "err");
+    return;
+  }
+
+  creatingTicket = true;
+
+  setButtonLoading(
+    $("createBtn"),
+    true,
+    "Creating Ticket…",
+    "Submit Ticket"
+  );
+
+  let createdTicket = null;
+
+  try {
+    /*
+     * The user ID comes from the authenticated session.
+     * RLS must reject attempts to insert for another user.
+     */
+    const { data: ticket, error: ticketError } = await db
       .from("support_tickets")
-      .insert({user_id:currentUser.id,subject,category})
-      .select("id,ticket_number,subject,category,status,created_at,updated_at,last_message_at")
+      .insert({
+        user_id: currentUser.id,
+        subject,
+        category,
+        status: "open"
+      })
+      .select(
+        "id,ticket_number,subject,category,status,created_at,updated_at,last_message_at"
+      )
       .single();
 
-    if(ticketError) throw ticketError;
+    if (ticketError) throw ticketError;
 
-    const {error:messageError} = await db.from("support_messages").insert({
-      ticket_id:ticket.id,
-      sender_id:currentUser.id,
-      message,
-      is_admin_reply:false
-    });
+    createdTicket = ticket;
 
-    if(messageError){
-      showAlert("Ticket created, but the first message could not be saved. Open the ticket and try replying.","err");
-      await loadTickets();
+    /*
+     * Insert the initial message separately.
+     * If this fails, keep the ticket and tell the user.
+     */
+    const { error: messageError } = await db
+      .from("support_messages")
+      .insert({
+        ticket_id: ticket.id,
+        sender_id: currentUser.id,
+        message,
+        is_admin_reply: false
+      });
+
+    $("ticketForm").reset();
+
+    await loadTickets();
+
+    if (messageError) {
+      console.error("Initial support message insert failed.");
+
+      showAlert(
+        "Your ticket was created, but its first message could not be saved. Open the ticket and try sending the message again.",
+        "err"
+      );
+
+      const localTicket = tickets.find(t => t.id === ticket.id);
+
+      if (localTicket) {
+        await openTicket(localTicket.id);
+      }
+
       return;
     }
 
-    $("ticketForm").reset();
-    showAlert("Ticket #"+ticket.ticket_number+" created successfully.");
-    await loadTickets();
-    await openTicket(ticket.id);
-  }catch(error){
-    console.error(error);
-    showAlert(error.message || "Could not create your ticket. Please try again.","err");
-  }finally{
-    $("createBtn").disabled=false;
+    showAlert(
+      "Support ticket #" +
+      (ticket.ticket_number ?? ticket.id) +
+      " created successfully."
+    );
+
+    const localTicket = tickets.find(t => t.id === ticket.id);
+
+    if (localTicket) {
+      await openTicket(localTicket.id);
+    }
+
+  } catch (error) {
+    console.error("Support ticket creation failed.");
+
+    showAlert(
+      error.message ||
+      "Could not create your ticket. Please try again.",
+      "err"
+    );
+
+    /*
+     * We deliberately do not delete a ticket if the initial
+     * message fails. Deletion might be forbidden or unsafe.
+     */
+    if (createdTicket) {
+      try {
+        await loadTickets();
+      } catch (_) {}
+    }
+
+  } finally {
+    creatingTicket = false;
+
+    setButtonLoading(
+      $("createBtn"),
+      false,
+      "Creating Ticket…",
+      "Submit Ticket"
+    );
   }
 }
 
-async function openTicket(ticketId){
+/* =========================
+   OPEN A TICKET
+   ========================= */
+
+async function openTicket(ticketId, options = {}) {
   clearAlert();
-  const ticket = tickets.find(t => t.id===ticketId);
-  if(!ticket) return;
 
-  selectedTicket = ticket;
-  $("conversation").style.display="block";
-  $("conversationTitle").textContent="Ticket #"+ticket.ticket_number+" · "+ticket.subject;
-  $("messages").innerHTML='<div class="empty">Loading messages…</div>';
+  /*
+   * Only open a ticket found in the authenticated user's
+   * already-loaded ticket list.
+   */
+  const ticket = tickets.find(t => String(t.id) === String(ticketId));
 
-  const {data,error} = await db
-    .from("support_messages")
-    .select("id,sender_id,message,is_admin_reply,created_at")
-    .eq("ticket_id",ticket.id)
-    .order("created_at",{ascending:true});
-
-  if(error){
-    showAlert(error.message,"err");
+  if (!ticket) {
+    showAlert("Ticket not found in your account.", "err");
     return;
   }
 
-  $("messages").innerHTML = (data||[]).map(m=>`
-    <div class="message ${m.sender_id===currentUser.id?"mine":""}">
-      <small>${m.is_admin_reply?"AITIVEST Support":m.sender_id===currentUser.id?"You":"Support"} · ${escapeHtml(niceDate(m.created_at))}</small>
-      ${escapeHtml(m.message)}
-    </div>
-  `).join("") || '<div class="empty">No messages yet.</div>';
+  selectedTicket = ticket;
 
-  const isOpen = ["open","in_progress"].includes(ticket.status);
-  $("replyText").disabled=!isOpen;
-  $("replyBtn").disabled=!isOpen;
-  if(!isOpen){
-    $("replyText").placeholder="This ticket is closed for replies.";
-  }else{
-    $("replyText").placeholder="Write your message";
+  const requestNumber = ++conversationRequest;
+
+  $("conversation").style.display = "block";
+  $("conversationTitle").textContent =
+    "Ticket #" +
+    (ticket.ticket_number ?? ticket.id) +
+    " · " +
+    ticket.subject;
+
+  $("conversationStatus").textContent = statusLabel(ticket.status);
+  $("conversationStatus").className =
+    "status " + normalizeStatus(ticket.status);
+
+  $("messages").innerHTML =
+    '<div class="empty">Loading messages…</div>';
+
+  updateReplyControls();
+
+  const { data, error } = await db
+    .from("support_messages")
+    .select("id,ticket_id,sender_id,message,is_admin_reply,created_at")
+    .eq("ticket_id", ticket.id)
+    .order("created_at", { ascending: true });
+
+  /*
+   * Ignore a slower response if the user has opened another ticket.
+   */
+  if (requestNumber !== conversationRequest) return;
+
+  if (error) {
+    $("messages").innerHTML =
+      '<div class="empty">Could not load messages. Please try again.</div>';
+
+    if (!options.quiet) {
+      showAlert(
+        "Could not load this conversation. Check your support-message RLS policies.",
+        "err"
+      );
+    }
+
+    return;
   }
-  $("messages").scrollTop=$("messages").scrollHeight;
+
+  /*
+   * Reconfirm the ticket still belongs to the user's loaded list.
+   */
+  if (!tickets.some(t => String(t.id) === String(ticket.id))) {
+    hideConversation();
+    showAlert("You no longer have access to this ticket.", "err");
+    return;
+  }
+
+  const messages = data || [];
+
+  $("messages").innerHTML = messages.map(message => {
+    const isMine = message.sender_id === currentUser.id;
+    const isAdmin = message.is_admin_reply === true;
+
+    const sender = isAdmin
+      ? "AITIVEST Support"
+      : isMine
+        ? "You"
+        : "Support";
+
+    const className = isMine ? "mine" : "support";
+
+    return `
+      <div class="message ${className}">
+        <small>
+          ${escapeHtml(sender)}
+          · ${escapeHtml(niceDate(message.created_at))}
+        </small>
+        ${escapeHtml(message.message)}
+      </div>
+    `;
+  }).join("") || '<div class="empty">No messages yet.</div>';
+
+  $("messages").scrollTop = $("messages").scrollHeight;
+
+  updateReplyControls();
 }
 
-async function sendReply(event){
+function updateReplyControls() {
+  const open = selectedTicket && isTicketOpen(selectedTicket);
+
+  $("replyText").disabled = !open;
+  $("replyBtn").disabled = !open;
+
+  $("closedNote").classList.toggle("hidden", Boolean(open));
+  $("replyForm").classList.toggle("hidden", !open);
+
+  if (open) {
+    $("replyText").placeholder = "Write your message";
+  }
+}
+
+function hideConversation() {
+  conversationRequest++;
+  selectedTicket = null;
+  $("conversation").style.display = "none";
+}
+
+/* =========================
+   SEND REPLY
+   ========================= */
+
+async function sendReply(event) {
   event.preventDefault();
   clearAlert();
 
-  if(!selectedTicket) return;
-  if(!["open","in_progress"].includes(selectedTicket.status)){
-    showAlert("This ticket is closed for replies.","err");
+  if (sendingReply) return;
+
+  if (!selectedTicket) {
+    showAlert("Select a ticket first.", "err");
     return;
   }
 
-  const message=$("replyText").value.trim();
-  if(!message) return;
+  /*
+   * This is a user-interface check only.
+   * The database must independently reject replies to closed tickets.
+   */
+  if (!isTicketOpen(selectedTicket)) {
+    showAlert("This ticket is closed for replies.", "err");
+    return;
+  }
 
-  $("replyBtn").disabled=true;
-  try{
-    const {error} = await db.from("support_messages").insert({
-      ticket_id:selectedTicket.id,
-      sender_id:currentUser.id,
-      message,
-      is_admin_reply:false
-    });
-    if(error) throw error;
+  const message = $("replyText").value.trim();
 
-    $("replyText").value="";
-    showAlert("Reply sent.");
-    await openTicket(selectedTicket.id);
+  if (!message) {
+    showAlert("Enter a message before sending.", "err");
+    return;
+  }
+
+  if (message.length > 5000) {
+    showAlert("Your message is too long.", "err");
+    return;
+  }
+
+  sendingReply = true;
+
+  const ticketId = selectedTicket.id;
+
+  setButtonLoading(
+    $("replyBtn"),
+    true,
+    "Sending…",
+    "Send Reply"
+  );
+
+  try {
+    /*
+     * Do not trust the selected ticket's status alone.
+     * Refresh its status from the database before inserting.
+     */
+    const { data: freshTicket, error: ticketError } = await db
+      .from("support_tickets")
+      .select("id,user_id,status")
+      .eq("id", ticketId)
+      .eq("user_id", currentUser.id)
+      .maybeSingle();
+
+    if (ticketError) throw ticketError;
+
+    if (!freshTicket) {
+      hideConversation();
+      throw new Error("Ticket not found or no longer accessible.");
+    }
+
+    if (!isTicketOpen(freshTicket)) {
+      await loadTickets();
+      throw new Error("This ticket has been closed and cannot receive replies.");
+    }
+
+    const { error } = await db
+      .from("support_messages")
+      .insert({
+        ticket_id: ticketId,
+        sender_id: currentUser.id,
+        message,
+        is_admin_reply: false
+      });
+
+    if (error) throw error;
+
+    $("replyText").value = "";
+
+    showAlert("Your reply has been sent.");
+
     await loadTickets();
-  }catch(error){
-    console.error(error);
-    showAlert(error.message||"Could not send your reply.","err");
-  }finally{
-    $("replyBtn").disabled=false;
+
+    if (tickets.some(t => String(t.id) === String(ticketId))) {
+      await openTicket(ticketId, { quiet: true });
+    }
+
+  } catch (error) {
+    console.error("Support reply failed.");
+
+    showAlert(
+      error.message ||
+      "Could not send your reply. Please try again.",
+      "err"
+    );
+
+  } finally {
+    sendingReply = false;
+
+    if (selectedTicket && isTicketOpen(selectedTicket)) {
+      $("replyBtn").disabled = false;
+      $("replyBtn").textContent = "Send Reply";
+    }
   }
 }
 
-$("ticketForm").addEventListener("submit",createTicket);
-$("replyForm").addEventListener("submit",sendReply);
-$("closeConversation").addEventListener("click",()=>{
-  selectedTicket=null;
-  $("conversation").style.display="none";
+/* =========================
+   EVENTS
+   ========================= */
+
+$("ticketForm").addEventListener("submit", createTicket);
+$("replyForm").addEventListener("submit", sendReply);
+
+$("backBtn").addEventListener("click", () => {
+  hideConversation();
+  clearAlert();
 });
 
-(async()=>{
-  try{
-    const ok=await requireLogin();
-    if(ok) await loadTickets();
-  }catch(error){
-    console.error(error);
-    showAlert("Could not load support. Please refresh and try again.","err");
+(async function init() {
+  try {
+    const authenticated = await requireLogin();
+
+    if (!authenticated) return;
+
+    await loadTickets();
+
+  } catch (error) {
+    console.error("Support page initialization failed.");
+
+    $("ticketList").innerHTML =
+      '<div class="empty">Support could not be loaded. Please refresh the page.</div>';
+
+    showAlert(
+      "Could not load support. Check your internet connection and Supabase configuration.",
+      "err"
+    );
   }
 })();
 </script>
+
 </body>
 </html>
