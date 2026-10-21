@@ -2,9 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#07111f">
 
-<title>Notifications — NEXORA</title>
+<title>Notifications | AITIVEST</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -36,8 +37,17 @@ body{
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
 }
 
-button{
+button,a{
     font:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+button:disabled{
+    opacity:.5;
+    cursor:not-allowed;
 }
 
 a{
@@ -45,9 +55,13 @@ a{
     text-decoration:none;
 }
 
-/* =========================
-   TOPBAR
-========================= */
+button:focus-visible,
+a:focus-visible{
+    outline:2px solid var(--gold2);
+    outline-offset:3px;
+}
+
+/* TOPBAR */
 
 .topbar{
     position:fixed;
@@ -82,7 +96,6 @@ a{
     display:flex;
     align-items:center;
     justify-content:center;
-    cursor:pointer;
     font-size:25px;
 }
 
@@ -90,12 +103,32 @@ a{
     position:absolute;
     left:50%;
     transform:translateX(-50%);
-    font-size:21px;
-    font-weight:800;
+    display:flex;
+    align-items:center;
+    gap:7px;
+    font-size:20px;
+    font-weight:900;
     letter-spacing:1.2px;
+    white-space:nowrap;
 }
 
-.logo span{
+.logo-icon{
+    width:28px;
+    height:28px;
+    border:2px solid var(--gold);
+    border-radius:8px 8px 8px 2px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--gold);
+    font-size:16px;
+}
+
+.logo .aiti{
+    color:#fff;
+}
+
+.logo .vest{
     color:var(--gold);
 }
 
@@ -103,19 +136,18 @@ a{
     width:38px;
     height:38px;
     border-radius:50%;
-    background:linear-gradient(135deg,#d7a83f,#8f671b);
+    background:linear-gradient(135deg,#f0c766,#a87924);
     color:#101010;
     display:flex;
     align-items:center;
     justify-content:center;
-    font-size:13px;
+    font-size:12px;
     font-weight:800;
     cursor:pointer;
+    border:0;
 }
 
-/* =========================
-   DRAWER
-========================= */
+/* DRAWER */
 
 .overlay{
     position:fixed;
@@ -161,12 +193,19 @@ a{
 }
 
 .drawer-logo{
-    font-size:20px;
-    font-weight:800;
+    display:flex;
+    align-items:center;
+    gap:7px;
+    font-size:19px;
+    font-weight:900;
     letter-spacing:1px;
 }
 
-.drawer-logo span{
+.drawer-logo .aiti{
+    color:#fff;
+}
+
+.drawer-logo .vest{
     color:var(--gold);
 }
 
@@ -175,7 +214,6 @@ a{
     background:transparent;
     color:#fff;
     font-size:25px;
-    cursor:pointer;
 }
 
 .drawer-links{
@@ -213,15 +251,22 @@ a{
     color:#ff8b8b;
 }
 
-/* =========================
-   PAGE
-========================= */
+/* PAGE */
 
 .page{
     width:100%;
     max-width:760px;
     margin:auto;
     padding:92px 18px 100px;
+}
+
+.eyebrow{
+    color:var(--gold);
+    font-size:10px;
+    text-transform:uppercase;
+    letter-spacing:2px;
+    font-weight:800;
+    margin-bottom:7px;
 }
 
 .page-title{
@@ -232,18 +277,28 @@ a{
 
 .page-subtitle{
     color:var(--muted);
-    font-size:14px;
+    font-size:13px;
+    line-height:1.6;
     margin-bottom:22px;
 }
 
-/* =========================
-   ACTION BAR
-========================= */
+/* ACTION BAR */
 
 .action-bar{
     display:flex;
-    justify-content:flex-end;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
     margin-bottom:14px;
+}
+
+.unread-count{
+    color:var(--muted);
+    font-size:12px;
+}
+
+.unread-count strong{
+    color:var(--gold2);
 }
 
 .mark-all{
@@ -252,9 +307,8 @@ a{
     color:var(--gold2);
     border-radius:9px;
     padding:9px 13px;
-    font-size:12px;
+    font-size:11px;
     font-weight:700;
-    cursor:pointer;
 }
 
 .mark-all:disabled{
@@ -262,9 +316,7 @@ a{
     cursor:not-allowed;
 }
 
-/* =========================
-   NOTIFICATIONS
-========================= */
+/* NOTIFICATIONS */
 
 .notifications{
     display:flex;
@@ -280,7 +332,7 @@ a{
     padding:16px;
     display:flex;
     gap:13px;
-    transition:.2s;
+    transition:background .2s,border-color .2s;
 }
 
 .notification.unread{
@@ -330,17 +382,14 @@ a{
 }
 
 .notification-title{
-    font-size:14px;
+    font-size:13px;
     font-weight:750;
-    line-height:1.35;
-}
-
-.notification.unread .notification-title{
-    color:#fff;
+    line-height:1.5;
+    overflow-wrap:anywhere;
 }
 
 .notification-time{
-    color:#69788a;
+    color:#8491a3;
     font-size:10px;
     white-space:nowrap;
 }
@@ -348,8 +397,10 @@ a{
 .notification-message{
     color:#9ca9b9;
     font-size:12px;
-    line-height:1.55;
+    line-height:1.65;
     margin-top:6px;
+    overflow-wrap:anywhere;
+    white-space:pre-wrap;
 }
 
 .notification-actions{
@@ -363,7 +414,6 @@ a{
     color:var(--gold2);
     font-size:11px;
     font-weight:700;
-    cursor:pointer;
 }
 
 .read-label{
@@ -371,15 +421,13 @@ a{
     font-size:11px;
 }
 
-/* =========================
-   EMPTY
-========================= */
+/* EMPTY AND ERROR */
 
 .empty{
     background:var(--card);
     border:1px solid var(--border);
     border-radius:16px;
-    padding:45px 20px;
+    padding:40px 20px;
     text-align:center;
 }
 
@@ -397,20 +445,27 @@ a{
 }
 
 .empty-title{
-    font-size:16px;
+    font-size:15px;
     font-weight:750;
-    margin-bottom:6px;
+    margin-bottom:7px;
 }
 
 .empty-text{
     color:var(--muted);
     font-size:12px;
-    line-height:1.5;
+    line-height:1.7;
 }
 
-/* =========================
-   LOADING
-========================= */
+.retry-btn{
+    margin-top:16px;
+    border:1px solid rgba(215,168,63,.3);
+    background:rgba(215,168,63,.08);
+    color:var(--gold2);
+    padding:10px 14px;
+    border-radius:9px;
+    font-size:12px;
+    font-weight:700;
+}
 
 .loading{
     padding:40px 20px;
@@ -419,9 +474,7 @@ a{
     font-size:13px;
 }
 
-/* =========================
-   TOAST
-========================= */
+/* TOAST */
 
 .toast{
     position:fixed;
@@ -439,6 +492,9 @@ a{
     transition:.25s;
     z-index:2000;
     box-shadow:0 10px 30px rgba(0,0,0,.3);
+    width:max-content;
+    max-width:calc(100% - 30px);
+    text-align:center;
 }
 
 .toast.show{
@@ -446,9 +502,7 @@ a{
     transform:translate(-50%,0);
 }
 
-/* =========================
-   BOTTOM NAV
-========================= */
+/* BOTTOM NAV */
 
 .bottom-nav{
     position:fixed;
@@ -477,7 +531,6 @@ a{
     gap:4px;
     color:#718096;
     font-size:10px;
-    cursor:pointer;
 }
 
 .bottom-item span:first-child{
@@ -489,12 +542,7 @@ a{
     color:var(--gold2);
 }
 
-/* =========================
-   RESPONSIVE
-========================= */
-
 @media(max-width:430px){
-
     .page{
         padding-left:14px;
         padding-right:14px;
@@ -507,53 +555,61 @@ a{
     .notification-time{
         font-size:9px;
     }
+
+    .notification-top{
+        flex-wrap:wrap;
+    }
+}
+
+@media(prefers-reduced-motion:reduce){
+    *,*::before,*::after{
+        transition:none!important;
+        scroll-behavior:auto!important;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<!-- =========================
-     TOPBAR
-========================= -->
-
 <header class="topbar">
     <div class="topbar-inner">
 
-        <button class="menu-btn" id="menuBtn" aria-label="Open menu">
-            ☰
-        </button>
+        <button
+            class="menu-btn"
+            id="menuBtn"
+            type="button"
+            aria-label="Open navigation menu"
+            aria-expanded="false"
+            aria-controls="drawer"
+        >☰</button>
 
-        <a href="dashboard.html" class="logo">
-            NEX<span>ORA</span>
+        <a href="dashboard.html" class="logo" aria-label="AITIVEST home">
+            <span class="logo-icon">A</span>
+            <span><span class="aiti">AITI</span><span class="vest">VEST</span></span>
         </a>
 
-        <div class="profile-mini" id="profileMini">
-            --
-        </div>
+        <button
+            class="profile-mini"
+            id="profileMini"
+            type="button"
+            aria-label="Open profile"
+        >--</button>
 
     </div>
 </header>
 
-
-<!-- =========================
-     DRAWER
-========================= -->
-
 <div class="overlay" id="overlay"></div>
 
-<aside class="drawer" id="drawer">
+<aside class="drawer" id="drawer" aria-label="Main navigation">
 
     <div class="drawer-head">
-
         <div class="drawer-logo">
-            NEX<span>ORA</span>
+            <span class="logo-icon">A</span>
+            <span><span class="aiti">AITI</span><span class="vest">VEST</span></span>
         </div>
 
-        <button class="close-btn" id="closeBtn">
-            ×
-        </button>
-
+        <button class="close-btn" id="closeBtn" type="button" aria-label="Close menu">×</button>
     </div>
 
     <nav class="drawer-links">
@@ -593,7 +649,7 @@ a{
             <span>Support</span>
         </a>
 
-        <a href="notifications.html" class="drawer-link active">
+        <a href="notifications.html" class="drawer-link active" aria-current="page">
             <span class="drawer-icon">♢</span>
             <span>Notifications</span>
         </a>
@@ -604,54 +660,36 @@ a{
         </a>
 
     </nav>
-
 </aside>
-
-
-<!-- =========================
-     PAGE
-========================= -->
 
 <main class="page">
 
-    <h1 class="page-title">
-        Notifications
-    </h1>
+    <div class="eyebrow">Account updates</div>
+
+    <h1 class="page-title">Notifications</h1>
 
     <p class="page-subtitle">
-        Stay updated with your NEXORA account.
+        Stay updated with your AITIVEST account, transactions, security,
+        and other important activity.
     </p>
 
     <div class="action-bar">
-        <button class="mark-all" id="markAllBtn">
+        <div class="unread-count" id="unreadCount">Unread: <strong>—</strong></div>
+
+        <button class="mark-all" id="markAllBtn" type="button" disabled>
             Mark all as read
         </button>
     </div>
 
-    <section id="notificationsContainer">
-
-        <div class="loading">
-            Loading notifications...
-        </div>
-
+    <section id="notificationsContainer" aria-live="polite">
+        <div class="loading">Loading notifications…</div>
     </section>
 
 </main>
 
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<!-- =========================
-     TOAST
-========================= -->
-
-<div class="toast" id="toast"></div>
-
-
-<!-- =========================
-     BOTTOM NAV
-========================= -->
-
-<nav class="bottom-nav">
-
+<nav class="bottom-nav" aria-label="Bottom navigation">
     <div class="bottom-inner">
 
         <a href="dashboard.html" class="bottom-item">
@@ -675,15 +713,14 @@ a{
         </a>
 
     </div>
-
 </nav>
 
-
 <script>
+"use strict";
 
-/* =========================================================
-   SUPABASE
-========================================================= */
+/* ================================================
+   SUPABASE CONFIGURATION
+================================================ */
 
 const SUPABASE_URL =
     "https://rihvvwktvgytbqzazage.supabase.co";
@@ -691,737 +728,580 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
     "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
 
-const db =
-    supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY
-    );
+const db = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
 
+/*
+Expected notifications columns:
+id, user_id, type, title, message, is_read, created_at
 
-/* =========================================================
-   ELEMENTS
-========================================================= */
+This page assumes is_read is a boolean.
+Database RLS must enforce user ownership.
+*/
 
-const menuBtn =
-    document.getElementById("menuBtn");
+const $ = id => document.getElementById(id);
 
-const closeBtn =
-    document.getElementById("closeBtn");
-
-const drawer =
-    document.getElementById("drawer");
-
-const overlay =
-    document.getElementById("overlay");
-
-const logoutBtn =
-    document.getElementById("logoutBtn");
-
-const profileMini =
-    document.getElementById("profileMini");
-
-const notificationsContainer =
-    document.getElementById("notificationsContainer");
-
-const markAllBtn =
-    document.getElementById("markAllBtn");
-
-const toast =
-    document.getElementById("toast");
-
+const menuBtn = $("menuBtn");
+const closeBtn = $("closeBtn");
+const drawer = $("drawer");
+const overlay = $("overlay");
+const logoutBtn = $("logoutBtn");
+const profileMini = $("profileMini");
+const notificationsContainer = $("notificationsContainer");
+const markAllBtn = $("markAllBtn");
+const unreadCountElement = $("unreadCount");
+const toast = $("toast");
 
 let currentUser = null;
 let notifications = [];
+let toastTimer = null;
+let loadingNotifications = false;
+let updatingAll = false;
+const updatingIds = new Set();
 
-
-/* =========================================================
+/* ================================================
    DRAWER
-========================================================= */
+================================================ */
 
-function openDrawer(){
-
+function openDrawer() {
     drawer.classList.add("open");
     overlay.classList.add("show");
-
+    menuBtn.setAttribute("aria-expanded", "true");
 }
 
-function closeDrawer(){
-
+function closeDrawer() {
     drawer.classList.remove("open");
     overlay.classList.remove("show");
-
+    menuBtn.setAttribute("aria-expanded", "false");
 }
 
-menuBtn.addEventListener(
-    "click",
-    openDrawer
-);
+menuBtn.addEventListener("click", openDrawer);
+closeBtn.addEventListener("click", closeDrawer);
+overlay.addEventListener("click", closeDrawer);
 
-closeBtn.addEventListener(
-    "click",
-    closeDrawer
-);
+document.addEventListener("keydown", event => {
+    if (event.key === "Escape") closeDrawer();
+});
 
-overlay.addEventListener(
-    "click",
-    closeDrawer
-);
-
-
-/* =========================================================
+/* ================================================
    TOAST
-========================================================= */
+================================================ */
 
-let toastTimer;
-
-function showToast(message){
-
+function showToast(message) {
     clearTimeout(toastTimer);
 
     toast.textContent = message;
-
     toast.classList.add("show");
 
     toastTimer = setTimeout(() => {
-
         toast.classList.remove("show");
-
-    }, 2500);
-
+    }, 2800);
 }
 
+/* ================================================
+   HTML ESCAPING
+================================================ */
 
-/* =========================================================
-   FORMAT TIME
-========================================================= */
-
-function formatTime(dateString){
-
-    const date =
-        new Date(dateString);
-
-    const now =
-        new Date();
-
-    const diff =
-        Math.floor(
-            (now - date) / 1000
-        );
-
-    if(diff < 60){
-
-        return "Just now";
-
-    }
-
-    if(diff < 3600){
-
-        const minutes =
-            Math.floor(diff / 60);
-
-        return `${minutes}m ago`;
-
-    }
-
-    if(diff < 86400){
-
-        const hours =
-            Math.floor(diff / 3600);
-
-        return `${hours}h ago`;
-
-    }
-
-    if(diff < 604800){
-
-        const days =
-            Math.floor(diff / 86400);
-
-        return `${days}d ago`;
-
-    }
-
-    return date.toLocaleDateString(
-        undefined,
-        {
-            day:"numeric",
-            month:"short",
-            year:"numeric"
-        }
-    );
-
+function escapeHtml(value) {
+    return String(value ?? "").replace(/[&<>"']/g, character => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+    }[character]));
 }
 
+/* ================================================
+   TIME FORMATTING
+================================================ */
 
-/* =========================================================
-   ICON
-========================================================= */
+function formatTime(dateString) {
+    if (!dateString) return "Date unavailable";
 
-function notificationIcon(type){
+    const date = new Date(dateString);
 
-    switch(type){
+    if (Number.isNaN(date.getTime())) {
+        return "Date unavailable";
+    }
 
+    const now = new Date();
+    const seconds = Math.max(0, Math.floor((now - date) / 1000));
+
+    if (seconds < 60) return "Just now";
+
+    if (seconds < 3600) {
+        return Math.floor(seconds / 60) + "m ago";
+    }
+
+    if (seconds < 86400) {
+        return Math.floor(seconds / 3600) + "h ago";
+    }
+
+    if (seconds < 604800) {
+        return Math.floor(seconds / 86400) + "d ago";
+    }
+
+    return date.toLocaleDateString(undefined, {
+        day: "numeric",
+        month: "short",
+        year: "numeric"
+    });
+}
+
+/* ================================================
+   NOTIFICATION ICONS
+================================================ */
+
+function notificationIcon(type) {
+    switch (String(type || "").toUpperCase()) {
         case "WELCOME":
             return "✦";
-
         case "DEPOSIT":
             return "＋";
-
         case "EARNING":
             return "↗";
-
         case "WITHDRAWAL":
             return "↙";
-
         case "KYC":
             return "✓";
-
         case "REFERRAL":
             return "♧";
-
         case "SECURITY":
             return "⌁";
-
         case "SYSTEM":
             return "◆";
-
         default:
             return "•";
-
     }
-
 }
 
+/* ================================================
+   AUTHENTICATION
+================================================ */
 
-/* =========================================================
-   LOAD USER
-========================================================= */
+async function loadUser() {
+    const { data, error } = await db.auth.getSession();
 
-async function loadUser(){
-
-    const {
-        data,
-        error
-    } = await db.auth.getSession();
-
-    if(error){
-
-        console.error(error);
-
-        location.href =
-            "signin.html";
-
-        return false;
-
+    if (error) {
+        throw new Error("Unable to verify your session. Please sign in again.");
     }
 
-    if(!data.session){
-
-        location.href =
-            "signin.html";
-
+    if (!data.session) {
+        location.replace("signin.html");
         return false;
-
     }
 
-    currentUser =
-        data.session.user;
-
+    currentUser = data.session.user;
     return true;
-
 }
 
-
-/* =========================================================
+/* ================================================
    PROFILE INITIALS
-========================================================= */
+================================================ */
 
-async function loadProfile(){
+async function loadProfile() {
+    if (!currentUser) return;
 
-    if(!currentUser) return;
+    let name = "";
 
-    const {
-        data,
-        error
-    } = await db
+    const { data, error } = await db
         .from("profiles")
         .select("full_name")
         .eq("id", currentUser.id)
         .maybeSingle();
 
-    if(error){
-
-        console.error(
-            "Profile error:",
-            error
-        );
-
+    if (!error && data?.full_name) {
+        name = data.full_name;
     }
 
-    const name =
-        data?.full_name ||
-        currentUser.user_metadata?.full_name ||
-        currentUser.email ||
-        "";
-
-    const parts =
-        name
-            .trim()
-            .split(/\s+/)
-            .filter(Boolean);
-
-    let initials = "";
-
-    if(parts.length >= 2){
-
-        initials =
-            parts[0][0] +
-            parts[parts.length - 1][0];
-
-    }else if(parts.length === 1){
-
-        initials =
-            parts[0].slice(0,2);
-
-    }else{
-
-        initials =
-            "NX";
-
+    if (!name) {
+        name =
+            currentUser.user_metadata?.full_name ||
+            currentUser.email ||
+            "";
     }
 
-    profileMini.textContent =
-        initials
-            .toUpperCase();
+    const parts = name.trim().split(/\s+/).filter(Boolean);
 
+    let initials = "AV";
+
+    if (parts.length >= 2) {
+        initials = parts[0][0] + parts[parts.length - 1][0];
+    } else if (parts.length === 1) {
+        initials = parts[0].slice(0, 2);
+    }
+
+    profileMini.textContent = initials.toUpperCase();
 }
 
+/* ================================================
+   EMPTY / ERROR STATES
+================================================ */
 
-/* =========================================================
-   LOAD NOTIFICATIONS
-========================================================= */
-
-async function loadNotifications(){
-
+function showEmpty() {
     notificationsContainer.innerHTML = `
-        <div class="loading">
-            Loading notifications...
+        <div class="empty">
+            <div class="empty-icon">♢</div>
+            <div class="empty-title">No notifications yet</div>
+            <div class="empty-text">
+                You're all caught up. New account updates will appear here.
+            </div>
+        </div>
+    `;
+}
+
+function showLoadError() {
+    notificationsContainer.innerHTML = `
+        <div class="empty">
+            <div class="empty-icon">!</div>
+            <div class="empty-title">Unable to load notifications</div>
+            <div class="empty-text">
+                Check your connection and try again. If the problem continues,
+                check your Supabase notifications table and access policies.
+            </div>
+            <button class="retry-btn" id="retryBtn" type="button">
+                Try Again
+            </button>
         </div>
     `;
 
-    const {
-        data,
-        error
-    } = await db
-        .from("notifications")
-        .select(`
-            id,
-            type,
-            title,
-            message,
-            is_read,
-            created_at
-        `)
-        .eq(
-            "user_id",
-            currentUser.id
-        )
-        .order(
-            "created_at",
-            {
-                ascending:false
-            }
-        )
-        .limit(100);
+    $("retryBtn").addEventListener("click", loadNotifications);
+}
 
-    if(error){
+/* ================================================
+   LOAD NOTIFICATIONS
+================================================ */
 
-        console.error(
-            "Notifications error:",
-            error
+async function loadNotifications() {
+    if (!currentUser || loadingNotifications) return;
+
+    loadingNotifications = true;
+
+    notificationsContainer.innerHTML = `
+        <div class="loading">Loading notifications…</div>
+    `;
+
+    markAllBtn.disabled = true;
+
+    try {
+        const { data, error } = await db
+            .from("notifications")
+            .select("id,type,title,message,is_read,created_at")
+            .eq("user_id", currentUser.id)
+            .order("created_at", { ascending: false })
+            .limit(100);
+
+        if (error) throw error;
+
+        notifications = data || [];
+
+        renderNotifications();
+
+    } catch (error) {
+        console.error("Could not load notifications.");
+
+        notifications = [];
+        unreadCountElement.innerHTML = "Unread: <strong>—</strong>";
+
+        showLoadError();
+
+    } finally {
+        loadingNotifications = false;
+    }
+}
+
+/* ================================================
+   RENDER NOTIFICATIONS
+================================================ */
+
+function renderNotifications() {
+    const unreadCount = notifications.filter(
+        notification => notification.is_read === false
+    ).length;
+
+    unreadCountElement.innerHTML =
+        "Unread: <strong>" + unreadCount + "</strong>";
+
+    markAllBtn.disabled = unreadCount === 0 || updatingAll;
+
+    if (!notifications.length) {
+        showEmpty();
+        return;
+    }
+
+    notificationsContainer.innerHTML = `
+        <div class="notifications">
+            ${notifications.map(notification => {
+                const unread = notification.is_read === false;
+                const id = String(notification.id);
+
+                return `
+                    <article class="notification ${unread ? "unread" : ""}">
+                        <div class="notification-icon">
+                            ${escapeHtml(notificationIcon(notification.type))}
+                        </div>
+
+                        <div class="notification-content">
+                            <div class="notification-top">
+                                <div class="notification-title">
+                                    ${escapeHtml(notification.title || "Account update")}
+                                </div>
+
+                                <div class="notification-time">
+                                    ${escapeHtml(formatTime(notification.created_at))}
+                                </div>
+                            </div>
+
+                            <div class="notification-message">${escapeHtml(
+                                notification.message || ""
+                            )}</div>
+
+                            <div class="notification-actions">
+                                ${
+                                    unread
+                                    ? `
+                                        <button
+                                            class="read-btn"
+                                            type="button"
+                                            data-read-id="${escapeHtml(id)}"
+                                            ${updatingIds.has(id) ? "disabled" : ""}
+                                        >
+                                            ${updatingIds.has(id) ? "Updating…" : "Mark as read"}
+                                        </button>
+                                    `
+                                    : `
+                                        <span class="read-label">✓ Read</span>
+                                    `
+                                }
+                            </div>
+                        </div>
+                    </article>
+                `;
+            }).join("")}
+        </div>
+    `;
+
+    notificationsContainer
+        .querySelectorAll("[data-read-id]")
+        .forEach(button => {
+            button.addEventListener("click", () => {
+                markAsRead(button.dataset.readId);
+            });
+        });
+}
+
+/* ================================================
+   MARK ONE AS READ
+================================================ */
+
+async function markAsRead(id) {
+    if (!currentUser || updatingIds.has(String(id))) return;
+
+    const key = String(id);
+
+    const notification = notifications.find(
+        item => String(item.id) === key
+    );
+
+    if (!notification || notification.is_read === true) return;
+
+    updatingIds.add(key);
+    renderNotifications();
+
+    try {
+        const { data, error } = await db
+            .from("notifications")
+            .update({ is_read: true })
+            .eq("id", notification.id)
+            .eq("user_id", currentUser.id)
+            .eq("is_read", false)
+            .select("id,is_read");
+
+        if (error) throw error;
+
+        /*
+         * If RLS prevents the update, Supabase may return no rows
+         * instead of a clear error. Do not claim success then.
+         */
+        if (!data || data.length === 0) {
+            throw new Error("The notification was not updated. Please refresh.");
+        }
+
+        notification.is_read = true;
+
+        showToast("Notification marked as read.");
+
+    } catch (error) {
+        console.error("Notification update failed.");
+
+        showToast(error.message || "Unable to update notification.");
+
+    } finally {
+        updatingIds.delete(key);
+        renderNotifications();
+    }
+}
+
+/* ================================================
+   MARK ALL AS READ
+================================================ */
+
+markAllBtn.addEventListener("click", async () => {
+    if (!currentUser || updatingAll) return;
+
+    const unread = notifications.filter(
+        notification => notification.is_read === false
+    );
+
+    if (!unread.length) return;
+
+    updatingAll = true;
+    markAllBtn.textContent = "Updating…";
+    renderNotifications();
+
+    try {
+        const { error } = await db
+            .from("notifications")
+            .update({ is_read: true })
+            .eq("user_id", currentUser.id)
+            .eq("is_read", false);
+
+        if (error) throw error;
+
+        /*
+         * Reload from the database so the interface reflects
+         * the saved state, rather than assuming every row updated.
+         */
+        const { data, error: reloadError } = await db
+            .from("notifications")
+            .select("id,type,title,message,is_read,created_at")
+            .eq("user_id", currentUser.id)
+            .order("created_at", { ascending: false })
+            .limit(100);
+
+        if (reloadError) throw reloadError;
+
+        notifications = data || [];
+
+        showToast("All notifications marked as read.");
+
+    } catch (error) {
+        console.error("Mark-all operation failed.");
+
+        showToast(
+            error.message || "Unable to mark all notifications as read."
+        );
+
+        /*
+         * Reload the current state instead of falsely marking
+         * the local notifications as read.
+         */
+        try {
+            const { data, error: reloadError } = await db
+                .from("notifications")
+                .select("id,type,title,message,is_read,created_at")
+                .eq("user_id", currentUser.id)
+                .order("created_at", { ascending: false })
+                .limit(100);
+
+            if (!reloadError) notifications = data || [];
+
+        } catch (_) {}
+
+    } finally {
+        updatingAll = false;
+        markAllBtn.textContent = "Mark all as read";
+        renderNotifications();
+    }
+});
+
+/* ================================================
+   LOGOUT
+================================================ */
+
+logoutBtn.addEventListener("click", async event => {
+    event.preventDefault();
+
+    logoutBtn.style.pointerEvents = "none";
+
+    try {
+        const { error } = await db.auth.signOut();
+
+        if (error) throw error;
+
+        location.replace("signin.html");
+
+    } catch (error) {
+        console.error("Logout failed.");
+
+        showToast("Unable to log out. Please try again.");
+        logoutBtn.style.pointerEvents = "";
+    }
+});
+
+/* ================================================
+   PROFILE BUTTON
+================================================ */
+
+profileMini.addEventListener("click", () => {
+    location.href = "profile.html";
+});
+
+/* ================================================
+   AUTH STATE
+================================================ */
+
+db.auth.onAuthStateChange((event) => {
+    if (event === "SIGNED_OUT") {
+        location.replace("signin.html");
+    }
+});
+
+/* ================================================
+   INITIALIZE
+================================================ */
+
+async function init() {
+    try {
+        const loggedIn = await loadUser();
+
+        if (!loggedIn) return;
+
+        await Promise.all([
+            loadProfile(),
+            loadNotifications()
+        ]);
+
+    } catch (error) {
+        console.error("Notifications initialization failed.");
+
+        showToast(
+            error.message || "Unable to open notifications."
         );
 
         notificationsContainer.innerHTML = `
             <div class="empty">
                 <div class="empty-icon">!</div>
-
-                <div class="empty-title">
-                    Unable to load notifications
-                </div>
-
+                <div class="empty-title">Unable to open notifications</div>
                 <div class="empty-text">
-                    Please try again later.
+                    Please sign in again or refresh the page.
                 </div>
+                <button
+                    class="retry-btn"
+                    type="button"
+                    onclick="location.reload()"
+                >
+                    Refresh Page
+                </button>
             </div>
         `;
-
-        markAllBtn.disabled = true;
-
-        return;
-
     }
-
-    notifications =
-        data || [];
-
-    renderNotifications();
-
 }
-
-
-/* =========================================================
-   RENDER
-========================================================= */
-
-function renderNotifications(){
-
-    if(!notifications.length){
-
-        notificationsContainer.innerHTML = `
-            <div class="empty">
-
-                <div class="empty-icon">
-                    ♢
-                </div>
-
-                <div class="empty-title">
-                    No notifications
-                </div>
-
-                <div class="empty-text">
-                    You're all caught up. New account updates will appear here.
-                </div>
-
-            </div>
-        `;
-
-        markAllBtn.disabled = true;
-
-        return;
-
-    }
-
-    const unreadCount =
-        notifications.filter(
-            notification =>
-                !notification.is_read
-        ).length;
-
-    markAllBtn.disabled =
-        unreadCount === 0;
-
-    notificationsContainer.innerHTML = `
-        <div class="notifications">
-
-            ${notifications.map(
-                notification => {
-
-                    const unread =
-                        !notification.is_read;
-
-                    return `
-                        <article
-                            class="notification ${unread ? "unread" : ""}"
-                        >
-
-                            <div class="notification-icon">
-                                ${notificationIcon(
-                                    notification.type
-                                )}
-                            </div>
-
-                            <div class="notification-content">
-
-                                <div class="notification-top">
-
-                                    <div class="notification-title">
-                                        ${escapeHtml(
-                                            notification.title
-                                        )}
-                                    </div>
-
-                                    <div class="notification-time">
-                                        ${formatTime(
-                                            notification.created_at
-                                        )}
-                                    </div>
-
-                                </div>
-
-                                <div class="notification-message">
-                                    ${escapeHtml(
-                                        notification.message
-                                    )}
-                                </div>
-
-                                <div class="notification-actions">
-
-                                    ${
-                                        unread
-                                        ?
-                                        `
-                                        <button
-                                            class="read-btn"
-                                            onclick="markAsRead(${notification.id})"
-                                        >
-                                            Mark as read
-                                        </button>
-                                        `
-                                        :
-                                        `
-                                        <span class="read-label">
-                                            Read
-                                        </span>
-                                        `
-                                    }
-
-                                </div>
-
-                            </div>
-
-                        </article>
-                    `;
-
-                }
-            ).join("")}
-
-        </div>
-    `;
-
-}
-
-
-/* =========================================================
-   ESCAPE HTML
-========================================================= */
-
-function escapeHtml(value){
-
-    return String(value ?? "")
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
-
-}
-
-
-/* =========================================================
-   MARK ONE AS READ
-========================================================= */
-
-async function markAsRead(id){
-
-    const {
-        error
-    } = await db
-        .from("notifications")
-        .update({
-            is_read:true
-        })
-        .eq(
-            "id",
-            id
-        )
-        .eq(
-            "user_id",
-            currentUser.id
-        );
-
-    if(error){
-
-        console.error(error);
-
-        showToast(
-            "Unable to update notification."
-        );
-
-        return;
-
-    }
-
-    const notification =
-        notifications.find(
-            item =>
-                item.id === id
-        );
-
-    if(notification){
-
-        notification.is_read = true;
-
-    }
-
-    renderNotifications();
-
-}
-
-
-/* =========================================================
-   MARK ALL AS READ
-========================================================= */
-
-markAllBtn.addEventListener(
-    "click",
-    async function(){
-
-        if(!currentUser) return;
-
-        const unread =
-            notifications.filter(
-                item =>
-                    !item.is_read
-            );
-
-        if(!unread.length){
-
-            return;
-
-        }
-
-        markAllBtn.disabled = true;
-
-        const {
-            error
-        } = await db
-            .from("notifications")
-            .update({
-                is_read:true
-            })
-            .eq(
-                "user_id",
-                currentUser.id
-            )
-            .eq(
-                "is_read",
-                false
-            );
-
-        if(error){
-
-            console.error(error);
-
-            showToast(
-                "Unable to mark notifications as read."
-            );
-
-            renderNotifications();
-
-            return;
-
-        }
-
-        notifications =
-            notifications.map(
-                item => ({
-                    ...item,
-                    is_read:true
-                })
-            );
-
-        renderNotifications();
-
-        showToast(
-            "All notifications marked as read."
-        );
-
-    }
-);
-
-
-/* =========================================================
-   LOGOUT
-========================================================= */
-
-logoutBtn.addEventListener(
-    "click",
-    async function(event){
-
-        event.preventDefault();
-
-        const {
-            error
-        } = await db.auth.signOut();
-
-        if(error){
-
-            console.error(error);
-
-            showToast(
-                "Unable to log out."
-            );
-
-            return;
-
-        }
-
-        location.href =
-            "signin.html";
-
-    }
-);
-
-
-/* =========================================================
-   PROFILE BUTTON
-========================================================= */
-
-profileMini.addEventListener(
-    "click",
-    function(){
-
-        location.href =
-            "profile.html";
-
-    }
-);
-
-
-/* =========================================================
-   AUTH STATE
-========================================================= */
-
-db.auth.onAuthStateChange(
-    (event, session) => {
-
-        if(
-            event === "SIGNED_OUT"
-        ){
-
-            location.href =
-                "signin.html";
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   INIT
-========================================================= */
-
-async function init(){
-
-    const loggedIn =
-        await loadUser();
-
-    if(!loggedIn){
-
-        return;
-
-    }
-
-    await loadProfile();
-
-    await loadNotifications();
-
-}
-
 
 init();
-
 </script>
 
 </body>
