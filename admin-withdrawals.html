@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Withdrawals | AITIVEST Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0A1428;
+  --sidebar:#0B162D;
+  --card:#101D38;
+  --border:#243559;
+  --gold:#D4A64A;
+  --gold-light:#EBD29A;
+  --text:#EAF0FA;
+  --muted:#94A3BD;
+  --green:#53D6A0;
+  --red:#FF777F;
+  --blue:#83B4FF;
+}
+* {box-sizing:border-box;margin:0;padding:0}
+body {background:var(--bg);color:var(--text);font-family:Manrope,sans-serif;min-height:100vh}
+button,input,select,textarea {font:inherit}
+button,a {touch-action:manipulation}
+a {color:inherit;text-decoration:none}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible {outline:2px solid var(--gold-light);outline-offset:3px}
+.layout {min-height:100vh}
+.sidebar {position:fixed;inset:0 auto 0 0;width:245px;padding:24px 16px;background:var(--sidebar);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:100;overflow-y:auto}
+.brand {display:flex;align-items:center;gap:12px;padding:6px 10px 25px;border-bottom:1px solid var(--border)}
+.brand-icon {width:42px;height:42px;display:grid;place-items:center;background:linear-gradient(135deg,var(--gold-light),var(--gold));color:#101827;border-radius:12px;font-size:21px;font-weight:800}
+.brand-name {font-family:"Instrument Serif",serif;font-size:25px;letter-spacing:1px}
+.brand-label {font-size:10px;color:var(--muted);letter-spacing:1.5px;margin-top:3px;text-transform:uppercase}
+.nav-label {margin:25px 11px 12px;color:var(--muted);font-size:10px;font-weight:800;letter-spacing:1.8px;text-transform:uppercase}
+.nav-link {display:flex;align-items:center;gap:12px;padding:13px 14px;margin-bottom:5px;border:1px solid transparent;border-radius:10px;color:var(--muted);font-size:12px;font-weight:700}
+.nav-link:hover,.nav-link.active {color:var(--gold-light);background:#d4a64a12;border-color:#d4a64a33}
+.nav-icon {width:20px;text-align:center;font-size:17px}
+.sidebar-bottom {margin-top:auto;padding-top:20px}
+.admin-profile {display:flex;align-items:center;gap:10px;padding:15px 8px;border-top:1px solid var(--border)}
+.avatar {width:38px;height:38px;display:grid;place-items:center;background:#263755;border:1px solid var(--gold);border-radius:50%;color:var(--gold-light);font-weight:800}
+.admin-name {font-size:11px;font-weight:800;overflow-wrap:anywhere}
+.admin-role {font-size:10px;color:var(--muted);margin-top:4px}
+.signout {width:100%;padding:12px;border:1px solid var(--border);border-radius:9px;background:transparent;color:var(--red);text-align:left;cursor:pointer}
+.main {margin-left:245px;min-width:0;padding:30px}
+.topbar {display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:24px}
+.eyebrow {font-size:10px;font-weight:800;color:var(--gold);letter-spacing:2px;text-transform:uppercase}
+h1 {font-family:"Instrument Serif",serif;font-size:clamp(30px,4vw,40px);font-weight:400;margin-top:7px}
+.subtitle {font-size:12px;line-height:1.8;color:var(--muted);margin-top:7px}
+.top-actions {display:flex;align-items:center;gap:10px}
+.connection {padding:10px 12px;border:1px solid var(--border);border-radius:9px;color:var(--muted);font-size:10px}
+.menu-button {display:none;background:var(--card);border:1px solid var(--border);border-radius:9px;padding:9px 12px;color:var(--gold-light);font-size:20px}
+.toolbar {display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+.muted {color:var(--muted);font-size:11px;line-height:1.7}
+.button {border:1px solid var(--border);background:var(--card);color:var(--gold-light);padding:10px 13px;border-radius:9px;font-size:11px;font-weight:800;cursor:pointer}
+.button:disabled {opacity:.5;cursor:wait}
+.notice {display:none;margin-bottom:18px;padding:13px 15px;border:1px solid var(--border);border-radius:10px;font-size:12px;line-height:1.7;overflow-wrap:anywhere}
+.notice.error {display:block;color:#ffb4b8;background:#ff777f12;border-color:#ff777f55}
+.notice.success {display:block;color:#8de8c0;background:#53d6a012;border-color:#53d6a055}
+.stats {display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;margin-bottom:20px}
+.stat {background:var(--card);border:1px solid var(--border);border-radius:13px;padding:17px;min-width:0}
+.stat-label {font-size:10px;color:var(--muted);line-height:1.7}
+.stat-value {font-family:"Instrument Serif",serif;font-size:30px;margin-top:12px;overflow-wrap:anywhere}
+.panel {background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;min-width:0}
+.panel-heading {display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:17px}
+.panel-title {font-family:"Instrument Serif",serif;font-size:24px;font-weight:400}
+.filters {display:grid;grid-template-columns:minmax(150px,1fr) minmax(130px,200px) auto;gap:10px;margin-bottom:18px}
+.field {width:100%;min-width:0;background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:12px;color:var(--text);font-size:12px}
+.field::placeholder {color:#71819e}
+.table-wrap {overflow-x:auto}
+table {width:100%;border-collapse:collapse;white-space:nowrap}
+th {text-align:left;padding:13px 10px;border-bottom:1px solid var(--border);color:var(--muted);font-size:9px;letter-spacing:.6px}
+td {padding:14px 10px;border-bottom:1px solid var(--border);font-size:11px;vertical-align:top}
+tbody tr:last-child td {border-bottom:0}
+.amount {font-weight:800;color:var(--gold-light)}
+.subline {font-size:10px;color:var(--muted);margin-top:5px}
+.badge {display:inline-block;padding:5px 8px;border-radius:6px;background:#83b4ff12;color:var(--blue);font-size:9px;font-weight:800}
+.badge.pending,.badge.under_review {background:#d4a64a18;color:var(--gold-light)}
+.badge.approved,.badge.completed {background:#53d6a018;color:var(--green)}
+.badge.rejected,.badge.cancelled {background:#ff777f15;color:var(--red)}
+.actions {display:flex;gap:7px;align-items:center}
+.approve {background:#53d6a012;border-color:#53d6a055;color:var(--green)}
+.reject {background:#ff777f12;border-color:#ff777f55;color:#ff9ca2}
+.details {display:block;margin-top:7px;color:var(--gold-light);font-size:10px;cursor:pointer;background:none;border:0;text-align:left}
+.empty {padding:30px 12px;text-align:center;color:var(--muted);font-size:12px;line-height:1.8;white-space:normal}
+.pagination {display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:17px}
+.footer {padding:20px;text-align:center;color:var(--muted);font-size:10px;line-height:1.8}
+.overlay {display:none}
+.modal-backdrop {display:none;position:fixed;inset:0;z-index:300;background:#000b;align-items:center;justify-content:center;padding:18px}
+.modal-backdrop.show {display:flex}
+.modal {width:min(100%,520px);max-height:90vh;overflow-y:auto;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:21px}
+.modal h2 {font-family:"Instrument Serif",serif;font-size:26px;font-weight:400;margin-bottom:12px}
+.modal-content {font-size:12px;line-height:1.9;overflow-wrap:anywhere}
+.modal-content strong {color:var(--gold-light)}
+.modal-actions {display:flex;justify-content:flex-end;gap:9px;margin-top:18px;flex-wrap:wrap}
+.address {white-space:normal;overflow-wrap:anywhere;max-width:270px}
+@media(max-width:1050px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:760px){
+ .sidebar{width:270px;transform:translateX(-100%);transition:transform .25s}
+ .sidebar.open{transform:translateX(0);box-shadow:20px 0 60px #0007}
+ .overlay.show{display:block;position:fixed;inset:0;z-index:90;background:#0009}
+ .main{margin-left:0;padding:20px 14px 28px}
+ .menu-button{display:block}
+ .connection{display:none}
+ .panel{padding:14px}
+ .filters{grid-template-columns:1fr 1fr}
+ .filters input{grid-column:1/-1}
+}
+@media(max-width:390px){.stats{gap:8px}.stat{padding:12px}.stat-value{font-size:26px}.filters{grid-template-columns:1fr}.filters input{grid-column:auto}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar" id="sidebar">
+  <a class="brand" href="admin.html">
+    <div class="brand-icon">A</div>
+    <div><div class="brand-name">AITIVEST</div><div class="brand-label">Administration</div></div>
+  </a>
+  <div class="nav-label">Main Menu</div>
+  <nav>
+    <a class="nav-link" href="admin.html"><span class="nav-icon">▦</span> Overview</a>
+    <a class="nav-link" href="admin-users.html"><span class="nav-icon">♙</span> Users</a>
+    <a class="nav-link" href="admin-deposits.html"><span class="nav-icon">↓</span> Deposits</a>
+    <a class="nav-link active" href="admin-withdrawals.html"><span class="nav-icon">↑</span> Withdrawals</a>
+    <a class="nav-link" href="admin-transactions.html"><span class="nav-icon">⇄</span> Transactions</a>
+    <div class="nav-label">Management</div>
+    <a class="nav-link" href="admin-support.html"><span class="nav-icon">✉</span> Support</a>
+    <a class="nav-link" href="admin-security.html"><span class="nav-icon">♧</span> Security Logs</a>
+    <a class="nav-link" href="admin-settings.html"><span class="nav-icon">⚙</span> Settings</a>
+  </nav>
+  <div class="sidebar-bottom">
+    <div class="admin-profile">
+      <div class="avatar" id="adminAvatar">AD</div>
+      <div><div class="admin-name" id="adminName">Administrator</div><div class="admin-role">Verified admin session</div></div>
+    </div>
+    <button class="signout" id="signOutButton" type="button">↪ &nbsp; Sign Out</button>
+  </div>
+</aside>
+<div class="overlay" id="overlay"></div>
+
+<main class="main">
+<header class="topbar">
+  <div>
+    <div class="eyebrow">Administration / Withdrawals</div>
+    <h1>Withdrawal Requests</h1>
+    <p class="subtitle">Review requests securely. Approval is not proof that a payout was sent.</p>
+  </div>
+  <div class="top-actions">
+    <div class="connection" id="connectionStatus">Verifying administrator…</div>
+    <button class="menu-button" id="menuButton" type="button" aria-label="Open navigation" aria-expanded="false">☰</button>
+  </div>
+</header>
+
+<div class="toolbar">
+  <p class="muted" id="lastUpdated">Checking access…</p>
+  <button class="button" id="refreshButton" type="button">↻ Refresh</button>
+</div>
+<div class="notice" id="notice" role="status" aria-live="polite"></div>
+
+<section class="stats">
+  <article class="stat"><div class="stat-label">Pending requests</div><div class="stat-value" id="pendingCount">—</div></article>
+  <article class="stat"><div class="stat-label">Approved requests</div><div class="stat-value" id="approvedCount">—</div></article>
+  <article class="stat"><div class="stat-label">Completed requests</div><div class="stat-value" id="completedCount">—</div></article>
+  <article class="stat"><div class="stat-label">Rejected requests</div><div class="stat-value" id="rejectedCount">—</div></article>
+</section>
+
+<section class="panel">
+  <div class="panel-heading">
+    <div><h2 class="panel-title">All requests</h2><p class="muted">Search, inspect, and review withdrawal records.</p></div>
+  </div>
+  <div class="filters">
+    <input class="field" id="searchInput" type="search" maxlength="120" placeholder="Search ID, user, email, asset…">
+    <select class="field" id="statusFilter" aria-label="Filter withdrawal status">
+      <option value="PENDING">Pending</option>
+      <option value="UNDER_REVIEW">Under review</option>
+      <option value="APPROVED">Approved</option>
+      <option value="PROCESSING">Processing</option>
+      <option value="COMPLETED">Completed</option>
+      <option value="REJECTED">Rejected</option>
+      <option value="CANCELLED">Cancelled</option>
+      <option value="ALL">All statuses</option>
+    </select>
+    <button class="button" id="searchButton" type="button">Search</button>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr>
+        <th>REQUEST / USER</th><th>AMOUNT</th><th>DESTINATION</th><th>STATUS</th><th>DATE</th><th>ACTIONS</th>
+      </tr></thead>
+      <tbody id="withdrawalBody"><tr><td colspan="6" class="empty">Verifying access…</td></tr></tbody>
+    </table>
+  </div>
+  <div class="pagination">
+    <span class="muted" id="pageInfo">Page 1</span>
+    <div class="actions">
+      <button class="button" id="previousButton" type="button" disabled>← Previous</button>
+      <button class="button" id="nextButton" type="button" disabled>Next →</button>
+    </div>
+  </div>
+</section>
+
+<div class="footer">AITIVEST Administration · Financial actions are verified by server-side procedures.</div>
+</main>
+</div>
+
+<div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal">
+    <h2 id="modalTitle">Withdrawal details</h2>
+    <div class="modal-content" id="modalContent"></div>
+    <div id="reasonContainer" hidden>
+      <label for="rejectReason" class="muted">Rejection reason (required)</label>
+      <textarea class="field" id="rejectReason" rows="3" maxlength="500" placeholder="Explain why this request is being rejected"></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="button" id="cancelModalButton" type="button">Close</button>
+      <button class="button reject" id="confirmRejectButton" type="button" hidden>Confirm rejection</button>
+      <button class="button approve" id="confirmApproveButton" type="button" hidden>Confirm approval</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+"use strict";
+
+/* Use the existing AITIVEST browser-safe publishable key.
+   Never place a service_role or secret key in frontend code. */
+const SUPABASE_URL = "https://rihvvwktvgytbqzazage.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
+
+const db = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY,
+  {auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}}
+);
+
+const $ = id => document.getElementById(id);
+const sidebar = $("sidebar");
+const overlay = $("overlay");
+const notice = $("notice");
+const body = $("withdrawalBody");
+const refreshButton = $("refreshButton");
+const searchInput = $("searchInput");
+const statusFilter = $("statusFilter");
+const modalBackdrop = $("modalBackdrop");
+const modalContent = $("modalContent");
+const reasonContainer = $("reasonContainer");
+const rejectReason = $("rejectReason");
+const confirmRejectButton = $("confirmRejectButton");
+const confirmApproveButton = $("confirmApproveButton");
+
+let currentSession = null;
+let redirecting = false;
+let loading = false;
+let acting = false;
+let page = 0;
+const pageSize = 25;
+let total = 0;
+let requests = [];
+let selectedRequest = null;
+let modalAction = null;
+let searchTimer = null;
+
+function message(text, type) {
+  notice.textContent = text;
+  notice.className = "notice " + type;
+}
+function clearMessage() {
+  notice.textContent = "";
+  notice.className = "notice";
+}
+function setConnection(text) {
+  $("connectionStatus").textContent = text;
+}
+function formatDate(value) {
+  if (!value) return "—";
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? "—" : date.toLocaleString();
+}
+function formatAmount(value, asset) {
+  const n = Number(value);
+  return Number.isFinite(n) ? n.toLocaleString(undefined,{maximumFractionDigits:8}) + (asset ? " " + asset : "") : "—";
+}
+function addCell(row, value, className) {
+  const cell = document.createElement("td");
+  cell.textContent = value == null || value === "" ? "—" : String(value);
+  if (className) cell.className = className;
+  row.appendChild(cell);
+  return cell;
+}
+function badge(status) {
+  const span = document.createElement("span");
+  const safe = String(status || "UNKNOWN").toUpperCase();
+  span.className = "badge " + safe.toLowerCase();
+  span.textContent = safe.replaceAll("_", " ");
+  return span;
+}
+function emptyTable(text) {
+  body.replaceChildren();
+  const row = document.createElement("tr");
+  const cell = document.createElement("td");
+  cell.colSpan = 6;
+  cell.className = "empty";
+  cell.textContent = text;
+  row.appendChild(cell);
+  body.appendChild(row);
+}
+function createAction(label, className, handler) {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "button " + className;
+  button.textContent = label;
+  button.addEventListener("click", handler);
+  return button;
+}
+
+async function verifyAdmin() {
+  if (redirecting) return false;
+
+  let result;
+  try {
+    result = await db.auth.getSession();
+  } catch (error) {
+    console.error(error);
+    setConnection("Session error");
+    message("Unable to verify your session. Check your connection and refresh.", "error");
+    return false;
+  }
+
+  if (result.error || !result.data?.session) {
+    redirecting = true;
+    window.location.replace("admin-login.html");
+    return false;
+  }
+
+  currentSession = result.data.session;
+
+  let admin;
+  try {
+    admin = await db.rpc("is_current_user_admin");
+  } catch (error) {
+    console.error(error);
+    setConnection("Verification error");
+    message("Administrator verification failed. No requests were loaded.", "error");
+    return false;
+  }
+
+  if (admin.error) {
+    console.error(admin.error);
+    setConnection("Verification error");
+    message("Could not verify administrator permissions. Check the is_current_user_admin function.", "error");
+    return false;
+  }
+
+  if (admin.data !== true) {
+    redirecting = true;
+    await db.auth.signOut();
+    window.location.replace("admin-login.html?denied=1");
+    return false;
+  }
+
+  const email = currentSession.user?.email || "Administrator";
+  $("adminName").textContent = email;
+  $("adminAvatar").textContent = email.slice(0,2).toUpperCase();
+  setConnection("Administrator verified");
+  return true;
+}
+
+function renderRequests(items) {
+  body.replaceChildren();
+
+  if (!items.length) {
+    emptyTable("No withdrawal requests match this filter.");
+    return;
+  }
+
+  for (const item of items) {
+    const row = document.createElement("tr");
+    const userCell = document.createElement("td");
+    const requestId = document.createElement("strong");
+    requestId.textContent = "#" + item.id;
+    userCell.appendChild(requestId);
+
+    const name = document.createElement("div");
+    name.className = "subline";
+    name.textContent = item.full_name || item.email || String(item.user_id || "Unknown user");
+    userCell.appendChild(name);
+
+    const email = document.createElement("div");
+    email.className = "subline";
+    email.textContent = item.email || "";
+    userCell.appendChild(email);
+    row.appendChild(userCell);
+
+    const amountCell = document.createElement("td");
+    const amount = document.createElement("div");
+    amount.className = "amount";
+    amount.textContent = formatAmount(item.amount, item.asset);
+    amountCell.appendChild(amount);
+
+    const fee = document.createElement("div");
+    fee.className = "subline";
+    fee.textContent = "Fee: " + formatAmount(item.fee, item.asset);
+    amountCell.appendChild(fee);
+
+    const net = document.createElement("div");
+    net.className = "subline";
+    net.textContent = "Net: " + formatAmount(item.net_amount, item.asset);
+    amountCell.appendChild(net);
+
+    const source = document.createElement("div");
+    source.className = "subline";
+    source.textContent = "Source: " + String(item.withdrawal_source || "—");
+    amountCell.appendChild(source);
+    row.appendChild(amountCell);
+
+    const destination = document.createElement("td");
+    destination.className = "address";
+    destination.textContent = String(item.network || "—") + " · " + String(item.address || "—");
+    row.appendChild(destination);
+
+    const statusCell = document.createElement("td");
+    statusCell.appendChild(badge(item.status));
+    row.appendChild(statusCell);
+
+    addCell(row, formatDate(item.created_at));
+
+    const actions = document.createElement("td");
+    const actionWrap = document.createElement("div");
+    actionWrap.className = "actions";
+    actionWrap.appendChild(createAction("Details", "", () => openDetails(item)));
+
+    const status = String(item.status || "").toUpperCase();
+    if (status === "PENDING" || status === "UNDER_REVIEW") {
+      actionWrap.appendChild(createAction("Approve", "approve", () => openDecision(item, "APPROVE")));
+      actionWrap.appendChild(createAction("Reject", "reject", () => openDecision(item, "REJECT")));
+    }
+
+    actions.appendChild(actionWrap);
+    row.appendChild(actions);
+    body.appendChild(row);
+  }
+}
+
+function updateStats() {
+  /* Counts are deliberately calculated from server totals, not just the current page. */
+  $("pendingCount").textContent = "—";
+  $("approvedCount").textContent = "—";
+  $("completedCount").textContent = "—";
+  $("rejectedCount").textContent = "—";
+}
+
+async function fetchCount(status) {
+  const {data,error} = await db.rpc("admin_list_withdrawal_requests", {
+    p_search:null,p_status:status,p_limit:1,p_offset:0
+  });
+  if (error) throw error;
+  return Number(data?.total || 0);
+}
+
+async function loadStats() {
+  const [pending, underReview, approved, completed, rejected] = await Promise.all([
+    fetchCount("PENDING"),
+    fetchCount("UNDER_REVIEW"),
+    fetchCount("APPROVED"),
+    fetchCount("COMPLETED"),
+    fetchCount("REJECTED")
+  ]);
+  $("pendingCount").textContent = (pending + underReview).toLocaleString();
+  $("approvedCount").textContent = approved.toLocaleString();
+  $("completedCount").textContent = completed.toLocaleString();
+  $("rejectedCount").textContent = rejected.toLocaleString();
+}
+
+async function loadRequests() {
+  if (loading || redirecting) return;
+  loading = true;
+  refreshButton.disabled = true;
+  refreshButton.textContent = "Loading…";
+  clearMessage();
+  emptyTable("Loading withdrawal requests…");
+
+  try {
+    if (!await verifyAdmin()) return;
+
+    const {data,error} = await db.rpc("admin_list_withdrawal_requests", {
+      p_search:searchInput.value.trim() || null,
+      p_status:statusFilter.value,
+      p_limit:pageSize,
+      p_offset:page * pageSize
+    });
+
+    if (error) {
+      console.error("Withdrawal listing failed:", error);
+      emptyTable("Requests could not be loaded.");
+      message("Unable to load withdrawal requests. Check the admin_list_withdrawal_requests function and its permissions.", "error");
+      setConnection("Data loading error");
+      return;
+    }
+
+    requests = Array.isArray(data?.withdrawals) ? data.withdrawals : [];
+    total = Number(data?.total || 0);
+    renderRequests(requests);
+
+    $("pageInfo").textContent = total
+      ? `Showing ${page * pageSize + 1}–${Math.min((page + 1) * pageSize,total)} of ${total}`
+      : "No requests found";
+    $("previousButton").disabled = page <= 0;
+    $("nextButton").disabled = (page + 1) * pageSize >= total;
+
+    try {
+      await loadStats();
+    } catch (statsError) {
+      console.warn("Summary counts unavailable:", statsError);
+      message("Requests loaded, but summary counts could not be retrieved.", "error");
+    }
+
+    $("lastUpdated").textContent = "Last updated " + new Date().toLocaleTimeString();
+    setConnection("Live data connected");
+  } catch (error) {
+    console.error(error);
+    emptyTable("An unexpected error occurred.");
+    message("Unexpected error while loading withdrawals. Refresh and try again.", "error");
+    setConnection("Connection error");
+  } finally {
+    loading = false;
+    refreshButton.disabled = false;
+    refreshButton.textContent = "↻ Refresh";
+  }
+}
+
+function appendDetail(container, label, value) {
+  const line = document.createElement("p");
+  const strong = document.createElement("strong");
+  strong.textContent = label + ": ";
+  line.appendChild(strong);
+  line.appendChild(document.createTextNode(value == null || value === "" ? "—" : String(value)));
+  container.appendChild(line);
+}
+
+function openDetails(item) {
+  selectedRequest = item;
+  modalAction = null;
+  $("modalTitle").textContent = "Withdrawal #" + item.id;
+  modalContent.replaceChildren();
+
+  appendDetail(modalContent,"User",item.full_name || item.email || item.user_id);
+  appendDetail(modalContent,"Email",item.email);
+  appendDetail(modalContent,"User ID",item.user_id);
+  appendDetail(modalContent,"Status",item.status);
+  appendDetail(modalContent,"Asset",item.asset);
+  appendDetail(modalContent,"Network",item.network);
+  appendDetail(modalContent,"Destination address",item.address);
+  appendDetail(modalContent,"Memo / tag",item.memo_tag);
+  appendDetail(modalContent,"Requested amount",formatAmount(item.amount,item.asset));
+  appendDetail(modalContent,"Fee",formatAmount(item.fee,item.asset));
+  appendDetail(modalContent,"Net amount",formatAmount(item.net_amount,item.asset));
+  appendDetail(modalContent,"Source",item.withdrawal_source);
+  appendDetail(modalContent,"External reference",item.external_reference);
+  appendDetail(modalContent,"Notes",item.notes);
+  appendDetail(modalContent,"Created",formatDate(item.created_at));
+  appendDetail(modalContent,"Reviewed",formatDate(item.reviewed_at));
+  appendDetail(modalContent,"Processed",formatDate(item.processed_at));
+  appendDetail(modalContent,"Completed",formatDate(item.completed_at));
+
+  reasonContainer.hidden = true;
+  confirmRejectButton.hidden = true;
+  confirmApproveButton.hidden = true;
+  modalBackdrop.classList.add("show");
+}
+
+function openDecision(item, action) {
+  selectedRequest = item;
+  modalAction = action;
+  $("modalTitle").textContent = action === "APPROVE"
+    ? "Confirm withdrawal approval"
+    : "Reject withdrawal request";
+
+  modalContent.replaceChildren();
+  appendDetail(modalContent,"Request ID","#" + item.id);
+  appendDetail(modalContent,"User",item.full_name || item.email || item.user_id);
+  appendDetail(modalContent,"Amount",formatAmount(item.amount,item.asset));
+  appendDetail(modalContent,"Net amount",formatAmount(item.net_amount,item.asset));
+  appendDetail(modalContent,"Network",item.network);
+  appendDetail(modalContent,"Address",item.address);
+
+  const warning = document.createElement("p");
+  warning.style.marginTop = "12px";
+  warning.style.color = action === "APPROVE" ? "var(--gold-light)" : "var(--red)";
+  warning.textContent = action === "APPROVE"
+    ? "Approval does not send funds. The withdrawal will remain awaiting payout."
+    : "Rejection releases the reserved funds according to the existing database procedure.";
+  modalContent.appendChild(warning);
+
+  reasonContainer.hidden = action !== "REJECT";
+  rejectReason.value = "";
+  confirmRejectButton.hidden = action !== "REJECT";
+  confirmApproveButton.hidden = action !== "APPROVE";
+  modalBackdrop.classList.add("show");
+}
+
+function closeModal() {
+  if (acting) return;
+  modalBackdrop.classList.remove("show");
+  selectedRequest = null;
+  modalAction = null;
+}
+
+$("cancelModalButton").addEventListener("click",closeModal);
+modalBackdrop.addEventListener("click",event => {
+  if (event.target === modalBackdrop) closeModal();
+});
+document.addEventListener("keydown",event => {
+  if (event.key === "Escape") {
+    closeModal();
+    closeMenu();
+  }
+});
+
+async function performDecision(action) {
+  if (acting || !selectedRequest) return;
+
+  const item = selectedRequest;
+  const expectedAction = modalAction;
+
+  if (expectedAction !== action) return;
+
+  if (action === "REJECT" && !rejectReason.value.trim()) {
+    message("Enter a rejection reason before continuing.", "error");
+    rejectReason.focus();
+    return;
+  }
+
+  const promptText = action === "APPROVE"
+    ? `Approve withdrawal #${item.id} for ${formatAmount(item.amount,item.asset)}? This will not send payment.`
+    : `Reject withdrawal #${item.id} and release its reserved funds?`;
+
+  if (!window.confirm(promptText)) return;
+
+  acting = true;
+  confirmApproveButton.disabled = true;
+  confirmRejectButton.disabled = true;
+
+  try {
+    if (!await verifyAdmin()) return;
+
+    let result;
+    if (action === "APPROVE") {
+      result = await db.rpc("admin_approve_withdrawal", {
+        p_withdrawal_id:item.id
+      });
+    } else {
+      result = await db.rpc("admin_release_withdrawal", {
+        p_withdrawal_id:item.id,
+        p_new_status:"REJECTED",
+        p_reason:rejectReason.value.trim()
+      });
+    }
+
+    if (result.error) {
+      console.error("Withdrawal decision failed:",result.error);
+      message(
+        "The database rejected this action. No success has been assumed. " +
+        (result.error.message || "Check the request status and admin permissions."),
+        "error"
+      );
+      return;
+    }
+
+    const updated = result.data;
+    const newStatus = String(updated?.status || "").toUpperCase();
+    const expectedStatus = action === "APPROVE" ? "APPROVED" : "REJECTED";
+
+    if (newStatus !== expectedStatus) {
+      message("The server response did not confirm the expected status. Refresh and inspect the request.", "error");
+      return;
+    }
+
+    modalBackdrop.classList.remove("show");
+    selectedRequest = null;
+    modalAction = null;
+
+    message(
+      action === "APPROVE"
+        ? `Withdrawal #${item.id} approved. Payment has not been marked as sent.`
+        : `Withdrawal #${item.id} rejected. The database confirmed the rejection.`,
+      "success"
+    );
+
+    await loadRequests();
+  } catch (error) {
+    console.error(error);
+    message("The withdrawal action could not be confirmed. Refresh the list before trying again.", "error");
+  } finally {
+    acting = false;
+    confirmApproveButton.disabled = false;
+    confirmRejectButton.disabled = false;
+  }
+}
+
+confirmApproveButton.addEventListener("click",() => performDecision("APPROVE"));
+confirmRejectButton.addEventListener("click",() => performDecision("REJECT"));
+
+$("searchButton").addEventListener("click",() => {
+  page = 0;
+  loadRequests();
+});
+searchInput.addEventListener("keydown",event => {
+  if (event.key === "Enter") {
+    page = 0;
+    loadRequests();
+  }
+});
+statusFilter.addEventListener("change",() => {
+  page = 0;
+  loadRequests();
+});
+refreshButton.addEventListener("click",loadRequests);
+$("previousButton").addEventListener("click",() => {
+  if (page > 0) {
+    page--;
+    loadRequests();
+  }
+});
+$("nextButton").addEventListener("click",() => {
+  if ((page + 1) * pageSize < total) {
+    page++;
+    loadRequests();
+  }
+});
+
+function openMenu() {
+  sidebar.classList.add("open");
+  overlay.classList.add("show");
+  $("menuButton").setAttribute("aria-expanded","true");
+}
+function closeMenu() {
+  sidebar.classList.remove("open");
+  overlay.classList.remove("show");
+  $("menuButton").setAttribute("aria-expanded","false");
+}
+$("menuButton").addEventListener("click",() => {
+  sidebar.classList.contains("open") ? closeMenu() : openMenu();
+});
+overlay.addEventListener("click",closeMenu);
+
+$("signOutButton").addEventListener("click",async event => {
+  const button = event.currentTarget;
+  button.disabled = true;
+  button.textContent = "Signing out…";
+  try {
+    const {error} = await db.auth.signOut();
+    if (error) throw error;
+    redirecting = true;
+    window.location.replace("admin-login.html");
+  } catch (error) {
+    console.error(error);
+    message("Sign-out failed. Please try again.", "error");
+    button.disabled = false;
+    button.textContent = "↪ Sign Out";
+  }
+});
+
+db.auth.onAuthStateChange(event => {
+  if (event === "SIGNED_OUT" && !redirecting) {
+    redirecting = true;
+    window.location.replace("admin-login.html");
+  }
+});
+
+loadRequests();
+</script>
+</body>
+</html>
