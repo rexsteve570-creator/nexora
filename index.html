@@ -97,7 +97,40 @@ header{position:sticky;top:0;z-index:50;background:rgba(11,15,26,.78);backdrop-f
 .mini[aria-pressed="true"]{border-color:var(--gold);background:rgba(245,185,66,.07)}
 .mini b{display:block;font-family:var(--head)}
 .up{color:var(--up)}.down{color:var(--down)}
-
+  /* AITIVEST scrolling announcement */
+.announcement{
+overflow:hidden;
+background:linear-gradient(90deg,#111729,#1b2235,#111729);
+border-block:1px solid rgba(245,185,66,.45);
+white-space:nowrap;
+}
+.announcement-track{
+display:flex;
+width:max-content;
+animation:announcementScroll 25s linear infinite;
+}
+.announcement:hover .announcement-track{
+animation-play-state:paused;
+}
+.announcement-message{
+padding:13px 28px;
+color:var(--gold);
+font-family:var(--head);
+font-size:.9rem;
+font-weight:600;
+letter-spacing:.02em;
+}
+.announcement-message span{
+color:var(--text);
+margin:0 12px;
+}
+@keyframes announcementScroll{
+to{transform:translateX(-50%)}
+}
+@media(prefers-reduced-motion:reduce){
+.announcement-track{animation:none}
+.announcement{overflow-x:auto}
+}
 /* ticker */
 .ticker{border-block:1px solid var(--line);background:var(--bg-2);overflow:hidden}
 .ticker-track{display:flex;width:max-content;padding:14px 0;animation:scroll 50s linear infinite}
