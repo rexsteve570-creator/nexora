@@ -4,806 +4,500 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#07111f">
-
 <title>Sign In — AITIVEST</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-:root {
-    --bar: #0a1628;
-    --bg: #07111f;
-    --card: #0d1b2c;
-    --text: #f5f7fb;
-    --muted: #93a1b5;
-    --gold: #d8b15a;
-    --gold-dark: #b9923e;
-    --border: #26384e;
-    --input: #081522;
-    --error: #ff9292;
-    --success: #8be6aa;
+:root{
+--bar:#0a1628;--bg:#07111f;--card:#0d1b2c;
+--text:#f5f7fb;--muted:#93a1b5;--gold:#d8b15a;
+--border:#26384e;--input:#081522;
+--error:#ff9292;--success:#8be6aa;
 }
-
-* {
-    box-sizing: border-box;
-}
-
-html {
-    min-height: 100%;
-}
-
-body {
-    margin: 0;
-    min-height: 100vh;
-    font-family: Arial, Helvetica, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-}
-
-a {
-    color: inherit;
-    text-decoration: none;
-}
-
-.topbar {
-    min-height: 43px;
-    background: #050b15;
-    border-bottom: 1px solid rgba(216,177,90,.15);
-    display: flex;
-    align-items: center;
-    gap: 24px;
-    padding: 10px max(16px, calc((100% - 760px) / 2));
-}
-
-.topbar a {
-    font-size: 13px;
-    color: #aeb9c9;
-}
-
-.topbar a.active,
-.topbar a:hover {
-    color: var(--gold);
-}
-
-.header {
-    height: 68px;
-    padding: 0 18px;
-    background: var(--bar);
-    border-bottom: 1px solid rgba(216,177,90,.15);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-}
-
-.header-inner {
-    width: 100%;
-    max-width: 760px;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-}
-
-.brand {
-    display: inline-flex;
-    align-items: center;
-    gap: 9px;
-    font-size: 21px;
-    font-weight: 900;
-    letter-spacing: 2px;
-}
-
-.brand-mark {
-    width: 32px;
-    height: 32px;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    color: var(--gold);
-    border: 1.5px solid var(--gold);
-    clip-path: polygon(50% 0, 100% 100%, 0 100%);
-    font-size: 18px;
-    padding-top: 6px;
-}
-
-.brand-aiti {
-    color: #fff;
-}
-
-.brand-vest {
-    color: var(--gold);
-}
-
-.header-actions {
-    display: flex;
-    align-items: center;
-    gap: 13px;
-}
-
-.language {
-    color: #e7edf6;
-    background: #0b192b;
-    border: 1px solid var(--border);
-    border-radius: 5px;
-    padding: 8px 9px;
-    font-size: 12px;
-    outline: none;
-}
-
-.menu {
-    width: 38px;
-    height: 38px;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    background: #0b192b;
-    color: var(--gold);
-    font-size: 22px;
-    cursor: pointer;
-}
-
-main {
-    min-height: calc(100vh - 111px);
-    padding: 38px 16px 32px;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-}
-
-.card {
-    width: 100%;
-    max-width: 440px;
-    padding: 27px 24px 25px;
-    background: var(--card);
-    border: 1px solid rgba(216,177,90,.22);
-    border-radius: 5px;
-    box-shadow: 0 18px 55px rgba(0,0,0,.22);
-}
-
-h1 {
-    margin: 0 0 9px;
-    font-size: 25px;
-    font-weight: 700;
-}
-
-.subtitle {
-    margin: 0 0 24px;
-    font-size: 13px;
-    line-height: 1.6;
-    color: var(--muted);
-}
-
-.divider {
-    height: 1px;
-    background: var(--border);
-    margin-bottom: 22px;
-}
-
-label {
-    display: block;
-    font-size: 13px;
-    color: #cbd5e1;
-    margin: 17px 0 7px;
-}
-
-.input-wrap {
-    position: relative;
-}
-
-input {
-    display: block;
-    width: 100%;
-    height: 47px;
-    padding: 0 13px;
-    font-size: 14px;
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    background: var(--input);
-    color: #fff;
-    outline: none;
-}
-
-input::placeholder {
-    color: #637286;
-}
-
-input:focus {
-    border-color: var(--gold);
-    box-shadow: 0 0 0 2px rgba(216,177,90,.08);
-}
-
-.password-input {
-    padding-right: 65px;
-}
-
-.toggle {
-    position: absolute;
-    right: 11px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: 0;
-    color: var(--gold);
-    font-size: 12px;
-    font-weight: 700;
-    cursor: pointer;
-}
-
-.error {
-    min-height: 15px;
-    margin-top: 4px;
-    text-align: right;
-    color: var(--error);
-    font-size: 11px;
-}
-
-.captcha {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-top: 21px;
-}
-
-.captcha canvas {
-    display: block;
-    width: 130px;
-    height: 44px;
-    flex-shrink: 0;
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    background: #f4f5f7;
-    cursor: pointer;
-}
-
-.captcha-input {
-    flex: 1;
-    min-width: 0;
-    text-align: center;
-    letter-spacing: 3px;
-}
-
-.refresh-hint {
-    margin-top: 6px;
-    color: var(--muted);
-    font-size: 11px;
-}
-
-.forgot {
-    display: flex;
-    justify-content: flex-end;
-    margin: 2px 0 17px;
-}
-
-.forgot a {
-    font-size: 12px;
-    color: var(--gold);
-}
-
-.forgot a:hover,
-.bottom a:hover,
-.back a:hover {
-    text-decoration: underline;
-}
-
-.submit {
-    width: 100%;
-    min-height: 48px;
-    margin-top: 18px;
-    padding: 12px;
-    border: 0;
-    border-radius: 4px;
-    background: var(--gold);
-    color: #07111f;
-    font-size: 14px;
-    font-weight: 800;
-    cursor: pointer;
-    transition: background .2s;
-}
-
-.submit:hover {
-    background: #edc96f;
-}
-
-.submit:disabled {
-    opacity: .6;
-    cursor: not-allowed;
-}
-
-#msg {
-    display: none;
-    margin-top: 15px;
-    padding: 11px;
-    border-radius: 4px;
-    font-size: 12px;
-    line-height: 1.6;
-    text-align: center;
-    overflow-wrap: anywhere;
-}
-
-#msg.error-message {
-    display: block;
-    color: var(--error);
-    border: 1px solid rgba(255,146,146,.25);
-    background: rgba(220,38,38,.08);
-}
-
-#msg.success-message {
-    display: block;
-    color: var(--success);
-    border: 1px solid rgba(139,230,170,.25);
-    background: rgba(34,197,94,.08);
-}
-
-.bottom {
-    margin-top: 23px;
-    text-align: center;
-    color: var(--muted);
-    font-size: 12px;
-    line-height: 1.8;
-}
-
-.bottom a {
-    color: var(--gold);
-    font-weight: 700;
-}
-
-.back {
-    margin-top: 18px;
-    text-align: center;
-}
-
-.back a {
-    color: #8391a5;
-    font-size: 12px;
-}
-
-.footer {
-    padding: 15px 16px 24px;
-    text-align: center;
-    color: #627187;
-    font-size: 11px;
-}
-
-.spinner {
-    display: inline-block;
-    width: 14px;
-    height: 14px;
-    border: 2px solid rgba(7,17,31,.3);
-    border-top-color: #07111f;
-    border-radius: 50%;
-    vertical-align: middle;
-    margin-right: 7px;
-    animation: spin .7s linear infinite;
-}
-
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
-
-@media (max-width: 380px) {
-    .card {
-        padding: 23px 17px;
-    }
-
-    .brand {
-        font-size: 18px;
-    }
-
-    .captcha {
-        gap: 7px;
-    }
-
-    .captcha canvas {
-        width: 112px;
-    }
-
-    .header {
-        padding: 0 12px;
-    }
-}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}
+a{color:inherit;text-decoration:none}
+.topbar{min-height:43px;background:#050b15;border-bottom:1px solid #30291b;display:flex;gap:24px;padding:12px max(16px,calc((100% - 760px)/2))}
+.topbar a{font-size:13px;color:#aeb9c9}
+.topbar a.active,.topbar a:hover{color:var(--gold)}
+.header{height:68px;padding:0 18px;background:var(--bar);border-bottom:1px solid #30291b;display:flex;align-items:center}
+.header-inner{width:100%;max-width:760px;margin:auto;display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:9px;font-size:21px;font-weight:900;letter-spacing:2px}
+.brand-mark{width:32px;height:32px;display:flex;justify-content:center;align-items:center;color:var(--gold);border:1.5px solid var(--gold);clip-path:polygon(50% 0,100% 100%,0 100%);font-size:18px;padding-top:6px}
+.brand-vest{color:var(--gold)}
+.header-actions{display:flex;gap:12px;align-items:center}
+.language,.menu{color:#e7edf6;background:#0b192b;border:1px solid var(--border);border-radius:5px;padding:8px}
+.menu{color:var(--gold);font-size:20px;cursor:pointer}
+main{min-height:calc(100vh - 111px);padding:38px 16px 32px;display:flex;justify-content:center;align-items:flex-start}
+.card{width:100%;max-width:440px;padding:27px 24px 25px;background:var(--card);border:1px solid rgba(216,177,90,.22);border-radius:7px;box-shadow:0 18px 55px #0003}
+h1{margin:0 0 9px;font-size:25px}
+.subtitle{margin:0 0 24px;font-size:13px;line-height:1.6;color:var(--muted)}
+.divider{height:1px;background:var(--border);margin-bottom:22px}
+label{display:block;font-size:13px;color:#cbd5e1;margin:17px 0 7px}
+input{display:block;width:100%;height:47px;padding:0 13px;font-size:15px;border:1px solid var(--border);border-radius:4px;background:var(--input);color:#fff;outline:none}
+input::placeholder{color:#637286}
+input:focus{border-color:var(--gold);box-shadow:0 0 0 2px #d8b15a14}
+.input-wrap{position:relative}
+.password-input{padding-right:65px}
+.toggle{position:absolute;right:11px;top:50%;transform:translateY(-50%);background:none;border:0;color:var(--gold);font-size:12px;font-weight:bold;cursor:pointer}
+.error{min-height:15px;margin-top:4px;text-align:right;color:var(--error);font-size:11px}
+.captcha{display:flex;align-items:center;gap:10px;margin-top:21px}
+.captcha canvas{display:block;width:130px;height:44px;flex-shrink:0;border:1px solid var(--border);border-radius:4px;background:#f4f5f7;cursor:pointer}
+.captcha-input{flex:1;min-width:0;text-align:center;letter-spacing:3px}
+.hint{margin-top:6px;color:var(--muted);font-size:11px}
+.forgot{display:flex;justify-content:flex-end;margin:8px 0 17px}
+.forgot a,.bottom a{font-size:12px;color:var(--gold)}
+.submit{width:100%;min-height:48px;margin-top:18px;padding:12px;border:0;border-radius:4px;background:var(--gold);color:#07111f;font-size:14px;font-weight:800;cursor:pointer}
+.submit:hover{background:#edc96f}
+.submit:disabled{opacity:.6;cursor:not-allowed}
+#msg{display:none;margin-top:15px;padding:11px;border-radius:4px;font-size:12px;line-height:1.6;text-align:center;overflow-wrap:anywhere}
+#msg.error-message{display:block;color:var(--error);border:1px solid #ff929240;background:#dc262614}
+#msg.success-message{display:block;color:var(--success);border:1px solid #8be6aa40;background:#22c55e14}
+.bottom{margin-top:23px;text-align:center;color:var(--muted);font-size:12px;line-height:1.8}
+.back{margin-top:18px;text-align:center}
+.back a{color:#8391a5;font-size:12px}
+.footer{padding:15px 16px 24px;text-align:center;color:#627187;font-size:11px}
+.qr{display:block;width:210px;max-width:100%;height:auto;margin:18px auto;background:#fff;border:8px solid white;border-radius:4px}
+.secret{display:block;padding:12px;background:#081522;border:1px solid var(--border);color:var(--gold);font-size:13px;overflow-wrap:anywhere;user-select:all}
+.notice{padding:12px;border:1px solid #d8b15a40;background:#d8b15a0c;border-radius:5px;color:#d8cba9;font-size:12px;line-height:1.6;margin:15px 0}
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid #07111f50;border-top-color:#07111f;border-radius:50%;vertical-align:middle;margin-right:7px;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media(max-width:380px){.card{padding:23px 17px}.brand{font-size:18px}.captcha{gap:7px}.captcha canvas{width:112px}.header{padding:0 12px}}
 </style>
 </head>
 
 <body>
-
 <nav class="topbar" aria-label="Account navigation">
-    <a href="signin.html" class="active">Sign In</a>
-    <a href="signup.html">Registration</a>
+<a href="signin.html" class="active">Sign In</a>
+<a href="signup.html">Registration</a>
 </nav>
 
 <header class="header">
-    <div class="header-inner">
-
-        <a href="index.html" class="brand" aria-label="AITIVEST home">
-            <span class="brand-mark">A</span>
-            <span><span class="brand-aiti">AITI</span><span class="brand-vest">VEST</span></span>
-        </a>
-
-        <div class="header-actions">
-            <select class="language" id="languageSelect" aria-label="Language">
-                <option value="en">EN</option>
-            </select>
-
-            <button class="menu" id="menuButton" type="button"
-                    aria-label="Open navigation menu">☰</button>
-        </div>
-
-    </div>
+<div class="header-inner">
+<a href="index.html" class="brand" aria-label="AITIVEST home">
+<span class="brand-mark">A</span>
+<span><span>AITI</span><span class="brand-vest">VEST</span></span>
+</a>
+<div class="header-actions">
+<select class="language" id="languageSelect" aria-label="Language">
+<option value="en">EN</option>
+</select>
+<button class="menu" id="menuButton" type="button" aria-label="Open navigation menu">☰</button>
+</div>
+</div>
 </header>
 
 <main>
-    <form class="card" id="loginForm" novalidate>
+<form class="card" id="loginForm" novalidate>
+<h1 id="heading">Welcome Back</h1>
+<p class="subtitle" id="subtitle">Sign in to access your AITIVEST account.</p>
+<div class="divider"></div>
 
-        <h1>Welcome Back</h1>
+<section id="loginPanel">
+<label for="user">Email Address</label>
+<input type="email" id="user" placeholder="Enter your email address" autocomplete="username" maxlength="254" required>
+<div class="error" id="userErr" aria-live="polite"></div>
 
-        <p class="subtitle">
-            Sign in to access your AITIVEST account.
-        </p>
+<label for="pass">Password</label>
+<div class="input-wrap">
+<input type="password" id="pass" class="password-input" placeholder="Enter your password" autocomplete="current-password" required>
+<button type="button" class="toggle" id="togglePassword">Show</button>
+</div>
+<div class="error" id="passErr" aria-live="polite"></div>
 
-        <div class="divider"></div>
+<div class="forgot"><a href="#" id="forgotPassword">Forgot password?</a></div>
 
-        <label for="user">Email Address</label>
-        <input
-            type="email"
-            id="user"
-            placeholder="Enter your email address"
-            autocomplete="username"
-            maxlength="254"
-            required
-        >
-        <div class="error" id="userErr" aria-live="polite"></div>
+<label for="code">Security Check</label>
+<div class="captcha">
+<canvas id="captcha" width="130" height="44" title="Tap to refresh" role="button" tabindex="0" aria-label="Security code. Tap to refresh."></canvas>
+<input type="text" id="code" class="captcha-input" placeholder="code" inputmode="numeric" pattern="[0-9]{3}" maxlength="3" autocomplete="off" required aria-label="Enter three-digit security code">
+</div>
+<div class="hint">Tap the code to refresh it.</div>
+<div class="error" id="codeErr" aria-live="polite"></div>
+</section>
 
-        <label for="pass">Password</label>
+<section id="mfaPanel" hidden>
+<div class="notice" id="mfaNotice">
+Your password has been accepted. Open your authenticator app and enter the current six-digit code to finish signing in.
+</div>
+<label for="mfaCode">Authenticator verification code</label>
+<input type="text" id="mfaCode" placeholder="Enter 6-digit code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]{6}">
+<div class="error" id="mfaErr" aria-live="polite"></div>
+<p class="hint">Use the code currently displayed in Google Authenticator or another compatible authenticator app.</p>
+</section>
 
-        <div class="input-wrap">
-            <input
-                type="password"
-                id="pass"
-                class="password-input"
-                placeholder="Enter your password"
-                autocomplete="current-password"
-                required
-            >
+<button type="submit" class="submit" id="submitBtn">Sign In</button>
+<div id="msg" role="status" aria-live="polite"></div>
 
-            <button type="button" class="toggle" id="togglePassword">
-                Show
-            </button>
-        </div>
-
-        <div class="error" id="passErr" aria-live="polite"></div>
-
-        <div class="forgot">
-            <a href="#" id="forgotPassword">Forgot password?</a>
-        </div>
-
-        <label for="code">Security Check</label>
-
-        <div class="captcha">
-            <canvas id="captcha" width="130" height="44"
-                    title="Tap the code to refresh"
-                    role="button" tabindex="0"
-                    aria-label="Security code. Tap to refresh."></canvas>
-
-            <input
-                type="text"
-                id="code"
-                class="captcha-input"
-                placeholder="code"
-                inputmode="numeric"
-                pattern="[0-9]{3}"
-                maxlength="3"
-                autocomplete="off"
-                required
-                aria-label="Enter the three-digit security code"
-            >
-        </div>
-
-        <div class="refresh-hint">Tap the code to refresh it.</div>
-        <div class="error" id="codeErr" aria-live="polite"></div>
-
-        <button type="submit" class="submit" id="submitBtn">
-            Sign In
-        </button>
-
-        <div id="msg" role="status" aria-live="polite"></div>
-
-        <div class="bottom">
-            Don't have an account?
-            <a href="signup.html">Create Account</a>
-        </div>
-
-        <div class="back">
-            <a href="index.html">← Back to AITIVEST</a>
-        </div>
-
-    </form>
+<div class="bottom" id="bottomLinks">
+Don't have an account? <a href="signup.html">Create Account</a>
+</div>
+<div class="back"><a href="index.html">← Back to AITIVEST</a></div>
+</form>
 </main>
 
-<footer class="footer">
-    AITIVEST · Secure Account Access
-</footer>
+<footer class="footer">AITIVEST · Secure Account Access</footer>
 
 <script>
 (() => {
-    "use strict";
+"use strict";
 
-    /* SUPABASE CONFIGURATION */
-    const SUPABASE_URL =
-        "https://rihvvwktvgytbqzazage.supabase.co";
+/* Public/publishable key only. Never put a service-role key in browser code. */
+const SUPABASE_URL = "https://rihvvwktvgytbqzazage.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
 
-    const SUPABASE_PUBLISHABLE_KEY =
-        "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
-
-    const db = window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_PUBLISHABLE_KEY,
-        {
-            auth: {
-                autoRefreshToken: true,
-                persistSession: true,
-                detectSessionInUrl: true
-            }
-        }
-    );
-
-    /* ELEMENTS */
-    const form = document.getElementById("loginForm");
-    const userInput = document.getElementById("user");
-    const passInput = document.getElementById("pass");
-    const codeInput = document.getElementById("code");
-    const canvas = document.getElementById("captcha");
-    const ctx = canvas.getContext("2d");
-    const submitBtn = document.getElementById("submitBtn");
-    const msg = document.getElementById("msg");
-
-    let captchaValue = "";
-    let submitting = false;
-
-    /* FIELD ERRORS */
-    function fieldError(id, text) {
-        document.getElementById(id).textContent = text || "";
+const db = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY,
+  {
+    auth: {
+      autoRefreshToken: true,
+      persistSession: true,
+      detectSessionInUrl: true
     }
+  }
+);
 
-    function clearErrors() {
-        fieldError("userErr", "");
-        fieldError("passErr", "");
-        fieldError("codeErr", "");
-    }
+const $ = id => document.getElementById(id);
+const form = $("loginForm");
+const userInput = $("user");
+const passInput = $("pass");
+const codeInput = $("code");
+const mfaCodeInput = $("mfaCode");
+const canvas = $("captcha");
+const ctx = canvas.getContext("2d");
+const submitBtn = $("submitBtn");
+const msg = $("msg");
+const loginPanel = $("loginPanel");
+const mfaPanel = $("mfaPanel");
 
-    function showMessage(text, type) {
-        msg.className = type === "success"
-            ? "success-message"
-            : "error-message";
+let captchaValue = "";
+let submitting = false;
+let mfaMode = false;
+let activeFactorId = null;
 
-        msg.textContent = text;
-    }
+/* Messages and field errors */
+function fieldError(id, text) {
+  $(id).textContent = text || "";
+}
+function clearErrors() {
+  ["userErr","passErr","codeErr","mfaErr"].forEach(id => fieldError(id,""));
+}
+function showMessage(text, type = "error") {
+  msg.className = type === "success" ? "success-message" : "error-message";
+  msg.textContent = text;
+}
+function clearMessage() {
+  msg.className = "";
+  msg.textContent = "";
+}
+function setLoading(loading, text) {
+  submitting = loading;
+  submitBtn.disabled = loading;
+  submitBtn.innerHTML = loading
+    ? '<span class="spinner"></span>' + (text || "Please wait...")
+    : (mfaMode ? "Verify & Continue" : "Sign In");
+}
 
-    function clearMessage() {
-        msg.className = "";
-        msg.textContent = "";
-    }
+/* Three-digit CAPTCHA */
+function drawCaptcha() {
+  captchaValue = String(Math.floor(100 + Math.random() * 900));
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "#f4f5f7";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    /* CAPTCHA */
-    function drawCaptcha() {
-        captchaValue = String(
-            Math.floor(100 + Math.random() * 900)
-        );
+  for (let i = 0; i < 8; i++) {
+    ctx.strokeStyle = `rgba(35,45,60,${Math.random() * .25})`;
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(Math.random() * canvas.width, Math.random() * canvas.height);
+    ctx.lineTo(Math.random() * canvas.width, Math.random() * canvas.height);
+    ctx.stroke();
+  }
 
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        ctx.fillStyle = "#f4f5f7";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        for (let i = 0; i < 8; i++) {
-            ctx.strokeStyle =
-                `rgba(35,45,60,${Math.random() * 0.25})`;
-
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(Math.random() * 130, Math.random() * 44);
-            ctx.lineTo(Math.random() * 130, Math.random() * 44);
-            ctx.stroke();
-        }
-
-        ctx.font = "bold 27px Georgia, serif";
-        ctx.textBaseline = "middle";
-        ctx.fillStyle = "#263548";
-
-        [...captchaValue].forEach((digit, index) => {
-            ctx.save();
-            ctx.translate(23 + index * 32, 23);
-            ctx.rotate((Math.random() - 0.5) * 0.25);
-            ctx.fillText(digit, 0, 0);
-            ctx.restore();
-        });
-
-        codeInput.value = "";
-    }
-
-    canvas.addEventListener("click", drawCaptcha);
-
-    canvas.addEventListener("keydown", event => {
-        if (event.key === "Enter" || event.key === " ") {
-            event.preventDefault();
-            drawCaptcha();
-        }
-    });
-
+  ctx.font = "bold 27px Georgia,serif";
+  ctx.textBaseline = "middle";
+  ctx.fillStyle = "#263548";
+  [...captchaValue].forEach((digit, index) => {
+    ctx.save();
+    ctx.translate(23 + index * 32, 23);
+    ctx.rotate((Math.random() - .5) * .25);
+    ctx.fillText(digit, 0, 0);
+    ctx.restore();
+  });
+  codeInput.value = "";
+}
+canvas.addEventListener("click", drawCaptcha);
+canvas.addEventListener("keydown", event => {
+  if (event.key === "Enter" || event.key === " ") {
+    event.preventDefault();
     drawCaptcha();
+  }
+});
+drawCaptcha();
 
-    /* SHOW / HIDE PASSWORD */
-    document.getElementById("togglePassword")
-        .addEventListener("click", function () {
-            const showing = passInput.type === "password";
+/* Password visibility */
+$("togglePassword").addEventListener("click", function() {
+  const showing = passInput.type === "password";
+  passInput.type = showing ? "text" : "password";
+  this.textContent = showing ? "Hide" : "Show";
+});
 
-            passInput.type = showing ? "text" : "password";
-            this.textContent = showing ? "Hide" : "Show";
-        });
+/* Move from password login to authenticator verification */
+function showMfaScreen(factorId) {
+  activeFactorId = factorId;
+  mfaMode = true;
+  loginPanel.hidden = true;
+  mfaPanel.hidden = false;
+  $("heading").textContent = "Two-Step Verification";
+  $("subtitle").textContent = "Verify your identity using your authenticator app.";
+  $("bottomLinks").hidden = true;
+  submitBtn.textContent = "Verify & Continue";
+  clearErrors();
+  clearMessage();
+  mfaCodeInput.value = "";
+  mfaCodeInput.focus();
+}
 
-    /* SUBMIT BUTTON */
-    function setLoading(loading) {
-        submitting = loading;
-        submitBtn.disabled = loading;
+/* Find verified TOTP factors and create a challenge */
+async function beginMfaChallenge() {
+  const { data: factorsData, error: factorsError } =
+    await db.auth.mfa.listFactors();
 
-        submitBtn.innerHTML = loading
-            ? '<span class="spinner"></span>Signing In...'
-            : "Sign In";
+  if (factorsError) throw factorsError;
+
+  const verifiedFactors = (factorsData?.totp || [])
+    .filter(factor => factor.status === "verified");
+
+  if (!verifiedFactors.length) {
+    throw new Error(
+      "Your account requires additional verification, but no verified authenticator was found. Please contact support."
+    );
+  }
+
+  const factor = verifiedFactors[0];
+  const { data: challengeData, error: challengeError } =
+    await db.auth.mfa.challenge({ factorId: factor.id });
+
+  if (challengeError) throw challengeError;
+  if (!challengeData?.id) {
+    throw new Error("Could not start authenticator verification. Please try again.");
+  }
+
+  showMfaScreen(factor.id);
+}
+
+/* Password login */
+async function signInWithPassword(email, password) {
+  const { data, error } = await db.auth.signInWithPassword({
+    email,
+    password
+  });
+
+  if (error) throw error;
+  if (!data.session || !data.user) {
+    throw new Error("Sign-in could not be completed. Please try again.");
+  }
+
+  const { data: assurance, error: assuranceError } =
+    await db.auth.mfa.getAuthenticatorAssuranceLevel();
+
+  if (assuranceError) {
+    await db.auth.signOut();
+    throw new Error("We couldn't check your account security status. Please try again.");
+  }
+
+  if (assurance?.nextLevel === "aal2" &&
+      assurance?.currentLevel !== "aal2") {
+    await beginMfaChallenge();
+    showMessage("Password accepted. Enter your authenticator code to continue.", "success");
+    return;
+  }
+
+  showMessage("Sign-in successful. Opening your dashboard...", "success");
+  window.setTimeout(() => window.location.replace("dashboard.html"), 500);
+}
+
+/* Verify the six-digit TOTP code */
+async function verifyMfaCode() {
+  const code = mfaCodeInput.value.trim();
+
+  if (!/^\d{6}$/.test(code)) {
+    fieldError("mfaErr", "Enter the six-digit code from your authenticator app.");
+    return;
+  }
+
+  if (!activeFactorId) {
+    fieldError("mfaErr", "Verification session is missing. Please sign in again.");
+    return;
+  }
+
+  setLoading(true, "Verifying code...");
+
+  try {
+    const { data: challengeData, error: challengeError } =
+      await db.auth.mfa.challenge({ factorId: activeFactorId });
+
+    if (challengeError) throw challengeError;
+
+    const { error: verifyError } = await db.auth.mfa.verify({
+      factorId: activeFactorId,
+      challengeId: challengeData.id,
+      code
+    });
+
+    if (verifyError) {
+      fieldError("mfaErr", "Incorrect or expired code. Check your authenticator and try again.");
+      mfaCodeInput.value = "";
+      mfaCodeInput.focus();
+      return;
     }
 
-    /* SIGN IN */
-    form.addEventListener("submit", async event => {
-        event.preventDefault();
+    const { data: assurance, error: assuranceError } =
+      await db.auth.mfa.getAuthenticatorAssuranceLevel();
 
-        if (submitting) return;
+    if (assuranceError) throw assuranceError;
 
-        clearErrors();
-        clearMessage();
+    if (assurance?.currentLevel !== "aal2") {
+      throw new Error("Additional verification has not been completed. Please try again.");
+    }
 
-        const email = userInput.value.trim().toLowerCase();
-        const password = passInput.value;
-        const enteredCode = codeInput.value.trim();
+    showMessage("Verification successful. Opening your dashboard...", "success");
+    window.setTimeout(() => window.location.replace("dashboard.html"), 500);
 
-        let valid = true;
+  } catch (error) {
+    console.error("MFA verification error:", error);
+    fieldError("mfaErr", error?.message || "Unable to verify your code. Please try again.");
+  } finally {
+    setLoading(false);
+  }
+}
 
-        if (!email) {
-            fieldError("userErr", "Email is required.");
-            valid = false;
-        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-            fieldError("userErr", "Enter a valid email address.");
-            valid = false;
-        }
+/* Main form */
+form.addEventListener("submit", async event => {
+  event.preventDefault();
+  if (submitting) return;
 
-        if (!password) {
-            fieldError("passErr", "Password is required.");
-            valid = false;
-        }
+  clearErrors();
+  clearMessage();
 
-        if (enteredCode !== captchaValue) {
-            fieldError("codeErr", "Incorrect code. Try the new code.");
-            drawCaptcha();
-            valid = false;
-        }
+  if (mfaMode) {
+    await verifyMfaCode();
+    return;
+  }
 
-        if (!valid) return;
+  const email = userInput.value.trim().toLowerCase();
+  const password = passInput.value;
+  const enteredCode = codeInput.value.trim();
+  let valid = true;
 
-        setLoading(true);
+  if (!email) {
+    fieldError("userErr", "Email is required.");
+    valid = false;
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    fieldError("userErr", "Enter a valid email address.");
+    valid = false;
+  }
 
-        try {
-            const { data, error } = await db.auth.signInWithPassword({
-                email,
-                password
-            });
+  if (!password) {
+    fieldError("passErr", "Password is required.");
+    valid = false;
+  }
 
-            if (error) throw error;
+  if (enteredCode !== captchaValue) {
+    fieldError("codeErr", "Incorrect code. Try the new code.");
+    drawCaptcha();
+    valid = false;
+  }
 
-            if (!data.session || !data.user) {
-                throw new Error("Sign-in could not be completed. Please try again.");
-            }
+  if (!valid) return;
 
-            showMessage(
-                "Sign-in successful. Opening your dashboard...",
-                "success"
-            );
+  setLoading(true, "Signing in...");
 
-            window.setTimeout(() => {
-                window.location.replace("dashboard.html");
-            }, 650);
+  try {
+    await signInWithPassword(email, password);
+  } catch (error) {
+    console.error("Sign-in error:", error);
+    const raw = String(error?.message || "").toLowerCase();
+    let friendly = "Unable to sign in. Please check your details and try again.";
 
-        } catch (error) {
-            const raw = String(error?.message || "").toLowerCase();
+    if (raw.includes("email not confirmed")) {
+      friendly = "Please confirm your email address before signing in.";
+    } else if (raw.includes("invalid login credentials")) {
+      friendly = "Incorrect email or password.";
+    } else if (raw.includes("too many requests")) {
+      friendly = "Too many attempts. Please wait before trying again.";
+    } else if (raw.includes("failed to fetch") || raw.includes("network")) {
+      friendly = "Network error. Check your internet connection and try again.";
+    } else if (error?.message) {
+      friendly = error.message;
+    }
 
-            let friendly = "Unable to sign in. Please check your details and try again.";
+    showMessage(friendly, "error");
+    drawCaptcha();
+  } finally {
+    setLoading(false);
+  }
+});
 
-            if (raw.includes("email not confirmed")) {
-                friendly = "Please confirm your email address before signing in.";
-            } else if (raw.includes("invalid login credentials")) {
-                friendly = "Incorrect email or password.";
-            } else if (raw.includes("too many requests")) {
-                friendly = "Too many attempts. Please wait a little before trying again.";
-            } else if (raw.includes("failed to fetch") || raw.includes("network")) {
-                friendly = "Network error. Check your internet connection and try again.";
-            }
+/* Forgot password */
+$("forgotPassword").addEventListener("click", async event => {
+  event.preventDefault();
+  clearMessage();
+  clearErrors();
 
-            showMessage(friendly, "error");
-            drawCaptcha();
+  const email = userInput.value.trim().toLowerCase();
 
-        } finally {
-            setLoading(false);
-        }
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    fieldError("userErr", "Enter your email address first.");
+    userInput.focus();
+    return;
+  }
+
+  const link = event.currentTarget;
+  link.style.pointerEvents = "none";
+  link.textContent = "Sending...";
+
+  try {
+    const redirectUrl = new URL("reset-password.html", window.location.href).href;
+    const { error } = await db.auth.resetPasswordForEmail(email, {
+      redirectTo: redirectUrl
     });
 
-    /* FORGOT PASSWORD */
-    document.getElementById("forgotPassword")
-        .addEventListener("click", async event => {
-            event.preventDefault();
+    if (error) throw error;
 
-            clearMessage();
-            clearErrors();
+    showMessage(
+      "If an account exists with this email, a reset link has been requested. Check your inbox.",
+      "success"
+    );
+  } catch (error) {
+    console.error("Password reset error:", error);
+    showMessage("We couldn't request a reset link right now. Please try again later.", "error");
+  } finally {
+    link.textContent = "Forgot password?";
+    link.style.pointerEvents = "";
+  }
+});
 
-            const email = userInput.value.trim().toLowerCase();
+/* Menu */
+$("menuButton").addEventListener("click", () => {
+  window.location.href = "index.html";
+});
 
-            if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                fieldError("userErr", "Enter your email address first.");
-                userInput.focus();
-                return;
-            }
-
-            const link = event.currentTarget;
-            link.style.pointerEvents = "none";
-            link.textContent = "Sending...";
-
-            try {
-                const redirectUrl =
-                    new URL("reset-password.html", window.location.href).href;
-
-                const { error } = await db.auth.resetPasswordForEmail(email, {
-                    redirectTo: redirectUrl
-                });
-
-                if (error) throw error;
-
-                showMessage(
-                    "If an account exists with this email, a reset link has been requested. Check your inbox.",
-                    "success"
-                );
-
-            } catch (error) {
-                const raw = String(error?.message || "").toLowerCase();
-
-                if (raw.includes("failed to fetch") || raw.includes("network")) {
-                    showMessage(
-                        "Network error. Check your internet connection and try again.",
-                        "error"
-                    );
-                } else {
-                    showMessage(
-                        "We couldn't request a reset link right now. Please try again later.",
-                        "error"
-                    );
-                }
-            } finally {
-                link.textContent = "Forgot password?";
-                link.style.pointerEvents = "";
-            }
-        });
-
-    /* MENU */
-    document.getElementById("menuButton")
-        .addEventListener("click", () => {
-            window.location.href = "index.html";
-        });
-
-    /* CLEAR A FIELD'S ERROR WHEN USER EDITS IT */
-    userInput.addEventListener("input", () => fieldError("userErr", ""));
-    passInput.addEventListener("input", () => fieldError("passErr", ""));
-    codeInput.addEventListener("input", () => {
-        fieldError("codeErr", "");
-        codeInput.value = codeInput.value.replace(/\D/g, "").slice(0, 3);
-    });
+/* Clear field errors while typing */
+userInput.addEventListener("input", () => fieldError("userErr", ""));
+passInput.addEventListener("input", () => fieldError("passErr", ""));
+codeInput.addEventListener("input", () => {
+  fieldError("codeErr", "");
+  codeInput.value = codeInput.value.replace(/\D/g, "").slice(0, 3);
+});
+mfaCodeInput.addEventListener("input", () => {
+  fieldError("mfaErr", "");
+  mfaCodeInput.value = mfaCodeInput.value.replace(/\D/g, "").slice(0, 6);
+});
 
 })();
 </script>
-
 </body>
 </html>
