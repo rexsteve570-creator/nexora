@@ -2,1661 +2,1471 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Nexora — Digital Asset Management</title>
-<meta name="description" content="Nexora Digital Asset Management">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AITIVEST | Digital Asset Management</title>
+<meta name="description" content="AITIVEST Digital Asset Management. Explore digital assets, account management and cryptocurrency market information.">
+<meta property="og:title" content="AITIVEST | Digital Asset Management">
+<meta property="og:description" content="Digital Assets. Managed With Purpose.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 3L4 28h6l2.2-5h7.6l2.2 5h6L16 3z' fill='%23F5B942'/%3E%3Cpath d='M16 12l3.4 7.6h-6.8L16 12z' fill='%230B0F1A'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@500;600;700&display=swap" rel="stylesheet">
 
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
 :root{
-    --navy:#050b18;
-    --navy2:#091426;
-    --navy3:#0d1b31;
-    --gold:#d6ad55;
-    --gold2:#f0cf7a;
-    --text:#f5f7fb;
-    --muted:#9da8ba;
-    --border:rgba(214,173,85,.20);
-}
-
-html{
-    scroll-behavior:smooth;
-}
-
-body{
-    font-family:Arial,Helvetica,sans-serif;
-    background:var(--navy);
-    color:var(--text);
-    line-height:1.6;
-}
-
-a{
-    color:inherit;
-    text-decoration:none;
-}
-
-button{
-    font-family:inherit;
-}
-
-.container{
-    width:min(1160px,92%);
-    margin:auto;
-}
-
-/* ================= HEADER ================= */
-
-header{
-    position:sticky;
-    top:0;
-    z-index:1000;
-    background:rgba(5,11,24,.94);
-    backdrop-filter:blur(14px);
-    border-bottom:1px solid var(--border);
-}
-
-.nav{
-    height:76px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-}
-
-.logo{
-    font-size:25px;
-    font-weight:800;
-    letter-spacing:3px;
-}
-
-.logo span{
-    color:var(--gold);
-}
-
-.nav-links{
-    display:flex;
-    gap:30px;
-    align-items:center;
-}
-
-.nav-links a{
-    color:#c5ccd8;
-    font-size:14px;
-}
-
-.nav-links a:hover{
-    color:var(--gold2);
-}
-
-.nav-actions{
-    display:flex;
-    gap:10px;
-    align-items:center;
-}
-
-.btn{
-    display:inline-flex;
-    justify-content:center;
-    align-items:center;
-    min-height:46px;
-    padding:0 22px;
-    border-radius:7px;
-    font-weight:700;
-    font-size:14px;
-    transition:.25s;
-    cursor:pointer;
-}
-
-.btn-outline{
-    border:1px solid var(--border);
-    color:var(--gold2);
-    background:transparent;
-}
-
-.btn-outline:hover{
-    background:rgba(214,173,85,.08);
-}
-
-.btn-gold{
-    background:linear-gradient(135deg,var(--gold2),var(--gold));
-    color:#07101e;
-    border:none;
-    box-shadow:0 10px 30px rgba(214,173,85,.13);
-}
-
-.btn-gold:hover{
-    transform:translateY(-2px);
-    box-shadow:0 14px 35px rgba(214,173,85,.22);
-}
-
-.menu{
-    display:none;
-    background:none;
-    border:0;
-    color:white;
-    font-size:27px;
-}
-
-/* ================= HERO ================= */
-
-.hero{
-    min-height:650px;
-    display:flex;
-    align-items:center;
-    position:relative;
-    overflow:hidden;
-    background:
-        radial-gradient(circle at 85% 30%,rgba(214,173,85,.10),transparent 28%),
-        radial-gradient(circle at 15% 80%,rgba(28,58,105,.28),transparent 35%),
-        var(--navy);
-}
-
-.hero:before{
-    content:"";
-    position:absolute;
-    width:520px;
-    height:520px;
-    border:1px solid rgba(214,173,85,.08);
-    border-radius:50%;
-    right:-190px;
-    top:30px;
-}
-
-.hero-content{
-    max-width:790px;
-    position:relative;
-    z-index:2;
-}
-
-.eyebrow{
-    display:inline-flex;
-    align-items:center;
-    gap:10px;
-    color:var(--gold2);
-    font-size:12px;
-    font-weight:700;
-    letter-spacing:2.5px;
-    margin-bottom:22px;
-}
-
-.eyebrow:before{
-    content:"";
-    width:28px;
-    height:1px;
-    background:var(--gold);
-}
-
-.hero h1{
-    font-size:clamp(44px,7vw,76px);
-    line-height:1.04;
-    letter-spacing:-2.5px;
-    margin-bottom:25px;
-}
-
-.hero h1 span{
-    color:var(--gold2);
-}
-
-.hero p{
-    color:var(--muted);
-    font-size:18px;
-    max-width:650px;
-    margin-bottom:35px;
-}
-
-.hero-buttons{
-    display:flex;
-    gap:12px;
-    flex-wrap:wrap;
-}
-
-/* ================= TRUST BAR ================= */
-
-.trust{
-    border-top:1px solid var(--border);
-    border-bottom:1px solid var(--border);
-    background:#07101f;
-}
-
-.trust-grid{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-}
-
-.trust-item{
-    padding:25px 20px;
-    border-right:1px solid var(--border);
-}
-
-.trust-item:last-child{
-    border-right:0;
-}
-
-.trust strong{
-    display:block;
-    color:var(--gold2);
-    font-size:17px;
-    margin-bottom:4px;
-}
-
-.trust span{
-    color:#7f8b9f;
-    font-size:12px;
-}
-
-/* ================= SECTIONS ================= */
-
-section{
-    padding:90px 0;
-}
-
-.section-head{
-    max-width:680px;
-    margin-bottom:45px;
-}
-
-.section-head .small{
-    color:var(--gold2);
-    font-size:11px;
-    font-weight:800;
-    letter-spacing:2.5px;
-    margin-bottom:13px;
-}
-
-.section-head h2{
-    font-size:clamp(30px,5vw,45px);
-    line-height:1.1;
-    margin-bottom:15px;
-}
-
-.section-head p{
-    color:var(--muted);
-}
-
-/* ================= INVESTMENT ================= */
-
-.investment{
-    background:
-        linear-gradient(180deg,#07101f,#050b18);
-}
-
-.investment-box{
-    display:grid;
-    grid-template-columns:1.1fr .9fr;
-    gap:22px;
-}
-
-.panel{
-    background:linear-gradient(145deg,#0b172b,#081222);
-    border:1px solid var(--border);
-    border-radius:14px;
-    padding:35px;
-}
-
-.panel h3{
-    font-size:25px;
-    margin-bottom:12px;
-}
-
-.panel p{
-    color:var(--muted);
-}
-
-.details{
-    margin-top:28px;
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:12px;
-}
-
-.detail{
-    padding:18px;
-    border:1px solid rgba(255,255,255,.07);
-    border-radius:9px;
-    background:rgba(255,255,255,.025);
-}
-
-.detail small{
-    display:block;
-    color:#7d899c;
-    margin-bottom:5px;
-    font-size:11px;
-}
-
-.detail strong{
-    color:#eef1f6;
-}
-
-.gold-line{
-    width:50px;
-    height:2px;
-    background:var(--gold);
-    margin:20px 0;
-}
-
-.feature-list{
-    margin-top:25px;
-    display:grid;
-    gap:13px;
-}
-
-.feature-list div{
-    display:flex;
-    gap:12px;
-    color:#c5ccd7;
-    font-size:14px;
-}
-
-.check{
-    color:var(--gold2);
-}
-
-/* ================= CRYPTO ================= */
-
-.crypto-grid{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:14px;
-}
-
-.crypto{
-    background:#081323;
-    border:1px solid rgba(214,173,85,.14);
-    border-radius:12px;
-    padding:24px;
-    transition:.25s;
-}
-
-.crypto:hover{
-    border-color:rgba(214,173,85,.45);
-    transform:translateY(-3px);
-}
-
-.coin{
-    width:42px;
-    height:42px;
-    border-radius:50%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    border:1px solid var(--border);
-    color:var(--gold2);
-    font-size:12px;
-    font-weight:800;
-    margin-bottom:17px;
-}
-
-.crypto h4{
-    font-size:16px;
-    margin-bottom:5px;
-}
-
-.crypto p{
-    color:#758196;
-    font-size:12px;
-}
-
-/* ================= FEATURES ================= */
-
-.features{
-    background:#07101f;
-}
-
-.feature-grid{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:18px;
-}
-
-.feature-card{
-    padding:32px;
-    background:#091527;
-    border:1px solid rgba(214,173,85,.14);
-    border-radius:13px;
-}
-
-.feature-number{
-    color:var(--gold);
-    font-size:12px;
-    font-weight:800;
-    letter-spacing:2px;
-    margin-bottom:25px;
-}
-
-.feature-card h3{
-    font-size:21px;
-    margin-bottom:10px;
-}
-
-.feature-card p{
-    color:var(--muted);
-    font-size:14px;
-}
-
-/* ================= STEPS ================= */
-
-.steps{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:15px;
-}
-
-.step{
-    position:relative;
-    padding:28px;
-    background:#081323;
-    border:1px solid rgba(214,173,85,.13);
-    border-radius:12px;
-}
-
-.step span{
-    display:block;
-    color:var(--gold);
-    font-weight:800;
-    font-size:12px;
-    margin-bottom:25px;
-}
-
-.step h3{
-    font-size:18px;
-    margin-bottom:8px;
-}
-
-.step p{
-    color:var(--muted);
-    font-size:13px;
-}
-
-/* ================= REFERRAL ================= */
-
-.referral{
-    background:
-        radial-gradient(circle at 80% 50%,rgba(214,173,85,.09),transparent 35%),
-        #07101f;
-}
-
-.referral-box{
-    border:1px solid var(--border);
-    border-radius:16px;
-    padding:50px;
-    background:linear-gradient(120deg,#0a172a,#07101e);
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:30px;
-}
-
-.referral-box h2{
-    font-size:35px;
-    margin-bottom:10px;
-}
-
-.referral-box p{
-    color:var(--muted);
-    max-width:600px;
-}
-
-/* ================= TELEGRAM ================= */
-
-.telegram{
-    text-align:center;
-}
-
-.telegram-box{
-    max-width:760px;
-    margin:auto;
-    padding:55px 30px;
-    border:1px solid var(--border);
-    border-radius:16px;
-    background:#081323;
-}
-
-.telegram-box .tg{
-    color:var(--gold2);
-    font-size:12px;
-    letter-spacing:2px;
-    font-weight:800;
-    margin-bottom:15px;
-}
-
-.telegram-box h2{
-    font-size:35px;
-    margin-bottom:12px;
-}
-
-.telegram-box p{
-    color:var(--muted);
-    margin-bottom:25px;
-}
-
-/* ================= FAQ ================= */
-
-.faq{
-    background:#07101f;
-}
-
-.faq-list{
-    max-width:850px;
-    display:grid;
-    gap:10px;
-}
-
-details{
-    background:#091527;
-    border:1px solid rgba(214,173,85,.13);
-    border-radius:9px;
-    padding:20px;
-}
-
-summary{
-    cursor:pointer;
-    font-weight:700;
-}
-
-details p{
-    color:var(--muted);
-    margin-top:14px;
-    font-size:14px;
-}
-
-/* ================= FOOTER ================= */
-
-footer{
-    border-top:1px solid var(--border);
-    background:#040914;
-    padding:45px 0 25px;
-}
-
-.footer-top{
-    display:flex;
-    justify-content:space-between;
-    gap:30px;
-    padding-bottom:35px;
-}
-
-.footer-brand{
-    max-width:400px;
-}
-
-.footer-brand p{
-    color:#737f92;
-    margin-top:12px;
-    font-size:13px;
-}
-
-.footer-links{
-    display:flex;
-    gap:22px;
-    flex-wrap:wrap;
-    align-items:flex-start;
-}
-
-.footer-links button{
-    background:none;
-    border:0;
-    color:#8792a4;
-    cursor:pointer;
-    font-size:13px;
-}
-
-.footer-links button:hover{
-    color:var(--gold2);
-}
-
-.copyright{
-    padding-top:22px;
-    border-top:1px solid rgba(255,255,255,.06);
-    color:#586477;
-    font-size:11px;
-    text-align:center;
-}
-
-/* ================= MODAL ================= */
-
-.modal{
-    position:fixed;
-    inset:0;
-    z-index:3000;
-    background:rgba(0,0,0,.75);
-    backdrop-filter:blur(8px);
-    display:none;
-    align-items:center;
-    justify-content:center;
-    padding:20px;
-}
-
-.modal.active{
-    display:flex;
-}
-
-.modal-box{
-    width:min(700px,100%);
-    max-height:85vh;
-    overflow:auto;
-    background:#091527;
-    border:1px solid var(--border);
-    border-radius:14px;
-    padding:32px;
-    position:relative;
-}
-
-.close{
-    position:absolute;
-    top:15px;
-    right:18px;
-    border:0;
-    background:none;
-    color:#9ba6b7;
-    font-size:25px;
-    cursor:pointer;
-}
-
-.modal-box h2{
-    color:var(--gold2);
-    margin-bottom:20px;
-}
-
-.modal-box h3{
-    margin-top:20px;
-    margin-bottom:7px;
-}
-
-.modal-box p{
-    color:#aab4c3;
-    font-size:14px;
-}
-
-/* ================= MOBILE ================= */
-
-@media(max-width:900px){
-
-    .nav-links,
-    .nav-actions{
-        display:none;
-    }
-
-    .menu{
-        display:block;
-    }
-
-    .nav.mobile-open{
-        flex-wrap:wrap;
-        height:auto;
-        padding:18px 0;
-    }
-
-    .nav.mobile-open .nav-links{
-        display:flex;
-        flex-direction:column;
-        width:100%;
-        padding:20px 0 5px;
-        gap:18px;
-    }
-
-    .nav.mobile-open .nav-actions{
-        display:flex;
-        width:100%;
-        padding-bottom:5px;
-    }
-
-    .trust-grid{
-        grid-template-columns:repeat(2,1fr);
-    }
-
-    .trust-item:nth-child(2){
-        border-right:0;
-    }
-
-    .trust-item:nth-child(-n+2){
-        border-bottom:1px solid var(--border);
-    }
-
-    .investment-box{
-        grid-template-columns:1fr;
-    }
-
-    .crypto-grid{
-        grid-template-columns:repeat(2,1fr);
-    }
-
-    .feature-grid{
-        grid-template-columns:1fr;
-    }
-
-    .steps{
-        grid-template-columns:repeat(2,1fr);
-    }
-
-    .referral-box{
-        flex-direction:column;
-        align-items:flex-start;
-    }
-
-    .footer-top{
-        flex-direction:column;
-    }
-}
-
-@media(max-width:520px){
-
-    section{
-        padding:70px 0;
-    }
-
-    .hero{
-        min-height:600px;
-    }
-
-    .hero h1{
-        font-size:43px;
-    }
-
-    .hero p{
-        font-size:16px;
-    }
-
-    .btn{
-        width:100%;
-    }
-
-    .hero-buttons{
-        width:100%;
-    }
-
-    .details{
-        grid-template-columns:1fr;
-    }
-
-    .crypto-grid{
-        grid-template-columns:1fr 1fr;
-    }
-
-    .steps{
-        grid-template-columns:1fr;
-    }
-
-    .panel{
-        padding:25px;
-    }
-
-    .referral-box{
-        padding:30px 22px;
-    }
-
-    .referral-box h2,
-    .telegram-box h2{
-        font-size:28px;
-    }
+  --bg:#0B0F1A;
+  --bg-2:#111729;
+  --panel:#151C30;
+  --line:#243049;
+  --gold:#F5B942;
+  --teal:#00E0C6;
+  --up:#2ee59d;
+  --down:#ff5c6c;
+  --text:#EDEFF5;
+  --muted:#98a2bd;
+  --radius:14px;
+  --head:'Sora','Space Grotesk',system-ui,sans-serif;
+  --body:'Inter',system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--body);line-height:1.6;-webkit-font-smoothing:antialiased}
+img,svg{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:6px}
+.wrap{width:min(1160px,92%);margin-inline:auto}
+section{padding:96px 0}
+.alt{background:var(--bg-2);border-block:1px solid var(--line)}
+h1,h2,h3{font-family:var(--head);line-height:1.15;letter-spacing:-.02em}
+h2{font-size:clamp(1.8rem,3.6vw,2.6rem);max-width:22ch}
+.lede{color:var(--muted);max-width:58ch;margin-top:14px}
+.section-head{margin-bottom:48px}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 22px;border-radius:10px;font-weight:600;font-size:.95rem;border:1px solid transparent;transition:transform .15s,background .2s,border-color .2s}
+.btn-gold{background:var(--gold);color:#1a1405}
+.btn-gold:hover{background:#ffc95c;transform:translateY(-1px)}
+.btn-ghost{border-color:var(--line);color:var(--text)}
+.btn-ghost:hover{border-color:var(--teal);color:var(--teal)}
+.btn-lg{padding:15px 28px;font-size:1rem}
+
+/* navigation */
+header{position:sticky;top:0;z-index:50;background:rgba(11,15,26,.78);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(36,48,73,.7)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:68px}
+.logo{display:flex;align-items:center;gap:10px;font-family:var(--head);font-weight:700;font-size:1.25rem}
+.nav-links{display:flex;gap:30px;color:var(--muted);font-size:.93rem}
+.nav-links a:hover{color:var(--text)}
+.nav-cta{display:flex;gap:10px}
+.menu-btn{display:none;background:none;border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+
+/* hero */
+.hero{padding:72px 0 56px;background:radial-gradient(900px 420px at 80% 10%,rgba(245,185,66,.09),transparent 60%)}
+.hero-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:56px;align-items:center}
+.hero h1{font-size:clamp(2.4rem,5.4vw,4rem)}
+.hero p{color:var(--muted);font-size:1.1rem;max-width:46ch;margin:22px 0 32px}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+.hero p.hero-note{margin:22px 0 0;font-size:.85rem}
+
+.dash{background:linear-gradient(160deg,var(--panel),var(--bg-2));border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:0 0 0 1px rgba(245,185,66,.06),0 30px 80px -30px rgba(0,0,0,.8),0 0 60px -20px rgba(245,185,66,.25);transform:perspective(1200px) rotateY(-5deg) rotateX(2deg)}
+.dash-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px}
+.dash-label{color:var(--muted);font-size:.82rem}
+.dash-value{font-family:var(--head);font-size:1.9rem;font-weight:600}
+.chip{font-size:.8rem;font-weight:600;padding:4px 10px;border-radius:99px;background:rgba(46,229,157,.12);color:var(--up);white-space:nowrap}
+.chip.down{background:rgba(255,92,108,.12);color:var(--down)}
+.chart{width:100%;height:auto}
+.chart .grid{stroke:var(--line);stroke-width:1;stroke-dasharray:3 6}
+.chart .area{fill:url(#fillGold);opacity:0}
+.chart .line{fill:none;stroke:var(--gold);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1;animation:draw 2.2s .3s cubic-bezier(.6,.1,.2,1) forwards}
+.chart .area{animation:fade 1s 1.6s forwards}
+.chart .peak{opacity:0;animation:fade .5s 2.3s forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes fade{to{opacity:1}}
+.dash-assets{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
+.mini{display:grid;grid-template-columns:auto 1fr;column-gap:10px;align-items:center;background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:.85rem;text-align:left;width:100%;transition:border-color .2s,background .2s}
+.mini .coin{grid-row:1/3}
+.mini:hover{border-color:rgba(245,185,66,.5)}
+.mini[aria-pressed="true"]{border-color:var(--gold);background:rgba(245,185,66,.07)}
+.mini b{display:block;font-family:var(--head)}
+.up{color:var(--up)}.down{color:var(--down)}
+
+/* key facts */
+.facts{padding:56px 0}
+.facts-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.fact{border-left:2px solid var(--gold);padding-left:18px}
+.fact strong{display:block;font-family:var(--head);font-size:1.6rem;font-weight:600}
+.fact span{color:var(--muted);font-size:.9rem}
+
+/* cards */
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:28px}
+.card h3{font-size:1.25rem;margin-bottom:10px}
+.card p{color:var(--muted);font-size:.95rem}
+.invest-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:20px}
+.rule{width:48px;height:2px;background:var(--gold);margin:18px 0}
+.details{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:26px}
+.detail{padding:16px;border:1px solid var(--line);border-radius:10px;background:rgba(255,255,255,.02)}
+.detail small{display:block;color:var(--muted);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px}
+.detail strong{font-family:var(--head);font-weight:600}
+.check-list{list-style:none;margin-top:22px;display:grid;gap:13px}
+.check-list li{display:flex;gap:12px;font-size:.95rem;color:var(--text)}
+.check-list svg{flex:none;color:var(--teal);margin-top:4px}
+
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.icon{width:42px;height:42px;border-radius:10px;display:grid;place-items:center;background:rgba(245,185,66,.1);color:var(--gold);margin-bottom:18px}
+.features-grid .card{transition:border-color .2s}
+.features-grid .card:hover{border-color:rgba(245,185,66,.5)}
+.features-grid .card h3{font-size:1.1rem}
+
+/* steps */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative}
+.step{padding:0 24px 0 0;position:relative}
+.step-n{width:44px;height:44px;border-radius:50%;border:2px solid var(--gold);display:grid;place-items:center;font-family:var(--head);font-weight:700;color:var(--gold);background:var(--bg);position:relative;z-index:1}
+.steps::before{content:"";position:absolute;top:21px;left:22px;right:22px;height:2px;background:linear-gradient(90deg,var(--gold),var(--teal));opacity:.35}
+.step h3{margin:20px 0 8px;font-size:1.1rem}
+.step p{color:var(--muted);font-size:.93rem;max-width:26ch}
+
+/* market */
+.market{display:grid;grid-template-columns:1.3fr 1fr;gap:20px;align-items:start}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:26px}
+.coin{width:40px;height:40px;border-radius:50%;display:block;overflow:hidden;flex:none;background:var(--bg-2)}
+.coin svg{width:100%;height:100%}
+.coin.coin-lg{width:52px;height:52px}
+.coin.coin-sm{width:30px;height:30px}
+.coin.coin-xs{width:20px;height:20px}
+.m-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap}
+.m-id{display:flex;gap:14px;align-items:center}
+.m-id h3{font-size:1.3rem}
+.m-id small{color:var(--muted);font-size:.82rem}
+.m-price{text-align:right}
+.m-price strong{display:block;font-family:var(--head);font-size:clamp(1.6rem,4vw,2.2rem);font-weight:600;line-height:1.15}
+.chg{font-size:.85rem;font-weight:600}
+.ranges{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:24px;flex-wrap:wrap}
+.range-btns{display:flex;gap:6px}
+.range-btns button{padding:6px 14px;border-radius:8px;border:1px solid var(--line);background:transparent;color:var(--muted);font-size:.85rem;font-weight:600;transition:.2s}
+.range-btns button:hover{border-color:rgba(245,185,66,.5);color:var(--text)}
+.range-btns button[aria-pressed="true"]{background:rgba(245,185,66,.12);color:var(--gold);border-color:rgba(245,185,66,.5)}
+.rchg{font-size:.82rem;color:var(--muted)}
+.chart-wrap{position:relative;margin-top:14px}
+.chart-wrap svg{touch-action:pan-y}
+#chart{min-height:300px}
+.chart-msg{height:300px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:.92rem;text-align:center;padding:0 20px}
+.cline.anim{stroke-dasharray:1;stroke-dashoffset:1;animation:draw .9s ease forwards}
+.tip{position:absolute;pointer-events:none;transform:translate(-50%,-100%);background:var(--bg-2);border:1px solid var(--line);border-radius:8px;padding:6px 11px;font-size:.78rem;white-space:nowrap;z-index:2}
+.tip b{display:block;color:var(--gold);font-family:var(--head);font-size:.9rem}
+.tip span{color:var(--muted)}
+.m-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:22px}
+.m-stats div{padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:rgba(255,255,255,.02)}
+.m-stats small{display:block;color:var(--muted);font-size:.7rem;letter-spacing:.04em;text-transform:uppercase;margin-bottom:3px}
+.m-stats strong{font-family:var(--head);font-size:.95rem;font-weight:600}
+.market-list{display:grid;gap:8px}
+.row{display:grid;grid-template-columns:40px 1fr 64px auto;align-items:center;gap:12px;width:100%;text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px 14px;transition:border-color .2s,background .2s}
+.row:hover{border-color:rgba(245,185,66,.5)}
+.row[aria-pressed="true"]{border-color:var(--gold);background:#1a2238}
+.r-name b{display:block;font-family:var(--head);font-size:.95rem;font-weight:600}
+.r-name small{color:var(--muted);font-size:.78rem}
+.r-spark{height:24px}
+.r-price{text-align:right;min-width:92px}
+.r-price b{display:block;font-size:.9rem;font-weight:600}
+.r-price small{font-size:.78rem;font-weight:600}
+.source{margin-top:22px;font-size:.8rem;color:var(--muted)}
+.err{display:block;margin-top:8px;color:#ff9aa5}
+.dash-err{margin-top:12px;font-size:.8rem;color:#ff9aa5}
+
+/* referral and Telegram */
+.ref-box{border:1px solid rgba(245,185,66,.4);border-radius:22px;padding:56px 48px;display:flex;justify-content:space-between;align-items:center;gap:32px;background:radial-gradient(600px 240px at 80% 0%,rgba(245,185,66,.14),transparent 70%),var(--panel)}
+.ref-box h2{margin-bottom:12px}
+.ref-box p{color:var(--muted);max-width:56ch}
+.tg-box{max-width:760px;margin:auto;text-align:center;padding:56px 32px;border:1px solid var(--line);border-radius:22px;background:var(--panel)}
+.tg-box h2{margin:0 auto 12px}
+.tg-box p{color:var(--muted);max-width:50ch;margin:0 auto 26px}
+.no-top{padding-top:0}
+
+/* FAQ */
+.faq{max-width:780px}
+details{border-bottom:1px solid var(--line);padding:20px 0}
+summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:20px;font-family:var(--head);font-weight:500;font-size:1.05rem}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";color:var(--gold);font-size:1.4rem;line-height:1;transition:transform .2s}
+details[open] summary::after{transform:rotate(45deg)}
+details p{color:var(--muted);margin-top:12px;max-width:62ch}
+
+/* footer */
+footer{border-top:1px solid var(--line);padding:56px 0 28px;background:var(--bg-2)}
+.foot-top{display:flex;justify-content:space-between;gap:32px;flex-wrap:wrap;padding-bottom:32px}
+.foot-brand p{color:var(--muted);font-size:.92rem;margin-top:12px}
+.foot-links{display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start}
+.foot-links button{background:none;border:0;color:var(--muted);font-size:.92rem}
+.foot-links button:hover{color:var(--gold)}
+.disclaimer{padding-top:22px;border-top:1px solid var(--line);color:var(--muted);font-size:.82rem;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+
+/* modal */
+.modal{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.75);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:20px}
+.modal.active{display:flex}
+.modal-box{width:min(700px,100%);max-height:85vh;overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:32px;position:relative}
+.close{position:absolute;top:12px;right:16px;border:0;background:none;color:var(--muted);font-size:1.7rem;line-height:1;padding:4px 8px}
+.close:hover{color:var(--text)}
+.modal-box h2{color:var(--gold);font-size:1.6rem;margin-bottom:18px}
+.modal-box h3{margin:20px 0 6px;font-size:1.05rem}
+.modal-box p{color:var(--muted);font-size:.93rem}
+
+/* responsive */
+@media(max-width:980px){
+  .hero-grid,.invest-grid,.market{grid-template-columns:1fr}
+  .dash{transform:none}
+  .features-grid{grid-template-columns:1fr}
+  .facts-grid{grid-template-columns:repeat(2,1fr)}
+  .steps{grid-template-columns:1fr;gap:34px}
+  .steps::before{top:22px;bottom:22px;left:21px;right:auto;width:2px;height:auto}
+  .step{padding-left:64px}
+  .step-n{position:absolute;left:0;top:0}
+  .step h3{margin-top:0}
+  .step p{max-width:none}
+  .ref-box{flex-direction:column;align-items:flex-start;padding:40px 28px}
+}
+@media(max-width:760px){
+  section{padding:68px 0}
+  .menu-btn{display:block}
+  .nav-links,.nav-cta{display:none}
+  header.open .nav{flex-wrap:wrap;height:auto;padding:14px 0}
+  header.open .nav-links{display:flex;flex-direction:column;gap:14px;width:100%;order:3;padding:14px 0}
+  header.open .nav-cta{display:flex;width:100%;order:4;padding-bottom:6px}
+  header.open .nav-cta .btn{flex:1}
+  .panel,.card{padding:20px}
+  .details{grid-template-columns:1fr}
+  .m-stats{grid-template-columns:repeat(2,1fr)}
+  .m-price{text-align:left}
+  .row{grid-template-columns:40px 1fr auto;padding:10px 12px}
+  .r-spark{display:none}
+  #chart,.chart-msg{min-height:230px;height:230px}
+  .hero-actions .btn{width:100%}
+  .tg-box{padding:40px 20px}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .chart .line{animation:none;stroke-dashoffset:0}
+  .chart .area,.chart .peak{animation:none;opacity:1}
+  .cline.anim{animation:none;stroke-dasharray:none;stroke-dashoffset:0}
 }
 </style>
 </head>
 
 <body>
-
-<header>
-    <div class="container nav" id="nav">
-
-        <a href="index.html" class="logo">
-            NEXORA<span>.</span>
-        </a>
-
-        <nav class="nav-links">
-            <a href="#investment">Investment</a>
-            <a href="#assets">Assets</a>
-            <a href="#features">Features</a>
-            <a href="#how">How It Works</a>
-        </nav>
-
-        <div class="nav-actions">
-
-            <!-- CORRECTED -->
-            <a href="signin.html" class="btn btn-outline">
-                Sign In
-            </a>
-
-            <!-- CORRECTED -->
-            <a href="signup.html" class="btn btn-gold">
-                Create Account
-            </a>
-
-        </div>
-
-        <button class="menu" onclick="toggleMenu()" aria-label="Open menu">
-            ☰
-        </button>
-
+<header id="top">
+  <div class="wrap nav">
+    <a href="#top" class="logo" aria-label="AITIVEST home">
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <path d="M16 3L4 28h6l2.2-5h7.6l2.2 5h6L16 3z" fill="#F5B942"/>
+        <path d="M16 12l3.4 7.6h-6.8L16 12z" fill="#0B0F1A"/>
+      </svg>
+      AITIVEST
+    </a>
+    <nav class="nav-links" aria-label="Main">
+      <a href="#investment">Investment</a>
+      <a href="#assets">Assets</a>
+      <a href="#features">Features</a>
+      <a href="#how">How It Works</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="signin.html" class="btn btn-ghost">Sign In</a>
+      <a href="signup.html" class="btn btn-gold">Create Account</a>
     </div>
+    <button class="menu-btn" id="menuBtn" aria-label="Toggle menu" aria-expanded="false">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+  </div>
 </header>
 
-
-<!-- HERO -->
-
+<main>
 <section class="hero">
-
-    <div class="container hero-content">
-
-        <div class="eyebrow">
-            DIGITAL ASSET MANAGEMENT
-        </div>
-
-        <h1>
-            Digital Assets.<br>
-            <span>Managed With Purpose.</span>
-        </h1>
-
-        <p>
-            Nexora provides a structured digital asset environment
-            designed for clients seeking access to modern crypto-based
-            portfolio management.
-        </p>
-
-        <div class="hero-buttons">
-
-            <!-- CORRECTED -->
-            <a href="signup.html" class="btn btn-gold">
-                Get Started
-            </a>
-
-            <a href="#investment" class="btn btn-outline">
-                Explore Nexora
-            </a>
-
-        </div>
-
+  <div class="wrap hero-grid">
+    <div>
+      <h1>Digital Assets. Managed With Purpose.</h1>
+      <p>AITIVEST provides a structured digital asset environment designed for clients seeking access to modern crypto-based portfolio management.</p>
+      <div class="hero-actions">
+        <a href="signup.html" class="btn btn-gold btn-lg">Get Started</a>
+        <a href="#investment" class="btn btn-ghost btn-lg">Explore AITIVEST</a>
+      </div>
+      <p class="hero-note">Digital assets are volatile and may result in loss. Nothing here is guaranteed.</p>
     </div>
 
+    <div class="dash" id="heroDash" aria-label="Cryptocurrency market preview">
+      <div class="dash-top">
+        <div>
+          <div class="dash-label" id="hLabel">Bitcoin · BTC · 7 days</div>
+          <div class="dash-value" id="hPrice">—</div>
+        </div>
+        <span class="chip" id="hChg">—</span>
+      </div>
+
+      <svg class="chart" viewBox="0 0 600 260" role="img" aria-label="Seven day market price chart for the selected cryptocurrency">
+        <defs>
+          <linearGradient id="fillGold" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#F5B942" stop-opacity=".35"/>
+            <stop offset="1" stop-color="#F5B942" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <line class="grid" x1="0" y1="50" x2="600" y2="50"/>
+        <line class="grid" x1="0" y1="110" x2="600" y2="110"/>
+        <line class="grid" x1="0" y1="170" x2="600" y2="170"/>
+        <line class="grid" x1="0" y1="230" x2="600" y2="230"/>
+        <path class="area" id="hArea" d=""/>
+        <path class="line" id="hLine" pathLength="1" d=""/>
+        <g class="peak" id="hPeak">
+          <circle id="hPeak1" cx="-20" cy="-20" r="14" fill="#F5B942" opacity=".2"/>
+          <circle id="hPeak2" cx="-20" cy="-20" r="6" fill="#F5B942"/>
+        </g>
+      </svg>
+
+      <div class="dash-assets">
+        <button type="button" class="mini" data-id="bitcoin" aria-pressed="true"><b>BTC</b><span>—</span></button>
+        <button type="button" class="mini" data-id="ethereum" aria-pressed="false"><b>ETH</b><span>—</span></button>
+        <button type="button" class="mini" data-id="solana" aria-pressed="false"><b>SOL</b><span>—</span></button>
+      </div>
+      <p class="dash-err" id="dashErr" role="status" hidden></p>
+    </div>
+  </div>
 </section>
 
-
-<!-- TRUST -->
-
-<div class="trust">
-
-    <div class="container trust-grid">
-
-        <div class="trust-item">
-            <strong>$1</strong>
-            <span>Minimum Deposit</span>
-        </div>
-
-        <div class="trust-item">
-            <strong>24/7</strong>
-            <span>Account Access</span>
-        </div>
-
-        <div class="trust-item">
-            <strong>Multi-Crypto</strong>
-            <span>Digital Asset Support</span>
-        </div>
-
-        <div class="trust-item">
-            <strong>Global</strong>
-            <span>Digital Asset Access</span>
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- INVESTMENT -->
-
-<section class="investment" id="investment">
-
-    <div class="container">
-
-        <div class="section-head">
-            <div class="small">THE NEXORA MODEL</div>
-
-            <h2>
-                A structured approach to digital assets.
-            </h2>
-
-            <p>
-                Access a digital asset environment built around
-                transparency, account visibility and structured
-                portfolio management.
-            </p>
-        </div>
-
-
-        <div class="investment-box">
-
-            <div class="panel">
-
-                <h3>Digital Asset Management</h3>
-
-                <div class="gold-line"></div>
-
-                <p>
-                    Nexora is designed around a straightforward
-                    client experience for managing digital assets
-                    through a secure online account.
-                </p>
-
-                <div class="details">
-
-                    <div class="detail">
-                        <small>MINIMUM DEPOSIT</small>
-                        <strong>$1 USDT</strong>
-                    </div>
-
-                    <div class="detail">
-                        <small>MAXIMUM DEPOSIT</small>
-                        <strong>Unlimited</strong>
-                    </div>
-
-                    <div class="detail">
-                        <small>ACCESS</small>
-                        <strong>24/7 Online</strong>
-                    </div>
-
-                    <div class="detail">
-                        <small>WITHDRAWAL</small>
-                        <strong>Crypto Assets</strong>
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="panel">
-
-                <h3>Built Around Your Account</h3>
-
-                <p>
-                    Your Nexora account is designed to give you
-                    a clear view of your digital asset activity.
-                </p>
-
-                <div class="feature-list">
-
-                    <div>
-                        <span class="check">◆</span>
-                        <span>Digital asset account management</span>
-                    </div>
-
-                    <div>
-                        <span class="check">◆</span>
-                        <span>Transaction history</span>
-                    </div>
-
-                    <div>
-                        <span class="check">◆</span>
-                        <span>Crypto deposit support</span>
-                    </div>
-
-                    <div>
-                        <span class="check">◆</span>
-                        <span>Crypto withdrawal support</span>
-                    </div>
-
-                    <div>
-                        <span class="check">◆</span>
-                        <span>Referral programme</span>
-                    </div>
-
-                    <div>
-                        <span class="check">◆</span>
-                        <span>Client account security</span>
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
+<section class="facts">
+  <div class="wrap facts-grid">
+    <div class="fact"><strong>$1</strong><span>Minimum Deposit</span></div>
+    <div class="fact"><strong>24/7</strong><span>Account Access</span></div>
+    <div class="fact"><strong>Multi-Crypto</strong><span>Digital Asset Support</span></div>
+    <div class="fact"><strong>Global</strong><span>Digital Asset Access</span></div>
+  </div>
 </section>
 
-
-<!-- ASSETS -->
+<section class="alt" id="investment">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>A structured approach to digital assets.</h2>
+      <p class="lede">Access a digital asset environment built around transparency, account visibility and structured portfolio management.</p>
+    </div>
+    <div class="invest-grid">
+      <div class="card">
+        <h3>Digital Asset Management</h3>
+        <div class="rule"></div>
+        <p>AITIVEST is designed around a straightforward client experience for managing digital assets through a secure online account.</p>
+        <div class="details">
+          <div class="detail"><small>Minimum deposit</small><strong>$1 USDT</strong></div>
+          <div class="detail"><small>Maximum deposit</small><strong>Unlimited</strong></div>
+          <div class="detail"><small>Access</small><strong>24/7 Online</strong></div>
+          <div class="detail"><small>Withdrawal</small><strong>Crypto Assets</strong></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Built Around Your Account</h3>
+        <p>Your AITIVEST account is designed to give you a clear view of your digital asset activity.</p>
+        <ul class="check-list">
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>Digital asset account management</li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>Transaction history</li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>Crypto deposit support</li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>Crypto withdrawal support</li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>Referral programme</li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>Client account security</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
 
 <section id="assets">
-
-    <div class="container">
-
-        <div class="section-head">
-
-            <div class="small">SUPPORTED ASSETS</div>
-
-            <h2>
-                Access the digital asset economy.
-            </h2>
-
-            <p>
-                Nexora is designed to support a range of established
-                digital assets. Market data will only be displayed
-                when connected to a verified data source.
-            </p>
-
-        </div>
-
-
-        <div class="crypto-grid">
-
-            <div class="crypto">
-                <div class="coin">BTC</div>
-                <h4>Bitcoin</h4>
-                <p>Digital asset</p>
-            </div>
-
-            <div class="crypto">
-                <div class="coin">ETH</div>
-                <h4>Ethereum</h4>
-                <p>Digital asset</p>
-            </div>
-
-            <div class="crypto">
-                <div class="coin">USDT</div>
-                <h4>Tether</h4>
-                <p>Stablecoin</p>
-            </div>
-
-            <div class="crypto">
-                <div class="coin">BNB</div>
-                <h4>BNB</h4>
-                <p>Digital asset</p>
-            </div>
-
-            <div class="crypto">
-                <div class="coin">SOL</div>
-                <h4>Solana</h4>
-                <p>Digital asset</p>
-            </div>
-
-            <div class="crypto">
-                <div class="coin">XRP</div>
-                <h4>XRP</h4>
-                <p>Digital asset</p>
-            </div>
-
-            <div class="crypto">
-                <div class="coin">TON</div>
-                <h4>Toncoin</h4>
-                <p>Digital asset</p>
-            </div>
-
-            <div class="crypto">
-                <div class="coin">DOGE</div>
-                <h4>Dogecoin</h4>
-                <p>Digital asset</p>
-            </div>
-
-            <div class="crypto">
-                <div class="coin">ADA</div>
-                <h4>Cardano</h4>
-                <p>Digital asset</p>
-            </div>
-
-            <div class="crypto">
-                <div class="coin">TRX</div>
-                <h4>TRON</h4>
-                <p>Digital asset</p>
-            </div>
-
-            <div class="crypto">
-                <div class="coin">LTC</div>
-                <h4>Litecoin</h4>
-                <p>Digital asset</p>
-            </div>
-
-            <div class="crypto">
-                <div class="coin">AVAX</div>
-                <h4>Avalanche</h4>
-                <p>Digital asset</p>
-            </div>
-
-        </div>
-
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Access the digital asset economy.</h2>
+      <p class="lede">Explore established digital assets, their market prices and historical charts. Market information refreshes automatically when available.</p>
     </div>
 
-</section>
-
-
-<!-- FEATURES -->
-
-<section class="features" id="features">
-
-    <div class="container">
-
-        <div class="section-head">
-
-            <div class="small">WHY NEXORA</div>
-
-            <h2>
-                Built for a modern digital asset experience.
-            </h2>
-
+    <div class="market">
+      <div class="panel">
+        <div class="m-head">
+          <div class="m-id">
+            <span class="coin coin-lg" id="mCoin"></span>
+            <div>
+              <h3 id="mName">Bitcoin</h3>
+              <small id="mSym">BTC</small>
+            </div>
+          </div>
+          <div class="m-price">
+            <strong id="mPrice">—</strong>
+            <span class="chg" id="mChg">—</span>
+          </div>
         </div>
 
-
-        <div class="feature-grid">
-
-            <div class="feature-card">
-
-                <div class="feature-number">01</div>
-
-                <h3>Multi-Crypto</h3>
-
-                <p>
-                    A platform architecture designed around
-                    multiple digital assets and networks.
-                </p>
-
-            </div>
-
-
-            <div class="feature-card">
-
-                <div class="feature-number">02</div>
-
-                <h3>Account Control</h3>
-
-                <p>
-                    Keep your activity organized through a
-                    dedicated client account and transaction history.
-                </p>
-
-            </div>
-
-
-            <div class="feature-card">
-
-                <div class="feature-number">03</div>
-
-                <h3>Security Focus</h3>
-
-                <p>
-                    Account security and transaction controls
-                    are built into the Nexora experience.
-                </p>
-
-            </div>
-
+        <div class="ranges">
+          <div class="range-btns" role="group" aria-label="Chart range">
+            <button type="button" data-days="1" aria-pressed="false">1D</button>
+            <button type="button" data-days="7" aria-pressed="true">7D</button>
+            <button type="button" data-days="30" aria-pressed="false">30D</button>
+            <button type="button" data-days="365" aria-pressed="false">1Y</button>
+          </div>
+          <div class="rchg" id="rChg"></div>
         </div>
 
+        <div class="chart-wrap">
+          <div id="chart"><div class="chart-msg">Loading chart…</div></div>
+          <div class="tip" id="tip" hidden></div>
+        </div>
+
+        <div class="m-stats">
+          <div><small>Market cap</small><strong id="sCap">—</strong></div>
+          <div><small>24h volume</small><strong id="sVol">—</strong></div>
+          <div><small>24h high</small><strong id="sHigh">—</strong></div>
+          <div><small>24h low</small><strong id="sLow">—</strong></div>
+        </div>
+      </div>
+      <div class="market-list" id="coinList"></div>
     </div>
 
+    <p class="source" role="status">
+      Market prices are displayed for informational purposes only and do not predict account results.
+      <span id="upd"></span><span class="err" id="err"></span>
+    </p>
+  </div>
 </section>
 
-
-<!-- HOW IT WORKS -->
+<section class="alt" id="features">
+  <div class="wrap">
+    <div class="section-head"><h2>Built for a modern digital asset experience.</h2></div>
+    <div class="features-grid">
+      <article class="card">
+        <div class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="12" r="6"/><circle cx="16" cy="12" r="6"/></svg></div>
+        <h3>Multi-Crypto</h3>
+        <p>A platform architecture designed around multiple digital assets and networks.</p>
+      </article>
+      <article class="card">
+        <div class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 14h4"/></svg></div>
+        <h3>Account Control</h3>
+        <p>Keep your activity organized through a dedicated client account and transaction history.</p>
+      </article>
+      <article class="card">
+        <div class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <h3>Security Focus</h3>
+        <p>Account security and transaction controls are built into the AITIVEST experience.</p>
+      </article>
+    </div>
+  </div>
+</section>
 
 <section id="how">
-
-    <div class="container">
-
-        <div class="section-head">
-
-            <div class="small">GET STARTED</div>
-
-            <h2>
-                From registration to digital asset management.
-            </h2>
-
-        </div>
-
-
-        <div class="steps">
-
-            <div class="step">
-                <span>01 — REGISTER</span>
-                <h3>Create Account</h3>
-                <p>
-                    Open your Nexora client account.
-                </p>
-            </div>
-
-            <div class="step">
-                <span>02 — VERIFY</span>
-                <h3>Complete Verification</h3>
-                <p>
-                    Complete the required account verification steps.
-                </p>
-            </div>
-
-            <div class="step">
-                <span>03 — DEPOSIT</span>
-                <h3>Fund Your Account</h3>
-                <p>
-                    Deposit an available supported digital asset.
-                </p>
-            </div>
-
-            <div class="step">
-                <span>04 — MANAGE</span>
-                <h3>Manage Assets</h3>
-                <p>
-                    Monitor your account and digital asset activity.
-                </p>
-            </div>
-
-        </div>
-
+  <div class="wrap">
+    <div class="section-head"><h2>From registration to digital asset management.</h2></div>
+    <div class="steps">
+      <div class="step"><div class="step-n">1</div><h3>Create Account</h3><p>Open your AITIVEST client account.</p></div>
+      <div class="step"><div class="step-n">2</div><h3>Complete Verification</h3><p>Complete the required account verification steps.</p></div>
+      <div class="step"><div class="step-n">3</div><h3>Fund Your Account</h3><p>Deposit an available supported digital asset.</p></div>
+      <div class="step"><div class="step-n">4</div><h3>Manage Assets</h3><p>Monitor your account and digital asset activity.</p></div>
     </div>
-
+  </div>
 </section>
 
-
-<!-- REFERRAL -->
-
-<section class="referral">
-
-    <div class="container">
-
-        <div class="referral-box">
-
-            <div>
-
-                <div
-                    class="small"
-                    style="color:var(--gold2);letter-spacing:2px;font-size:11px;font-weight:800;margin-bottom:12px;"
-                >
-                    NEXORA REFERRAL
-                </div>
-
-                <h2>Grow with your network.</h2>
-
-                <p>
-                    Invite eligible users to Nexora and participate
-                    in the referral programme available through your
-                    client account.
-                </p>
-
-            </div>
-
-            <!-- CORRECTED -->
-            <a href="signup.html" class="btn btn-gold">
-                Create Account
-            </a>
-
-        </div>
-
+<section class="no-top">
+  <div class="wrap">
+    <div class="ref-box">
+      <div>
+        <h2>Grow with your network.</h2>
+        <p>Invite eligible users to AITIVEST and participate in the referral programme available through your client account.</p>
+      </div>
+      <a href="signup.html" class="btn btn-gold btn-lg">Create Account</a>
     </div>
-
+  </div>
 </section>
 
-
-<!-- TELEGRAM -->
-
-<section class="telegram">
-
-    <div class="container">
-
-        <div class="telegram-box">
-
-            <div class="tg">NEXORA COMMUNITY</div>
-
-            <h2>Stay connected with Nexora.</h2>
-
-            <p>
-                Follow official Nexora updates, announcements and
-                platform information on Telegram.
-            </p>
-
-            <a
-                href="https://t.me/investwithNexora"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="btn btn-gold"
-            >
-                Follow Nexora on Telegram
-            </a>
-
-        </div>
-
+<section class="no-top">
+  <div class="wrap">
+    <div class="tg-box">
+      <h2>Stay connected with AITIVEST.</h2>
+      <p>Follow official AITIVEST updates, announcements and platform information on Telegram.</p>
+      <a href="https://t.me/investwithNexora" target="_blank" rel="noopener noreferrer" class="btn btn-gold btn-lg">Follow AITIVEST on Telegram</a>
     </div>
-
+  </div>
 </section>
 
-
-<!-- FAQ -->
-
-<section class="faq">
-
-    <div class="container">
-
-        <div class="section-head">
-
-            <div class="small">FAQ</div>
-
-            <h2>Frequently asked questions.</h2>
-
-        </div>
-
-
-        <div class="faq-list">
-
-            <details>
-                <summary>What is Nexora?</summary>
-                <p>
-                    Nexora is a digital asset management platform
-                    designed to provide clients with an online
-                    environment for managing supported digital assets.
-                </p>
-            </details>
-
-            <details>
-                <summary>What is the minimum deposit?</summary>
-                <p>
-                    The planned minimum deposit is $1 USDT,
-                    subject to the applicable asset and network
-                    requirements.
-                </p>
-            </details>
-
-            <details>
-                <summary>Which digital assets are supported?</summary>
-                <p>
-                    Nexora is designed to support assets including
-                    BTC, ETH, USDT, BNB, SOL, XRP, TON, DOGE, ADA,
-                    TRX, LTC and AVAX, subject to availability.
-                </p>
-            </details>
-
-            <details>
-                <summary>Can I withdraw my assets?</summary>
-                <p>
-                    Available withdrawals will depend on supported
-                    assets, networks, account status, applicable
-                    checks and any disclosed network or processing fees.
-                </p>
-            </details>
-
-            <details>
-                <summary>Does Nexora guarantee investment returns?</summary>
-                <p>
-                    No investment outcome should be treated as
-                    guaranteed. Digital assets involve significant
-                    risks, including volatility and potential loss.
-                    Review the Risk Disclosure before using the platform.
-                </p>
-            </details>
-
-        </div>
-
+<section class="alt" id="faq">
+  <div class="wrap">
+    <div class="section-head"><h2>Frequently asked questions.</h2></div>
+    <div class="faq">
+      <details><summary>What is AITIVEST?</summary><p>AITIVEST is a digital asset management platform designed to provide clients with an online environment for managing supported digital assets.</p></details>
+      <details><summary>What is the minimum deposit?</summary><p>The planned minimum deposit is $1 USDT, subject to the applicable asset and network requirements.</p></details>
+      <details><summary>Which digital assets are supported?</summary><p>Supported market listings include BTC, ETH, USDT, BNB, SOL, XRP, TON, DOGE, ADA, TRX, LTC and AVAX, subject to availability.</p></details>
+      <details><summary>Can I withdraw my assets?</summary><p>Available withdrawals depend on supported assets, networks, account status, applicable checks and any disclosed network or processing fees.</p></details>
+      <details><summary>Does AITIVEST guarantee investment returns?</summary><p>No investment outcome should be treated as guaranteed. Digital assets involve significant risks, including volatility and potential loss. Review the Risk Disclosure before using the platform.</p></details>
     </div>
-
+  </div>
 </section>
-
-
-<!-- FOOTER -->
+</main>
 
 <footer>
-
-    <div class="container">
-
-        <div class="footer-top">
-
-            <div class="footer-brand">
-
-                <div class="logo">
-                    NEXORA<span>.</span>
-                </div>
-
-                <p>
-                    Digital Assets. Managed With Purpose.
-                </p>
-
-            </div>
-
-
-            <div class="footer-links">
-
-                <button onclick="openModal('terms')">
-                    Terms
-                </button>
-
-                <button onclick="openModal('privacy')">
-                    Privacy
-                </button>
-
-                <button onclick="openModal('risk')">
-                    Risk Disclosure
-                </button>
-
-            </div>
-
-        </div>
-
-
-        <div class="copyright">
-            © 2026 Nexora Digital Asset Management. All rights reserved.
-        </div>
-
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <a href="#top" class="logo">
+          <svg width="28" height="28" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M16 3L4 28h6l2.2-5h7.6l2.2 5h6L16 3z" fill="#F5B942"/><path d="M16 12l3.4 7.6h-6.8L16 12z" fill="#111729"/></svg>
+          AITIVEST
+        </a>
+        <p>Digital Assets. Managed With Purpose.</p>
+      </div>
+      <div class="foot-links">
+        <button type="button" onclick="openModal('terms')">Terms</button>
+        <button type="button" onclick="openModal('privacy')">Privacy</button>
+        <button type="button" onclick="openModal('risk')">Risk Disclosure</button>
+      </div>
     </div>
-
+    <div class="disclaimer">
+      <span>Digital assets are volatile. Invest responsibly.</span>
+      <span>&copy; <span id="year">2026</span> AITIVEST Digital Asset Management. All rights reserved.</span>
+    </div>
+  </div>
 </footer>
 
-
-<!-- TERMS MODAL -->
-
-<div class="modal" id="terms">
-
-    <div class="modal-box">
-
-        <button class="close" onclick="closeModal('terms')">×</button>
-
-        <h2>Terms of Use</h2>
-
-        <p>
-            These terms govern access to the Nexora platform and
-            its digital asset services.
-        </p>
-
-        <h3>Platform Use</h3>
-
-        <p>
-            Users must provide accurate information and maintain
-            the security of their account credentials.
-        </p>
-
-        <h3>Eligibility</h3>
-
-        <p>
-            Access to products and services may depend on your
-            jurisdiction, eligibility and applicable laws.
-        </p>
-
-        <h3>Digital Asset Risk</h3>
-
-        <p>
-            Digital assets are subject to market volatility and
-            other risks. Users should understand these risks before
-            using any digital asset service.
-        </p>
-
-    </div>
-
+<div class="modal" id="terms" role="dialog" aria-modal="true" aria-label="Terms of Use">
+  <div class="modal-box">
+    <button type="button" class="close" onclick="closeModal('terms')" aria-label="Close">&times;</button>
+    <h2>Terms of Use</h2>
+    <p>These terms govern access to the AITIVEST platform and its digital asset services.</p>
+    <h3>Platform Use</h3>
+    <p>Users must provide accurate information and maintain the security of their account credentials.</p>
+    <h3>Eligibility</h3>
+    <p>Access to products and services may depend on your jurisdiction, eligibility and applicable laws.</p>
+    <h3>Digital Asset Risk</h3>
+    <p>Digital assets are subject to market volatility and other risks. Users should understand these risks before using any digital asset service.</p>
+  </div>
 </div>
 
-
-<!-- PRIVACY MODAL -->
-
-<div class="modal" id="privacy">
-
-    <div class="modal-box">
-
-        <button class="close" onclick="closeModal('privacy')">×</button>
-
-        <h2>Privacy Policy</h2>
-
-        <p>
-            Nexora may collect information required to create,
-            secure and operate client accounts and provide platform
-            services.
-        </p>
-
-        <h3>Information</h3>
-
-        <p>
-            Information may include account details, identity
-            verification information, transaction information and
-            technical data.
-        </p>
-
-        <h3>Security</h3>
-
-        <p>
-            Reasonable technical and organizational measures are
-            used to protect information against unauthorized access.
-        </p>
-
-        <h3>Data Use</h3>
-
-        <p>
-            Information may be used for account administration,
-            security, compliance, support and service improvement.
-        </p>
-
-    </div>
-
+<div class="modal" id="privacy" role="dialog" aria-modal="true" aria-label="Privacy Policy">
+  <div class="modal-box">
+    <button type="button" class="close" onclick="closeModal('privacy')" aria-label="Close">&times;</button>
+    <h2>Privacy Policy</h2>
+    <p>AITIVEST may collect information required to create, secure and operate client accounts and provide platform services.</p>
+    <h3>Information</h3>
+    <p>Information may include account details, identity verification information, transaction information and technical data.</p>
+    <h3>Security</h3>
+    <p>Reasonable technical and organizational measures are used to protect information against unauthorized access.</p>
+    <h3>Data Use</h3>
+    <p>Information may be used for account administration, security, compliance, support and service improvement.</p>
+  </div>
 </div>
 
-
-<!-- RISK MODAL -->
-
-<div class="modal" id="risk">
-
-    <div class="modal-box">
-
-        <button class="close" onclick="closeModal('risk')">×</button>
-
-        <h2>Risk Disclosure</h2>
-
-        <p>
-            Digital asset activities involve substantial risks.
-            The value of digital assets can change significantly
-            and may result in partial or total loss.
-        </p>
-
-        <h3>Market Risk</h3>
-
-        <p>
-            Digital asset prices can be highly volatile and may
-            move rapidly without warning.
-        </p>
-
-        <h3>Technology Risk</h3>
-
-        <p>
-            Blockchain networks, wallets and digital platforms
-            may experience technical interruptions or failures.
-        </p>
-
-        <h3>No Guaranteed Outcome</h3>
-
-        <p>
-            Nothing on this website should be interpreted as a
-            guarantee of profit, capital protection or future
-            investment performance.
-        </p>
-
-    </div>
-
+<div class="modal" id="risk" role="dialog" aria-modal="true" aria-label="Risk Disclosure">
+  <div class="modal-box">
+    <button type="button" class="close" onclick="closeModal('risk')" aria-label="Close">&times;</button>
+    <h2>Risk Disclosure</h2>
+    <p>Digital asset activities involve substantial risks. The value of digital assets can change significantly and may result in partial or total loss.</p>
+    <h3>Market Risk</h3>
+    <p>Digital asset prices can be highly volatile and may move rapidly without warning.</p>
+    <h3>Technology Risk</h3>
+    <p>Blockchain networks, wallets and digital platforms may experience technical interruptions or failures.</p>
+    <h3>No Guaranteed Outcome</h3>
+    <p>Nothing on this website should be interpreted as a guarantee of profit, capital protection or future investment performance.</p>
+  </div>
 </div>
-
 
 <script>
+/* Mobile menu */
+const header = document.querySelector('header');
+const menuBtn = document.getElementById('menuBtn');
 
-function toggleMenu(){
-
-    const nav = document.getElementById("nav");
-
-    nav.classList.toggle("mobile-open");
-
-}
-
-
-function openModal(id){
-
-    const modal = document.getElementById(id);
-
-    if(!modal) return;
-
-    modal.classList.add("active");
-
-    document.body.style.overflow="hidden";
-
-}
-
-
-function closeModal(id){
-
-    const modal = document.getElementById(id);
-
-    if(!modal) return;
-
-    modal.classList.remove("active");
-
-    document.body.style.overflow="";
-
-}
-
-
-document.querySelectorAll(".modal").forEach(function(modal){
-
-    modal.addEventListener("click",function(e){
-
-        if(e.target === modal){
-
-            modal.classList.remove("active");
-
-            document.body.style.overflow="";
-
-        }
-
-    });
-
+menuBtn.addEventListener('click', () => {
+  const open = header.classList.toggle('open');
+  menuBtn.setAttribute('aria-expanded', String(open));
 });
 
-
-document.addEventListener("keydown",function(e){
-
-    if(e.key === "Escape"){
-
-        document.querySelectorAll(".modal").forEach(function(modal){
-
-            modal.classList.remove("active");
-
-        });
-
-        document.body.style.overflow="";
-
-    }
-
+document.querySelectorAll('.nav-links a').forEach(a => {
+  a.addEventListener('click', () => {
+    header.classList.remove('open');
+    menuBtn.setAttribute('aria-expanded', 'false');
+  });
 });
 
+/* Modals */
+function openModal(id) {
+  const modal = document.getElementById(id);
+  if (!modal) return;
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
 
-/*
-=========================================================
-NEXORA PAGE ROUTES
-=========================================================
+function closeModal(id) {
+  const modal = document.getElementById(id);
+  if (!modal) return;
+  modal.classList.remove('active');
+  document.body.style.overflow = '';
+}
 
-Sign In:
-signin.html
+document.querySelectorAll('.modal').forEach(modal => {
+  modal.addEventListener('click', event => {
+    if (event.target === modal) closeModal(modal.id);
+  });
+});
 
-Sign Up:
-signup.html
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape') {
+    document.querySelectorAll('.modal.active').forEach(modal => closeModal(modal.id));
+  }
+});
 
-The previous index.html was using:
-login.html
-register.html
-
-Those filenames have now been corrected.
-=========================================================
-*/
-
+document.getElementById('year').textContent = new Date().getFullYear();
 </script>
 
+<script>
+/* =========================================================
+   AITIVEST MARKET DATA
+   Source: Binance public market-data API.
+   The hero chart and interactive historical chart are kept.
+   ========================================================= */
+(function() {
+'use strict';
+
+const BN = 'https://data-api.binance.vision/api/v3';
+
+const COINS = [
+  {id:'bitcoin',sym:'BTC',name:'Bitcoin'},
+  {id:'ethereum',sym:'ETH',name:'Ethereum'},
+  {id:'tether',sym:'USDT',name:'Tether',type:'Stablecoin'},
+  {id:'binancecoin',sym:'BNB',name:'BNB'},
+  {id:'solana',sym:'SOL',name:'Solana'},
+  {id:'ripple',sym:'XRP',name:'XRP'},
+  {id:'the-open-network',sym:'TON',name:'Toncoin'},
+  {id:'dogecoin',sym:'DOGE',name:'Dogecoin'},
+  {id:'cardano',sym:'ADA',name:'Cardano'},
+  {id:'tron',sym:'TRX',name:'TRON'},
+  {id:'litecoin',sym:'LTC',name:'Litecoin'},
+  {id:'avalanche-2',sym:'AVAX',name:'Avalanche'}
+];
+
+const byId = {};
+COINS.forEach(coin => byId[coin.id] = coin);
+
+const HERO = ['bitcoin','ethereum','solana'];
+
+const BN_SYM = {
+  bitcoin:'BTCUSDT',
+  ethereum:'ETHUSDT',
+  tether:'USDCUSDT',
+  binancecoin:'BNBUSDT',
+  solana:'SOLUSDT',
+  ripple:'XRPUSDT',
+  'the-open-network':'TONUSDT',
+  dogecoin:'DOGEUSDT',
+  cardano:'ADAUSDT',
+  tron:'TRXUSDT',
+  litecoin:'LTCUSDT',
+  'avalanche-2':'AVAXUSDT'
+};
+
+/* USDT is approximated using the inverse USDC/USDT market price. */
+const BN_INV = {tether:true};
+
+const state = {
+  sel:'bitcoin',
+  days:7,
+  markets:{},
+  chart:null,
+  chartKey:'',
+  cache:{},
+  animate:true
+};
+
+const $ = selector => document.querySelector(selector);
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+let lastW = 0;
+
+function usd(value) {
+  if (value == null || !Number.isFinite(Number(value))) return '—';
+
+  const n = Number(value);
+  const abs = Math.abs(n);
+  const digits = abs >= 1 ? 2 : abs >= 0.01 ? 4 : 6;
+
+  return '$' + n.toLocaleString('en-US', {
+    minimumFractionDigits:digits,
+    maximumFractionDigits:digits
+  });
+}
+
+function compact(value) {
+  if (value == null || !Number.isFinite(Number(value))) return '—';
+
+  return '$' + Intl.NumberFormat('en-US', {
+    notation:'compact',
+    maximumFractionDigits:2
+  }).format(Number(value));
+}
+
+function pct(value) {
+  if (value == null || !Number.isFinite(Number(value))) return '—';
+
+  const n = Number(value);
+  return (n > 0 ? '+' : '') + n.toFixed(2) + '%';
+}
+
+function cls(value) {
+  if (value == null || !Number.isFinite(Number(value))) return '';
+  return Number(value) >= 0 ? 'up' : 'down';
+}
+
+function setErr(message) {
+  $('#err').textContent = message || '';
+
+  const dashboardError = $('#dashErr');
+  dashboardError.textContent = message
+    ? 'Market prices could not load right now.'
+    : '';
+
+  dashboardError.hidden = !message;
+}
+
+function errorMessage(error) {
+  try {
+    console.warn('AITIVEST market data:', error);
+  } catch (_) {}
+
+  if (error && String(error.message) === '429') {
+    return 'Market prices are busy right now. Retrying shortly.';
+  }
+
+  return 'Market prices are temporarily unavailable. Please try again shortly.';
+}
+
+/* Request helper with a timeout and XHR fallback. */
+function xhrJSON(url) {
+  return new Promise((resolve, reject) => {
+    const request = new XMLHttpRequest();
+
+    request.open('GET', url, true);
+
+    request.onload = () => {
+      if (request.status >= 200 && request.status < 300) {
+        try {
+          resolve(JSON.parse(request.responseText));
+        } catch (error) {
+          reject(error);
+        }
+      } else {
+        reject(new Error(String(request.status)));
+      }
+    };
+
+    request.onerror = () => reject(new TypeError('Network error'));
+    request.send();
+  });
+}
+
+async function getJSON(url, timeoutMs = 10000) {
+  let timer;
+
+  const request = (async () => {
+    try {
+      const response = await fetch(url);
+
+      if (!response.ok) {
+        throw new Error(String(response.status));
+      }
+
+      return await response.json();
+    } catch (error) {
+      if (error && String(error.message) === '429') throw error;
+      return xhrJSON(url);
+    }
+  })();
+
+  try {
+    return await Promise.race([
+      request,
+      new Promise((_, reject) => {
+        timer = setTimeout(() => reject(new Error('timeout')), timeoutMs);
+      })
+    ]);
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+/* Inline coin logos */
+const LOGOS = {
+  bitcoin:'<circle cx="16" cy="16" r="16" fill="#F7931A"/><g fill="none" stroke="#fff" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"><path d="M12.5 9.5h5.2a3 3 0 010 6h-5.2zM12.5 15.5h6a3.2 3.2 0 010 6.4h-6zM12.5 9.5v12.4M15 7.5v2M18 7.5v2M15 21.9v2M18 21.9v2"/></g>',
+  ethereum:'<circle cx="16" cy="16" r="16" fill="#627EEA"/><path fill="#fff" d="M16 5l-6 10.4 6 3.4 6-3.4z"/><path fill="#fff" fill-opacity=".8" d="M16 27l-6-8.4 6 3.4 6-3.4z"/>',
+  tether:'<circle cx="16" cy="16" r="16" fill="#26A17B"/><rect x="9" y="9" width="14" height="3.2" fill="#fff"/><rect x="14.4" y="12" width="3.2" height="13" fill="#fff"/><ellipse cx="16" cy="16.6" rx="7.4" ry="2.1" fill="none" stroke="#fff" stroke-width="1.6"/>',
+  binancecoin:'<circle cx="16" cy="16" r="16" fill="#F3BA2F"/><g fill="#fff"><path d="M16 6.5l3 3-3 3-3-3z"/><path d="M16 19.5l3 3-3 3-3-3z"/><path d="M9.5 13l3 3-3 3-3-3z"/><path d="M22.5 13l3 3-3 3-3-3z"/><path d="M16 13l3 3-3 3-3-3z"/></g>',
+  solana:'<circle cx="16" cy="16" r="16" fill="#0b0b12"/><path fill="#00FFA3" d="M10 9H24l-2.5 3H7.5z"/><path fill="#7B7FFF" d="M7.5 14.5H21.5L24 17.5H10z"/><path fill="#DC1FFF" d="M10 20H24l-2.5 3H7.5z"/>',
+  ripple:'<circle cx="16" cy="16" r="16" fill="#23292F"/><path d="M9.5 9.5l6.5 6.2 6.5-6.2M9.5 22.5l6.5-6.2 6.5 6.2" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>',
+  'the-open-network':'<circle cx="16" cy="16" r="16" fill="#0098EA"/><path d="M9.5 10h13L16 22.5z" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round"/><path d="M16 10v12.5" stroke="#fff" stroke-width="2"/>',
+  dogecoin:'<circle cx="16" cy="16" r="16" fill="#C2A633"/><path d="M12 9.5h4.2a6.5 6.5 0 010 13H12zM9.5 16H16" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>',
+  cardano:'<circle cx="16" cy="16" r="16" fill="#0033AD"/><g fill="#fff"><circle cx="16" cy="16" r="1.9"/><circle cx="23" cy="16" r="1.3"/><circle cx="19.5" cy="22.1" r="1.3"/><circle cx="12.5" cy="22.1" r="1.3"/><circle cx="9" cy="16" r="1.3"/><circle cx="12.5" cy="9.9" r="1.3"/><circle cx="19.5" cy="9.9" r="1.3"/></g>',
+  tron:'<circle cx="16" cy="16" r="16" fill="#EF0027"/><path d="M8.5 10l15 3-7.5 11.5zM8.5 10l8.2 6.3 7-3.3M16.7 16.3L16 24.5" fill="none" stroke="#fff" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>',
+  litecoin:'<circle cx="16" cy="16" r="16" fill="#345D9D"/><path d="M14 8.5l-2.8 11.2H22M9 17.2l8.5-3.2" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>',
+  'avalanche-2':'<circle cx="16" cy="16" r="16" fill="#E84142"/><path fill="#fff" d="M16 8.5l8.2 14.2h-4.8l-3.4-6-3.4 6H7.8z"/>'
+};
+
+function logo(id) {
+  return '<svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">' +
+    (LOGOS[id] || '') + '</svg>';
+}
+
+function paintBadge(element, coin) {
+  element.innerHTML = logo(coin.id);
+}
+
+/* Small list sparklines */
+function spark(prices) {
+  if (!prices || prices.length < 2) return '';
+
+  const step = Math.ceil(prices.length / 40);
+  const points = prices.filter((_, index) => index % step === 0);
+
+  if (points.length < 2) return '';
+
+  const min = Math.min(...points);
+  const max = Math.max(...points);
+  const span = max - min || 1;
+
+  const coordinates = points.map((value, index) =>
+    (index / (points.length - 1) * 64).toFixed(1) + ',' +
+    (22 - (value - min) / span * 20).toFixed(1)
+  ).join(' ');
+
+  const rising = points[points.length - 1] >= points[0];
+
+  return '<svg viewBox="0 0 64 24" width="64" height="24" aria-hidden="true">' +
+    '<polyline points="' + coordinates +
+    '" fill="none" stroke="' + (rising ? 'var(--up)' : 'var(--down')) +
+    '" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/></svg>';
+}
+
+/* Market list */
+function buildList() {
+  $('#coinList').innerHTML = COINS.map(coin =>
+    '<button type="button" class="row" data-id="' + coin.id +
+    '" aria-pressed="' + (coin.id === state.sel) + '">' +
+      '<span class="coin">' + logo(coin.id) + '</span>' +
+      '<span class="r-name"><b>' + coin.name + '</b><small>' +
+      coin.sym + '</small></span>' +
+      '<span class="r-spark"></span>' +
+      '<span class="r-price"><b>—</b><small>—</small></span>' +
+    '</button>'
+  ).join('');
+}
+
+function updateList() {
+  COINS.forEach(coin => {
+    const market = state.markets[coin.id];
+    const row = document.querySelector('.row[data-id="' + coin.id + '"]');
+
+    if (!market || !row) return;
+
+    row.querySelector('.r-spark').innerHTML =
+      spark(market.sparkline_in_7d && market.sparkline_in_7d.price);
+
+    row.querySelector('.r-price b').textContent = usd(market.current_price);
+
+    const change = row.querySelector('.r-price small');
+    change.textContent = pct(market.price_change_percentage_24h);
+    change.className = cls(market.price_change_percentage_24h);
+  });
+}
+
+function syncRows() {
+  document.querySelectorAll('.row').forEach(row => {
+    row.setAttribute('aria-pressed', String(row.dataset.id === state.sel));
+  });
+}
+
+/* Main market panel */
+function renderCoin() {
+  const coin = byId[state.sel];
+
+  $('#mName').textContent = coin.name;
+  $('#mSym').textContent = coin.sym + ' · ' + (coin.type || 'Digital asset');
+  paintBadge($('#mCoin'), coin);
+}
+
+function renderPrice() {
+  const market = state.markets[state.sel];
+
+  $('#mPrice').textContent = market ? usd(market.current_price) : '—';
+
+  const change = $('#mChg');
+  change.textContent = market
+    ? pct(market.price_change_percentage_24h) + ' (24h)'
+    : '—';
+  change.className = 'chg ' +
+    (market ? cls(market.price_change_percentage_24h) : '');
+
+  $('#sCap').textContent = market ? compact(market.market_cap) : '—';
+  $('#sVol').textContent = market ? compact(market.total_volume) : '—';
+  $('#sHigh').textContent = market ? usd(market.high_24h) : '—';
+  $('#sLow').textContent = market ? usd(market.low_24h) : '—';
+}
+
+function select(id) {
+  if (!byId[id] || id === state.sel) return;
+
+  state.sel = id;
+  state.animate = true;
+
+  syncRows();
+  renderCoin();
+  renderPrice();
+  loadChart();
+}
+
+/* Hero chart */
+let heroSel = 'bitcoin';
+let heroStopped = false;
+let heroHover = false;
+
+function restartAnim(element) {
+  element.style.animation = 'none';
+  void element.getBoundingClientRect();
+  element.style.animation = '';
+}
+
+function renderHero() {
+  const coin = byId[heroSel];
+  const market = state.markets[heroSel];
+
+  $('#hLabel').textContent = coin.name + ' · ' + coin.sym + ' · 7 days';
+
+  document.querySelectorAll('.mini').forEach(button => {
+    button.setAttribute('aria-pressed', String(button.dataset.id === heroSel));
+  });
+
+  HERO.forEach(id => {
+    const item = state.markets[id];
+    const element = document.querySelector('.mini[data-id="' + id + '"] span');
+
+    if (!element || !item) return;
+
+    element.textContent = pct(item.price_change_percentage_24h);
+    element.className = cls(item.price_change_percentage_24h);
+  });
+
+  const raw = market && market.sparkline_in_7d &&
+    market.sparkline_in_7d.price;
+
+  if (!market || !raw || raw.length < 2) {
+    $('#hPrice').textContent = market ? usd(market.current_price) : '—';
+    $('#hChg').textContent = '—';
+    return;
+  }
+
+  $('#hPrice').textContent = usd(market.current_price);
+
+  const step = Math.ceil(raw.length / 84);
+  const points = raw.filter((_, index) => index % step === 0);
+  points.push(raw[raw.length - 1]);
+
+  const min = Math.min(...points);
+  const max = Math.max(...points);
+  const span = max - min || 1;
+
+  const X = index => index / (points.length - 1) * 600;
+  const Y = value => 230 - (value - min) / span * 180;
+
+  const line = points.map((value, index) =>
+    (index ? 'L' : 'M') + X(index).toFixed(1) + ' ' +
+    Y(value).toFixed(1)
+  ).join('');
+
+  $('#hLine').setAttribute('d', line);
+  $('#hArea').setAttribute('d', line + 'L600 260L0 260Z');
+
+  const peakIndex = points.indexOf(max);
+
+  ['#hPeak1', '#hPeak2'].forEach(selector => {
+    $(selector).setAttribute('cx', Math.min(Math.max(X(peakIndex), 12), 588).toFixed(1));
+    $(selector).setAttribute('cy', Y(max).toFixed(1));
+  });
+
+  const change = (points[points.length - 1] / points[0] - 1) * 100;
+  const chip = $('#hChg');
+
+  chip.textContent = pct(change) + ' (7d)';
+  chip.className = 'chip' + (change < 0 ? ' down' : '');
+
+  ['#hLine', '#hArea', '#hPeak'].forEach(selector => {
+    restartAnim($(selector));
+  });
+}
+
+/* Binance market prices */
+async function marketsBinance() {
+  const symbols = COINS.map(coin => BN_SYM[coin.id]);
+
+  const response = await getJSON(
+    BN + '/ticker/24hr?symbols=' + encodeURIComponent(JSON.stringify(symbols)),
+    12000
+  );
+
+  if (!Array.isArray(response) || !response.length) {
+    throw new Error('Market data unavailable');
+  }
+
+  const bySymbol = {};
+  response.forEach(item => bySymbol[item.symbol] = item);
+
+  const output = await Promise.all(COINS.map(async coin => {
+    const item = bySymbol[BN_SYM[coin.id]];
+    if (!item) return null;
+
+    const inverse = !!BN_INV[coin.id];
+
+    let price = Number(item.lastPrice);
+    let open = Number(item.openPrice);
+    let high = Number(item.highPrice);
+    let low = Number(item.lowPrice);
+    let volume = Number(item.quoteVolume);
+
+    if (inverse) {
+      if (price > 0 && open > 0 && high > 0 && low > 0) {
+        const oldHigh = high;
+        high = 1 / low;
+        low = 1 / oldHigh;
+        price = 1 / price;
+        open = 1 / open;
+      } else {
+        price = NaN;
+        open = NaN;
+        high = NaN;
+        low = NaN;
+      }
+
+      volume = null;
+    }
+
+    let sparkline = [];
+
+    try {
+      const candles = await getJSON(
+        BN + '/klines?symbol=' + BN_SYM[coin.id] +
+        '&interval=1h&limit=168',
+        12000
+      );
+
+      sparkline = candles.map(candle => {
+        const close = Number(candle[4]);
+        return inverse && close > 0 ? 1 / close : close;
+      }).filter(Number.isFinite);
+    } catch (error) {
+      console.warn('Could not load sparkline for ' + coin.sym, error);
+    }
+
+    return {
+      id:coin.id,
+      current_price:price,
+      price_change_percentage_24h:
+        Number.isFinite(price) && Number.isFinite(open) && open !== 0
+          ? (price / open - 1) * 100
+          : NaN,
+      market_cap:null,
+      total_volume:volume,
+      high_24h:high,
+      low_24h:low,
+      sparkline_in_7d:{price:sparkline}
+    };
+  }));
+
+  const valid = output.filter(Boolean);
+
+  if (!valid.length) throw new Error('No market prices returned');
+
+  return valid;
+}
+
+async function fetchMarkets() {
+  try {
+    const markets = await marketsBinance();
+
+    markets.forEach(market => {
+      state.markets[market.id] = market;
+    });
+
+    updateList();
+    renderPrice();
+    renderHero();
+    renderCoin();
+
+    $('#upd').textContent = 'Last updated ' +
+      new Date().toLocaleTimeString();
+
+    setErr('');
+  } catch (error) {
+    setErr(errorMessage(error));
+  }
+}
+
+/* Historical chart data */
+function downsample(points, max = 240) {
+  if (!points || points.length < 2) return [];
+
+  const step = Math.ceil(points.length / max);
+  const output = points.filter((_, index) => index % step === 0);
+  const last = points[points.length - 1];
+
+  if (output[output.length - 1] !== last) output.push(last);
+
+  return output;
+}
+
+async function chartBinance(id, days) {
+  const config = {
+    1:['5m',288],
+    7:['1h',168],
+    30:['4h',180],
+    365:['1d',365]
+  }[days];
+
+  if (!config || !BN_SYM[id]) {
+    throw new Error('Unsupported chart range');
+  }
+
+  const candles = await getJSON(
+    BN + '/klines?symbol=' + BN_SYM[id] +
+    '&interval=' + config[0] + '&limit=' + config[1],
+    15000
+  );
+
+  const points = candles.map(candle => {
+    let value = Number(candle[4]);
+
+    if (BN_INV[id] && value > 0) value = 1 / value;
+
+    return [Number(candle[0]), value];
+  }).filter(point =>
+    Number.isFinite(point[0]) && Number.isFinite(point[1])
+  );
+
+  return downsample(points);
+}
+
+async function chartData(id, days) {
+  const points = await chartBinance(id, days);
+
+  if (!points || points.length < 2) {
+    throw new Error('Chart history unavailable');
+  }
+
+  return points;
+}
+
+async function loadChart() {
+  const id = state.sel;
+  const days = state.days;
+  const key = id + ':' + days;
+
+  state.chartKey = key;
+
+  const cached = state.cache[key];
+
+  if (cached) {
+    state.chart = cached.data;
+    drawChart();
+
+    if (Date.now() - cached.time < 300000) return;
+  } else {
+    state.chart = null;
+    $('#chart').innerHTML =
+      '<div class="chart-msg">Loading chart…</div>';
+    $('#rChg').textContent = '';
+  }
+
+  try {
+    const points = await chartData(id, days);
+
+    state.cache[key] = {
+      time:Date.now(),
+      data:points
+    };
+
+    if (state.chartKey !== key) return;
+
+    state.chart = points;
+    drawChart();
+    setErr('');
+  } catch (error) {
+    if (state.chartKey !== key) return;
+
+    if (!state.chart) {
+      $('#chart').innerHTML =
+        '<div class="chart-msg">Chart unavailable right now. Please try again shortly.</div>';
+    }
+
+    setErr(errorMessage(error));
+  }
+}
+
+/* Interactive historical chart */
+function drawChart() {
+  const box = $('#chart');
+  const points = state.chart;
+
+  if (!points || points.length < 2) return;
+
+  lastW = box.clientWidth;
+
+  const width = Math.max(lastW, 260);
+  const height = width < 520 ? 230 : 300;
+  const pad = {
+    l:6,
+    r:width < 520 ? 58 : 70,
+    t:12,
+    b:26
+  };
+
+  const startTime = points[0][0];
+  const endTime = points[points.length - 1][0];
+
+  let low = Infinity;
+  let high = -Infinity;
+
+  points.forEach(point => {
+    if (point[1] < low) low = point[1];
+    if (point[1] > high) high = point[1];
+  });
+
+  const spread = (high - low) || Math.abs(high) * 0.01 || 1;
+
+  low -= spread * 0.1;
+  high += spread * 0.1;
+
+  const X = time =>
+    pad.l + (time - startTime) / (endTime - startTime) *
+    (width - pad.l - pad.r);
+
+  const Y = value =>
+    pad.t + (1 - (value - low) / (high - low)) *
+    (height - pad.t - pad.b);
+
+  const range = high - low;
+  const decimals = range >= 100 ? 0 :
+    range >= 1 ? 2 :
+    range >= 0.01 ? 4 : 6;
+
+  const axis = value => '$' + value.toLocaleString('en-US', {
+    minimumFractionDigits:decimals,
+    maximumFractionDigits:decimals
+  });
+
+  let grid = '';
+
+  for (let i = 0; i < 4; i++) {
+    const value = low + range * i / 3;
+    const y = Y(value);
+
+    grid += '<line x1="' + pad.l + '" x2="' + (width - pad.r) +
+      '" y1="' + y.toFixed(1) + '" y2="' + y.toFixed(1) +
+      '" stroke="#243049" stroke-dasharray="3 6"/>' +
+      '<text x="' + (width - pad.r + 8) + '" y="' +
+      (y + 4).toFixed(1) +
+      '" fill="#98a2bd" font-size="11">' + axis(value) + '</text>';
+  }
+
+  const dateFormat = state.days === 1
+    ? {hour:'2-digit',minute:'2-digit'}
+    : state.days === 365
+      ? {month:'short',year:'2-digit'}
+      : {month:'short',day:'numeric'};
+
+  let xLabels = '';
+
+  [0,1/3,2/3,1].forEach((fraction,index) => {
+    const time = startTime + (endTime - startTime) * fraction;
+    const anchor = index === 0 ? 'start' : index === 3 ? 'end' : 'middle';
+
+    xLabels += '<text x="' + X(time).toFixed(1) +
+      '" y="' + (height - 6) +
+      '" text-anchor="' + anchor +
+      '" fill="#98a2bd" font-size="11">' +
+      new Date(time).toLocaleString('en-US',dateFormat) +
+      '</text>';
+  });
+
+  const line = points.map((point,index) =>
+    (index ? 'L' : 'M') +
+    X(point[0]).toFixed(1) + ' ' +
+    Y(point[1]).toFixed(1)
+  ).join('');
+
+  const area = line +
+    'L' + X(endTime).toFixed(1) + ' ' + (height - pad.b) +
+    'L' + X(startTime).toFixed(1) + ' ' + (height - pad.b) + 'Z';
+
+  const animationClass = state.animate && !reduceMotion ? ' anim' : '';
+  state.animate = false;
+
+  box.innerHTML =
+    '<svg width="' + width + '" height="' + height +
+    '" viewBox="0 0 ' + width + ' ' + height +
+    '" role="img" aria-label="' + byId[state.sel].name + ' historical price chart">' +
+    '<defs><linearGradient id="cg" x1="0" y1="0" x2="0" y2="1">' +
+    '<stop offset="0" stop-color="#F5B942" stop-opacity=".32"/>' +
+    '<stop offset="1" stop-color="#F5B942" stop-opacity="0"/>' +
+    '</linearGradient></defs>' +
+    grid + xLabels +
+    '<path d="' + area + '" fill="url(#cg)"/>' +
+    '<path class="cline' + animationClass +
+    '" pathLength="1" d="' + line +
+    '" fill="none" stroke="#F5B942" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>' +
+    '<line id="xh" y1="' + pad.t + '" y2="' + (height - pad.b) +
+    '" stroke="rgba(0,224,198,.55)" stroke-dasharray="3 4" style="display:none"/>' +
+    '<circle id="xd" r="4.5" fill="#00E0C6" stroke="#0B0F1A" stroke-width="2" style="display:none"/>' +
+    '</svg>';
+
+  const rangeLabel = {1:'24h',7:'7d',30:'30d',365:'1y'}[state.days];
+  const change = (points[points.length - 1][1] / points[0][1] - 1) * 100;
+
+  $('#rChg').innerHTML =
+    rangeLabel + ' change: <span class="chg ' + cls(change) +
+    '">' + pct(change) + '</span>';
+
+  const svg = box.querySelector('svg');
+  const crosshair = svg.querySelector('#xh');
+  const dot = svg.querySelector('#xd');
+  const tip = $('#tip');
+
+  const tooltipDateFormat = state.days <= 7
+    ? {month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}
+    : {month:'short',day:'numeric',year:'numeric'};
+
+  function move(event) {
+    const rect = svg.getBoundingClientRect();
+    const px = event.clientX - rect.left;
+
+    let bestIndex = 0;
+    let bestDistance = Infinity;
+
+    for (let index = 0; index < points.length; index++) {
+      const distance = Math.abs(X(points[index][0]) - px);
+
+      if (distance < bestDistance) {
+        bestDistance = distance;
+        bestIndex = index;
+      }
+    }
+
+    const point = points[bestIndex];
+    const cx = X(point[0]);
+    const cy = Y(point[1]);
+
+    crosshair.setAttribute('x1',cx);
+    crosshair.setAttribute('x2',cx);
+    crosshair.style.display = '';
+
+    dot.setAttribute('cx',cx);
+    dot.setAttribute('cy',cy);
+    dot.style.display = '';
+
+    tip.innerHTML =
+      '<b>' + usd(point[1]) + '</b><span>' +
+      new Date(point[0]).toLocaleString('en-US',tooltipDateFormat) +
+      '</span>';
+
+    tip.hidden = false;
+
+    const tipWidth = tip.offsetWidth;
+    const tipHeight = tip.offsetHeight;
+
+    tip.style.left =
+      Math.min(Math.max(cx,tipWidth / 2),width - tipWidth / 2) + 'px';
+
+    tip.style.top = Math.max(cy - 12,tipHeight) + 'px';
+  }
+
+  function leave() {
+    crosshair.style.display = 'none';
+    dot.style.display = 'none';
+    tip.hidden = true;
+  }
+
+  svg.addEventListener('pointermove',move);
+  svg.addEventListener('pointerdown',move);
+  svg.addEventListener('pointerleave',leave);
+  svg.addEventListener('pointercancel',leave);
+}
+
+/* Initialize existing page features */
+buildList();
+renderCoin();
+renderPrice();
+renderHero();
+
+$('#coinList').addEventListener('click',event => {
+  const button = event.target.closest('.row');
+  if (button) select(button.dataset.id);
+});
+
+document.querySelectorAll('.range-btns button').forEach(button => {
+  button.addEventListener('click',() => {
+    state.days = Number(button.dataset.days);
+    state.animate = true;
+
+    document.querySelectorAll('.range-btns button').forEach(item => {
+      item.setAttribute('aria-pressed',String(item === button));
+    });
+
+    loadChart();
+  });
+});
+
+/* Hero asset selection */
+document.querySelectorAll('.mini').forEach(button => {
+  button.insertAdjacentHTML(
+    'afterbegin',
+    '<span class="coin coin-sm">' + logo(button.dataset.id) + '</span>'
+  );
+
+  button.addEventListener('click',() => {
+    heroStopped = true;
+    heroSel = button.dataset.id;
+    renderHero();
+  });
+});
+
+const dashboard = $('#heroDash');
+
+dashboard.addEventListener('pointerenter',() => heroHover = true);
+dashboard.addEventListener('pointerleave',() => heroHover = false);
+dashboard.addEventListener('focusin',() => heroHover = true);
+dashboard.addEventListener('focusout',() => heroHover = false);
+
+if (!reduceMotion) {
+  setInterval(() => {
+    if (heroStopped || heroHover || document.hidden ||
+        !Object.keys(state.markets).length) return;
+
+    heroSel = HERO[(HERO.indexOf(heroSel) + 1) % HERO.length];
+    renderHero();
+  },7000);
+}
+
+/* Keep the historical chart responsive */
+if ('ResizeObserver' in window) {
+  new ResizeObserver(() => {
+    const width = $('#chart').clientWidth;
+
+    if (state.chart && width && width !== lastW) {
+      drawChart();
+    }
+  }).observe($('#chart'));
+} else {
+  window.addEventListener('resize',() => {
+    if (state.chart) drawChart();
+  });
+}
+
+/* Initial data and automatic refresh */
+fetchMarkets();
+loadChart();
+
+setInterval(() => {
+  if (document.hidden) return;
+
+  fetchMarkets();
+  loadChart();
+},60000);
+
+})();
+</script>
 </body>
 </html>
