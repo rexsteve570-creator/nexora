@@ -313,6 +313,105 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
   background:var(--green);
 }
 
+/* TWO-FACTOR SECURITY CARD */
+
+.security-card{
+  margin-top:18px;
+  padding:17px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  border:1px solid rgba(239,107,115,.38);
+  border-radius:17px;
+  background:rgba(239,107,115,.07);
+  transition:background .2s,border-color .2s;
+}
+
+.security-card.warning{
+  border-color:rgba(239,107,115,.4);
+  background:rgba(239,107,115,.07);
+}
+
+.security-card.enabled{
+  border-color:rgba(50,196,141,.4);
+  background:rgba(50,196,141,.07);
+}
+
+.security-card.checking{
+  border-color:rgba(217,164,65,.35);
+  background:rgba(217,164,65,.05);
+}
+
+.security-copy{
+  min-width:0;
+  flex:1;
+}
+
+.security-heading{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  font-size:14px;
+  font-weight:800;
+  line-height:1.5;
+}
+
+.security-indicator{
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  flex:none;
+  background:var(--red);
+  box-shadow:0 0 10px rgba(239,107,115,.35);
+}
+
+.security-card.enabled .security-indicator{
+  background:var(--green);
+  box-shadow:0 0 10px rgba(50,196,141,.35);
+}
+
+.security-card.checking .security-indicator{
+  background:var(--gold);
+  box-shadow:none;
+}
+
+.security-message{
+  margin-top:6px;
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.7;
+}
+
+.security-action{
+  flex:none;
+  border:1px solid rgba(239,107,115,.4);
+  border-radius:10px;
+  padding:10px 12px;
+  color:#fff;
+  background:rgba(239,107,115,.14);
+  font-size:11px;
+  font-weight:800;
+}
+
+.security-card.enabled .security-action{
+  border-color:rgba(50,196,141,.4);
+  background:rgba(50,196,141,.12);
+}
+
+.security-card.checking .security-action{
+  border-color:rgba(217,164,65,.35);
+  background:rgba(217,164,65,.1);
+}
+
+.security-action:hover{filter:brightness(1.15)}
+
+@media(max-width:400px){
+  .security-card{padding:14px;gap:9px}
+  .security-action{padding:9px;font-size:10px}
+  .security-heading{font-size:12px}
+}
+
 /* SECTION HEADINGS */
 
 .section{margin-top:25px}
@@ -775,6 +874,7 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
     <button class="drawer-link" onclick="go('transactions.html')"><span class="drawer-icon">≡</span>Transactions</button>
     <button class="drawer-link" onclick="go('referrals.html')"><span class="drawer-icon">♧</span>Referrals</button>
     <button class="drawer-link" onclick="go('profile.html')"><span class="drawer-icon">○</span>Profile</button>
+    <button class="drawer-link" onclick="go('security.html')"><span class="drawer-icon">♙</span>Security Settings</button>
     <button class="drawer-link" onclick="go('support.html')"><span class="drawer-icon">?</span>Support</button>
     <button class="drawer-link" onclick="go('notifications.html')"><span class="drawer-icon">♢</span>Notifications</button>
     <button class="drawer-link logout" id="logoutBtn"><span class="drawer-icon">↪</span>Logout</button>
@@ -802,6 +902,28 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
         <span>Loading...</span>
       </div>
     </div>
+  </section>
+
+  <!-- TWO-FACTOR AUTHENTICATION STATUS -->
+
+  <section class="security-card checking" id="securityCard" aria-live="polite">
+    <div class="security-copy">
+      <div class="security-heading">
+        <span class="security-indicator" aria-hidden="true"></span>
+        <span id="securityTitle">Checking account security...</span>
+      </div>
+      <div class="security-message" id="securityMessage">
+        Verifying your two-factor authentication status.
+      </div>
+    </div>
+
+    <button
+      type="button"
+      class="security-action"
+      id="securityAction"
+      onclick="go('security.html')">
+      Checking...
+    </button>
   </section>
 
   <!-- CRYPTO BALANCE DROPDOWN -->
@@ -1221,6 +1343,68 @@ async function checkAuth(){
   }
 
   return true;
+}
+
+/* TWO-FACTOR AUTHENTICATION STATUS */
+
+async function loadMfaStatus(){
+  const card = $("securityCard");
+
+  if(!card || !currentUser) return;
+
+  card.classList.remove("warning","enabled");
+  card.classList.add("checking");
+
+  setText("securityTitle","Checking account security...");
+  setText("securityMessage","Verifying your two-factor authentication status.");
+  setText("securityAction","Checking...");
+
+  try{
+    const {data,error} = await db.auth.mfa.listFactors();
+
+    if(error) throw error;
+
+    /*
+      Only a VERIFIED TOTP factor counts as enabled.
+      An enrolled but unverified authenticator is not enough.
+    */
+
+    const verifiedTotp = (data?.totp || []).some(factor=>
+      String(factor.status || "").toLowerCase() === "verified"
+    );
+
+    card.classList.remove("checking");
+    card.classList.toggle("enabled",verifiedTotp);
+    card.classList.toggle("warning",!verifiedTotp);
+
+    if(verifiedTotp){
+      setText("securityTitle","Two-factor authentication enabled");
+      setText(
+        "securityMessage",
+        "Your authenticator app is verified. Keep your recovery information safe."
+      );
+      setText("securityAction","Manage Security");
+    }else{
+      setText("securityTitle","Protect your account");
+      setText(
+        "securityMessage",
+        "Two-factor authentication is not enabled. Set it up to add another layer of protection."
+      );
+      setText("securityAction","Enable 2FA");
+    }
+  }catch(error){
+    console.error("MFA status check failed:",error);
+
+    card.classList.remove("checking","enabled");
+    card.classList.add("warning");
+
+    setText("securityTitle","Security status unavailable");
+    setText(
+      "securityMessage",
+      "We could not verify your 2FA status. Open Security Settings to check it."
+    );
+    setText("securityAction","Check Security");
+  }
 }
 
 /* CRYPTO MENU */
@@ -1745,7 +1929,8 @@ async function refreshDashboardData(){
       loadActiveDeposits(),
       loadPartnerStatistics(),
       loadPaymentStatistics(),
-      loadEarningsStatistics()
+      loadEarningsStatistics(),
+      loadMfaStatus()
     ]);
   }catch(error){
     console.error("Dashboard refresh error:",error);
