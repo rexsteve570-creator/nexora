@@ -1,0 +1,611 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Transactions | AITIVEST Admin</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root {
+  --bg:#081225;--sidebar:#0b162d;--card:#101d38;--border:#233352;
+  --gold:#d4a64a;--gold-light:#ebd29a;--text:#eaf0fa;--muted:#94a3bd;
+  --green:#53d6a0;--red:#ff777f;--blue:#5b8def;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif}
+button,input,select{font:inherit}
+a{color:inherit;text-decoration:none}
+.sidebar{width:245px;position:fixed;inset:0 auto 0 0;background:var(--sidebar);border-right:1px solid var(--border);padding:25px 16px;overflow-y:auto;z-index:20}
+.brand{font-size:24px;font-weight:800;letter-spacing:2px;color:var(--gold-light);padding:8px 12px 5px}
+.brand-sub{font-size:10px;color:var(--muted);letter-spacing:2px;padding:0 13px 28px}
+.nav-label{font-size:10px;color:var(--muted);letter-spacing:1.5px;padding:14px 12px 9px}
+.nav a{display:block;padding:12px;border-radius:9px;color:var(--muted);font-size:13px;margin-bottom:4px}
+.nav a:hover,.nav a.active{background:#192947;color:var(--gold-light)}
+.nav a.active{border:1px solid #6d552d}
+.sidebar-note{font-size:11px;color:var(--muted);line-height:1.6;padding:22px 12px}
+.main{margin-left:245px;padding:25px 30px 50px;max-width:1600px}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:30px}
+.menu-btn{display:none;background:var(--card);border:1px solid var(--border);color:var(--text);padding:10px 12px;border-radius:8px}
+.top-right{display:flex;align-items:center;gap:12px;margin-left:auto}
+.admin-info{text-align:right}
+.admin-label{font-size:10px;color:var(--muted);margin-bottom:4px}
+.admin-email{font-size:12px;overflow-wrap:anywhere}
+.avatar{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:#3b3020;color:var(--gold-light);font-weight:bold}
+h1{font-size:27px;margin:0 0 8px}
+.subtitle{font-size:13px;color:var(--muted);line-height:1.6;margin:0 0 25px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:20px}
+.card-title{font-size:15px;font-weight:700;margin-bottom:7px}
+.card-description{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:18px}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:20px}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:18px}
+.stat-label{font-size:11px;color:var(--muted);margin-bottom:12px}
+.stat-value{font-size:23px;font-weight:700;color:var(--gold-light);overflow-wrap:anywhere}
+.stat-note{font-size:10px;color:var(--muted);margin-top:8px}
+.notice{padding:12px 14px;border-radius:9px;background:#132440;color:var(--muted);font-size:12px;line-height:1.6;margin-bottom:18px;overflow-wrap:anywhere}
+.notice.error{background:#351c29;color:#ffb4bc}
+.notice.success{background:#123528;color:#a4f0ce}
+.notice.warning{background:#3b3020;color:var(--gold-light)}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap}
+.search-wrap{flex:1;min-width:190px}
+.search,.filter{width:100%;padding:12px 14px;background:#081225;border:1px solid var(--border);border-radius:9px;color:var(--text);outline:none}
+.search:focus,.filter:focus{border-color:var(--gold)}
+.filter-wrap{width:175px}
+.btn{padding:12px 15px;border-radius:9px;border:1px solid var(--border);background:#182743;color:var(--text);cursor:pointer;font-size:12px;font-weight:700}
+.btn-primary{background:var(--gold);border-color:var(--gold);color:#17130a}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.statusline{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:17px 0 0;color:var(--muted);font-size:12px}
+.table-wrap{width:100%;overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:1100px}
+th{text-align:left;color:var(--muted);font-size:10px;letter-spacing:.7px;text-transform:uppercase;padding:13px 12px;border-bottom:1px solid var(--border)}
+td{padding:15px 12px;border-bottom:1px solid #1c2a44;font-size:12px;vertical-align:top}
+tr:last-child td{border-bottom:0}
+.user-name{font-weight:700;margin-bottom:5px}
+.small{font-size:10px;color:var(--muted);line-height:1.6;overflow-wrap:anywhere}
+.amount{font-weight:700;color:var(--gold-light);white-space:nowrap}
+.badge{display:inline-block;border-radius:20px;padding:5px 8px;font-size:10px;background:#26334b;color:#c4d0e4;white-space:nowrap}
+.badge.good{background:#123b30;color:#8ce6bc}
+.badge.bad{background:#43222b;color:#ffb4bc}
+.badge.gold{background:#3b3020;color:var(--gold-light)}
+.empty{text-align:center;padding:30px;color:var(--muted)}
+.pagination{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:18px}
+.page-info{font-size:12px;color:var(--muted)}
+.ref{max-width:220px;overflow-wrap:anywhere}
+.actions{display:flex;gap:7px;flex-wrap:wrap}
+.overlay{display:none}
+.modal{display:none;position:fixed;inset:0;background:#000b;z-index:50;align-items:center;justify-content:center;padding:16px}
+.modal.open{display:flex}
+.modal-box{width:min(620px,100%);max-height:85vh;overflow:auto;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px}
+.modal-head{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:18px}
+.modal-head h2{font-size:19px;margin:0}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.detail{background:#081225;border:1px solid var(--border);border-radius:9px;padding:12px;min-width:0}
+.detail-label{font-size:10px;color:var(--muted);margin-bottom:7px}
+.detail-value{font-size:12px;overflow-wrap:anywhere;white-space:pre-wrap}
+.footer-note{font-size:11px;color:var(--muted);line-height:1.7;margin-top:18px}
+@media(max-width:1100px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:850px){
+ .sidebar{transform:translateX(-100%);transition:transform .2s}
+ .sidebar.open{transform:translateX(0)}
+ .overlay.show{display:block;position:fixed;inset:0;background:#0009;z-index:15}
+ .main{margin-left:0;padding:18px 14px 40px}
+ .menu-btn{display:block}
+ .topbar{margin-bottom:25px}
+ h1{font-size:24px}
+ .card{padding:15px}
+}
+@media(max-width:440px){
+ .admin-email{max-width:130px;font-size:10px}
+ .avatar{width:34px;height:34px}
+ .filter-wrap{width:100%}
+ .toolbar .btn{flex:1}
+ .stats{gap:9px}
+ .stat{padding:13px}
+ .stat-value{font-size:20px}
+ .detail-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="overlay" id="overlay" onclick="toggleMenu(false)"></div>
+<aside class="sidebar" id="sidebar">
+  <div class="brand">AITIVEST</div>
+  <div class="brand-sub">ADMINISTRATION</div>
+  <nav class="nav">
+    <div class="nav-label">OVERVIEW</div>
+    <a href="admin.html">Dashboard</a>
+    <div class="nav-label">MANAGEMENT</div>
+    <a href="admin-users.html">Users Management</a>
+    <a href="admin-deposits.html">Deposit Requests</a>
+    <a href="admin-withdrawals.html">Withdrawal Requests</a>
+    <a class="active" href="admin-transactions.html">Transactions</a>
+    <a href="admin-support.html">Support Tickets</a>
+    <div class="nav-label">SECURITY</div>
+    <a href="admin-security.html">Security Logs</a>
+    <a href="admin-settings.html">Admin Settings</a>
+  </nav>
+  <div class="sidebar-note">Restricted administration area. Transaction history is read-only.</div>
+</aside><main class="main">
+  <header class="topbar">
+    <button class="menu-btn" onclick="toggleMenu(true)">☰ Menu</button>
+    <div class="top-right">
+      <div class="admin-info">
+        <div class="admin-label">SIGNED IN AS</div>
+        <div class="admin-email" id="adminEmail">Checking session…</div>
+      </div>
+      <div class="avatar" id="avatar">A</div>
+      <button class="btn" id="signOutBtn">Sign out</button>
+    </div>
+  </header>  <h1>Transactions</h1>
+  <p class="subtitle">Read-only financial activity across AITIVEST wallets. Records are retrieved directly from the database.</p>  <div class="stats">
+    <section class="stat">
+      <div class="stat-label">MATCHING TRANSACTIONS</div>
+      <div class="stat-value" id="statCount">—</div>
+      <div class="stat-note">Based on current filters</div>
+    </section>
+    <section class="stat">
+      <div class="stat-label">CURRENT PAGE VOLUME</div>
+      <div class="stat-value" id="statVolume">—</div>
+      <div class="stat-note">Sum of displayed amounts, across assets</div>
+    </section>
+    <section class="stat">
+      <div class="stat-label">CURRENT PAGE</div>
+      <div class="stat-value" id="statPage">—</div>
+      <div class="stat-note">50 records per page</div>
+    </section>
+    <section class="stat">
+      <div class="stat-label">AVAILABLE ASSETS</div>
+      <div class="stat-value" id="statAssets">—</div>
+      <div class="stat-note">Distinct assets on this page</div>
+    </section>
+  </div>  <section class="card">
+    <div class="card-title">Transaction ledger</div>
+    <div class="card-description">Search by user, email, transaction ID, reference, or description. Select filters to narrow the results.</div>
+    <div class="notice warning">This is a read-only ledger. Amounts from different assets are not combined into a monetary valuation. A recorded transaction is not, by itself, proof of an external blockchain payment.</div>
+    <div class="notice" id="notice">Verifying administrator access…</div>
+    <div class="toolbar">
+      <div class="search-wrap">
+        <input class="search" id="searchInput" type="search" placeholder="Search user, email, ID, or reference…" autocomplete="off">
+      </div>
+      <div class="filter-wrap">
+        <select class="filter" id="typeFilter" aria-label="Filter transaction type">
+          <option value="">All transaction types</option>
+        </select>
+      </div>
+      <div class="filter-wrap">
+        <select class="filter" id="assetFilter" aria-label="Filter asset">
+          <option value="">All assets</option>
+        </select>
+      </div>
+      <button class="btn btn-primary" id="searchBtn">Search</button>
+      <button class="btn" id="refreshBtn">Refresh</button>
+    </div>
+    <div class="statusline">
+      <span id="resultCount">Waiting for data…</span>
+      <span id="filterLabel">All transactions</span>
+    </div>
+  </section>  <section class="card">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Transaction</th>
+            <th>User</th>
+            <th>Type</th>
+            <th>Asset / Amount</th>
+            <th>Balance before → after</th>
+            <th>Reference</th>
+            <th>Created</th>
+            <th>Details</th>
+          </tr>
+        </thead>
+        <tbody id="transactionsBody">
+          <tr><td colspan="8" class="empty">Loading transactions…</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="pagination">
+      <div class="page-info" id="pageInfo">Page 1</div>
+      <div class="toolbar">
+        <button class="btn" id="prevBtn" disabled>Previous</button>
+        <button class="btn" id="nextBtn" disabled>Next</button>
+      </div>
+    </div>
+    <div class="footer-note">No wallet balance changes or financial actions can be performed from this page.</div>
+  </section>
+</main><div class="modal" id="detailsModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" onclick="if(event.target===this)closeDetails()">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h2 id="modalTitle">Transaction details</h2>
+      <button class="btn" onclick="closeDetails()">Close</button>
+    </div>
+    <div class="detail-grid" id="detailGrid"></div>
+  </div>
+</div><script>
+(() => {
+  "use strict";
+
+  const SUPABASE_URL = "https://rihvvwktvgytbqzazage.supabase.co";
+  const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
+  const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+  const $ = id => document.getElementById(id);
+  const PAGE_SIZE = 50;
+
+  let authorized = false;
+  let busy = false;
+  let currentOffset = 0;
+  let currentSearch = "";
+  let currentType = "";
+  let currentAsset = "";
+  let totalTransactions = 0;
+  let searchTimer = null;
+  let loadedRows = [];
+
+  function toggleMenu(open) {
+    $("sidebar").classList.toggle("open", open);
+    $("overlay").classList.toggle("show", open);
+  }
+  window.toggleMenu = toggleMenu;
+
+  function setNotice(message, type = "") {
+    $("notice").textContent = message;
+    $("notice").className = "notice" + (type ? " " + type : "");
+  }
+
+  function safeText(value, fallback = "—") {
+    if (value === null || value === undefined || String(value).trim() === "") return fallback;
+    return String(value);
+  }
+
+  function formatDate(value) {
+    if (!value) return "—";
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return "—";
+    return date.toLocaleString(undefined, {
+      year:"numeric",month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"
+    });
+  }
+
+  function formatAmount(value) {
+    if (value === null || value === undefined || value === "") return "—";
+    const number = Number(value);
+    return Number.isFinite(number)
+      ? number.toLocaleString(undefined,{maximumFractionDigits:8})
+      : String(value);
+  }
+
+  function badgeClass(value) {
+    const v = String(value || "").toUpperCase();
+    if (["DEPOSIT","DEPOSIT_CREDIT","WITHDRAWAL_RELEASE","REFERRAL_REWARD","PROFIT"].includes(v)) return "badge good";
+    if (["WITHDRAWAL","WITHDRAW","FEE","DEBIT"].includes(v)) return "badge bad";
+    if (["PENDING","UNDER_REVIEW"].includes(v)) return "badge gold";
+    return "badge";
+  }
+
+  function addCell(row,value,className="") {
+    const td=document.createElement("td");
+    if(className)td.className=className;
+    td.textContent=value;
+    row.appendChild(td);
+    return td;
+  }
+
+  function addBadge(row,value) {
+    const td=document.createElement("td");
+    const badge=document.createElement("span");
+    badge.className=badgeClass(value);
+    badge.textContent=safeText(value,"UNKNOWN").toUpperCase();
+    td.appendChild(badge);
+    row.appendChild(td);
+  }
+
+  function renderTransactions(rows) {
+    const body=$("transactionsBody");
+    body.replaceChildren();
+
+    if(!Array.isArray(rows)||rows.length===0) {
+      const tr=document.createElement("tr");
+      const td=document.createElement("td");
+      td.colSpan=8;
+      td.className="empty";
+      td.textContent="No transactions found for these filters.";
+      tr.appendChild(td);
+      body.appendChild(tr);
+      return;
+    }
+
+    for(const tx of rows) {
+      const tr=document.createElement("tr");
+
+      const idCell=document.createElement("td");
+      const idTitle=document.createElement("div");
+      idTitle.className="user-name";
+      idTitle.textContent="Transaction #"+safeText(tx.id,"?");
+      const wallet=document.createElement("div");
+      wallet.className="small";
+      wallet.textContent="Wallet #"+safeText(tx.wallet_id);
+      idCell.append(idTitle,wallet);
+      tr.appendChild(idCell);
+
+      const userCell=document.createElement("td");
+      const name=document.createElement("div");
+      name.className="user-name";
+      name.textContent=safeText(tx.full_name,"Unnamed user");
+      const email=document.createElement("div");
+      email.className="small";
+      email.textContent=safeText(tx.email);
+      const uid=document.createElement("div");
+      uid.className="small";
+      uid.textContent="User ID: "+safeText(tx.user_id);
+      userCell.append(name,email,uid);
+      tr.appendChild(userCell);
+
+      addBadge(tr,tx.transaction_type);
+
+      const assetCell=document.createElement("td");
+      const asset=document.createElement("div");
+      asset.className="user-name";
+      asset.textContent=safeText(tx.asset,"Unknown asset").toUpperCase();
+      const amount=document.createElement("div");
+      amount.className="amount";
+      amount.textContent=formatAmount(tx.amount);
+      assetCell.append(asset,amount);
+      tr.appendChild(assetCell);
+
+      const balances=document.createElement("td");
+      balances.textContent=formatAmount(tx.balance_before)+" → "+formatAmount(tx.balance_after);
+      tr.appendChild(balances);
+
+      const refCell=document.createElement("td");
+      refCell.className="ref";
+      const ref=document.createElement("div");
+      ref.textContent=safeText(tx.reference_type,"No reference type");
+      const refId=document.createElement("div");
+      refId.className="small";
+      refId.textContent="Reference ID: "+safeText(tx.reference_id);
+      refCell.append(ref,refId);
+      tr.appendChild(refCell);
+
+      addCell(tr,formatDate(tx.created_at));
+
+      const actionCell=document.createElement("td");
+      const button=document.createElement("button");
+      button.className="btn";
+      button.textContent="View details";
+      button.addEventListener("click",()=>openDetails(tx));
+      actionCell.appendChild(button);
+      tr.appendChild(actionCell);
+
+      body.appendChild(tr);
+    }
+  }
+
+  function setStatValues(rows) {
+    $("statCount").textContent=Number(totalTransactions).toLocaleString();
+    $("statPage").textContent=totalTransactions===0?"0":String(Math.floor(currentOffset/PAGE_SIZE)+1);
+    const volume=rows.reduce((sum,tx)=>{
+      const n=Number(tx.amount);
+      return sum+(Number.isFinite(n)?Math.abs(n):0);
+    },0);
+    $("statVolume").textContent=formatAmount(volume);
+    const assets=new Set(rows.map(tx=>String(tx.asset||"").toUpperCase()).filter(Boolean));
+    $("statAssets").textContent=String(assets.size);
+  }
+
+  function openDetails(tx) {
+    const fields=[
+      ["Transaction ID",tx.id],
+      ["User name",tx.full_name],
+      ["User email",tx.email],
+      ["User ID",tx.user_id],
+      ["Wallet ID",tx.wallet_id],
+      ["Asset",tx.asset],
+      ["Transaction type",tx.transaction_type],
+      ["Amount",tx.amount],
+      ["Balance before",tx.balance_before],
+      ["Balance after",tx.balance_after],
+      ["Reference type",tx.reference_type],
+      ["Reference ID",tx.reference_id],
+      ["Description",tx.description],
+      ["Created at",formatDate(tx.created_at)]
+    ];
+    const grid=$("detailGrid");
+    grid.replaceChildren();
+    for(const [label,value] of fields) {
+      const box=document.createElement("div");
+      box.className="detail";
+      const l=document.createElement("div");
+      l.className="detail-label";
+      l.textContent=label;
+      const v=document.createElement("div");
+      v.className="detail-value";
+      v.textContent=safeText(value);
+      box.append(l,v);
+      grid.appendChild(box);
+    }
+    $("detailsModal").classList.add("open");
+  }
+
+  function closeDetails() {
+    $("detailsModal").classList.remove("open");
+  }
+  window.closeDetails=closeDetails;
+
+  async function loadTransactions(resetOffset=false) {
+    if(!authorized||busy)return;
+    if(resetOffset)currentOffset=0;
+
+    busy=true;
+    ["refreshBtn","searchBtn","prevBtn","nextBtn"].forEach(id=>$(id).disabled=true);
+    const body=$("transactionsBody");
+    body.replaceChildren();
+    const tr=document.createElement("tr");
+    const td=document.createElement("td");
+    td.colSpan=8;
+    td.className="empty";
+    td.textContent="Loading transaction records…";
+    tr.appendChild(td);
+    body.appendChild(tr);
+    setNotice("Loading transaction records…");
+
+    try {
+      const {data,error}=await db.rpc("admin_list_transactions",{
+        p_search:currentSearch||null,
+        p_transaction_type:currentType||null,
+        p_asset:currentAsset||null,
+        p_limit:PAGE_SIZE,
+        p_offset:currentOffset
+      });
+      if(error)throw error;
+      if(!data||!Array.isArray(data.transactions)) {
+        throw new Error("Unexpected response from admin_list_transactions.");
+      }
+
+      loadedRows=data.transactions;
+      totalTransactions=Number(data.total)||0;
+      renderTransactions(loadedRows);
+      setStatValues(loadedRows);
+
+      const start=totalTransactions===0?0:currentOffset+1;
+      const end=Math.min(currentOffset+loadedRows.length,totalTransactions);
+      $("resultCount").textContent=`${totalTransactions.toLocaleString()} transaction${totalTransactions===1?"":"s"} found`;
+      $("pageInfo").textContent=totalTransactions===0?"Page 0 of 0":`Showing ${start}–${end} of ${totalTransactions.toLocaleString()}`;
+      const types=[...new Set(loadedRows.map(x=>String(x.transaction_type||"").trim()).filter(Boolean))].sort();
+      const assets=[...new Set(loadedRows.map(x=>String(x.asset||"").trim()).filter(Boolean))].sort();
+      populateOptions("typeFilter",types,"All transaction types",currentType);
+      populateOptions("assetFilter",assets,"All assets",currentAsset);
+      $("filterLabel").textContent=[
+        currentType||"All types",
+        currentAsset||"All assets",
+        currentSearch?`Search: ${currentSearch}`:""
+      ].filter(Boolean).join(" · ");
+      $("prevBtn").disabled=currentOffset<=0;
+      $("nextBtn").disabled=currentOffset+PAGE_SIZE>=totalTransactions;
+      setNotice("Administrator verified. Transaction records loaded.", "success");
+    } catch(error) {
+      console.error("Transaction list error:",error);
+      loadedRows=[];
+      totalTransactions=0;
+      renderTransactions([]);
+      setStatValues([]);
+      $("resultCount").textContent="Unable to load transactions";
+      $("pageInfo").textContent="Page unavailable";
+      setNotice("Could not load transactions: "+(error.message||"Unknown error")+". Check the database function and administrator permissions.","error");
+    } finally {
+      busy=false;
+      $("refreshBtn").disabled=false;
+      $("searchBtn").disabled=false;
+      $("prevBtn").disabled=currentOffset<=0;
+      $("nextBtn").disabled=currentOffset+PAGE_SIZE>=totalTransactions;
+    }
+  }
+
+  function populateOptions(id,values,defaultLabel,selectedValue) {
+    const select=$(id);
+    const existing=new Set([...select.options].map(option=>option.value));
+    for(const value of values) {
+      if(existing.has(value))continue;
+      const option=document.createElement("option");
+      option.value=value;
+      option.textContent=value;
+      select.appendChild(option);
+    }
+    for(const option of [...select.options]) {
+      if(option.value && !values.includes(option.value))option.remove();
+    }
+    select.options[0].textContent=defaultLabel;
+    select.value=values.includes(selectedValue)?selectedValue:"";
+    if(id==="typeFilter")currentType=select.value;
+    if(id==="assetFilter")currentAsset=select.value;
+  }
+
+  function applyFilters() {
+    currentSearch=$("searchInput").value.trim();
+    currentType=$("typeFilter").value;
+    currentAsset=$("assetFilter").value;
+    loadTransactions(true);
+  }
+
+  async function verifyAdmin() {
+    setNotice("Verifying administrator access…");
+    try {
+      const {data:sessionData,error:sessionError}=await db.auth.getSession();
+      if(sessionError)throw sessionError;
+      const session=sessionData&&sessionData.session;
+      if(!session) {
+        window.location.replace("admin-login.html");
+        return;
+      }
+
+      const {data:isAdmin,error:adminError}=await db.rpc("is_current_user_admin");
+      if(adminError)throw adminError;
+      if(isAdmin!==true) {
+        await db.auth.signOut();
+        setNotice("Access denied. This account is not an authorized administrator.","error");
+        setTimeout(()=>window.location.replace("admin-login.html"),1800);
+        return;
+      }
+
+      authorized=true;
+      const email=session.user.email||"Administrator";
+      $("adminEmail").textContent=email;
+      $("avatar").textContent=email.charAt(0).toUpperCase()||"A";
+      await loadTransactions(true);
+    } catch(error) {
+      console.error("Admin verification error:",error);
+      setNotice("Could not verify administrator access: "+(error.message||"Unknown error"),"error");
+    }
+  }
+
+  $("searchBtn").addEventListener("click",applyFilters);
+  $("searchInput").addEventListener("keydown",event=>{
+    if(event.key==="Enter") {
+      clearTimeout(searchTimer);
+      applyFilters();
+    }
+  });
+  $("searchInput").addEventListener("input",()=>{
+    clearTimeout(searchTimer);
+    searchTimer=setTimeout(applyFilters,500);
+  });
+  $("typeFilter").addEventListener("change",applyFilters);
+  $("assetFilter").addEventListener("change",applyFilters);
+  $("refreshBtn").addEventListener("click",()=>loadTransactions(false));
+  $("prevBtn").addEventListener("click",()=>{
+    if(!busy&&currentOffset>=PAGE_SIZE) {
+      currentOffset-=PAGE_SIZE;
+      loadTransactions(false);
+    }
+  });
+  $("nextBtn").addEventListener("click",()=>{
+    if(!busy&&currentOffset+PAGE_SIZE<totalTransactions) {
+      currentOffset+=PAGE_SIZE;
+      loadTransactions(false);
+    }
+  });
+  $("signOutBtn").addEventListener("click",async()=>{
+    $("signOutBtn").disabled=true;
+    try {
+      const {data}=await db.auth.getUser();
+      if(data&&data.user) {
+        await db.rpc("admin_write_security_log",{
+          p_action:"ADMIN_SIGN_OUT",
+          p_target_type:"session",
+          p_target_id:data.user.id,
+          p_details:{page:"transactions"},
+          p_success:true
+        });
+      }
+    } catch(error) {
+      console.warn("Sign-out log failed:",error);
+    }
+    await db.auth.signOut();
+    window.location.replace("admin-login.html");
+  });
+
+  document.addEventListener("keydown",event=>{
+    if(event.key==="Escape")closeDetails();
+  });
+
+  verifyAdmin();
+})();
+</script></body>
+</html>
