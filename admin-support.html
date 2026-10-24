@@ -1,0 +1,569 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Support Center | AITIVEST Admin</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#081225;
+  --sidebar:#0b162d;
+  --card:#101d38;
+  --border:#233352;
+  --gold:#d4a64a;
+  --gold-light:#ebd29a;
+  --text:#eaf0fa;
+  --muted:#94a3bd;
+  --green:#53d6a0;
+  --red:#ff777f;
+  --blue:#5b8def;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Manrope,Arial,sans-serif;font-size:14px}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:235px;background:var(--sidebar);border-right:1px solid var(--border);padding:25px 15px;flex-shrink:0}
+.brand{font-size:23px;font-weight:800;letter-spacing:2px;color:var(--gold-light);padding:5px 12px 30px}
+.brand small{display:block;font-size:10px;letter-spacing:3px;color:var(--muted);margin-top:5px}
+.nav-label{font-size:10px;color:var(--muted);letter-spacing:1.5px;margin:22px 12px 10px}
+.nav a{display:block;text-decoration:none;color:var(--muted);padding:12px;border-radius:8px;margin:3px 0;font-weight:700;font-size:12px}
+.nav a:hover,.nav a.active{background:#192946;color:var(--gold-light)}
+.main{flex:1;min-width:0;padding:27px}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:25px}
+h1{font-size:24px;margin:0 0 6px}
+.subtitle{color:var(--muted);font-size:12px}
+.admin-badge{border:1px solid var(--border);padding:9px 12px;border-radius:8px;color:var(--gold-light);font-size:11px;overflow-wrap:anywhere}
+.notice{padding:13px 15px;border:1px solid var(--border);background:var(--card);border-radius:10px;margin-bottom:18px;font-size:12px;color:var(--muted)}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;margin-bottom:20px}
+.stat,.panel{background:var(--card);border:1px solid var(--border);border-radius:12px}
+.stat{padding:18px}
+.stat-label{font-size:11px;color:var(--muted);margin-bottom:12px}
+.stat-value{font-size:27px;font-weight:800}
+.gold{color:var(--gold-light)}.green{color:var(--green)}.red{color:var(--red)}.blue{color:var(--blue)}
+.panel{padding:19px;margin-bottom:18px}
+.panel-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+.panel-heading h2{font-size:15px;margin:0}
+.controls{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:15px}
+input,select,textarea{background:#09152a;border:1px solid var(--border);color:var(--text);border-radius:8px;padding:11px;outline:none;min-width:0}
+input:focus,select:focus,textarea:focus{border-color:var(--gold)}
+.controls input{flex:1;min-width:170px}
+.controls select{min-width:130px}
+.btn{border:1px solid var(--border);border-radius:8px;background:#192946;color:var(--text);padding:10px 13px;font-weight:700;font-size:11px}
+.btn:hover{border-color:var(--gold)}
+.btn.gold-btn{background:var(--gold);color:#101827;border-color:var(--gold)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.table-wrap{width:100%;overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:700px}
+th{text-align:left;color:var(--muted);font-size:10px;letter-spacing:.6px;padding:12px 10px;border-bottom:1px solid var(--border)}
+td{padding:13px 10px;border-bottom:1px solid #1b2a45;font-size:11px;vertical-align:middle}
+tr:last-child td{border-bottom:0}
+td strong{font-size:12px}
+.small{font-size:10px;color:var(--muted);margin-top:4px;overflow-wrap:anywhere}
+.pill{display:inline-block;padding:5px 8px;border-radius:20px;font-size:9px;font-weight:800;background:#25314a;color:var(--muted)}
+.pill.open,.pill.pending{background:#392c18;color:var(--gold-light)}
+.pill.in_progress,.pill.in-progress{background:#172e52;color:#9bbdff}
+.pill.resolved,.pill.closed{background:#15392e;color:var(--green)}
+.pill.high,.pill.urgent{background:#48242c;color:#ff9ca2}
+.row-actions{display:flex;gap:6px;flex-wrap:wrap}
+.empty{text-align:center;padding:30px;color:var(--muted)}
+.pagination{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:16px;color:var(--muted);font-size:11px}
+.modal-backdrop{position:fixed;inset:0;background:#000b;display:none;align-items:center;justify-content:center;padding:15px;z-index:10}
+.modal-backdrop.show{display:flex}
+.modal{width:min(780px,100%);max-height:92vh;overflow:auto;background:var(--sidebar);border:1px solid var(--border);border-radius:14px;padding:20px}
+.modal-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:15px}
+.modal-head h2{margin:0;font-size:18px}
+.close{background:transparent;color:var(--muted);border:0;font-size:25px}
+.ticket-meta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:15px}
+.meta-box{background:var(--card);border:1px solid var(--border);padding:11px;border-radius:8px;overflow-wrap:anywhere}
+.meta-box label{display:block;color:var(--muted);font-size:10px;margin-bottom:6px}
+.conversation{display:flex;flex-direction:column;gap:10px;max-height:300px;overflow:auto;margin:15px 0;padding:3px}
+.message{max-width:90%;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px;align-self:flex-start;overflow-wrap:anywhere;white-space:pre-wrap}
+.message.admin{align-self:flex-end;border-color:#6d582f;background:#211e19}
+.message-head{font-size:10px;color:var(--gold-light);margin-bottom:7px;font-weight:800}
+.message-body{font-size:12px;line-height:1.7}
+.message-time{font-size:9px;color:var(--muted);margin-top:7px}
+.reply-box{display:grid;gap:10px}
+textarea{resize:vertical;min-height:100px;width:100%;line-height:1.6}
+.status-row{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin:12px 0}
+.status-row select{flex:1;min-width:130px}
+.toast{position:fixed;right:18px;bottom:18px;background:#172946;border:1px solid var(--border);padding:13px 17px;border-radius:9px;display:none;z-index:20;max-width:90vw;font-size:12px}
+.toast.show{display:block}
+.loading{opacity:.65;pointer-events:none}
+@media(max-width:900px){
+ .sidebar{width:190px}.main{padding:18px}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:620px){
+ .layout{display:block}.sidebar{width:100%;padding:13px;border-right:0;border-bottom:1px solid var(--border)}
+ .brand{padding:5px 8px 13px;font-size:20px}.brand small{display:inline;margin-left:8px}
+ .nav-label{display:none}.nav{display:flex;gap:5px;overflow-x:auto;padding-bottom:3px}
+ .nav a{white-space:nowrap;padding:10px;font-size:10px}
+ .main{padding:15px}.topbar{align-items:flex-start;flex-direction:column}h1{font-size:21px}
+ .stats{gap:9px}.stat{padding:13px}.stat-value{font-size:23px}.panel{padding:13px}
+ .ticket-meta{grid-template-columns:1fr}.modal{padding:14px}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand">AITIVEST<small>ADMIN CONTROL</small></div>
+    <div class="nav-label">MAIN MENU</div>
+    <nav class="nav">
+      <a href="admin.html">Overview</a>
+      <a href="admin-users.html">Users</a>
+      <a href="admin-deposits.html">Deposits</a>
+      <a href="admin-withdrawals.html">Withdrawals</a>
+      <a href="admin-transactions.html">Transactions</a>
+      <a class="active" href="admin-support.html">Support</a>
+      <a href="admin-security.html">Security Logs</a>
+      <a href="admin-settings.html">Settings</a>
+    </nav>
+  </aside>  <main class="main">
+    <header class="topbar">
+      <div>
+        <h1>Support Center</h1>
+        <div class="subtitle">Manage customer requests and support conversations.</div>
+      </div>
+      <div class="admin-badge" id="adminIdentity">Verifying administrator…</div>
+    </header><div class="notice" id="notice">Connecting securely to the AITIVEST support system…</div>
+
+<section class="stats">
+  <div class="stat"><div class="stat-label">TOTAL TICKETS</div><div class="stat-value" id="totalCount">—</div></div>
+  <div class="stat"><div class="stat-label">OPEN</div><div class="stat-value gold" id="openCount">—</div></div>
+  <div class="stat"><div class="stat-label">IN PROGRESS</div><div class="stat-value blue" id="progressCount">—</div></div>
+  <div class="stat"><div class="stat-label">RESOLVED / CLOSED</div><div class="stat-value green" id="resolvedCount">—</div></div>
+</section>
+
+<section class="panel">
+  <div class="panel-heading">
+    <h2>Support Tickets</h2>
+    <button class="btn" id="refreshBtn">Refresh</button>
+  </div>
+  <div class="controls">
+    <input id="searchInput" placeholder="Search subject, ticket ID, user ID…" autocomplete="off">
+    <select id="statusFilter">
+      <option value="">All statuses</option>
+      <option value="OPEN">Open</option>
+      <option value="IN_PROGRESS">In progress</option>
+      <option value="PENDING">Pending</option>
+      <option value="RESOLVED">Resolved</option>
+      <option value="CLOSED">Closed</option>
+    </select>
+    <select id="priorityFilter">
+      <option value="">All priorities</option>
+      <option value="LOW">Low</option>
+      <option value="NORMAL">Normal</option>
+      <option value="MEDIUM">Medium</option>
+      <option value="HIGH">High</option>
+      <option value="URGENT">Urgent</option>
+    </select>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>TICKET</th><th>USER</th><th>STATUS</th><th>PRIORITY</th><th>UPDATED</th><th>ACTION</th></tr></thead>
+      <tbody id="ticketRows"><tr><td colspan="6" class="empty">Loading tickets…</td></tr></tbody>
+    </table>
+  </div>
+  <div class="pagination">
+    <span id="pageInfo">Page 1</span>
+    <div class="row-actions">
+      <button class="btn" id="prevBtn">Previous</button>
+      <button class="btn" id="nextBtn">Next</button>
+    </div>
+  </div>
+</section>
+
+  </main>
+</div><div class="modal-backdrop" id="ticketModal">
+  <div class="modal">
+    <div class="modal-head">
+      <div><h2 id="modalTitle">Support Ticket</h2><div class="small" id="modalSubtitle"></div></div>
+      <button class="close" id="closeModal" aria-label="Close">&times;</button>
+    </div>
+    <div class="ticket-meta" id="ticketMeta"></div>
+    <h3 style="font-size:13px;margin-bottom:8px">Conversation</h3>
+    <div class="conversation" id="conversation"><div class="empty">Loading conversation…</div></div>
+    <div class="reply-box">
+      <label for="replyInput" class="small">Administrator reply</label>
+      <textarea id="replyInput" maxlength="10000" placeholder="Write a helpful response to the user…"></textarea>
+      <button class="btn gold-btn" id="sendReplyBtn">Send Reply</button>
+    </div>
+    <hr style="border:0;border-top:1px solid var(--border);margin:20px 0">
+    <div class="small">Update ticket status</div>
+    <div class="status-row">
+      <select id="newStatus">
+        <option value="OPEN">Open</option>
+        <option value="IN_PROGRESS">In progress</option>
+        <option value="PENDING">Pending</option>
+        <option value="RESOLVED">Resolved</option>
+        <option value="CLOSED">Closed</option>
+      </select>
+      <button class="btn" id="saveStatusBtn">Update Status</button>
+    </div>
+    <div class="small">Replies and status changes are submitted through the existing database RPCs.</div>
+  </div>
+</div>
+<div class="toast" id="toast"></div><script>
+(() => {
+  'use strict';
+
+  const SUPABASE_URL = 'https://rihvvwktvgytbqzazage.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad';
+  const PAGE_SIZE = 25;
+  const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  const $ = id => document.getElementById(id);
+  let adminUser = null;
+  let page = 0;
+  let tickets = [];
+  let currentTicket = null;
+  let requestSequence = 0;
+  let searchTimer = null;
+
+  function escapeHTML(value) {
+    return String(value ?? '').replace(/[&<>"']/g, ch => ({
+      '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
+    })[ch]);
+  }
+
+  function normalStatus(value) {
+    return String(value || 'OPEN').trim().toUpperCase().replace(/[\s-]+/g, '_');
+  }
+
+  function labelStatus(value) {
+    return normalStatus(value).replace(/_/g, ' ');
+  }
+
+  function formatDate(value) {
+    if (!value) return '—';
+    const date = new Date(value);
+    return Number.isNaN(date.getTime()) ? '—' : date.toLocaleString();
+  }
+
+  function toast(message, isError = false) {
+    const el = $('toast');
+    el.textContent = message;
+    el.style.borderColor = isError ? 'var(--red)' : 'var(--green)';
+    el.style.display = 'block';
+    el.classList.add('show');
+    clearTimeout(toast.timer);
+    toast.timer = setTimeout(() => el.classList.remove('show'), 4500);
+  }
+
+  function setNotice(message, isError = false) {
+    $('notice').textContent = message;
+    $('notice').style.borderColor = isError ? 'var(--red)' : 'var(--border)';
+    $('notice').style.color = isError ? 'var(--red)' : 'var(--muted)';
+  }
+
+  function rpcErrorMessage(error) {
+    const message = error?.message || 'Unknown database error';
+    if (/not authorized|permission denied|unauthorized/i.test(message)) {
+      return 'Administrator permission was denied. No change was made.';
+    }
+    if (/does not exist|schema cache|could not find the function/i.test(message)) {
+      return 'The database function or its parameters do not match this page. No change was made.';
+    }
+    return message;
+  }
+
+  async function requireAdmin() {
+    const { data: { session }, error: sessionError } = await db.auth.getSession();
+    if (sessionError) throw sessionError;
+
+    if (!session) {
+      setNotice('You are not signed in. Sign in with your administrator account, then reopen this page.', true);
+      $('adminIdentity').textContent = 'Not signed in';
+      return false;
+    }
+
+    const { data: allowed, error } = await db.rpc('is_current_user_admin');
+    if (error) throw error;
+    if (allowed !== true) {
+      setNotice('Access denied. This account is not authorized to manage support tickets.', true);
+      $('adminIdentity').textContent = 'Access denied';
+      return false;
+    }
+
+    adminUser = session.user;
+    $('adminIdentity').textContent = session.user.email || 'Verified administrator';
+    setNotice('Administrator verified. Support management is connected.');
+    return true;
+  }
+
+  function readField(row, keys, fallback = '') {
+    for (const key of keys) {
+      if (row && row[key] !== undefined && row[key] !== null) return row[key];
+    }
+    return fallback;
+  }
+
+  function extractRows(payload) {
+    if (Array.isArray(payload)) return payload;
+    if (payload && Array.isArray(payload.tickets)) return payload.tickets;
+    if (payload && Array.isArray(payload.data)) return payload.data;
+    if (payload && Array.isArray(payload.rows)) return payload.rows;
+    if (payload && Array.isArray(payload.results)) return payload.results;
+    return [];
+  }
+
+  function extractTotal(payload, rows) {
+    if (payload && !Array.isArray(payload)) {
+      for (const key of ['total', 'count', 'total_count']) {
+        const value = Number(payload[key]);
+        if (Number.isFinite(value) && value >= 0) return value;
+      }
+    }
+    return rows.length;
+  }
+
+  function renderStats(allRows, total) {
+    const count = status => allRows.filter(t => normalStatus(readField(t, ['status','ticket_status'])) === status).length;
+    $('totalCount').textContent = String(total);
+    $('openCount').textContent = String(count('OPEN'));
+    $('progressCount').textContent = String(count('IN_PROGRESS'));
+    $('resolvedCount').textContent = String(allRows.filter(t => ['RESOLVED','CLOSED'].includes(normalStatus(readField(t, ['status','ticket_status'])))).length);
+  }
+
+  function renderTickets() {
+    const body = $('ticketRows');
+    if (!tickets.length) {
+      body.innerHTML = '<tr><td colspan="6" class="empty">No tickets found for these filters.</td></tr>';
+      return;
+    }
+
+    body.innerHTML = tickets.map(ticket => {
+      const id = readField(ticket, ['id','ticket_id'], '');
+      const subject = readField(ticket, ['subject','title'], 'Support request');
+      const userId = readField(ticket, ['user_id','profile_id'], '—');
+      const email = readField(ticket, ['email','user_email'], '');
+      const status = normalStatus(readField(ticket, ['status','ticket_status']));
+      const priority = String(readField(ticket, ['priority'], 'NORMAL')).toUpperCase();
+      const updated = readField(ticket, ['updated_at','last_message_at','created_at']);
+      const shortId = String(id).length > 12 ? String(id).slice(0,8) + '…' : String(id);
+
+      return `<tr>
+        <td><strong>${escapeHTML(subject)}</strong><div class="small">#${escapeHTML(shortId)}</div></td>
+        <td>${escapeHTML(email || String(userId).slice(0,18))}<div class="small">${escapeHTML(userId)}</div></td>
+        <td><span class="pill ${escapeHTML(status.toLowerCase())}">${escapeHTML(labelStatus(status))}</span></td>
+        <td><span class="pill ${escapeHTML(priority.toLowerCase())}">${escapeHTML(priority)}</span></td>
+        <td>${escapeHTML(formatDate(updated))}</td>
+        <td><button class="btn open-ticket" data-ticket-id="${escapeHTML(id)}">View</button></td>
+      </tr>`;
+    }).join('');
+  }
+
+  async function loadTickets(resetPage = false) {
+    if (!adminUser) return;
+    if (resetPage) page = 0;
+    const seq = ++requestSequence;
+    $('refreshBtn').disabled = true;
+    $('ticketRows').innerHTML = '<tr><td colspan="6" class="empty">Loading tickets…</td></tr>';
+
+    /*
+      This page deliberately uses a direct, read-only query for listing.
+      The support table's exact columns were not yet verified. The first
+      query uses common ticket columns. If your schema differs, the error
+      is displayed rather than guessed or silently modifying anything.
+    */
+    let query = db.from('support_tickets').select('*', { count: 'exact' });
+    const search = $('searchInput').value.trim();
+    const status = $('statusFilter').value;
+    const priority = $('priorityFilter').value;
+
+    if (status) query = query.eq('status', status);
+    if (priority) query = query.eq('priority', priority);
+
+    if (search) {
+      const safeSearch = search.replace(/[,%()]/g, ' ').trim();
+      if (safeSearch) {
+        query = query.or(`subject.ilike.%${safeSearch}%,id.ilike.%${safeSearch}%,user_id.ilike.%${safeSearch}%`);
+      }
+    }
+
+    const { data, error, count } = await query
+      .order('updated_at', { ascending: false, nullsFirst: false })
+      .range(page * PAGE_SIZE, page * PAGE_SIZE + PAGE_SIZE - 1);
+
+    if (seq !== requestSequence) return;
+    $('refreshBtn').disabled = false;
+
+    if (error) {
+      tickets = [];
+      $('ticketRows').innerHTML = `<tr><td colspan="6" class="empty">${escapeHTML(error.message)}<br><br>Check the support_tickets table columns and administrator SELECT policies.</td></tr>`;
+      setNotice('Could not load tickets. The page has not changed any ticket records.', true);
+      $('pageInfo').textContent = 'Page unavailable';
+      $('prevBtn').disabled = true;
+      $('nextBtn').disabled = true;
+      return;
+    }
+
+    tickets = data || [];
+    renderTickets();
+    renderStats(tickets, Number.isFinite(count) ? count : tickets.length);
+    const total = Number.isFinite(count) ? count : tickets.length;
+    const pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+    $('pageInfo').textContent = `Page ${page + 1} of ${pages} · ${total} ticket(s)`;
+    $('prevBtn').disabled = page === 0;
+    $('nextBtn').disabled = (page + 1) * PAGE_SIZE >= total;
+    setNotice(`Loaded ${tickets.length} ticket(s) on this page. Total matching tickets: ${total}.`);
+  }
+
+  function openModal() {
+    $('ticketModal').classList.add('show');
+  }
+
+  function closeModal() {
+    $('ticketModal').classList.remove('show');
+    currentTicket = null;
+    $('replyInput').value = '';
+  }
+
+  function getTicketId(ticket) {
+    return readField(ticket, ['id','ticket_id'], null);
+  }
+
+  async function openTicket(id) {
+    const ticket = tickets.find(item => String(getTicketId(item)) === String(id));
+    if (!ticket) return;
+    currentTicket = ticket;
+    $('modalTitle').textContent = readField(ticket, ['subject','title'], 'Support request');
+    $('modalSubtitle').textContent = `Ticket ID: ${getTicketId(ticket)}`;
+    $('ticketMeta').innerHTML = [
+      ['Ticket ID', getTicketId(ticket)],
+      ['User ID', readField(ticket, ['user_id','profile_id'], '—')],
+      ['Status', labelStatus(readField(ticket, ['status','ticket_status']))],
+      ['Priority', readField(ticket, ['priority'], 'NORMAL')],
+      ['Created', formatDate(readField(ticket, ['created_at']))],
+      ['Updated', formatDate(readField(ticket, ['updated_at','last_message_at']))]
+    ].map(([label,value]) => `<div class="meta-box"><label>${escapeHTML(label)}</label><div>${escapeHTML(value)}</div></div>`).join('');
+
+    $('newStatus').value = normalStatus(readField(ticket, ['status','ticket_status']));
+    $('conversation').innerHTML = '<div class="empty">Loading conversation…</div>';
+    openModal();
+
+    /*
+      Fetch the conversation only after verifying the ticket ID. The query
+      is scoped to this ticket and read-only.
+    */
+    const { data, error } = await db
+      .from('support_messages')
+      .select('*')
+      .eq('ticket_id', getTicketId(ticket))
+      .order('created_at', { ascending: true });
+
+    if (error) {
+      $('conversation').innerHTML = `<div class="empty">${escapeHTML(error.message)}<br><br>Check support_messages columns and SELECT policies.</div>`;
+      return;
+    }
+
+    if (!data || !data.length) {
+      $('conversation').innerHTML = '<div class="empty">No messages were returned for this ticket.</div>';
+      return;
+    }
+
+    $('conversation').innerHTML = data.map(message => {
+      const sender = String(readField(message, ['sender_type','sender_role','role','author_type'], '')).toLowerCase();
+      const isAdmin = sender.includes('admin') || String(readField(message, ['user_id','sender_id'], '')) === String(adminUser.id);
+      const body = readField(message, ['message','body','content','message_text'], '');
+      const created = readField(message, ['created_at','sent_at']);
+      return `<div class="message ${isAdmin ? 'admin' : ''}">
+        <div class="message-head">${isAdmin ? 'ADMINISTRATOR' : 'USER MESSAGE'}</div>
+        <div class="message-body">${escapeHTML(body)}</div>
+        <div class="message-time">${escapeHTML(formatDate(created))}</div>
+      </div>`;
+    }).join('');
+    $('conversation').scrollTop = $('conversation').scrollHeight;
+  }
+
+  async function sendReply() {
+    if (!adminUser || !currentTicket) return;
+    const message = $('replyInput').value.trim();
+    if (!message) return toast('Write a reply before sending.', true);
+    if (message.length > 10000) return toast('Reply is too long.', true);
+
+    const btn = $('sendReplyBtn');
+    btn.disabled = true;
+    try {
+      const { data, error } = await db.rpc('admin_reply_to_ticket', {
+        p_ticket_id: getTicketId(currentTicket),
+        p_message: message
+      });
+      if (error) throw error;
+      if (data && data.success === false) throw new Error(data.message || 'Reply was not accepted.');
+      $('replyInput').value = '';
+      toast('Reply submitted.');
+      await openTicket(getTicketId(currentTicket));
+      await loadTickets(false);
+    } catch (error) {
+      toast(rpcErrorMessage(error), true);
+    } finally {
+      btn.disabled = false;
+    }
+  }
+
+  async function updateStatus() {
+    if (!adminUser || !currentTicket) return;
+    const status = $('newStatus').value;
+    const btn = $('saveStatusBtn');
+    btn.disabled = true;
+    try {
+      const { data, error } = await db.rpc('admin_set_ticket_status', {
+        p_ticket_id: getTicketId(currentTicket),
+        p_status: status
+      });
+      if (error) throw error;
+      if (data && data.success === false) throw new Error(data.message || 'Status update was not accepted.');
+      toast('Ticket status updated.');
+      currentTicket.status = status;
+      await loadTickets(false);
+      await openTicket(getTicketId(currentTicket));
+    } catch (error) {
+      toast(rpcErrorMessage(error), true);
+    } finally {
+      btn.disabled = false;
+    }
+  }
+
+  $('refreshBtn').addEventListener('click', () => loadTickets(false));
+  $('prevBtn').addEventListener('click', () => { if (page > 0) { page--; loadTickets(false); } });
+  $('nextBtn').addEventListener('click', () => { page++; loadTickets(false); });
+  $('statusFilter').addEventListener('change', () => loadTickets(true));
+  $('priorityFilter').addEventListener('change', () => loadTickets(true));
+  $('searchInput').addEventListener('input', () => {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(() => loadTickets(true), 350);
+  });
+  $('ticketRows').addEventListener('click', event => {
+    const btn = event.target.closest('.open-ticket');
+    if (btn) openTicket(btn.dataset.ticketId);
+  });
+  $('closeModal').addEventListener('click', closeModal);
+  $('ticketModal').addEventListener('click', event => {
+    if (event.target === $('ticketModal')) closeModal();
+  });
+  $('sendReplyBtn').addEventListener('click', sendReply);
+  $('saveStatusBtn').addEventListener('click', updateStatus);
+
+  db.auth.onAuthStateChange((_event, session) => {
+    if (!session) {
+      adminUser = null;
+      setNotice('Your session has ended. Sign in again to manage support.', true);
+      $('adminIdentity').textContent = 'Not signed in';
+    }
+  });
+
+  (async () => {
+    try {
+      const authorized = await requireAdmin();
+      if (authorized) await loadTickets(true);
+    } catch (error) {
+      setNotice('Could not verify administrator access: ' + (error.message || 'Unknown error'), true);
+      $('adminIdentity').textContent = 'Verification failed';
+    }
+  })();
+})();
+</script></body>
+</html>
