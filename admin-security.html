@@ -1,0 +1,392 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Security Logs | AITIVEST Admin</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#081225;--sidebar:#0b162d;--card:#101d38;--border:#233352;
+  --gold:#d4a64a;--gold-light:#ebd29a;--text:#eaf0fa;
+  --muted:#94a3bd;--green:#53d6a0;--red:#ff777f;--blue:#5b8def;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Manrope,Arial,sans-serif;font-size:14px}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:235px;flex-shrink:0;background:var(--sidebar);border-right:1px solid var(--border);padding:25px 15px}
+.brand{font-size:23px;font-weight:800;letter-spacing:2px;color:var(--gold-light);padding:5px 12px 30px}
+.brand small{display:block;font-size:10px;letter-spacing:3px;color:var(--muted);margin-top:5px}
+.nav-label{font-size:10px;color:var(--muted);letter-spacing:1.5px;margin:22px 12px 10px}
+.nav a{display:block;text-decoration:none;color:var(--muted);padding:12px;border-radius:8px;margin:3px 0;font-size:12px;font-weight:700}
+.nav a:hover,.nav a.active{background:#192946;color:var(--gold-light)}
+.main{flex:1;min-width:0;padding:27px}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:25px}
+h1{font-size:24px;margin:0 0 6px}
+.subtitle{font-size:12px;color:var(--muted)}
+.badge{border:1px solid var(--border);padding:9px 12px;border-radius:8px;color:var(--gold-light);font-size:11px;overflow-wrap:anywhere}
+.notice{padding:13px 15px;border:1px solid var(--border);background:var(--card);border-radius:10px;margin-bottom:18px;font-size:12px;color:var(--muted);overflow-wrap:anywhere}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;margin-bottom:20px}
+.stat,.panel{background:var(--card);border:1px solid var(--border);border-radius:12px}
+.stat{padding:18px}
+.stat-label{font-size:10px;color:var(--muted);margin-bottom:12px}
+.stat-value{font-size:27px;font-weight:800}
+.gold{color:var(--gold-light)}.green{color:var(--green)}.red{color:var(--red)}.blue{color:var(--blue)}
+.panel{padding:19px;margin-bottom:18px}
+.panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+.panel-head h2{font-size:15px;margin:0}
+.controls{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:15px}
+input,select{background:#09152a;border:1px solid var(--border);color:var(--text);border-radius:8px;padding:11px;outline:none;min-width:0}
+input:focus,select:focus{border-color:var(--gold)}
+.controls input{flex:1;min-width:180px}
+.controls select{min-width:130px}
+.btn{border:1px solid var(--border);border-radius:8px;background:#192946;color:var(--text);padding:10px 13px;font-weight:700;font-size:11px}
+.btn:hover{border-color:var(--gold)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.table-wrap{width:100%;overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:780px}
+th{text-align:left;color:var(--muted);font-size:10px;letter-spacing:.5px;padding:12px 10px;border-bottom:1px solid var(--border)}
+td{padding:13px 10px;border-bottom:1px solid #1b2a45;font-size:11px;vertical-align:top;overflow-wrap:anywhere}
+tr:last-child td{border-bottom:0}
+.pill{display:inline-block;padding:5px 8px;border-radius:20px;font-size:9px;font-weight:800;background:#25314a;color:var(--muted)}
+.pill.success{background:#15392e;color:var(--green)}
+.pill.failure{background:#48242c;color:#ff9ca2}
+.pill.warning{background:#392c18;color:var(--gold-light)}
+.small{font-size:10px;color:var(--muted);margin-top:4px}
+.pagination{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:16px;color:var(--muted);font-size:11px}
+.actions{display:flex;gap:6px;flex-wrap:wrap}
+.empty{text-align:center;padding:28px;color:var(--muted)}
+.modal-bg{position:fixed;inset:0;background:#000b;display:none;align-items:center;justify-content:center;padding:15px;z-index:10}
+.modal-bg.show{display:flex}
+.modal{width:min(650px,100%);max-height:90vh;overflow:auto;background:var(--sidebar);border:1px solid var(--border);border-radius:14px;padding:20px}
+.modal-head{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.modal-head h2{font-size:17px}
+.close{background:none;color:var(--muted);border:0;font-size:25px}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#081225;border:1px solid var(--border);border-radius:8px;padding:13px;color:var(--text);font-size:11px;line-height:1.7}
+.toast{position:fixed;right:18px;bottom:18px;background:#172946;border:1px solid var(--border);padding:13px 17px;border-radius:9px;display:none;z-index:20;max-width:90vw;font-size:12px}
+@media(max-width:900px){.sidebar{width:190px}.main{padding:18px}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:620px){.layout{display:block}.sidebar{width:100%;padding:13px;border-right:0;border-bottom:1px solid var(--border)}.brand{padding:5px 8px 13px;font-size:20px}.brand small{display:inline;margin-left:8px}.nav-label{display:none}.nav{display:flex;gap:5px;overflow-x:auto;padding-bottom:3px}.nav a{white-space:nowrap;padding:10px;font-size:10px}.main{padding:15px}.topbar{align-items:flex-start;flex-direction:column}h1{font-size:21px}.stats{gap:9px}.stat{padding:13px}.stat-value{font-size:23px}.panel{padding:13px}.modal{padding:14px}}
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand">AITIVEST<small>ADMIN CONTROL</small></div>
+    <div class="nav-label">MAIN MENU</div>
+    <nav class="nav">
+      <a href="admin.html">Overview</a>
+      <a href="admin-users.html">Users</a>
+      <a href="admin-deposits.html">Deposits</a>
+      <a href="admin-withdrawals.html">Withdrawals</a>
+      <a href="admin-transactions.html">Transactions</a>
+      <a href="admin-support.html">Support</a>
+      <a href="admin-security.html" class="active">Security Logs</a>
+      <a href="admin-settings.html">Settings</a>
+    </nav>
+  </aside>  <main class="main">
+    <header class="topbar">
+      <div>
+        <h1>Security Logs</h1>
+        <div class="subtitle">Review recorded administrative actions and security events.</div>
+      </div>
+      <div class="badge" id="adminIdentity">Verifying administrator…</div>
+    </header><div class="notice" id="notice">Connecting to the security audit log…</div>
+
+<section class="stats">
+  <div class="stat"><div class="stat-label">MATCHING EVENTS</div><div class="stat-value" id="totalCount">—</div></div>
+  <div class="stat"><div class="stat-label">SUCCESSFUL ACTIONS</div><div class="stat-value green" id="successCount">—</div></div>
+  <div class="stat"><div class="stat-label">FAILED ACTIONS</div><div class="stat-value red" id="failureCount">—</div></div>
+  <div class="stat"><div class="stat-label">ACTIONS TODAY</div><div class="stat-value gold" id="todayCount">—</div></div>
+</section>
+
+<section class="panel">
+  <div class="panel-head">
+    <h2>Audit Trail</h2>
+    <button class="btn" id="refreshBtn">Refresh</button>
+  </div>
+  <div class="controls">
+    <input id="searchInput" placeholder="Search action, admin ID, target or log ID…" autocomplete="off">
+    <select id="resultFilter">
+      <option value="">All results</option>
+      <option value="true">Successful</option>
+      <option value="false">Failed</option>
+    </select>
+    <select id="periodFilter">
+      <option value="all">All dates</option>
+      <option value="today">Today</option>
+      <option value="7">Last 7 days</option>
+      <option value="30">Last 30 days</option>
+    </select>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>EVENT</th><th>ADMINISTRATOR</th><th>TARGET</th><th>RESULT</th><th>DATE / TIME</th><th>DETAILS</th></tr>
+      </thead>
+      <tbody id="logRows"><tr><td colspan="6" class="empty">Loading security logs…</td></tr></tbody>
+    </table>
+  </div>
+  <div class="pagination">
+    <span id="pageInfo">Page 1</span>
+    <div class="actions">
+      <button class="btn" id="prevBtn">Previous</button>
+      <button class="btn" id="nextBtn">Next</button>
+    </div>
+  </div>
+</section>
+<div class="small">This page displays recorded audit events. It cannot display events that your application or database does not record.</div>
+
+  </main>
+</div><div class="modal-bg" id="detailsModal">
+  <div class="modal">
+    <div class="modal-head"><h2>Security Event Details</h2><button class="close" id="closeModal">&times;</button></div>
+    <div id="detailSummary"></div>
+    <h3 style="font-size:12px">Recorded details (JSON)</h3>
+    <pre id="detailJson">{}</pre>
+    <button class="btn" id="copyBtn">Copy log details</button>
+  </div>
+</div>
+<div class="toast" id="toast"></div><script>
+(() => {
+  'use strict';
+
+  const SUPABASE_URL = 'https://rihvvwktvgytbqzazage.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad';
+  const PAGE_SIZE = 25;
+  const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  const $ = id => document.getElementById(id);
+
+  let adminUser = null;
+  let page = 0;
+  let total = 0;
+  let rows = [];
+  let selectedLog = null;
+  let searchTimer = null;
+  let requestVersion = 0;
+
+  function esc(value) {
+    return String(value ?? '').replace(/[&<>"']/g, ch => ({
+      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+    })[ch]);
+  }
+
+  function dateText(value) {
+    if (!value) return '—';
+    const d = new Date(value);
+    return Number.isNaN(d.getTime()) ? '—' : d.toLocaleString();
+  }
+
+  function setNotice(message, error = false) {
+    $('notice').textContent = message;
+    $('notice').style.color = error ? 'var(--red)' : 'var(--muted)';
+    $('notice').style.borderColor = error ? 'var(--red)' : 'var(--border)';
+  }
+
+  function toast(message, error = false) {
+    const el = $('toast');
+    el.textContent = message;
+    el.style.borderColor = error ? 'var(--red)' : 'var(--green)';
+    el.style.display = 'block';
+    clearTimeout(toast.timer);
+    toast.timer = setTimeout(() => el.style.display = 'none', 4000);
+  }
+
+  function resultLabel(value) {
+    if (value === true) return '<span class="pill success">SUCCESS</span>';
+    if (value === false) return '<span class="pill failure">FAILED</span>';
+    return '<span class="pill warning">UNKNOWN</span>';
+  }
+
+  async function verifyAdmin() {
+    const { data: { session }, error: sessionError } = await db.auth.getSession();
+    if (sessionError) throw sessionError;
+
+    if (!session) {
+      $('adminIdentity').textContent = 'Not signed in';
+      setNotice('Please sign in with your administrator account, then reopen this page.', true);
+      return false;
+    }
+
+    const { data, error } = await db.rpc('is_current_user_admin');
+    if (error) throw error;
+    if (data !== true) {
+      $('adminIdentity').textContent = 'Access denied';
+      setNotice('This account is not authorized to view security logs.', true);
+      return false;
+    }
+
+    adminUser = session.user;
+    $('adminIdentity').textContent = session.user.email || 'Verified administrator';
+    setNotice('Administrator verified. Loading recorded security events.');
+    return true;
+  }
+
+  function applyLocalFilters(data) {
+    const search = $('searchInput').value.trim().toLowerCase();
+    const result = $('resultFilter').value;
+    const period = $('periodFilter').value;
+    const now = new Date();
+    let filtered = data;
+
+    if (search) {
+      filtered = filtered.filter(row => {
+        const searchable = [
+          row.id, row.admin_user_id, row.action, row.target_type,
+          row.target_id, JSON.stringify(row.details || {})
+        ].join(' ').toLowerCase();
+        return searchable.includes(search);
+      });
+    }
+
+    if (result !== '') {
+      filtered = filtered.filter(row => String(row.success) === result);
+    }
+
+    if (period !== 'all') {
+      let start;
+      if (period === 'today') {
+        start = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      } else {
+        start = new Date(now.getTime() - Number(period) * 24 * 60 * 60 * 1000);
+      }
+      filtered = filtered.filter(row => row.created_at && new Date(row.created_at) >= start);
+    }
+    return filtered;
+  }
+
+  async function loadLogs(resetPage = false) {
+    if (!adminUser) return;
+    if (resetPage) page = 0;
+    const version = ++requestVersion;
+    $('refreshBtn').disabled = true;
+    $('logRows').innerHTML = '<tr><td colspan="6" class="empty">Loading security logs…</td></tr>';
+
+    /*
+      Read-only query. The browser does not insert, edit or delete audit logs.
+      Search/filter are applied to the fetched rows, while the database query
+      requests the newest records first.
+    */
+    const { data, error } = await db
+      .from('admin_security_logs')
+      .select('id,admin_user_id,action,target_type,target_id,details,success,created_at')
+      .order('created_at', { ascending: false })
+      .limit(500);
+
+    if (version !== requestVersion) return;
+    $('refreshBtn').disabled = false;
+
+    if (error) {
+      $('logRows').innerHTML = `<tr><td colspan="6" class="empty">${esc(error.message)}<br><br>Check the table's SELECT permissions or use an admin-only listing RPC.</td></tr>`;
+      setNotice('Security logs could not be loaded. No audit records were changed.', true);
+      $('pageInfo').textContent = 'Page unavailable';
+      $('prevBtn').disabled = true;
+      $('nextBtn').disabled = true;
+      return;
+    }
+
+    const filtered = applyLocalFilters(data || []);
+    total = filtered.length;
+    rows = filtered.slice(page * PAGE_SIZE, page * PAGE_SIZE + PAGE_SIZE);
+
+    $('totalCount').textContent = String(total);
+    $('successCount').textContent = String(filtered.filter(row => row.success === true).length);
+    $('failureCount').textContent = String(filtered.filter(row => row.success === false).length);
+
+    const now = new Date();
+    const startToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    $('todayCount').textContent = String(filtered.filter(row => row.created_at && new Date(row.created_at) >= startToday).length);
+
+    renderRows();
+
+    const pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+    $('pageInfo').textContent = `Page ${page + 1} of ${pages} · ${total} matching event(s)`;
+    $('prevBtn').disabled = page === 0;
+    $('nextBtn').disabled = (page + 1) * PAGE_SIZE >= total;
+
+    setNotice(`Loaded ${data?.length || 0} recent log(s) from the database. Search and filters apply to these records.`);
+  }
+
+  function renderRows() {
+    if (!rows.length) {
+      $('logRows').innerHTML = '<tr><td colspan="6" class="empty">No matching security events found.</td></tr>';
+      return;
+    }
+
+    $('logRows').innerHTML = rows.map((row, index) => `
+      <tr>
+        <td><strong>${esc(row.action || 'Unspecified action')}</strong><div class="small">Log #${esc(row.id)}</div></td>
+        <td>${esc(row.admin_user_id || 'System / unknown')}<div class="small">Administrator ID</div></td>
+        <td>${esc(row.target_type || '—')}<div class="small">${esc(row.target_id || '—')}</div></td>
+        <td>${resultLabel(row.success)}</td>
+        <td>${esc(dateText(row.created_at))}</td>
+        <td><button class="btn detail-btn" data-index="${index}">View details</button></td>
+      </tr>`).join('');
+  }
+
+  function showDetails(row) {
+    selectedLog = row;
+    $('detailSummary').innerHTML = `
+      <div class="notice">
+        <strong>${esc(row.action || 'Unspecified action')}</strong><br>
+        Log ID: ${esc(row.id)}<br>
+        Administrator: ${esc(row.admin_user_id || 'Unknown')}<br>
+        Target: ${esc(row.target_type || '—')} / ${esc(row.target_id || '—')}<br>
+        Result: ${row.success === true ? 'SUCCESS' : row.success === false ? 'FAILED' : 'UNKNOWN'}<br>
+        Date: ${esc(dateText(row.created_at))}
+      </div>`;
+    $('detailJson').textContent = JSON.stringify(row.details ?? {}, null, 2);
+    $('detailsModal').classList.add('show');
+  }
+
+  $('logRows').addEventListener('click', event => {
+    const button = event.target.closest('.detail-btn');
+    if (button) showDetails(rows[Number(button.dataset.index)]);
+  });
+
+  $('closeModal').addEventListener('click', () => $('detailsModal').classList.remove('show'));
+  $('detailsModal').addEventListener('click', event => {
+    if (event.target === $('detailsModal')) $('detailsModal').classList.remove('show');
+  });
+
+  $('copyBtn').addEventListener('click', async () => {
+    if (!selectedLog) return;
+    const content = JSON.stringify(selectedLog, null, 2);
+    try {
+      await navigator.clipboard.writeText(content);
+      toast('Log details copied.');
+    } catch {
+      toast('Copy is unavailable in this browser. Select and copy the details manually.', true);
+    }
+  });
+
+  $('refreshBtn').addEventListener('click', () => loadLogs(false));
+  $('prevBtn').addEventListener('click', () => { if (page > 0) { page--; loadLogs(false); } });
+  $('nextBtn').addEventListener('click', () => { if ((page + 1) * PAGE_SIZE < total) { page++; loadLogs(false); } });
+  $('resultFilter').addEventListener('change', () => loadLogs(true));
+  $('periodFilter').addEventListener('change', () => loadLogs(true));
+  $('searchInput').addEventListener('input', () => {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(() => loadLogs(true), 300);
+  });
+
+  db.auth.onAuthStateChange((_event, session) => {
+    if (!session) {
+      adminUser = null;
+      $('adminIdentity').textContent = 'Not signed in';
+      setNotice('Your session has ended. Sign in again to view security logs.', true);
+    }
+  });
+
+  (async () => {
+    try {
+      if (await verifyAdmin()) await loadLogs(true);
+    } catch (error) {
+      $('adminIdentity').textContent = 'Verification failed';
+      setNotice('Could not verify administrator access: ' + (error.message || 'Unknown error'), true);
+    }
+  })();
+})();
+</script></body>
+</html>
