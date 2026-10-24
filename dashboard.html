@@ -1854,66 +1854,117 @@ async function loadPaymentStatistics(){
     setText("outgoingPayments",formatMoney(outgoing));
   }
 }
-
-/* EARNINGS STATISTICS */
+  /* EARNINGS STATISTICS */
 
 async function loadEarningsStatistics(){
-  const result = await db
+  setText("allAccruals","Loading...");
+  setText("mainProfit","Loading...");
+  setText("partnersProfit","Loading...");
+
+  const earningsResult = await db
     .from("earning_records")
-    .select("amount,status")
+    .select("earning_amount,asset,status")
     .eq("user_id",currentUser.id)
     .eq("status","CREDITED");
 
-  if(result.error){
-    console.error("Earnings statistics error:",result.error);
+  if(earningsResult.error){
+    console.error(
+      "Earnings statistics error:",
+      earningsResult.error
+    );
 
     setText("allAccruals","Unavailable");
     setText("mainProfit","Unavailable");
 
     setText(
       "statisticsNote",
-      "Earnings records could not be verified."
+      "Earnings records could not be verified. Please try again later."
     );
   }else{
-    const total = (result.data || []).reduce((sum,record)=>{
-      const amount = Number(record.amount ?? 0);
+    const earnings = earningsResult.data || [];
+
+    /*
+      Sum USDT-denominated earnings only.
+      Do not treat BTC, ETH, or other crypto quantities
+      as though they were US dollar amounts.
+    */
+
+    const usdtEarnings = earnings.reduce((sum,record)=>{
+      if(
+        String(record.asset || "").toUpperCase() !== "USDT"
+      ){
+        return sum;
+      }
+
+      const amount = Number(record.earning_amount);
 
       return sum + (
-        Number.isFinite(amount) && amount > 0 ? amount : 0
+        Number.isFinite(amount) && amount > 0
+          ? amount
+          : 0
       );
     },0);
 
-    setText("allAccruals",formatMoney(total));
-    setText("mainProfit",formatMoney(total));
+    setText(
+      "allAccruals",
+      formatMoney(usdtEarnings)
+    );
+
+    setText(
+      "mainProfit",
+      formatMoney(usdtEarnings)
+    );
 
     setText(
       "statisticsNote",
-      "Figures reflect records marked CREDITED in your account."
+      "Earnings totals include credited USDT records only. Other assets are excluded because their USD values have not been calculated."
     );
   }
 
-  const commissions = await db
-    .from("referral_commissions")
-    .select("commission_amount,status")
-    .eq("referrer_id",currentUser.id)
-    .eq("status","CREDITED");
+  /*
+    Referral commissions are stored in
+    referral_commission_records.
+    This table does not use the status filter
+    from the previous dashboard implementation.
+  */
 
-  if(commissions.error){
-    console.error("Referral commission statistics error:",commissions.error);
+  const commissionsResult = await db
+    .from("referral_commission_records")
+    .select("commission_amount,asset,referrer_id")
+    .eq("referrer_id",currentUser.id);
+
+  if(commissionsResult.error){
+    console.error(
+      "Referral commission statistics error:",
+      commissionsResult.error
+    );
+
     setText("partnersProfit","Unavailable");
   }else{
-    const total = (commissions.data || []).reduce((sum,record)=>{
-      const amount = Number(record.commission_amount ?? 0);
+    const commissions = commissionsResult.data || [];
+
+    const usdtCommissions = commissions.reduce((sum,record)=>{
+      if(
+        String(record.asset || "").toUpperCase() !== "USDT"
+      ){
+        return sum;
+      }
+
+      const amount = Number(record.commission_amount);
 
       return sum + (
-        Number.isFinite(amount) && amount > 0 ? amount : 0
+        Number.isFinite(amount) && amount > 0
+          ? amount
+          : 0
       );
     },0);
 
-    setText("partnersProfit",formatMoney(total));
+    setText(
+      "partnersProfit",
+      formatMoney(usdtCommissions)
+    );
   }
 }
-
 /* REFRESH */
 
 async function refreshDashboardData(){
