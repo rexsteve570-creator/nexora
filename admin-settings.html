@@ -1,0 +1,382 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Settings | AITIVEST</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Instrument+Serif&display=swap" rel="stylesheet">
+<style>
+:root{
+--bg:#081225;--sidebar:#0b162d;--card:#101d38;--border:#233352;
+--gold:#d4a64a;--gold-light:#ebd29a;--text:#eaf0fa;--muted:#94a3bd;
+--green:#53d6a0;--red:#ff777f;--blue:#5b8def;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Manrope,Arial,sans-serif}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:245px;background:var(--sidebar);border-right:1px solid var(--border);padding:25px 16px;flex-shrink:0}
+.brand{font-family:"Instrument Serif",serif;font-size:32px;color:var(--gold-light);padding:4px 12px 30px}
+.brand small{display:block;font:10px Manrope,sans-serif;letter-spacing:3px;color:var(--muted);margin-top:3px}
+.nav-label{font-size:10px;letter-spacing:2px;color:var(--muted);padding:12px}
+.nav a{display:block;text-decoration:none;color:var(--muted);padding:12px;border-radius:9px;margin:4px 0;font-size:13px}
+.nav a:hover,.nav a.active{background:#1a2a48;color:var(--gold-light)}
+.main{flex:1;min-width:0;padding:30px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:28px}
+h1{font-family:"Instrument Serif",serif;font-size:36px;font-weight:400;margin:0}
+.subtitle{font-size:12px;color:var(--muted);margin-top:7px}
+.badge{border:1px solid #66542e;color:var(--gold-light);padding:8px 12px;border-radius:20px;font-size:11px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:15px;padding:22px;min-width:0}
+.card h2{font-size:15px;margin:0 0 7px}
+.desc{color:var(--muted);font-size:11px;line-height:1.7;margin:0 0 22px}
+.field{margin:18px 0}
+label{display:block;font-size:12px;font-weight:700;margin-bottom:8px}
+input,select{width:100%;background:#09152b;color:var(--text);border:1px solid var(--border);border-radius:8px;padding:12px;outline:none}
+input:focus,select:focus{border-color:var(--gold)}
+.hint{font-size:10px;color:var(--muted);margin-top:7px;line-height:1.6}
+.row{display:flex;justify-content:space-between;align-items:center;gap:15px}
+.switch{width:46px;height:25px;border-radius:20px;background:#35435b;position:relative;border:0;flex-shrink:0}
+.switch:after{content:"";position:absolute;width:17px;height:17px;left:4px;top:4px;background:white;border-radius:50%;transition:.2s}
+.switch.on{background:var(--green)}
+.switch.on:after{left:25px}
+.btn{border:0;border-radius:8px;background:var(--gold);color:#101827;font-weight:800;font-size:12px;padding:12px 17px}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.secondary{background:#1c2c49;color:var(--text);border:1px solid var(--border)}
+.btn.danger{background:#45222d;color:#ffb4ba;border:1px solid #78343e}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.status{font-size:12px;line-height:1.7;padding:13px 15px;border-radius:9px;background:#0b1930;border:1px solid var(--border);margin-bottom:20px;white-space:pre-wrap;overflow-wrap:anywhere}
+.status.ok{border-color:#245d4c;color:var(--green)}
+.status.error{border-color:#743a43;color:var(--red)}
+.status.warn{border-color:#66542e;color:var(--gold-light)}
+.info{font-size:12px;color:var(--muted);line-height:1.8}
+footer{font-size:10px;color:var(--muted);margin-top:25px;line-height:1.8}
+#authPanel{max-width:500px;margin:50px auto}
+.hidden{display:none!important}
+@media(max-width:850px){
+.layout{display:block}.sidebar{width:100%;padding:14px;border-right:0;border-bottom:1px solid var(--border)}
+.brand{padding:4px 8px 14px}.nav-label{display:none}
+.nav{display:flex;overflow-x:auto;gap:5px}.nav a{white-space:nowrap;padding:10px;font-size:11px}
+.main{padding:20px 14px}.grid{grid-template-columns:1fr}h1{font-size:31px}
+.top{align-items:flex-start}.badge{font-size:9px}
+}
+</style>
+</head>
+<body>
+<div id="authPanel" class="card">
+<h2>Administrator verification</h2>
+<p class="desc">Sign in to access AITIVEST platform settings.</p>
+<div class="field"><label>Email</label><input id="loginEmail" type="email" autocomplete="username" placeholder="Administrator email"></div>
+<div class="field"><label>Password</label><input id="loginPassword" type="password" autocomplete="current-password" placeholder="Password"></div>
+<button class="btn" id="loginBtn">Sign in</button>
+<div class="actions"><button class="btn secondary" id="checkSessionBtn">Check existing session</button></div>
+<div id="authStatus" class="status warn" style="margin-top:15px">Sign in with your existing Supabase administrator account.</div>
+</div><div id="app" class="layout hidden">
+<aside class="sidebar">
+<div class="brand">AITIVEST<small>ADMINISTRATION</small></div>
+<div class="nav-label">WORKSPACE</div>
+<nav class="nav">
+<a href="admin.html">Overview</a>
+<a href="admin-users.html">Users</a>
+<a href="admin-deposits.html">Deposits</a>
+<a href="admin-withdrawals.html">Withdrawals</a>
+<a href="admin-transactions.html">Transactions</a>
+<a href="admin-support.html">Support</a>
+<a href="admin-security.html">Security Logs</a>
+<a class="active" href="admin-settings.html">Settings</a>
+</nav>
+</aside><main class="main">
+<div class="top">
+<div><h1>Platform Settings</h1><div class="subtitle">Manage AITIVEST configuration securely.</div></div>
+<div class="badge">ADMIN ACCESS</div>
+</div><div id="pageStatus" class="status warn">Checking administrator access...</div><div class="grid">
+<section class="card">
+<h2>Investment Configuration</h2>
+<p class="desc">Stored configuration values. These do not change earnings until integrated with the earning backend.</p>
+<div class="field">
+<label for="dailyRate">Proposed daily rate (%)</label>
+<input id="dailyRate" type="number" min="0" max="100" step="0.01" value="2">
+<div class="hint">Configuration only. This value is not yet connected to deposit activation or profit calculations.</div>
+</div>
+<div class="field">
+<label for="earningMode">Earning calculation mode</label>
+<select id="earningMode"><option value="fixed">Fixed daily rate</option><option value="manual">Manual/admin-controlled</option></select>
+<div class="hint">Selecting an option stores the preference only; it does not change the earning engine.</div>
+</div>
+<button class="btn" id="saveInvestment">Save investment configuration</button>
+</section><section class="card">
+<h2>Referral Configuration</h2>
+<p class="desc">Configure the proposed referral commission for later backend integration.</p>
+<div class="field">
+<label for="referralRate">Referral commission (%)</label>
+<input id="referralRate" type="number" min="0" max="100" step="0.01" value="5">
+<div class="hint">The proposed model calculates commission from referred users' daily earnings, not their deposit. This field is not yet connected to payouts.</div>
+</div>
+<div class="field">
+<label for="referralMode">Referral calculation basis</label>
+<select id="referralMode"><option value="daily_earnings">Referred user's daily earnings</option><option value="deposit">Deposit amount</option></select>
+<div class="hint">This is a saved configuration preference, not an active commission rule.</div>
+</div>
+<button class="btn" id="saveReferral">Save referral configuration</button>
+</section><section class="card">
+<h2>Platform Controls</h2>
+<p class="desc">Save general operational preferences. These controls do not suspend user access or stop backend processing.</p>
+<div class="field row">
+<div><label style="margin-bottom:4px">Maintenance mode</label><div class="hint">Configuration flag only; not enforced by the site yet.</div></div>
+<button id="maintenanceSwitch" class="switch" role="switch" aria-checked="false" aria-label="Maintenance mode"></button>
+</div>
+<div class="field">
+<label for="supportEmail">Support contact email</label>
+<input id="supportEmail" type="email" maxlength="254" placeholder="support@example.com">
+</div>
+<button class="btn" id="savePlatform">Save platform preferences</button>
+</section><section class="card">
+<h2>Security & Audit</h2>
+<p class="desc">Existing AITIVEST administrator security tools.</p>
+<div class="info">
+<strong>Administrator verification:</strong> Required by the database functions.<br><br>
+<strong>Audit trail:</strong> Settings updates are recorded using the existing admin security-log function.<br><br>
+<strong>Two-factor authentication:</strong> Manage this separately through your account's Supabase MFA setup. This page does not enable MFA automatically.
+</div>
+<div class="actions">
+<a class="btn secondary" style="text-decoration:none" href="admin-security.html">View security logs</a>
+<button class="btn secondary" id="refreshBtn">Reload settings</button>
+<button class="btn danger" id="logoutBtn">Sign out</button>
+</div>
+</section>
+</div><footer>
+AITIVEST Admin · Configuration changes are saved through administrator-only database functions. Investment and referral settings are not active financial rules until the corresponding backend logic has been verified and integrated.
+</footer>
+</main>
+</div><script>
+(() => {
+'use strict';
+
+const SUPABASE_URL = 'https://rihvvwktvgytbqzazage.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad';
+
+const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const $ = id => document.getElementById(id);
+let isAdmin = false;
+let maintenance = false;
+
+function showStatus(id, message, type='warn') {
+    const el = $(id);
+    el.textContent = message;
+    el.className = 'status ' + type;
+}
+
+function jsonSetting(value) {
+    return JSON.stringify(value);
+}
+
+async function verifyAdmin() {
+    isAdmin = false;
+    $('app').classList.add('hidden');
+    const { data: sessionData, error: sessionError } = await client.auth.getSession();
+
+    if (sessionError || !sessionData.session) {
+        $('authPanel').classList.remove('hidden');
+        showStatus('authStatus', 'Please sign in using your existing administrator account.', 'warn');
+        return false;
+    }
+
+    const { data, error } = await client.rpc('is_current_user_admin');
+
+    if (error || data !== true) {
+        $('authPanel').classList.remove('hidden');
+        showStatus('authStatus', error ? 'Administrator check failed: ' + error.message : 'This account is not authorized as an administrator.', 'error');
+        return false;
+    }
+
+    isAdmin = true;
+    $('authPanel').classList.add('hidden');
+    $('app').classList.remove('hidden');
+    showStatus('pageStatus', 'Administrator verified. Loading saved settings...', 'warn');
+    return true;
+}
+
+async function loadSettings() {
+    if (!isAdmin) return;
+
+    const { data, error } = await client.rpc('admin_get_platform_settings');
+
+    if (error) {
+        showStatus('pageStatus', 'Unable to load settings: ' + error.message, 'error');
+        return;
+    }
+
+    const settings = data || {};
+
+    const daily = settings.investment_daily_rate;
+    const earningMode = settings.investment_earning_mode;
+    const referral = settings.referral_commission_rate;
+    const referralMode = settings.referral_calculation_basis;
+    const maintenanceValue = settings.maintenance_mode;
+    const supportEmail = settings.support_email;
+
+    if (daily !== undefined) $('dailyRate').value = Number(daily);
+    if (earningMode !== undefined) $('earningMode').value = earningMode;
+    if (referral !== undefined) $('referralRate').value = Number(referral);
+    if (referralMode !== undefined) $('referralMode').value = referralMode;
+    if (supportEmail !== undefined) $('supportEmail').value = String(supportEmail);
+
+    maintenance = maintenanceValue === true;
+    updateSwitch();
+
+    showStatus('pageStatus', 'Settings loaded successfully. Investment and referral values remain configuration-only until backend integration is completed.', 'ok');
+}
+
+function updateSwitch() {
+    const btn = $('maintenanceSwitch');
+    btn.classList.toggle('on', maintenance);
+    btn.setAttribute('aria-checked', String(maintenance));
+}
+
+async function saveSetting(key, value) {
+    if (!isAdmin) {
+        showStatus('pageStatus', 'Administrator verification is required.', 'error');
+        return false;
+    }
+
+    const { data, error } = await client.rpc('admin_update_platform_setting', {
+        p_setting_key: key,
+        p_setting_value: jsonSetting(value)
+    });
+
+    if (error) {
+        showStatus('pageStatus', 'Could not save ' + key + ': ' + error.message, 'error');
+        return false;
+    }
+
+    if (!data || data.success !== true) {
+        showStatus('pageStatus', 'The database did not confirm the update.', 'error');
+        return false;
+    }
+
+    return true;
+}
+
+$('loginBtn').addEventListener('click', async () => {
+    const email = $('loginEmail').value.trim();
+    const password = $('loginPassword').value;
+
+    if (!email || !password) {
+        showStatus('authStatus', 'Enter both email and password.', 'error');
+        return;
+    }
+
+    $('loginBtn').disabled = true;
+    const { error } = await client.auth.signInWithPassword({ email, password });
+    $('loginBtn').disabled = false;
+
+    if (error) {
+        showStatus('authStatus', 'Sign-in failed: ' + error.message, 'error');
+        return;
+    }
+
+    if (await verifyAdmin()) await loadSettings();
+});
+
+$('checkSessionBtn').addEventListener('click', async () => {
+    if (await verifyAdmin()) await loadSettings();
+});
+
+$('saveInvestment').addEventListener('click', async () => {
+    const rate = Number($('dailyRate').value);
+    const mode = $('earningMode').value;
+
+    if (!Number.isFinite(rate) || rate < 0 || rate > 100) {
+        showStatus('pageStatus', 'Daily rate must be between 0 and 100.', 'error');
+        return;
+    }
+
+    const btn = $('saveInvestment');
+    btn.disabled = true;
+
+    const a = await saveSetting('investment_daily_rate', rate);
+    const b = a && await saveSetting('investment_earning_mode', mode);
+
+    btn.disabled = false;
+
+    if (a && b) showStatus('pageStatus', 'Investment configuration saved. These settings do not yet affect actual earnings.', 'ok');
+});
+
+$('saveReferral').addEventListener('click', async () => {
+    const rate = Number($('referralRate').value);
+    const basis = $('referralMode').value;
+
+    if (!Number.isFinite(rate) || rate < 0 || rate > 100) {
+        showStatus('pageStatus', 'Referral commission must be between 0 and 100.', 'error');
+        return;
+    }
+
+    const btn = $('saveReferral');
+    btn.disabled = true;
+
+    const a = await saveSetting('referral_commission_rate', rate);
+    const b = a && await saveSetting('referral_calculation_basis', basis);
+
+    btn.disabled = false;
+
+    if (a && b) showStatus('pageStatus', 'Referral configuration saved. These settings do not yet trigger commission payments.', 'ok');
+});
+
+$('maintenanceSwitch').addEventListener('click', async () => {
+    if (!isAdmin) return;
+
+    const next = !maintenance;
+    $('maintenanceSwitch').disabled = true;
+
+    const ok = await saveSetting('maintenance_mode', next);
+
+    $('maintenanceSwitch').disabled = false;
+
+    if (ok) {
+        maintenance = next;
+        updateSwitch();
+        showStatus('pageStatus', 'Maintenance preference saved. It is not enforced by the website or backend yet.', 'ok');
+    }
+});
+
+$('savePlatform').addEventListener('click', async () => {
+    const email = $('supportEmail').value.trim();
+
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        showStatus('pageStatus', 'Enter a valid support email address.', 'error');
+        return;
+    }
+
+    const btn = $('savePlatform');
+    btn.disabled = true;
+
+    const ok = await saveSetting('support_email', email);
+
+    btn.disabled = false;
+
+    if (ok) showStatus('pageStatus', 'Platform preferences saved. The support email is not automatically displayed elsewhere yet.', 'ok');
+});
+
+$('refreshBtn').addEventListener('click', loadSettings);
+
+$('logoutBtn').addEventListener('click', async () => {
+    await client.auth.signOut();
+    isAdmin = false;
+    $('app').classList.add('hidden');
+    $('authPanel').classList.remove('hidden');
+    showStatus('authStatus', 'You have signed out.', 'warn');
+});
+
+client.auth.onAuthStateChange(() => {
+    setTimeout(async () => {
+        if (await verifyAdmin()) await loadSettings();
+    }, 0);
+});
+
+(async () => {
+    if (await verifyAdmin()) await loadSettings();
+})();
+})();
+</script></body>
+</html>
