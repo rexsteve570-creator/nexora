@@ -1974,42 +1974,94 @@ async function loadPartnerStatistics(){
 }
 
 /* PAYMENT STATISTICS */
-
-async function loadPaymentStatistics(){
-  /*
-   Incoming total uses credited_amount, which must be USD-equivalent.
-   It deliberately does not fall back to raw cryptocurrency amount.
-  */
-  
+  async function loadPaymentStatistics() {
+  // 1. Load confirmed deposits
   const depositsResult = await db
-  .from("deposits")
-  .select("asset, amount, credited_amount, status")
-  .eq("user_id", currentUser.id)
-  .eq("status", "CONFIRMED");
+    .from("deposits")
+    .select("asset, amount, credited_amount, status")
+    .eq("user_id", currentUser.id)
+    .eq("status", "CONFIRMED");
 
-if (depositsResult.error) {
-  console.error(
-    "Incoming payment statistics error:",
-    depositsResult.error
-  );
+  if (depositsResult.error) {
+    console.error(
+      "Incoming payment statistics error:",
+      depositsResult.error
+    );
 
-  setText("incomingPayments", "Unavailable");
-} else {
+    setText("incomingPayments", "Unavailable");
+  } else {
+    await loadCryptoUsdPrices();
+
+    let incomingUsd = 0;
+    const missingIncomingAssets = [];
+
+    for (const deposit of depositsResult.data || []) {
+      const asset = String(deposit.asset || "").toUpperCase();
+      const credited = Number(deposit.credited_amount);
+      const submitted = Number(deposit.amount);
+
+      const quantity =
+        Number.isFinite(credited) && credited > 0
+          ? credited
+          : submitted;
+
+      if (!Number.isFinite(quantity) || quantity <= 0) {
+        continue;
+      }
+
+      const usdValue = cryptoAmountToUsd(quantity, asset);
+
+      if (usdValue === null) {
+        if (!missingIncomingAssets.includes(asset)) {
+          missingIncomingAssets.push(asset);
+        }
+        continue;
+      }
+
+      incomingUsd += usdValue;
+    }
+
+    setText(
+      "incomingPayments",
+      missingIncomingAssets.length
+        ? formatMoney(incomingUsd) + " + unavailable"
+        : formatMoney(incomingUsd)
+    );
+  }
+
+  // 2. Load completed withdrawals only
+  const withdrawalsResult = await db
+    .from("withdrawals")
+    .select("asset, amount, net_amount, status")
+    .eq("user_id", currentUser.id)
+    .eq("status", "COMPLETED");
+
+  if (withdrawalsResult.error) {
+    console.error(
+      "Outgoing payment statistics error:",
+      withdrawalsResult.error
+    );
+
+    setText("outgoingPayments", "Unavailable");
+    return;
+  }
+
   await loadCryptoUsdPrices();
 
-  let incomingUsd = 0;
-  let missingAssets = [];
+  let outgoingUsd = 0;
+  const missingOutgoingAssets = [];
 
-  for (const deposit of depositsResult.data || []) {
-    const asset = String(deposit.asset || "").toUpperCase();
+  for (const withdrawal of withdrawalsResult.data || []) {
+    const asset = String(withdrawal.asset || "").toUpperCase();
 
-    const credited = Number(deposit.credited_amount);
-    const submitted = Number(deposit.amount);
+    // Net amount represents the amount after withdrawal fees.
+    const netAmount = Number(withdrawal.net_amount);
+    const requestedAmount = Number(withdrawal.amount);
 
     const quantity =
-      Number.isFinite(credited) && credited > 0
-        ? credited
-        : submitted;
+      Number.isFinite(netAmount) && netAmount > 0
+        ? netAmount
+        : requestedAmount;
 
     if (!Number.isFinite(quantity) || quantity <= 0) {
       continue;
@@ -2018,23 +2070,21 @@ if (depositsResult.error) {
     const usdValue = cryptoAmountToUsd(quantity, asset);
 
     if (usdValue === null) {
-      if (!missingAssets.includes(asset)) {
-        missingAssets.push(asset);
+      if (!missingOutgoingAssets.includes(asset)) {
+        missingOutgoingAssets.push(asset);
       }
-
       continue;
     }
 
-    incomingUsd += usdValue;
+    outgoingUsd += usdValue;
   }
 
   setText(
-    "incomingPayments",
-    missingAssets.length
-      ? formatMoney(incomingUsd) + " + unavailable"
-      : formatMoney(incomingUsd)
+    "outgoingPayments",
+    missingOutgoingAssets.length
+      ? formatMoney(outgoingUsd) + " + unavailable"
+      : formatMoney(outgoingUsd)
   );
-}
 }
   /* EARNINGS STATISTICS */
 
