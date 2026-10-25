@@ -1751,36 +1751,78 @@ function renderAvailableUSDT(){
  credited_amount must represent the USD-equivalent amount.
  Do not add raw BTC/ETH quantities to USDT amounts.
 */
+  async function renderPortfolio() {
+  setText("portfolioValue", "Loading...");
 
-async function renderPortfolio(){
-  setText("portfolioValue","Loading...");
-
-  const {data,error} = await db
+  const { data, error } = await db
     .from("deposits")
-    .select("credited_amount,status")
-    .eq("user_id",currentUser.id)
-    .eq("status","CONFIRMED");
+    .select("asset, amount, credited_amount, status")
+    .eq("user_id", currentUser.id)
+    .eq("status", "CONFIRMED");
 
-  if(error){
-    console.error("FIAT portfolio loading error:",error);
-    setText("portfolioValue","Unavailable");
+  if (error) {
+    console.error("Portfolio loading error:", error);
+    setText("portfolioValue", "Unavailable");
     return null;
   }
 
-  const total = (data || []).reduce((sum,deposit)=>{
-    const value = Number(deposit.credited_amount);
+  const deposits = data || [];
 
-    if(!Number.isFinite(value) || value < 0){
-      return sum;
+  await loadCryptoUsdPrices();
+
+  let totalUsd = 0;
+  let missingPrices = [];
+
+  for (const deposit of deposits) {
+    const asset = String(deposit.asset || "").toUpperCase();
+
+    // Prefer credited_amount when it contains a valid positive
+    // quantity; otherwise use the submitted deposit amount.
+    const credited = Number(deposit.credited_amount);
+    const submitted = Number(deposit.amount);
+
+    const quantity =
+      Number.isFinite(credited) && credited > 0
+        ? credited
+        : submitted;
+
+    if (!Number.isFinite(quantity) || quantity <= 0) {
+      continue;
     }
 
-    return sum + value;
-  },0);
+    const usdValue = cryptoAmountToUsd(quantity, asset);
 
-  setText("portfolioValue",formatMoney(total));
-  return total;
+    if (usdValue === null) {
+      if (!missingPrices.includes(asset)) {
+        missingPrices.push(asset);
+      }
+
+      continue;
+    }
+
+    totalUsd += usdValue;
+  }
+
+  if (missingPrices.length) {
+    setText(
+      "portfolioValue",
+      formatMoney(totalUsd) + " + unavailable"
+    );
+
+    setText(
+      "statisticsNote",
+      "Some deposit valuations are unavailable because market prices could not be retrieved for: " +
+        missingPrices.join(", ") +
+        ". The displayed total excludes those deposits."
+    );
+
+    return totalUsd;
+  }
+
+  setText("portfolioValue", formatMoney(totalUsd));
+
+  return totalUsd;
 }
-
 /* ACTIVE CONFIRMED DEPOSITS */
 
 async function loadActiveDeposits(){
