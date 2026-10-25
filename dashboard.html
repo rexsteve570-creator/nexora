@@ -1544,7 +1544,134 @@ function renderSelectedAsset(){
 
   updateActiveCryptoOption();
 }
+  
+/* LIVE CRYPTOCURRENCY USD PRICES */
 
+const COIN_IDS = {
+  BTC: "bitcoin",
+  ETH: "ethereum",
+  USDT: "tether",
+  USDC: "usd-coin",
+  BNB: "binancecoin",
+  SOL: "solana",
+  XRP: "ripple",
+  TON: "the-open-network",
+  DOGE: "dogecoin",
+  ADA: "cardano",
+  TRX: "tron",
+  LTC: "litecoin",
+  AVAX: "avalanche-2",
+  DOT: "polkadot",
+  LINK: "chainlink",
+  POL: "polygon-ecosystem-token",
+  SHIB: "shiba-inu",
+  BCH: "bitcoin-cash",
+  XLM: "stellar",
+  ATOM: "cosmos",
+  NEAR: "near",
+  APT: "aptos",
+  ARB: "arbitrum",
+  OP: "optimism"
+};
+
+let cryptoUsdPrices = {};
+let pricesUpdatedAt = 0;
+let priceRefreshPromise = null;
+
+const PRICE_CACHE_DURATION = 60 * 1000;
+
+async function loadCryptoUsdPrices(force = false) {
+  if (
+    !force &&
+    Date.now() - pricesUpdatedAt < PRICE_CACHE_DURATION &&
+    Object.keys(cryptoUsdPrices).length
+  ) {
+    return cryptoUsdPrices;
+  }
+
+  if (priceRefreshPromise) {
+    return priceRefreshPromise;
+  }
+
+  priceRefreshPromise = (async () => {
+    const ids = [...new Set(Object.values(COIN_IDS))];
+
+    const url =
+      "https://api.coingecko.com/api/v3/simple/price" +
+      "?ids=" + encodeURIComponent(ids.join(",")) +
+      "&vs_currencies=usd";
+
+    try {
+      const response = await fetch(url, {
+        method: "GET",
+        headers: { Accept: "application/json" },
+        cache: "no-store",
+        signal: AbortSignal.timeout(12000)
+      });
+
+      if (!response.ok) {
+        throw new Error("Price provider returned HTTP " + response.status);
+      }
+
+      const data = await response.json();
+      const nextPrices = {};
+
+      for (const [symbol, coinId] of Object.entries(COIN_IDS)) {
+        const price = Number(data?.[coinId]?.usd);
+
+        if (Number.isFinite(price) && price > 0) {
+          nextPrices[symbol] = price;
+        }
+      }
+
+      if (!Object.keys(nextPrices).length) {
+        throw new Error("No valid cryptocurrency prices returned.");
+      }
+
+      cryptoUsdPrices = nextPrices;
+      pricesUpdatedAt = Date.now();
+
+      return cryptoUsdPrices;
+    } catch (error) {
+      console.error("Cryptocurrency price loading failed:", error);
+
+      // Preserve any previously retrieved prices.
+      // Never assume an unknown cryptocurrency is worth $1.
+      return cryptoUsdPrices;
+    } finally {
+      priceRefreshPromise = null;
+    }
+  })();
+
+  return priceRefreshPromise;
+}
+
+/* CONVERT CRYPTOCURRENCY AMOUNTS TO USD */
+
+function cryptoAmountToUsd(amount, symbol) {
+  const quantity = Number(amount);
+  const asset = String(symbol || "").toUpperCase();
+
+  if (!Number.isFinite(quantity) || quantity < 0) {
+    return null;
+  }
+
+  const price = cryptoUsdPrices[asset];
+
+  if (!Number.isFinite(price) || price <= 0) {
+    return null;
+  }
+
+  return quantity * price;
+}
+
+/* FORMAT A USD VALUE WITHOUT HIDING PRICE FAILURES */
+
+function formatCryptoUsd(amount, symbol) {
+  const value = cryptoAmountToUsd(amount, symbol);
+
+  return value === null ? "Price unavailable" : formatMoney(value);
+}
 /* PROFILE */
 
 async function loadProfile(){
