@@ -1980,48 +1980,60 @@ async function loadPaymentStatistics(){
    Incoming total uses credited_amount, which must be USD-equivalent.
    It deliberately does not fall back to raw cryptocurrency amount.
   */
-
+  
   const depositsResult = await db
-    .from("deposits")
-    .select("credited_amount,status")
-    .eq("user_id",currentUser.id)
-    .eq("status","CONFIRMED");
+  .from("deposits")
+  .select("asset, amount, credited_amount, status")
+  .eq("user_id", currentUser.id)
+  .eq("status", "CONFIRMED");
 
-  if(depositsResult.error){
-    console.error("Incoming payment statistics error:",depositsResult.error);
-    setText("incomingPayments","Unavailable");
-  }else{
-    const incoming = (depositsResult.data || []).reduce((sum,record)=>{
-      const amount = Number(record.credited_amount);
+if (depositsResult.error) {
+  console.error(
+    "Incoming payment statistics error:",
+    depositsResult.error
+  );
 
-      return sum + (
-        Number.isFinite(amount) && amount >= 0 ? amount : 0
-      );
-    },0);
+  setText("incomingPayments", "Unavailable");
+} else {
+  await loadCryptoUsdPrices();
 
-    setText("incomingPayments",formatMoney(incoming));
+  let incomingUsd = 0;
+  let missingAssets = [];
+
+  for (const deposit of depositsResult.data || []) {
+    const asset = String(deposit.asset || "").toUpperCase();
+
+    const credited = Number(deposit.credited_amount);
+    const submitted = Number(deposit.amount);
+
+    const quantity =
+      Number.isFinite(credited) && credited > 0
+        ? credited
+        : submitted;
+
+    if (!Number.isFinite(quantity) || quantity <= 0) {
+      continue;
+    }
+
+    const usdValue = cryptoAmountToUsd(quantity, asset);
+
+    if (usdValue === null) {
+      if (!missingAssets.includes(asset)) {
+        missingAssets.push(asset);
+      }
+
+      continue;
+    }
+
+    incomingUsd += usdValue;
   }
 
-  const withdrawalsResult = await db
-    .from("withdrawals")
-    .select("net_amount,status")
-    .eq("user_id",currentUser.id)
-    .eq("status","COMPLETED");
-
-  if(withdrawalsResult.error){
-    console.error("Outgoing payment statistics error:",withdrawalsResult.error);
-    setText("outgoingPayments","Unavailable");
-  }else{
-    const outgoing = (withdrawalsResult.data || []).reduce((sum,record)=>{
-      const amount = Number(record.net_amount ?? 0);
-
-      return sum + (
-        Number.isFinite(amount) && amount > 0 ? amount : 0
-      );
-    },0);
-
-    setText("outgoingPayments",formatMoney(outgoing));
-  }
+  setText(
+    "incomingPayments",
+    missingAssets.length
+      ? formatMoney(incomingUsd) + " + unavailable"
+      : formatMoney(incomingUsd)
+  );
 }
   /* EARNINGS STATISTICS */
 
