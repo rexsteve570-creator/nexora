@@ -2154,7 +2154,6 @@ async function refreshDashboardData(){
   refreshInProgress = true;
 
   try{
-    await loadCryptoUsdPrices();
     await Promise.all([
       loadProfile(),
       loadWallets(),
