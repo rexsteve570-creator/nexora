@@ -1,14 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#07111f">
-<title>AITIVEST — Portfolio</title>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<style>
+<title>AITIVEST — Portfolio</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><style>
 :root{
   --bg:#07111f;
   --bg2:#091626;
@@ -89,7 +84,6 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
 }
 
 .brand-name span{color:var(--gold)}
-
 .loading-logo .brand-name{font-size:29px}
 
 .spinner{
@@ -241,9 +235,7 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
 }
 
 .content{padding:23px 18px 0}
-
 .greeting{margin-bottom:20px}
-
 .greeting small{color:var(--muted);font-size:13px}
 
 .greeting h1{
@@ -313,7 +305,7 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
   background:var(--green);
 }
 
-/* TWO-FACTOR SECURITY CARD */
+/* TWO-FACTOR SECURITY */
 
 .security-card{
   margin-top:18px;
@@ -343,10 +335,7 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
   background:rgba(217,164,65,.05);
 }
 
-.security-copy{
-  min-width:0;
-  flex:1;
-}
+.security-copy{min-width:0;flex:1}
 
 .security-heading{
   display:flex;
@@ -425,7 +414,6 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
 }
 
 .section-title h2{font-size:16px;font-weight:750}
-
 .section-title span{color:var(--muted);font-size:11px}
 
 /* CRYPTO DROPDOWN */
@@ -460,9 +448,7 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
 }
 
 .selected-info{text-align:left;min-width:0}
-
 .selected-symbol{font-size:14px;font-weight:800}
-
 .selected-name{margin-top:3px;color:var(--muted);font-size:11px}
 
 .selected-arrow{
@@ -511,11 +497,8 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
 }
 
 .crypto-logo{width:35px;height:35px;object-fit:contain;flex:none}
-
 .crypto-details{min-width:0;flex:1}
-
 .crypto-symbol{font-size:13px;font-weight:800}
-
 .crypto-name{color:var(--muted);font-size:10px;margin-top:2px}
 
 .crypto-amount{
@@ -523,10 +506,10 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
   font-size:12px;
   font-weight:750;
   overflow-wrap:anywhere;
+  font-variant-numeric:tabular-nums;
 }
 
 .crypto-option-check{color:var(--gold2);display:none}
-
 .crypto-option.active .crypto-option-check{display:block}
 
 .asset-preview{
@@ -542,15 +525,14 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
 }
 
 .asset-left{display:flex;align-items:center;gap:12px;min-width:0}
-
 .asset-name{font-weight:750;font-size:14px}
-
 .asset-network{color:var(--muted);font-size:11px;margin-top:3px}
-
 .asset-balance{text-align:right;min-width:0;overflow-wrap:anywhere}
-
-.asset-balance strong{display:block;font-size:15px}
-
+.asset-balance strong{
+  display:block;
+  font-size:15px;
+  font-variant-numeric:tabular-nums;
+}
 .asset-balance small{color:var(--muted);font-size:10px}
 
 /* COUNTDOWN */
@@ -631,9 +613,7 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
 }
 
 .partner-label{font-size:14px;font-weight:750}
-
 .partner-description{font-size:11px;color:var(--muted);margin-top:4px}
-
 .partner-count{font-size:25px;font-weight:850;color:var(--gold2)}
 
 /* STATISTICS */
@@ -655,11 +635,8 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
 }
 
 .stat-row:last-child{border-bottom:0}
-
 .stat-info{min-width:0}
-
 .stat-label{font-size:13px;color:var(--muted)}
-
 .stat-note{margin-top:5px;font-size:10px;color:#728096;line-height:1.5}
 
 .stat-value{
@@ -682,7 +659,7 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
   line-height:1.7;
 }
 
-/* COLOURED ACTION ROWS */
+/* QUICK ACTIONS */
 
 .quick-grid{display:flex;flex-direction:column;gap:12px}
 
@@ -730,7 +707,6 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
 }
 
 .quick-text{min-width:0;flex:1}
-
 .quick-text strong{display:block;font-size:14px;font-weight:800}
 
 .quick-text small{
@@ -786,7 +762,6 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
 }
 
 .bottom-link.active{color:var(--gold2)}
-
 .bottom-icon{font-size:20px}
 
 .toast{
@@ -826,12 +801,7 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
     transition-duration:.01ms!important;
   }
 }
-</style>
-</head>
-
-<body>
-
-<div id="loadingScreen" class="loading-screen">
+</style></head><body><div id="loadingScreen" class="loading-screen">
   <div class="loading-box">
     <div class="brand-logo loading-logo">
       <div class="brand-mark">A</div>
@@ -839,35 +809,24 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
     </div>
     <div class="spinner"></div>
   </div>
+</div><div class="app"><header class="topbar">
+  <div class="topbar-inner">
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button><div class="brand-logo" aria-label="AITIVEST">
+  <div class="brand-mark">A</div>
+  <div class="brand-name">AITI<span>VEST</span></div>
 </div>
 
-<div class="app">
+<div class="profile-initial" id="profileInitial">AV</div>
 
-<header class="topbar">
-  <div class="topbar-inner">
-    <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
-
-    <div class="brand-logo" aria-label="AITIVEST">
-      <div class="brand-mark">A</div>
-      <div class="brand-name">AITI<span>VEST</span></div>
-    </div>
-
-    <div class="profile-initial" id="profileInitial">AV</div>
   </div>
-</header>
-
-<div class="overlay" id="overlay"></div>
-
-<aside class="drawer" id="drawer" aria-label="Main navigation">
+</header><div class="overlay" id="overlay"></div><aside class="drawer" id="drawer" aria-label="Main navigation">
   <div class="drawer-head">
     <div class="brand-logo">
       <div class="brand-mark">A</div>
       <div class="brand-name">AITI<span>VEST</span></div>
     </div>
     <button class="close-drawer" id="closeDrawer" aria-label="Close menu">×</button>
-  </div>
-
-  <nav class="drawer-nav">
+  </div>  <nav class="drawer-nav">
     <button class="drawer-link" onclick="go('dashboard.html')"><span class="drawer-icon">⌂</span>Portfolio</button>
     <button class="drawer-link" onclick="go('deposit.html')"><span class="drawer-icon">＋</span>Deposit</button>
     <button class="drawer-link" onclick="go('withdraw.html')"><span class="drawer-icon">↗</span>Withdraw</button>
@@ -879,34 +838,21 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
     <button class="drawer-link" onclick="go('notifications.html')"><span class="drawer-icon">♢</span>Notifications</button>
     <button class="drawer-link logout" id="logoutBtn"><span class="drawer-icon">↪</span>Logout</button>
   </nav>
-</aside>
-
-<main class="content">
-
-  <div class="greeting">
+</aside><main class="content">  <div class="greeting">
     <small id="greetingText">Welcome back</small>
     <h1 id="userName">Welcome</h1>
-  </div>
-
-  <!-- FIAT: USD EQUIVALENT OF CONFIRMED DEPOSITS -->
-
-  <section class="portfolio-card">
+  </div>  <section class="portfolio-card">
     <div class="card-label">FIAT</div>
     <div class="portfolio-value" id="portfolioValue">Loading...</div>
-    <div class="portfolio-caption">Total USD value of confirmed deposits</div>
+    <div class="portfolio-caption">Total USD value of confirmed deposits</div><div class="status-row">
+  <div class="status-label">Account status</div>
+  <div class="status" id="accountStatus">
+    <span class="status-dot"></span>
+    <span>Loading...</span>
+  </div>
+</div>
 
-    <div class="status-row">
-      <div class="status-label">Account status</div>
-      <div class="status" id="accountStatus">
-        <span class="status-dot"></span>
-        <span>Loading...</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- TWO-FACTOR AUTHENTICATION STATUS -->
-
-  <section class="security-card checking" id="securityCard" aria-live="polite">
+  </section>  <section class="security-card checking" id="securityCard" aria-live="polite">
     <div class="security-copy">
       <div class="security-heading">
         <span class="security-indicator" aria-hidden="true"></span>
@@ -915,219 +861,173 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
       <div class="security-message" id="securityMessage">
         Verifying your two-factor authentication status.
       </div>
-    </div>
+    </div><button type="button" class="security-action" id="securityAction"
+  onclick="go('security.html')">Checking...</button>
 
-    <button
-      type="button"
-      class="security-action"
-      id="securityAction"
-      onclick="go('security.html')">
-      Checking...
-    </button>
-  </section>
-
-  <!-- CRYPTO BALANCE DROPDOWN -->
-
-  <section class="section">
+  </section>  <section class="section">
     <div class="section-title">
       <h2>CRYPTO</h2>
       <span>Supported assets</span>
-    </div>
-
-    <div class="crypto-picker" id="cryptoPicker">
-      <button type="button" class="crypto-selected" id="cryptoSelected"
-        aria-expanded="false" aria-controls="cryptoMenu">
-
-        <div class="selected-left">
-          <img id="selectedLogo" class="selected-logo" src="" alt="">
-          <div class="selected-info">
-            <div class="selected-symbol" id="selectedSymbol">USDT</div>
-            <div class="selected-name" id="selectedName">Tether</div>
-          </div>
-        </div>
-        <div class="selected-arrow">⌄</div>
-      </button>
-
-      <div class="crypto-menu" id="cryptoMenu"></div>
-    </div>
-
-    <div class="asset-preview">
-      <div class="asset-left">
-        <img id="previewLogo" class="preview-logo" src="" alt="">
-        <div>
-          <div class="asset-name" id="previewName">Tether</div>
-          <div class="asset-network" id="previewNetwork">Available wallet balance</div>
-        </div>
-      </div>
-
-      <div class="asset-balance">
-        <strong id="previewBalance">0</strong>
-        <small id="previewSymbol">USDT</small>
+    </div><div class="crypto-picker" id="cryptoPicker">
+  <button type="button" class="crypto-selected" id="cryptoSelected"
+    aria-expanded="false" aria-controls="cryptoMenu">
+    <div class="selected-left">
+      <img id="selectedLogo" class="selected-logo" src="" alt="">
+      <div class="selected-info">
+        <div class="selected-symbol" id="selectedSymbol">USDT</div>
+        <div class="selected-name" id="selectedName">Tether</div>
       </div>
     </div>
-  </section>
+    <div class="selected-arrow">⌄</div>
+  </button>
+  <div class="crypto-menu" id="cryptoMenu"></div>
+</div>
 
-  <!-- PROFIT COUNTDOWN -->
+<div class="asset-preview">
+  <div class="asset-left">
+    <img id="previewLogo" class="preview-logo" src="" alt="">
+    <div>
+      <div class="asset-name" id="previewName">Tether</div>
+      <div class="asset-network" id="previewNetwork">Available wallet balance</div>
+    </div>
+  </div>
+  <div class="asset-balance">
+    <strong id="previewBalance">0.00</strong>
+    <small id="previewSymbol">USDT</small>
+  </div>
+</div>
 
-  <section class="section">
+  </section>  <section class="section">
     <div class="section-title">
       <h2>Profit Countdown</h2>
       <span id="countdownAsset">—</span>
-    </div>
+    </div><div class="countdown-card">
+  <div class="countdown-icon">◷</div>
+  <div class="countdown-title">Time until the next calculation of profit</div>
+  <div class="countdown-state" id="countdownState">Checking active deposits...</div>
+  <div id="timerBox" class="hidden">
+    <div class="timer" id="timer">--:--:--</div>
+    <div class="timer-label">HOURS : MINUTES : SECONDS</div>
+  </div>
+</div>
 
-    <div class="countdown-card">
-      <div class="countdown-icon">◷</div>
-      <div class="countdown-title">Time until the next calculation of profit</div>
-      <div class="countdown-state" id="countdownState">Checking active deposits...</div>
-
-      <div id="timerBox" class="hidden">
-        <div class="timer" id="timer">--:--:--</div>
-        <div class="timer-label">HOURS : MINUTES : SECONDS</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- PARTNERS -->
-
-  <section class="section">
+  </section>  <section class="section">
     <div class="section-title">
       <h2>Partners</h2>
       <span>Referral overview</span>
+    </div><div class="partner-card">
+  <div class="partner-left">
+    <div class="partner-icon">♧</div>
+    <div>
+      <div class="partner-label">My Partners</div>
+      <div class="partner-description">Recorded referrals</div>
     </div>
+  </div>
+  <div class="partner-count" id="partnerCount">—</div>
+</div>
 
-    <div class="partner-card">
-      <div class="partner-left">
-        <div class="partner-icon">♧</div>
-        <div>
-          <div class="partner-label">My Partners</div>
-          <div class="partner-description">Recorded referrals</div>
-        </div>
-      </div>
-      <div class="partner-count" id="partnerCount">—</div>
-    </div>
-  </section>
-
-  <!-- PAYMENT STATISTICS -->
-
-  <section class="section">
+  </section>  <section class="section">
     <div class="section-title">
       <h2>Payment Statistics</h2>
       <span>Account history</span>
+    </div><div class="stats-card">
+  <div class="stat-row">
+    <div class="stat-info">
+      <div class="stat-label">Incoming payments</div>
+      <div class="stat-note">Confirmed deposit value</div>
     </div>
+    <div class="stat-value green" id="incomingPayments">Loading...</div>
+  </div>
 
-    <div class="stats-card">
-      <div class="stat-row">
-        <div class="stat-info">
-          <div class="stat-label">Incoming payments</div>
-          <div class="stat-note">Confirmed deposit value</div>
-        </div>
-        <div class="stat-value green" id="incomingPayments">Loading...</div>
-      </div>
-
-      <div class="stat-row">
-        <div class="stat-info">
-          <div class="stat-label">Outgoing payments</div>
-          <div class="stat-note">Completed withdrawals only</div>
-        </div>
-        <div class="stat-value red" id="outgoingPayments">Loading...</div>
-      </div>
+  <div class="stat-row">
+    <div class="stat-info">
+      <div class="stat-label">Outgoing payments</div>
+      <div class="stat-note">Completed withdrawals only</div>
     </div>
-  </section>
+    <div class="stat-value red" id="outgoingPayments">Loading...</div>
+  </div>
+</div>
 
-  <!-- EARNINGS STATISTICS -->
-
-  <section class="section">
+  </section>  <section class="section">
     <div class="section-title">
       <h2>Earnings Statistics</h2>
       <span>Account records</span>
+    </div><div class="stats-card">
+  <div class="stat-row">
+    <div class="stat-info">
+      <div class="stat-label">All accruals</div>
+      <div class="stat-note">Credited earning records</div>
     </div>
+    <div class="stat-value gold" id="allAccruals">Loading...</div>
+  </div>
 
-    <div class="stats-card">
-      <div class="stat-row">
-        <div class="stat-info">
-          <div class="stat-label">All accruals</div>
-          <div class="stat-note">Credited earning records</div>
-        </div>
-        <div class="stat-value gold" id="allAccruals">Loading...</div>
-      </div>
-
-      <div class="stat-row">
-        <div class="stat-info">
-          <div class="stat-label">Main profit</div>
-          <div class="stat-note">Credited earnings</div>
-        </div>
-        <div class="stat-value blue" id="mainProfit">Loading...</div>
-      </div>
-
-      <div class="stat-row">
-        <div class="stat-info">
-          <div class="stat-label">Partners profit</div>
-          <div class="stat-note">Credited referral commissions</div>
-        </div>
-        <div class="stat-value purple" id="partnersProfit">Loading...</div>
-      </div>
-
-      <div class="stat-row">
-        <div class="stat-info">
-          <div class="stat-label">Available USDT</div>
-          <div class="stat-note">Available wallet balance</div>
-        </div>
-        <div class="stat-value green" id="availableUSDT">Loading...</div>
-      </div>
+  <div class="stat-row">
+    <div class="stat-info">
+      <div class="stat-label">Main profit</div>
+      <div class="stat-note">Credited earnings</div>
     </div>
+    <div class="stat-value blue" id="mainProfit">Loading...</div>
+  </div>
 
-    <div class="statistics-note" id="statisticsNote">
-      Statistics are loaded from your account records.
+  <div class="stat-row">
+    <div class="stat-info">
+      <div class="stat-label">Partners profit</div>
+      <div class="stat-note">Credited referral commissions</div>
     </div>
-  </section>
+    <div class="stat-value purple" id="partnersProfit">Loading...</div>
+  </div>
 
-  <!-- QUICK ACCESS -->
+  <div class="stat-row">
+    <div class="stat-info">
+      <div class="stat-label">Available USDT</div>
+      <div class="stat-note">Available wallet balance</div>
+    </div>
+    <div class="stat-value green" id="availableUSDT">Loading...</div>
+  </div>
+</div>
 
-  <section class="section">
+<div class="statistics-note" id="statisticsNote">
+  Statistics are loaded from your account records.
+</div>
+
+  </section>  <section class="section">
     <div class="section-title">
       <h2>Quick Access</h2>
       <span>Choose an action</span>
-    </div>
+    </div><div class="quick-grid">
+  <button class="quick-btn market" onclick="go('swap.html')">
+    <span class="quick-icon">⇄</span>
+    <span class="quick-text">
+      <strong>Market</strong>
+      <small>Explore asset exchange</small>
+    </span>
+    <span class="quick-arrow">›</span>
+  </button>
 
-    <div class="quick-grid">
-      <button class="quick-btn market" onclick="go('swap.html')">
-        <span class="quick-icon">⇄</span>
-        <span class="quick-text">
-          <strong>Market</strong>
-          <small>Explore asset exchange</small>
-        </span>
-        <span class="quick-arrow">›</span>
-      </button>
+  <button class="quick-btn deposit" onclick="go('deposit.html')">
+    <span class="quick-icon">＋</span>
+    <span class="quick-text">
+      <strong>Add Funds</strong>
+      <small>View deposit options</small>
+    </span>
+    <span class="quick-arrow">›</span>
+  </button>
 
-      <button class="quick-btn deposit" onclick="go('deposit.html')">
-        <span class="quick-icon">＋</span>
-        <span class="quick-text">
-          <strong>Add Funds</strong>
-          <small>View deposit options</small>
-        </span>
-        <span class="quick-arrow">›</span>
-      </button>
+  <button class="quick-btn withdraw" onclick="go('withdraw.html')">
+    <span class="quick-icon">↗</span>
+    <span class="quick-text">
+      <strong>Withdraw</strong>
+      <small>Manage withdrawal requests</small>
+    </span>
+    <span class="quick-arrow">›</span>
+  </button>
+</div>
 
-      <button class="quick-btn withdraw" onclick="go('withdraw.html')">
-        <span class="quick-icon">↗</span>
-        <span class="quick-text">
-          <strong>Withdraw</strong>
-          <small>Manage withdrawal requests</small>
-        </span>
-        <span class="quick-arrow">›</span>
-      </button>
-    </div>
-  </section>
-
-  <div class="info-note">
+  </section>  <div class="info-note">
     FIAT displays the USD-equivalent value of confirmed deposits. Pending deposits
     are excluded. Cryptocurrency balances are displayed separately by asset.
     The countdown is a time indicator and does not itself credit earnings.
-  </div>
-
-</main>
-
-<nav class="bottom-nav" aria-label="Bottom navigation">
+  </div></main><nav class="bottom-nav" aria-label="Bottom navigation">
   <button class="bottom-link active" onclick="go('dashboard.html')">
     <span class="bottom-icon">⌂</span><span>Portfolio</span>
   </button>
@@ -1140,27 +1040,15 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
   <button class="bottom-link" onclick="go('profile.html')">
     <span class="bottom-icon">○</span><span>Account</span>
   </button>
-</nav>
-
-</div>
-
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
-
-<script>
+</nav></div><div class="toast" id="toast" role="status" aria-live="polite"></div><script>
 "use strict";
 
 /* SUPABASE */
 
-const SUPABASE_URL =
-  "https://rihvvwktvgytbqzazage.supabase.co";
+const SUPABASE_URL = "https://rihvvwktvgytbqzazage.supabase.co";
+const SUPABASE_KEY = "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
 
-const SUPABASE_KEY =
-  "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
-
-const db = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
+const db = window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
 /* ASSETS */
 
@@ -1168,57 +1056,23 @@ const LOGO_BASE =
   "https://cdn.jsdelivr.net/gh/madenix/Crypto-logo-cdn@main/Logos/";
 
 const logoFiles = {
-  BTC:"BTC.svg",
-  ETH:"ETH.svg",
-  USDT:"USDT.svg",
-  USDC:"USDC.svg",
-  BNB:"BNB.svg",
-  SOL:"SOL.svg",
-  XRP:"XRP.svg",
-  TON:"TON.svg",
-  DOGE:"DOGE.svg",
-  ADA:"ADA.svg",
-  TRX:"TRON.svg",
-  LTC:"LTC.svg",
-  AVAX:"AVAX.svg",
-  DOT:"DOT.svg",
-  LINK:"LINK.svg",
-  POL:"MATIC.svg",
-  SHIB:"SHIB.svg",
-  BCH:"BCH.svg",
-  XLM:"XLM.svg",
-  ATOM:"ATOM.svg",
-  NEAR:"NEAR.svg",
-  APT:"APT.svg",
-  ARB:"ARB.svg",
-  OP:"OP.svg"
+  BTC:"BTC.svg", ETH:"ETH.svg", USDT:"USDT.svg", USDC:"USDC.svg",
+  BNB:"BNB.svg", SOL:"SOL.svg", XRP:"XRP.svg", TON:"TON.svg",
+  DOGE:"DOGE.svg", ADA:"ADA.svg", TRX:"TRON.svg", LTC:"LTC.svg",
+  AVAX:"AVAX.svg", DOT:"DOT.svg", LINK:"LINK.svg", POL:"MATIC.svg",
+  SHIB:"SHIB.svg", BCH:"BCH.svg", XLM:"XLM.svg", ATOM:"ATOM.svg",
+  NEAR:"NEAR.svg", APT:"APT.svg", ARB:"ARB.svg", OP:"OP.svg"
 };
 
 const assets = [
-  ["BTC","Bitcoin"],
-  ["ETH","Ethereum"],
-  ["USDT","Tether"],
-  ["USDC","USD Coin"],
-  ["BNB","BNB"],
-  ["SOL","Solana"],
-  ["XRP","XRP"],
-  ["TON","Toncoin"],
-  ["DOGE","Dogecoin"],
-  ["ADA","Cardano"],
-  ["TRX","TRON"],
-  ["LTC","Litecoin"],
-  ["AVAX","Avalanche"],
-  ["DOT","Polkadot"],
-  ["LINK","Chainlink"],
-  ["POL","Polygon"],
-  ["SHIB","Shiba Inu"],
-  ["BCH","Bitcoin Cash"],
-  ["XLM","Stellar"],
-  ["ATOM","Cosmos"],
-  ["NEAR","NEAR Protocol"],
-  ["APT","Aptos"],
-  ["ARB","Arbitrum"],
-  ["OP","Optimism"]
+  ["BTC","Bitcoin"],["ETH","Ethereum"],["USDT","Tether"],
+  ["USDC","USD Coin"],["BNB","BNB"],["SOL","Solana"],
+  ["XRP","XRP"],["TON","Toncoin"],["DOGE","Dogecoin"],
+  ["ADA","Cardano"],["TRX","TRON"],["LTC","Litecoin"],
+  ["AVAX","Avalanche"],["DOT","Polkadot"],["LINK","Chainlink"],
+  ["POL","Polygon"],["SHIB","Shiba Inu"],["BCH","Bitcoin Cash"],
+  ["XLM","Stellar"],["ATOM","Cosmos"],["NEAR","NEAR Protocol"],
+  ["APT","Aptos"],["ARB","Arbitrum"],["OP","Optimism"]
 ];
 
 let currentUser = null;
@@ -1230,6 +1084,35 @@ let countdownInterval = null;
 let refreshInProgress = false;
 let countdownRefreshTimer = null;
 
+/* ASSET-SPECIFIC DECIMAL PRECISION */
+
+const ASSET_DECIMALS = {
+  BTC:8,
+  ETH:8,
+  USDT:2,
+  USDC:2,
+  BNB:8,
+  SOL:8,
+  XRP:6,
+  TON:8,
+  DOGE:8,
+  ADA:6,
+  TRX:6,
+  LTC:8,
+  AVAX:8,
+  DOT:8,
+  LINK:8,
+  POL:8,
+  SHIB:8,
+  BCH:8,
+  XLM:7,
+  ATOM:6,
+  NEAR:8,
+  APT:8,
+  ARB:8,
+  OP:8
+};
+
 const $ = id => document.getElementById(id);
 
 function go(page){
@@ -1240,14 +1123,26 @@ function logoURL(symbol){
   return LOGO_BASE + (logoFiles[symbol] || "");
 }
 
-function formatNumber(value,max=8){
-  const number = Number(value ?? 0);
+/*
+  Formats a wallet quantity using the selected asset's precision.
+  Examples:
+  BTC  -> 0.00000000
+  USDT -> 0.00
+  XRP  -> 0.000000
+*/
 
-  if(!Number.isFinite(number)) return "0";
+function formatNumber(value,asset="USDT"){
+  const number = Number(value ?? 0);
+  const symbol = String(asset || "USDT").toUpperCase();
+
+  if(!Number.isFinite(number)) return "—";
+
+  const decimals = ASSET_DECIMALS[symbol] ?? 8;
 
   return number.toLocaleString("en-US",{
-    minimumFractionDigits:0,
-    maximumFractionDigits:max
+    minimumFractionDigits:decimals,
+    maximumFractionDigits:decimals,
+    useGrouping:true
   });
 }
 
@@ -1266,9 +1161,9 @@ function initials(name){
   const parts = String(name || "").trim().split(/\s+/).filter(Boolean);
 
   if(!parts.length) return "AV";
-  if(parts.length === 1) return parts[0].slice(0,2).toUpperCase();
+  if(parts.length===1) return parts[0].slice(0,2).toUpperCase();
 
-  return (parts[0][0] + parts[parts.length-1][0]).toUpperCase();
+  return (parts[0][0]+parts[parts.length-1][0]).toUpperCase();
 }
 
 function setText(id,value){
@@ -1295,8 +1190,8 @@ function setGreeting(){
 
   setText(
     "greetingText",
-    hour < 12 ? "Good morning" :
-    hour < 18 ? "Good afternoon" :
+    hour<12 ? "Good morning" :
+    hour<18 ? "Good afternoon" :
     "Good evening"
   );
 }
@@ -1318,7 +1213,7 @@ $("closeDrawer").addEventListener("click",closeDrawer);
 $("overlay").addEventListener("click",closeDrawer);
 
 document.addEventListener("keydown",event=>{
-  if(event.key === "Escape"){
+  if(event.key==="Escape"){
     closeDrawer();
     closeCryptoPicker();
   }
@@ -1364,13 +1259,8 @@ async function loadMfaStatus(){
 
     if(error) throw error;
 
-    /*
-      Only a VERIFIED TOTP factor counts as enabled.
-      An enrolled but unverified authenticator is not enough.
-    */
-
     const verifiedTotp = (data?.totp || []).some(factor=>
-      String(factor.status || "").toLowerCase() === "verified"
+      String(factor.status || "").toLowerCase()==="verified"
     );
 
     card.classList.remove("checking");
@@ -1424,7 +1314,7 @@ function buildCryptoMenu(){
     logo.src = logoURL(symbol);
     logo.alt = "";
     logo.loading = "lazy";
-    logo.onerror = ()=>{ logo.style.visibility = "hidden"; };
+    logo.onerror = ()=>{logo.style.visibility="hidden";};
 
     const details = document.createElement("div");
     details.className = "crypto-details";
@@ -1442,7 +1332,7 @@ function buildCryptoMenu(){
     const amount = document.createElement("div");
     amount.className = "crypto-amount";
     amount.dataset.amountFor = symbol;
-    amount.textContent = "—";
+    amount.textContent = formatNumber(0,symbol);
 
     const check = document.createElement("div");
     check.className = "crypto-option-check";
@@ -1494,16 +1384,13 @@ document.addEventListener("click",event=>{
 
 function updateActiveCryptoOption(){
   document.querySelectorAll(".crypto-option").forEach(button=>{
-    button.classList.toggle(
-      "active",
-      button.dataset.asset === selectedAsset
-    );
+    button.classList.toggle("active",button.dataset.asset===selectedAsset);
   });
 }
 
 function getWallet(symbol){
   return wallets.find(wallet=>
-    String(wallet.asset || "").toUpperCase() === symbol
+    String(wallet.asset || "").toUpperCase()===symbol
   ) || null;
 }
 
@@ -1513,13 +1400,14 @@ function updateCryptoMenuBalances(){
     const wallet = getWallet(symbol);
 
     element.textContent = formatNumber(
-      wallet?.available_balance ?? 0
+      wallet?.available_balance ?? 0,
+      symbol
     );
   });
 }
 
 function renderSelectedAsset(){
-  const asset = assets.find(item=>item[0] === selectedAsset);
+  const asset = assets.find(item=>item[0]===selectedAsset);
   if(!asset) return;
 
   const [symbol,name] = asset;
@@ -1527,104 +1415,113 @@ function renderSelectedAsset(){
   const image = logoURL(symbol);
 
   $("selectedLogo").src = image;
-  $("selectedLogo").onerror = ()=>{ $("selectedLogo").style.visibility="hidden"; };
-  $("selectedLogo").onload = ()=>{ $("selectedLogo").style.visibility="visible"; };
+  $("selectedLogo").onerror = ()=>{
+    $("selectedLogo").style.visibility="hidden";
+  };
+  $("selectedLogo").onload = ()=>{
+    $("selectedLogo").style.visibility="visible";
+  };
 
   setText("selectedSymbol",symbol);
   setText("selectedName",name);
 
   $("previewLogo").src = image;
-  $("previewLogo").onerror = ()=>{ $("previewLogo").style.visibility="hidden"; };
-  $("previewLogo").onload = ()=>{ $("previewLogo").style.visibility="visible"; };
+  $("previewLogo").onerror = ()=>{
+    $("previewLogo").style.visibility="hidden";
+  };
+  $("previewLogo").onload = ()=>{
+    $("previewLogo").style.visibility="visible";
+  };
 
   setText("previewName",name);
   setText("previewNetwork","Available wallet balance");
-  setText("previewBalance",formatNumber(wallet?.available_balance ?? 0));
+  setText(
+    "previewBalance",
+    formatNumber(wallet?.available_balance ?? 0,symbol)
+  );
   setText("previewSymbol",symbol);
 
   updateActiveCryptoOption();
 }
-  
+
 /* LIVE CRYPTOCURRENCY USD PRICES */
 
 const COIN_IDS = {
-  BTC: "bitcoin",
-  ETH: "ethereum",
-  USDT: "tether",
-  USDC: "usd-coin",
-  BNB: "binancecoin",
-  SOL: "solana",
-  XRP: "ripple",
-  TON: "the-open-network",
-  DOGE: "dogecoin",
-  ADA: "cardano",
-  TRX: "tron",
-  LTC: "litecoin",
-  AVAX: "avalanche-2",
-  DOT: "polkadot",
-  LINK: "chainlink",
-  POL: "polygon-ecosystem-token",
-  SHIB: "shiba-inu",
-  BCH: "bitcoin-cash",
-  XLM: "stellar",
-  ATOM: "cosmos",
-  NEAR: "near",
-  APT: "aptos",
-  ARB: "arbitrum",
-  OP: "optimism"
+  BTC:"bitcoin",
+  ETH:"ethereum",
+  USDT:"tether",
+  USDC:"usd-coin",
+  BNB:"binancecoin",
+  SOL:"solana",
+  XRP:"ripple",
+  TON:"the-open-network",
+  DOGE:"dogecoin",
+  ADA:"cardano",
+  TRX:"tron",
+  LTC:"litecoin",
+  AVAX:"avalanche-2",
+  DOT:"polkadot",
+  LINK:"chainlink",
+  POL:"polygon-ecosystem-token",
+  SHIB:"shiba-inu",
+  BCH:"bitcoin-cash",
+  XLM:"stellar",
+  ATOM:"cosmos",
+  NEAR:"near",
+  APT:"aptos",
+  ARB:"arbitrum",
+  OP:"optimism"
 };
 
 let cryptoUsdPrices = {};
 let pricesUpdatedAt = 0;
 let priceRefreshPromise = null;
 
-const PRICE_CACHE_DURATION = 60 * 1000;
+const PRICE_CACHE_DURATION = 60*1000;
 
-async function loadCryptoUsdPrices(force = false) {
-  if (
+async function loadCryptoUsdPrices(force=false){
+  if(
     !force &&
-    Date.now() - pricesUpdatedAt < PRICE_CACHE_DURATION &&
+    Date.now()-pricesUpdatedAt<PRICE_CACHE_DURATION &&
     Object.keys(cryptoUsdPrices).length
-  ) {
+  ){
     return cryptoUsdPrices;
   }
 
-  if (priceRefreshPromise) {
-    return priceRefreshPromise;
-  }
+  if(priceRefreshPromise) return priceRefreshPromise;
 
-  priceRefreshPromise = (async () => {
+  priceRefreshPromise = (async()=>{
     const ids = [...new Set(Object.values(COIN_IDS))];
 
     const url =
       "https://api.coingecko.com/api/v3/simple/price" +
-      "?ids=" + encodeURIComponent(ids.join(",")) +
+      "?ids="+encodeURIComponent(ids.join(","))+
       "&vs_currencies=usd";
 
-    try {
-      const response = await fetch(url, {
-        method: "GET",
-        headers: { Accept: "application/json" },
-        cache: "no-store",
-        signal: AbortSignal.timeout(12000)
+    try{
+      const response = await fetch(url,{
+        method:"GET",
+        headers:{Accept:"application/json"},
+        cache:"no-store",
+        signal:AbortSignal.timeout(12000)
       });
 
-      if (!response.ok) {
-        throw new Error("Price provider returned HTTP " + response.status);
+      if(!response.ok){
+        throw new Error("Price provider returned HTTP "+response.status);
       }
 
       const data = await response.json();
       const nextPrices = {};
 
-      for (const [symbol, coinId] of Object.entries(COIN_IDS)) {
+      for(const [symbol,coinId] of Object.entries(COIN_IDS)){
         const price = Number(data?.[coinId]?.usd);
 
-        if (Number.isFinite(price) && price > 0) {
+        if(Number.isFinite(price) && price>0){
           nextPrices[symbol] = price;
         }
       }
 
-      if (!Object.keys(nextPrices).length) {
+      if(!Object.keys(nextPrices).length){
         throw new Error("No valid cryptocurrency prices returned.");
       }
 
@@ -1632,13 +1529,10 @@ async function loadCryptoUsdPrices(force = false) {
       pricesUpdatedAt = Date.now();
 
       return cryptoUsdPrices;
-    } catch (error) {
-      console.error("Cryptocurrency price loading failed:", error);
-
-      // Preserve any previously retrieved prices.
-      // Never assume an unknown cryptocurrency is worth $1.
+    }catch(error){
+      console.error("Cryptocurrency price loading failed:",error);
       return cryptoUsdPrices;
-    } finally {
+    }finally{
       priceRefreshPromise = null;
     }
   })();
@@ -1648,30 +1542,24 @@ async function loadCryptoUsdPrices(force = false) {
 
 /* CONVERT CRYPTOCURRENCY AMOUNTS TO USD */
 
-function cryptoAmountToUsd(amount, symbol) {
+function cryptoAmountToUsd(amount,symbol){
   const quantity = Number(amount);
   const asset = String(symbol || "").toUpperCase();
 
-  if (!Number.isFinite(quantity) || quantity < 0) {
-    return null;
-  }
+  if(!Number.isFinite(quantity) || quantity<0) return null;
 
   const price = cryptoUsdPrices[asset];
 
-  if (!Number.isFinite(price) || price <= 0) {
-    return null;
-  }
+  if(!Number.isFinite(price) || price<=0) return null;
 
-  return quantity * price;
+  return quantity*price;
 }
 
-/* FORMAT A USD VALUE WITHOUT HIDING PRICE FAILURES */
-
-function formatCryptoUsd(amount, symbol) {
-  const value = cryptoAmountToUsd(amount, symbol);
-
-  return value === null ? "Price unavailable" : formatMoney(value);
+function formatCryptoUsd(amount,symbol){
+  const value = cryptoAmountToUsd(amount,symbol);
+  return value===null ? "Price unavailable" : formatMoney(value);
 }
+
 /* PROFILE */
 
 async function loadProfile(){
@@ -1697,8 +1585,8 @@ async function loadProfile(){
   const status = String(data?.account_status || "PENDING").toUpperCase();
 
   const color =
-    status === "ACTIVE" ? "var(--green)" :
-    status === "SUSPENDED" ? "var(--red)" :
+    status==="ACTIVE" ? "var(--green)" :
+    status==="SUSPENDED" ? "var(--red)" :
     "var(--gold)";
 
   const container = $("accountStatus");
@@ -1746,23 +1634,20 @@ function renderAvailableUSDT(){
   );
 }
 
-/*
- FIAT PORTFOLIO:
- credited_amount must represent the USD-equivalent amount.
- Do not add raw BTC/ETH quantities to USDT amounts.
-*/
-  async function renderPortfolio() {
-  setText("portfolioValue", "Loading...");
+/* FIAT PORTFOLIO */
 
-  const { data, error } = await db
+async function renderPortfolio(){
+  setText("portfolioValue","Loading...");
+
+  const {data,error} = await db
     .from("deposits")
-    .select("asset, amount, credited_amount, status")
-    .eq("user_id", currentUser.id)
-    .eq("status", "CONFIRMED");
+    .select("asset,amount,credited_amount,status")
+    .eq("user_id",currentUser.id)
+    .eq("status","CONFIRMED");
 
-  if (error) {
-    console.error("Portfolio loading error:", error);
-    setText("portfolioValue", "Unavailable");
+  if(error){
+    console.error("Portfolio loading error:",error);
+    setText("portfolioValue","Unavailable");
     return null;
   }
 
@@ -1771,58 +1656,44 @@ function renderAvailableUSDT(){
   await loadCryptoUsdPrices();
 
   let totalUsd = 0;
-  let missingPrices = [];
+  const missingPrices = [];
 
-  for (const deposit of deposits) {
+  for(const deposit of deposits){
     const asset = String(deposit.asset || "").toUpperCase();
-
-    // Prefer credited_amount when it contains a valid positive
-    // quantity; otherwise use the submitted deposit amount.
     const credited = Number(deposit.credited_amount);
     const submitted = Number(deposit.amount);
 
     const quantity =
-      Number.isFinite(credited) && credited > 0
+      Number.isFinite(credited) && credited>0
         ? credited
         : submitted;
 
-    if (!Number.isFinite(quantity) || quantity <= 0) {
-      continue;
-    }
+    if(!Number.isFinite(quantity) || quantity<=0) continue;
 
-    const usdValue = cryptoAmountToUsd(quantity, asset);
+    const usdValue = cryptoAmountToUsd(quantity,asset);
 
-    if (usdValue === null) {
-      if (!missingPrices.includes(asset)) {
-        missingPrices.push(asset);
-      }
-
+    if(usdValue===null){
+      if(!missingPrices.includes(asset)) missingPrices.push(asset);
       continue;
     }
 
     totalUsd += usdValue;
   }
 
-  if (missingPrices.length) {
-    setText(
-      "portfolioValue",
-      formatMoney(totalUsd) + " + unavailable"
-    );
-
+  if(missingPrices.length){
+    setText("portfolioValue",formatMoney(totalUsd)+" + unavailable");
     setText(
       "statisticsNote",
-      "Some deposit valuations are unavailable because market prices could not be retrieved for: " +
-        missingPrices.join(", ") +
-        ". The displayed total excludes those deposits."
+      "Some deposit valuations are unavailable because market prices could not be retrieved for: "+
+      missingPrices.join(", ")+". The displayed total excludes those deposits."
     );
-
     return totalUsd;
   }
 
-  setText("portfolioValue", formatMoney(totalUsd));
-
+  setText("portfolioValue",formatMoney(totalUsd));
   return totalUsd;
 }
+
 /* ACTIVE CONFIRMED DEPOSITS */
 
 async function loadActiveDeposits(){
@@ -1860,9 +1731,9 @@ function getNextCalculationTime(startedAt,nowMs){
 
   const cycle = 24*60*60*1000;
 
-  if(nowMs < start) return start;
+  if(nowMs<start) return start;
 
-  return start + (Math.floor((nowMs-start)/cycle)+1)*cycle;
+  return start+(Math.floor((nowMs-start)/cycle)+1)*cycle;
 }
 
 function setupCountdown(){
@@ -1915,7 +1786,7 @@ function updateCountdown(){
 
   const remaining = Math.max(0,countdownTarget-Date.now());
 
-  if(remaining <= 0){
+  if(remaining<=0){
     setText("timer","00:00:00");
 
     stopCountdown();
@@ -1974,45 +1845,39 @@ async function loadPartnerStatistics(){
 }
 
 /* PAYMENT STATISTICS */
-  async function loadPaymentStatistics() {
-  // 1. Load confirmed deposits
+
+async function loadPaymentStatistics(){
   const depositsResult = await db
     .from("deposits")
-    .select("asset, amount, credited_amount, status")
-    .eq("user_id", currentUser.id)
-    .eq("status", "CONFIRMED");
+    .select("asset,amount,credited_amount,status")
+    .eq("user_id",currentUser.id)
+    .eq("status","CONFIRMED");
 
-  if (depositsResult.error) {
-    console.error(
-      "Incoming payment statistics error:",
-      depositsResult.error
-    );
-
-    setText("incomingPayments", "Unavailable");
-  } else {
+  if(depositsResult.error){
+    console.error("Incoming payment statistics error:",depositsResult.error);
+    setText("incomingPayments","Unavailable");
+  }else{
     await loadCryptoUsdPrices();
 
     let incomingUsd = 0;
     const missingIncomingAssets = [];
 
-    for (const deposit of depositsResult.data || []) {
+    for(const deposit of depositsResult.data || []){
       const asset = String(deposit.asset || "").toUpperCase();
       const credited = Number(deposit.credited_amount);
       const submitted = Number(deposit.amount);
 
       const quantity =
-        Number.isFinite(credited) && credited > 0
+        Number.isFinite(credited) && credited>0
           ? credited
           : submitted;
 
-      if (!Number.isFinite(quantity) || quantity <= 0) {
-        continue;
-      }
+      if(!Number.isFinite(quantity) || quantity<=0) continue;
 
-      const usdValue = cryptoAmountToUsd(quantity, asset);
+      const usdValue = cryptoAmountToUsd(quantity,asset);
 
-      if (usdValue === null) {
-        if (!missingIncomingAssets.includes(asset)) {
+      if(usdValue===null){
+        if(!missingIncomingAssets.includes(asset)){
           missingIncomingAssets.push(asset);
         }
         continue;
@@ -2024,25 +1889,20 @@ async function loadPartnerStatistics(){
     setText(
       "incomingPayments",
       missingIncomingAssets.length
-        ? formatMoney(incomingUsd) + " + unavailable"
+        ? formatMoney(incomingUsd)+" + unavailable"
         : formatMoney(incomingUsd)
     );
   }
 
-  // 2. Load completed withdrawals only
   const withdrawalsResult = await db
     .from("withdrawals")
-    .select("asset, amount, net_amount, status")
-    .eq("user_id", currentUser.id)
-    .eq("status", "COMPLETED");
+    .select("asset,amount,net_amount,status")
+    .eq("user_id",currentUser.id)
+    .eq("status","COMPLETED");
 
-  if (withdrawalsResult.error) {
-    console.error(
-      "Outgoing payment statistics error:",
-      withdrawalsResult.error
-    );
-
-    setText("outgoingPayments", "Unavailable");
+  if(withdrawalsResult.error){
+    console.error("Outgoing payment statistics error:",withdrawalsResult.error);
+    setText("outgoingPayments","Unavailable");
     return;
   }
 
@@ -2051,26 +1911,22 @@ async function loadPartnerStatistics(){
   let outgoingUsd = 0;
   const missingOutgoingAssets = [];
 
-  for (const withdrawal of withdrawalsResult.data || []) {
+  for(const withdrawal of withdrawalsResult.data || []){
     const asset = String(withdrawal.asset || "").toUpperCase();
-
-    // Net amount represents the amount after withdrawal fees.
     const netAmount = Number(withdrawal.net_amount);
     const requestedAmount = Number(withdrawal.amount);
 
     const quantity =
-      Number.isFinite(netAmount) && netAmount > 0
+      Number.isFinite(netAmount) && netAmount>0
         ? netAmount
         : requestedAmount;
 
-    if (!Number.isFinite(quantity) || quantity <= 0) {
-      continue;
-    }
+    if(!Number.isFinite(quantity) || quantity<=0) continue;
 
-    const usdValue = cryptoAmountToUsd(quantity, asset);
+    const usdValue = cryptoAmountToUsd(quantity,asset);
 
-    if (usdValue === null) {
-      if (!missingOutgoingAssets.includes(asset)) {
+    if(usdValue===null){
+      if(!missingOutgoingAssets.includes(asset)){
         missingOutgoingAssets.push(asset);
       }
       continue;
@@ -2082,11 +1938,12 @@ async function loadPartnerStatistics(){
   setText(
     "outgoingPayments",
     missingOutgoingAssets.length
-      ? formatMoney(outgoingUsd) + " + unavailable"
+      ? formatMoney(outgoingUsd)+" + unavailable"
       : formatMoney(outgoingUsd)
   );
 }
-  /* EARNINGS STATISTICS */
+
+/* EARNINGS STATISTICS */
 
 async function loadEarningsStatistics(){
   setText("allAccruals","Loading...");
@@ -2100,14 +1957,10 @@ async function loadEarningsStatistics(){
     .eq("status","CREDITED");
 
   if(earningsResult.error){
-    console.error(
-      "Earnings statistics error:",
-      earningsResult.error
-    );
+    console.error("Earnings statistics error:",earningsResult.error);
 
     setText("allAccruals","Unavailable");
     setText("mainProfit","Unavailable");
-
     setText(
       "statisticsNote",
       "Earnings records could not be verified. Please try again later."
@@ -2115,37 +1968,20 @@ async function loadEarningsStatistics(){
   }else{
     const earnings = earningsResult.data || [];
 
-    /*
-      Sum USDT-denominated earnings only.
-      Do not treat BTC, ETH, or other crypto quantities
-      as though they were US dollar amounts.
-    */
-
     const usdtEarnings = earnings.reduce((sum,record)=>{
-      if(
-        String(record.asset || "").toUpperCase() !== "USDT"
-      ){
-        return sum;
-      }
+      if(String(record.asset || "").toUpperCase()!=="USDT") return sum;
 
       const amount = Number(record.earning_amount);
 
-      return sum + (
-        Number.isFinite(amount) && amount > 0
+      return sum+(
+        Number.isFinite(amount) && amount>0
           ? amount
           : 0
       );
     },0);
 
-    setText(
-      "allAccruals",
-      formatMoney(usdtEarnings)
-    );
-
-    setText(
-      "mainProfit",
-      formatMoney(usdtEarnings)
-    );
+    setText("allAccruals",formatMoney(usdtEarnings));
+    setText("mainProfit",formatMoney(usdtEarnings));
 
     setText(
       "statisticsNote",
@@ -2153,50 +1989,33 @@ async function loadEarningsStatistics(){
     );
   }
 
-  /*
-    Referral commissions are stored in
-    referral_commission_records.
-    This table does not use the status filter
-    from the previous dashboard implementation.
-  */
-
   const commissionsResult = await db
     .from("referral_commission_records")
     .select("commission_amount,asset,referrer_id")
     .eq("referrer_id",currentUser.id);
 
   if(commissionsResult.error){
-    console.error(
-      "Referral commission statistics error:",
-      commissionsResult.error
-    );
-
+    console.error("Referral commission statistics error:",commissionsResult.error);
     setText("partnersProfit","Unavailable");
   }else{
     const commissions = commissionsResult.data || [];
 
     const usdtCommissions = commissions.reduce((sum,record)=>{
-      if(
-        String(record.asset || "").toUpperCase() !== "USDT"
-      ){
-        return sum;
-      }
+      if(String(record.asset || "").toUpperCase()!=="USDT") return sum;
 
       const amount = Number(record.commission_amount);
 
-      return sum + (
-        Number.isFinite(amount) && amount > 0
+      return sum+(
+        Number.isFinite(amount) && amount>0
           ? amount
           : 0
       );
     },0);
 
-    setText(
-      "partnersProfit",
-      formatMoney(usdtCommissions)
-    );
+    setText("partnersProfit",formatMoney(usdtCommissions));
   }
 }
+
 /* REFRESH */
 
 async function refreshDashboardData(){
@@ -2244,13 +2063,13 @@ $("logoutBtn").addEventListener("click",async()=>{
 /* REFRESH WHEN RETURNING TO PAGE */
 
 document.addEventListener("visibilitychange",()=>{
-  if(document.visibilityState === "visible"){
+  if(document.visibilityState==="visible"){
     refreshDashboardData();
   }
 });
 
 setInterval(()=>{
-  if(document.visibilityState === "visible"){
+  if(document.visibilityState==="visible"){
     refreshDashboardData();
   }
 },30000);
@@ -2272,11 +2091,9 @@ setInterval(()=>{
     showToast("Unable to load dashboard. Please refresh.");
   }finally{
     setTimeout(()=>{
-      $("loadingScreen").style.display = "none";
+      $("loadingScreen").style.display="none";
     },300);
   }
 })();
-</script>
-
-</body>
+</script></body>
 </html>
