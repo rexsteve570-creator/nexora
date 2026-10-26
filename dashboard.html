@@ -3,790 +3,157 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#07111f">
-<title>AITIVEST — Portfolio</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><style>
+<title>AITIVEST — Portfolio</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
 :root{
-  --bg:#07111f;
-  --bg2:#091626;
-  --card:#0d1b2d;
-  --card2:#112238;
-  --border:rgba(255,255,255,.08);
-  --text:#f5f7fa;
-  --muted:#9aa7b8;
-  --gold:#d9a441;
-  --gold2:#f0c866;
-  --green:#32c48d;
-  --red:#ef6b73;
-  --blue:#5b8def;
-  --purple:#a78bfa;
-  --shadow:0 18px 50px rgba(0,0,0,.25);
+  --bg:#07111f;--bg2:#091626;--card:#0d1b2d;--card2:#112238;
+  --border:rgba(255,255,255,.08);--text:#f5f7fa;--muted:#9aa7b8;
+  --gold:#d9a441;--gold2:#f0c866;--green:#32c48d;--red:#ef6b73;
+  --blue:#5b8def;--purple:#a78bfa;--shadow:0 18px 50px rgba(0,0,0,.25);
 }
-
 *{box-sizing:border-box;margin:0;padding:0}
-
 body{
   min-height:100vh;
-  background:
-    radial-gradient(circle at 90% 0%,rgba(217,164,65,.09),transparent 30%),
-    linear-gradient(180deg,#07111f,#050c15);
-  color:var(--text);
-  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:radial-gradient(circle at 90% 0%,rgba(217,164,65,.09),transparent 30%),linear-gradient(180deg,#07111f,#050c15);
+  color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
 }
-
 button{font:inherit;cursor:pointer}
 button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
-
-.app{
-  width:100%;
-  max-width:760px;
-  min-height:100vh;
-  margin:auto;
-  padding-bottom:95px;
-}
-
-.loading-screen{
-  position:fixed;
-  inset:0;
-  background:#07111f;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  z-index:9999;
-}
-
+.app{width:100%;max-width:760px;min-height:100vh;margin:auto;padding-bottom:95px}
+.loading-screen{position:fixed;inset:0;background:#07111f;display:flex;align-items:center;justify-content:center;z-index:9999}
 .loading-box{text-align:center}
-
-.brand-logo{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:10px;
-}
-
+.brand-logo{display:flex;align-items:center;justify-content:center;gap:10px}
 .brand-mark{
-  width:38px;
-  height:38px;
-  border:2px solid var(--gold);
-  border-radius:12px 12px 12px 3px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:var(--gold2);
-  font-size:20px;
-  font-weight:900;
-  transform:rotate(-3deg);
+  width:38px;height:38px;border:2px solid var(--gold);border-radius:12px 12px 12px 3px;
+  display:flex;align-items:center;justify-content:center;color:var(--gold2);font-size:20px;
+  font-weight:900;transform:rotate(-3deg)
 }
-
-.brand-name{
-  font-size:22px;
-  font-weight:900;
-  letter-spacing:2px;
-  white-space:nowrap;
-}
-
+.brand-name{font-size:22px;font-weight:900;letter-spacing:2px;white-space:nowrap}
 .brand-name span{color:var(--gold)}
 .loading-logo .brand-name{font-size:29px}
-
-.spinner{
-  width:28px;
-  height:28px;
-  border:3px solid rgba(217,164,65,.18);
-  border-top-color:var(--gold);
-  border-radius:50%;
-  margin:20px auto 0;
-  animation:spin .8s linear infinite;
-}
-
+.spinner{width:28px;height:28px;border:3px solid rgba(217,164,65,.18);border-top-color:var(--gold);border-radius:50%;margin:20px auto 0;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-
-.topbar{
-  height:68px;
-  position:sticky;
-  top:0;
-  z-index:100;
-  background:rgba(7,17,31,.96);
-  backdrop-filter:blur(18px);
-  border-bottom:1px solid var(--border);
-}
-
-.topbar-inner{
-  height:100%;
-  padding:0 18px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  position:relative;
-}
-
-.menu-btn{
-  width:42px;
-  height:42px;
-  border:0;
-  background:transparent;
-  color:#fff;
-  font-size:25px;
-}
-
-.topbar .brand-logo{
-  position:absolute;
-  left:50%;
-  transform:translateX(-50%);
-}
-
-.topbar .brand-mark{
-  width:31px;
-  height:31px;
-  border-radius:9px 9px 9px 2px;
-  font-size:16px;
-}
-
-.topbar .brand-name{
-  font-size:18px;
-  letter-spacing:1.5px;
-}
-
-.profile-initial{
-  width:38px;
-  height:38px;
-  border-radius:50%;
-  background:linear-gradient(145deg,#efc25e,#987021);
-  color:#07111f;
-  font-size:12px;
-  font-weight:850;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-
-.overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.65);
-  z-index:190;
-  display:none;
-}
-
+.topbar{height:68px;position:sticky;top:0;z-index:100;background:rgba(7,17,31,.96);backdrop-filter:blur(18px);border-bottom:1px solid var(--border)}
+.topbar-inner{height:100%;padding:0 18px;display:flex;align-items:center;justify-content:space-between;position:relative}
+.menu-btn{width:42px;height:42px;border:0;background:transparent;color:#fff;font-size:25px}
+.topbar .brand-logo{position:absolute;left:50%;transform:translateX(-50%)}
+.topbar .brand-mark{width:31px;height:31px;border-radius:9px 9px 9px 2px;font-size:16px}
+.topbar .brand-name{font-size:18px;letter-spacing:1.5px}
+.profile-initial{width:38px;height:38px;border-radius:50%;background:linear-gradient(145deg,#efc25e,#987021);color:#07111f;font-size:12px;font-weight:850;display:flex;align-items:center;justify-content:center}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:190;display:none}
 .overlay.show{display:block}
-
-.drawer{
-  position:fixed;
-  left:-320px;
-  top:0;
-  width:290px;
-  max-width:86%;
-  height:100vh;
-  height:100dvh;
-  background:#091625;
-  border-right:1px solid var(--border);
-  z-index:200;
-  transition:left .25s ease;
-  padding:22px 15px;
-  overflow-y:auto;
-}
-
+.drawer{position:fixed;left:-320px;top:0;width:290px;max-width:86%;height:100vh;height:100dvh;background:#091625;border-right:1px solid var(--border);z-index:200;transition:left .25s ease;padding:22px 15px;overflow-y:auto}
 .drawer.open{left:0}
-
-.drawer-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:8px 7px 25px;
-  border-bottom:1px solid var(--border);
-}
-
+.drawer-head{display:flex;align-items:center;justify-content:space-between;padding:8px 7px 25px;border-bottom:1px solid var(--border)}
 .drawer-head .brand-name{font-size:19px}
-
-.close-drawer{
-  border:0;
-  background:none;
-  color:#fff;
-  font-size:27px;
-}
-
+.close-drawer{border:0;background:none;color:#fff;font-size:27px}
 .drawer-nav{padding-top:18px}
-
-.drawer-link{
-  width:100%;
-  border:0;
-  background:transparent;
-  color:#d7dce4;
-  padding:14px 13px;
-  border-radius:11px;
-  display:flex;
-  align-items:center;
-  gap:13px;
-  text-align:left;
-  margin-bottom:4px;
-}
-
-.drawer-link:hover{
-  background:rgba(217,164,65,.08);
-  color:var(--gold2);
-}
-
-.drawer-icon{
-  width:22px;
-  text-align:center;
-  color:var(--gold);
-}
-
-.drawer-link.logout{
-  margin-top:15px;
-  color:#ef8990;
-}
-
+.drawer-link{width:100%;border:0;background:transparent;color:#d7dce4;padding:14px 13px;border-radius:11px;display:flex;align-items:center;gap:13px;text-align:left;margin-bottom:4px}
+.drawer-link:hover{background:rgba(217,164,65,.08);color:var(--gold2)}
+.drawer-icon{width:22px;text-align:center;color:var(--gold)}
+.drawer-link.logout{margin-top:15px;color:#ef8990}
 .content{padding:23px 18px 0}
 .greeting{margin-bottom:20px}
 .greeting small{color:var(--muted);font-size:13px}
-
-.greeting h1{
-  margin-top:4px;
-  font-size:24px;
-  font-weight:760;
-  overflow-wrap:anywhere;
-}
-
-/* FIAT PORTFOLIO */
-
-.portfolio-card{
-  background:
-    radial-gradient(circle at top right,rgba(217,164,65,.16),transparent 42%),
-    linear-gradient(145deg,#102238,#0b1829);
-  border:1px solid rgba(217,164,65,.18);
-  border-radius:20px;
-  padding:25px 22px 20px;
-  box-shadow:var(--shadow);
-}
-
-.card-label{
-  color:var(--muted);
-  font-size:13px;
-  letter-spacing:1.5px;
-  text-transform:uppercase;
-}
-
-.portfolio-value{
-  font-size:37px;
-  font-weight:850;
-  margin-top:9px;
-  letter-spacing:-1px;
-  overflow-wrap:anywhere;
-}
-
-.portfolio-caption{
-  color:var(--muted);
-  font-size:11px;
-  margin-top:6px;
-}
-
-.status-row{
-  margin-top:20px;
-  border-top:1px solid var(--border);
-  padding-top:15px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-}
-
+.greeting h1{margin-top:4px;font-size:24px;font-weight:760;overflow-wrap:anywhere}
+.portfolio-card{background:radial-gradient(circle at top right,rgba(217,164,65,.16),transparent 42%),linear-gradient(145deg,#102238,#0b1829);border:1px solid rgba(217,164,65,.18);border-radius:20px;padding:25px 22px 20px;box-shadow:var(--shadow)}
+.card-label{color:var(--muted);font-size:13px;letter-spacing:1.5px;text-transform:uppercase}
+.portfolio-value{font-size:37px;font-weight:850;margin-top:9px;letter-spacing:-1px;overflow-wrap:anywhere}
+.portfolio-caption{color:var(--muted);font-size:11px;margin-top:6px}
+.status-row{margin-top:20px;border-top:1px solid var(--border);padding-top:15px;display:flex;align-items:center;justify-content:space-between;gap:10px}
 .status-label{color:var(--muted);font-size:12px}
-
-.status{
-  display:flex;
-  align-items:center;
-  gap:7px;
-  font-size:12px;
-  font-weight:700;
-}
-
-.status-dot{
-  width:8px;
-  height:8px;
-  border-radius:50%;
-  background:var(--green);
-}
-
-/* TWO-FACTOR SECURITY */
-
-.security-card{
-  margin-top:18px;
-  padding:17px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:14px;
-  border:1px solid rgba(239,107,115,.38);
-  border-radius:17px;
-  background:rgba(239,107,115,.07);
-  transition:background .2s,border-color .2s;
-}
-
-.security-card.warning{
-  border-color:rgba(239,107,115,.4);
-  background:rgba(239,107,115,.07);
-}
-
-.security-card.enabled{
-  border-color:rgba(50,196,141,.4);
-  background:rgba(50,196,141,.07);
-}
-
-.security-card.checking{
-  border-color:rgba(217,164,65,.35);
-  background:rgba(217,164,65,.05);
-}
-
+.status{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:700}
+.status-dot{width:8px;height:8px;border-radius:50%;background:var(--green)}
+.security-card{margin-top:18px;padding:17px;display:flex;align-items:center;justify-content:space-between;gap:14px;border:1px solid rgba(239,107,115,.38);border-radius:17px;background:rgba(239,107,115,.07);transition:background .2s,border-color .2s}
+.security-card.warning{border-color:rgba(239,107,115,.4);background:rgba(239,107,115,.07)}
+.security-card.enabled{border-color:rgba(50,196,141,.4);background:rgba(50,196,141,.07)}
+.security-card.checking{border-color:rgba(217,164,65,.35);background:rgba(217,164,65,.05)}
 .security-copy{min-width:0;flex:1}
-
-.security-heading{
-  display:flex;
-  align-items:center;
-  gap:9px;
-  font-size:14px;
-  font-weight:800;
-  line-height:1.5;
-}
-
-.security-indicator{
-  width:9px;
-  height:9px;
-  border-radius:50%;
-  flex:none;
-  background:var(--red);
-  box-shadow:0 0 10px rgba(239,107,115,.35);
-}
-
-.security-card.enabled .security-indicator{
-  background:var(--green);
-  box-shadow:0 0 10px rgba(50,196,141,.35);
-}
-
-.security-card.checking .security-indicator{
-  background:var(--gold);
-  box-shadow:none;
-}
-
-.security-message{
-  margin-top:6px;
-  color:var(--muted);
-  font-size:11px;
-  line-height:1.7;
-}
-
-.security-action{
-  flex:none;
-  border:1px solid rgba(239,107,115,.4);
-  border-radius:10px;
-  padding:10px 12px;
-  color:#fff;
-  background:rgba(239,107,115,.14);
-  font-size:11px;
-  font-weight:800;
-}
-
-.security-card.enabled .security-action{
-  border-color:rgba(50,196,141,.4);
-  background:rgba(50,196,141,.12);
-}
-
-.security-card.checking .security-action{
-  border-color:rgba(217,164,65,.35);
-  background:rgba(217,164,65,.1);
-}
-
+.security-heading{display:flex;align-items:center;gap:9px;font-size:14px;font-weight:800;line-height:1.5}
+.security-indicator{width:9px;height:9px;border-radius:50%;flex:none;background:var(--red);box-shadow:0 0 10px rgba(239,107,115,.35)}
+.security-card.enabled .security-indicator{background:var(--green);box-shadow:0 0 10px rgba(50,196,141,.35)}
+.security-card.checking .security-indicator{background:var(--gold);box-shadow:none}
+.security-message{margin-top:6px;color:var(--muted);font-size:11px;line-height:1.7}
+.security-action{flex:none;border:1px solid rgba(239,107,115,.4);border-radius:10px;padding:10px 12px;color:#fff;background:rgba(239,107,115,.14);font-size:11px;font-weight:800}
+.security-card.enabled .security-action{border-color:rgba(50,196,141,.4);background:rgba(50,196,141,.12)}
+.security-card.checking .security-action{border-color:rgba(217,164,65,.35);background:rgba(217,164,65,.1)}
 .security-action:hover{filter:brightness(1.15)}
-
-@media(max-width:400px){
-  .security-card{padding:14px;gap:9px}
-  .security-action{padding:9px;font-size:10px}
-  .security-heading{font-size:12px}
-}
-
-/* SECTION HEADINGS */
-
 .section{margin-top:25px}
-
-.section-title{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  margin-bottom:12px;
-}
-
+.section-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
 .section-title h2{font-size:16px;font-weight:750}
 .section-title span{color:var(--muted);font-size:11px}
-
-/* CRYPTO DROPDOWN */
-
 .crypto-picker{position:relative}
-
-.crypto-selected{
-  width:100%;
-  min-height:70px;
-  padding:12px 15px;
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:16px;
-  color:#fff;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-}
-
-.selected-left{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  min-width:0;
-}
-
-.selected-logo,.preview-logo{
-  width:40px;
-  height:40px;
-  flex:none;
-  object-fit:contain;
-}
-
+.crypto-selected{width:100%;min-height:70px;padding:12px 15px;background:var(--card);border:1px solid var(--border);border-radius:16px;color:#fff;display:flex;align-items:center;justify-content:space-between}
+.selected-left{display:flex;align-items:center;gap:12px;min-width:0}
+.selected-logo,.preview-logo{width:40px;height:40px;flex:none;object-fit:contain}
 .selected-info{text-align:left;min-width:0}
 .selected-symbol{font-size:14px;font-weight:800}
 .selected-name{margin-top:3px;color:var(--muted);font-size:11px}
-
-.selected-arrow{
-  color:var(--gold2);
-  font-size:20px;
-  margin-left:10px;
-  transition:transform .2s;
-}
-
+.selected-arrow{color:var(--gold2);font-size:20px;margin-left:10px;transition:transform .2s}
 .crypto-picker.open .selected-arrow{transform:rotate(180deg)}
-
-.crypto-menu{
-  position:absolute;
-  left:0;
-  right:0;
-  top:calc(100% + 7px);
-  background:#0b192a;
-  border:1px solid rgba(217,164,65,.16);
-  border-radius:16px;
-  box-shadow:0 25px 65px rgba(0,0,0,.48);
-  padding:8px;
-  z-index:80;
-  display:none;
-  max-height:350px;
-  overflow-y:auto;
-}
-
+.crypto-menu{position:absolute;left:0;right:0;top:calc(100% + 7px);background:#0b192a;border:1px solid rgba(217,164,65,.16);border-radius:16px;box-shadow:0 25px 65px rgba(0,0,0,.48);padding:8px;z-index:80;display:none;max-height:350px;overflow-y:auto}
 .crypto-picker.open .crypto-menu{display:block}
-
-.crypto-option{
-  width:100%;
-  border:0;
-  background:transparent;
-  color:#fff;
-  min-height:55px;
-  border-radius:11px;
-  padding:9px 10px;
-  display:flex;
-  align-items:center;
-  gap:12px;
-  text-align:left;
-}
-
-.crypto-option:hover,.crypto-option.active{
-  background:rgba(217,164,65,.09);
-}
-
+.crypto-option{width:100%;border:0;background:transparent;color:#fff;min-height:55px;border-radius:11px;padding:9px 10px;display:flex;align-items:center;gap:12px;text-align:left}
+.crypto-option:hover,.crypto-option.active{background:rgba(217,164,65,.09)}
 .crypto-logo{width:35px;height:35px;object-fit:contain;flex:none}
 .crypto-details{min-width:0;flex:1}
 .crypto-symbol{font-size:13px;font-weight:800}
 .crypto-name{color:var(--muted);font-size:10px;margin-top:2px}
-
-.crypto-amount{
-  text-align:right;
-  font-size:12px;
-  font-weight:750;
-  overflow-wrap:anywhere;
-  font-variant-numeric:tabular-nums;
-}
-
+.crypto-amount{text-align:right;font-size:12px;font-weight:750;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
 .crypto-option-check{color:var(--gold2);display:none}
 .crypto-option.active .crypto-option-check{display:block}
-
-.asset-preview{
-  margin-top:10px;
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:16px;
-  padding:17px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-}
-
+.asset-preview{margin-top:10px;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:17px;display:flex;align-items:center;justify-content:space-between;gap:10px}
 .asset-left{display:flex;align-items:center;gap:12px;min-width:0}
 .asset-name{font-weight:750;font-size:14px}
 .asset-network{color:var(--muted);font-size:11px;margin-top:3px}
 .asset-balance{text-align:right;min-width:0;overflow-wrap:anywhere}
-.asset-balance strong{
-  display:block;
-  font-size:15px;
-  font-variant-numeric:tabular-nums;
-}
+.asset-balance strong{display:block;font-size:15px;font-variant-numeric:tabular-nums}
 .asset-balance small{color:var(--muted);font-size:10px}
-
-/* COUNTDOWN */
-
-.countdown-card{
-  background:linear-gradient(145deg,#111f32,#0c1727);
-  border:1px solid rgba(217,164,65,.18);
-  border-radius:19px;
-  padding:25px 18px;
-  text-align:center;
-}
-
-.countdown-icon{
-  width:45px;
-  height:45px;
-  border-radius:50%;
-  margin:0 auto 12px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:rgba(217,164,65,.1);
-  color:var(--gold2);
-  font-size:23px;
-}
-
+.countdown-card{background:linear-gradient(145deg,#111f32,#0c1727);border:1px solid rgba(217,164,65,.18);border-radius:19px;padding:25px 18px;text-align:center}
+.countdown-icon{width:45px;height:45px;border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;background:rgba(217,164,65,.1);color:var(--gold2);font-size:23px}
 .countdown-title{font-size:14px;font-weight:750}
-
-.countdown-state{
-  color:var(--muted);
-  font-size:11px;
-  margin-top:7px;
-  line-height:1.6;
-}
-
-.timer{
-  margin-top:17px;
-  font-size:32px;
-  letter-spacing:3px;
-  font-weight:850;
-  color:var(--gold2);
-  font-variant-numeric:tabular-nums;
-}
-
-.timer-label{
-  color:#697789;
-  font-size:9px;
-  letter-spacing:2px;
-  margin-top:6px;
-}
-
+.countdown-state{color:var(--muted);font-size:11px;margin-top:7px;line-height:1.6}
+.timer{margin-top:17px;font-size:32px;letter-spacing:3px;font-weight:850;color:var(--gold2);font-variant-numeric:tabular-nums}
+.timer-label{color:#697789;font-size:9px;letter-spacing:2px;margin-top:6px}
 .hidden{display:none!important}
-
-/* PARTNERS */
-
-.partner-card{
-  background:linear-gradient(145deg,#102238,#0b1829);
-  border:1px solid var(--border);
-  border-radius:17px;
-  padding:20px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:15px;
-}
-
+.partner-card{background:linear-gradient(145deg,#102238,#0b1829);border:1px solid var(--border);border-radius:17px;padding:20px;display:flex;align-items:center;justify-content:space-between;gap:15px}
 .partner-left{display:flex;align-items:center;gap:13px}
-
-.partner-icon{
-  width:44px;
-  height:44px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:13px;
-  color:var(--gold2);
-  background:rgba(217,164,65,.12);
-  font-size:23px;
-}
-
+.partner-icon{width:44px;height:44px;display:flex;align-items:center;justify-content:center;border-radius:13px;color:var(--gold2);background:rgba(217,164,65,.12);font-size:23px}
 .partner-label{font-size:14px;font-weight:750}
 .partner-description{font-size:11px;color:var(--muted);margin-top:4px}
 .partner-count{font-size:25px;font-weight:850;color:var(--gold2)}
-
-/* STATISTICS */
-
-.stats-card{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:18px;
-  padding:4px 18px;
-}
-
-.stat-row{
-  padding:17px 0;
-  border-bottom:1px solid var(--border);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-}
-
+.stats-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:4px 18px}
+.stat-row{padding:17px 0;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px}
 .stat-row:last-child{border-bottom:0}
 .stat-info{min-width:0}
 .stat-label{font-size:13px;color:var(--muted)}
 .stat-note{margin-top:5px;font-size:10px;color:#728096;line-height:1.5}
-
-.stat-value{
-  font-size:19px;
-  font-weight:800;
-  text-align:right;
-  overflow-wrap:anywhere;
-}
-
-.green{color:var(--green)}
-.gold{color:var(--gold2)}
-.blue{color:var(--blue)}
-.purple{color:var(--purple)}
-.red{color:var(--red)}
-
-.statistics-note{
-  margin-top:12px;
-  color:var(--muted);
-  font-size:10px;
-  line-height:1.7;
-}
-
-/* QUICK ACTIONS */
-
+.stat-value{font-size:19px;font-weight:800;text-align:right;overflow-wrap:anywhere}
+.green{color:var(--green)}.gold{color:var(--gold2)}.blue{color:var(--blue)}.purple{color:var(--purple)}.red{color:var(--red)}
+.statistics-note{margin-top:12px;color:var(--muted);font-size:10px;line-height:1.7}
 .quick-grid{display:flex;flex-direction:column;gap:12px}
-
-.quick-btn{
-  width:100%;
-  min-height:75px;
-  border:1px solid var(--border);
-  border-radius:16px;
-  color:#fff;
-  padding:15px 17px;
-  display:flex;
-  align-items:center;
-  gap:14px;
-  text-align:left;
-  transition:transform .18s,filter .18s;
-}
-
+.quick-btn{width:100%;min-height:75px;border:1px solid var(--border);border-radius:16px;color:#fff;padding:15px 17px;display:flex;align-items:center;gap:14px;text-align:left;transition:transform .18s,filter .18s}
 .quick-btn:hover{filter:brightness(1.1);transform:translateY(-1px)}
-
-.quick-btn.market{
-  background:linear-gradient(110deg,#173d68,#102746);
-  border-color:rgba(91,141,239,.32);
-}
-
-.quick-btn.deposit{
-  background:linear-gradient(110deg,#126b50,#104536);
-  border-color:rgba(50,196,141,.32);
-}
-
-.quick-btn.withdraw{
-  background:linear-gradient(110deg,#80591c,#4b3517);
-  border-color:rgba(217,164,65,.32);
-}
-
-.quick-icon{
-  width:43px;
-  height:43px;
-  flex:none;
-  border-radius:13px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:22px;
-  background:rgba(255,255,255,.1);
-}
-
+.quick-btn.market{background:linear-gradient(110deg,#173d68,#102746);border-color:rgba(91,141,239,.32)}
+.quick-btn.deposit{background:linear-gradient(110deg,#126b50,#104536);border-color:rgba(50,196,141,.32)}
+.quick-btn.withdraw{background:linear-gradient(110deg,#80591c,#4b3517);border-color:rgba(217,164,65,.32)}
+.quick-icon{width:43px;height:43px;flex:none;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:22px;background:rgba(255,255,255,.1)}
 .quick-text{min-width:0;flex:1}
 .quick-text strong{display:block;font-size:14px;font-weight:800}
-
-.quick-text small{
-  display:block;
-  font-size:11px;
-  color:rgba(255,255,255,.72);
-  margin-top:5px;
-  line-height:1.5;
-}
-
+.quick-text small{display:block;font-size:11px;color:rgba(255,255,255,.72);margin-top:5px;line-height:1.5}
 .quick-arrow{font-size:21px;color:rgba(255,255,255,.75)}
-
-.info-note{
-  margin-top:20px;
-  padding:14px;
-  border:1px solid var(--border);
-  border-radius:13px;
-  color:var(--muted);
-  font-size:10px;
-  line-height:1.8;
-  background:rgba(255,255,255,.015);
-}
-
-/* BOTTOM NAV */
-
-.bottom-nav{
-  position:fixed;
-  bottom:0;
-  left:50%;
-  transform:translateX(-50%);
-  width:100%;
-  max-width:760px;
-  min-height:70px;
-  padding-bottom:env(safe-area-inset-bottom);
-  background:rgba(8,18,31,.98);
-  backdrop-filter:blur(18px);
-  border-top:1px solid var(--border);
-  z-index:120;
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-}
-
-.bottom-link{
-  border:0;
-  background:transparent;
-  color:#7e8998;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:5px;
-  font-size:10px;
-}
-
+.info-note{margin-top:20px;padding:14px;border:1px solid var(--border);border-radius:13px;color:var(--muted);font-size:10px;line-height:1.8;background:rgba(255,255,255,.015)}
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:760px;min-height:70px;padding-bottom:env(safe-area-inset-bottom);background:rgba(8,18,31,.98);backdrop-filter:blur(18px);border-top:1px solid var(--border);z-index:120;display:grid;grid-template-columns:repeat(4,1fr)}
+.bottom-link{border:0;background:transparent;color:#7e8998;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;font-size:10px}
 .bottom-link.active{color:var(--gold2)}
 .bottom-icon{font-size:20px}
-
-.toast{
-  position:fixed;
-  left:50%;
-  bottom:85px;
-  transform:translateX(-50%) translateY(15px);
-  background:#142337;
-  border:1px solid var(--border);
-  color:#fff;
-  padding:12px 16px;
-  border-radius:10px;
-  font-size:12px;
-  opacity:0;
-  pointer-events:none;
-  transition:.25s;
-  z-index:500;
-  width:max-content;
-  max-width:90%;
-  text-align:center;
-}
-
+.toast{position:fixed;left:50%;bottom:85px;transform:translateX(-50%) translateY(15px);background:#142337;border:1px solid var(--border);color:#fff;padding:12px 16px;border-radius:10px;font-size:12px;opacity:0;pointer-events:none;transition:.25s;z-index:500;width:max-content;max-width:90%;text-align:center}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
 @media(max-width:400px){
+  .security-card{padding:14px;gap:9px}
+  .security-action{padding:9px;font-size:10px}
+  .security-heading{font-size:12px}
   .content{padding-left:14px;padding-right:14px}
   .portfolio-value{font-size:31px}
   .timer{font-size:27px}
@@ -794,39 +161,37 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
   .topbar .brand-name{font-size:15px}
   .topbar .brand-mark{width:27px;height:27px}
 }
-
 @media(prefers-reduced-motion:reduce){
-  *,*::before,*::after{
-    animation-duration:.01ms!important;
-    transition-duration:.01ms!important;
-  }
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
 }
-</style></head><body><div id="loadingScreen" class="loading-screen">
+</style>
+</head>
+<body>
+<div id="loadingScreen" class="loading-screen">
   <div class="loading-box">
     <div class="brand-logo loading-logo">
-      <div class="brand-mark">A</div>
-      <div class="brand-name">AITI<span>VEST</span></div>
+      <div class="brand-mark">A</div><div class="brand-name">AITI<span>VEST</span></div>
     </div>
     <div class="spinner"></div>
   </div>
-</div><div class="app"><header class="topbar">
+</div><div class="app">
+<header class="topbar">
   <div class="topbar-inner">
-    <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button><div class="brand-logo" aria-label="AITIVEST">
-  <div class="brand-mark">A</div>
-  <div class="brand-name">AITI<span>VEST</span></div>
-</div>
-
-<div class="profile-initial" id="profileInitial">AV</div>
-
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
+    <div class="brand-logo" aria-label="AITIVEST">
+      <div class="brand-mark">A</div><div class="brand-name">AITI<span>VEST</span></div>
+    </div>
+    <div class="profile-initial" id="profileInitial">AV</div>
   </div>
-</header><div class="overlay" id="overlay"></div><aside class="drawer" id="drawer" aria-label="Main navigation">
+</header><div class="overlay" id="overlay"></div>
+<aside class="drawer" id="drawer" aria-label="Main navigation">
   <div class="drawer-head">
     <div class="brand-logo">
-      <div class="brand-mark">A</div>
-      <div class="brand-name">AITI<span>VEST</span></div>
+      <div class="brand-mark">A</div><div class="brand-name">AITI<span>VEST</span></div>
     </div>
     <button class="close-drawer" id="closeDrawer" aria-label="Close menu">×</button>
-  </div>  <nav class="drawer-nav">
+  </div>
+  <nav class="drawer-nav">
     <button class="drawer-link" onclick="go('dashboard.html')"><span class="drawer-icon">⌂</span>Portfolio</button>
     <button class="drawer-link" onclick="go('deposit.html')"><span class="drawer-icon">＋</span>Deposit</button>
     <button class="drawer-link" onclick="go('withdraw.html')"><span class="drawer-icon">↗</span>Withdraw</button>
@@ -838,429 +203,210 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
     <button class="drawer-link" onclick="go('notifications.html')"><span class="drawer-icon">♢</span>Notifications</button>
     <button class="drawer-link logout" id="logoutBtn"><span class="drawer-icon">↪</span>Logout</button>
   </nav>
-</aside><main class="content">  <div class="greeting">
+</aside><main class="content">
+  <div class="greeting">
     <small id="greetingText">Welcome back</small>
     <h1 id="userName">Welcome</h1>
   </div>  <section class="portfolio-card">
     <div class="card-label">FIAT</div>
     <div class="portfolio-value" id="portfolioValue">Loading...</div>
-    <div class="portfolio-caption">Total USD value of confirmed deposits</div><div class="status-row">
-  <div class="status-label">Account status</div>
-  <div class="status" id="accountStatus">
-    <span class="status-dot"></span>
-    <span>Loading...</span>
-  </div>
-</div>
-
+    <div class="portfolio-caption">Total USD value of confirmed deposits</div>
+    <div class="status-row">
+      <div class="status-label">Account status</div>
+      <div class="status" id="accountStatus"><span class="status-dot"></span><span>Loading...</span></div>
+    </div>
   </section>  <section class="security-card checking" id="securityCard" aria-live="polite">
     <div class="security-copy">
-      <div class="security-heading">
-        <span class="security-indicator" aria-hidden="true"></span>
-        <span id="securityTitle">Checking account security...</span>
+      <div class="security-heading"><span class="security-indicator" aria-hidden="true"></span><span id="securityTitle">Checking account security...</span></div>
+      <div class="security-message" id="securityMessage">Verifying your two-factor authentication status.</div>
+    </div>
+    <button type="button" class="security-action" id="securityAction" onclick="go('security.html')">Checking...</button>
+  </section>  <section class="section">
+    <div class="section-title"><h2>CRYPTO</h2><span>Supported assets</span></div>
+    <div class="crypto-picker" id="cryptoPicker">
+      <button type="button" class="crypto-selected" id="cryptoSelected" aria-expanded="false" aria-controls="cryptoMenu">
+        <div class="selected-left">
+          <img id="selectedLogo" class="selected-logo" src="" alt="">
+          <div class="selected-info"><div class="selected-symbol" id="selectedSymbol">USDT</div><div class="selected-name" id="selectedName">Tether</div></div>
+        </div>
+        <div class="selected-arrow">⌄</div>
+      </button>
+      <div class="crypto-menu" id="cryptoMenu"></div>
+    </div>
+    <div class="asset-preview">
+      <div class="asset-left">
+        <img id="previewLogo" class="preview-logo" src="" alt="">
+        <div><div class="asset-name" id="previewName">Tether</div><div class="asset-network" id="previewNetwork">Available wallet balance</div></div>
       </div>
-      <div class="security-message" id="securityMessage">
-        Verifying your two-factor authentication status.
-      </div>
-    </div><button type="button" class="security-action" id="securityAction"
-  onclick="go('security.html')">Checking...</button>
-
+      <div class="asset-balance"><strong id="previewBalance">0.00</strong><small id="previewSymbol">USDT</small></div>
+    </div>
   </section>  <section class="section">
-    <div class="section-title">
-      <h2>CRYPTO</h2>
-      <span>Supported assets</span>
-    </div><div class="crypto-picker" id="cryptoPicker">
-  <button type="button" class="crypto-selected" id="cryptoSelected"
-    aria-expanded="false" aria-controls="cryptoMenu">
-    <div class="selected-left">
-      <img id="selectedLogo" class="selected-logo" src="" alt="">
-      <div class="selected-info">
-        <div class="selected-symbol" id="selectedSymbol">USDT</div>
-        <div class="selected-name" id="selectedName">Tether</div>
-      </div>
+    <div class="section-title"><h2>Profit Countdown</h2><span id="countdownAsset">—</span></div>
+    <div class="countdown-card">
+      <div class="countdown-icon">◷</div>
+      <div class="countdown-title">Time until the next calculation of profit</div>
+      <div class="countdown-state" id="countdownState">Checking active deposits...</div>
+      <div id="timerBox" class="hidden"><div class="timer" id="timer">--:--:--</div><div class="timer-label">HOURS : MINUTES : SECONDS</div></div>
     </div>
-    <div class="selected-arrow">⌄</div>
-  </button>
-  <div class="crypto-menu" id="cryptoMenu"></div>
-</div>
-
-<div class="asset-preview">
-  <div class="asset-left">
-    <img id="previewLogo" class="preview-logo" src="" alt="">
-    <div>
-      <div class="asset-name" id="previewName">Tether</div>
-      <div class="asset-network" id="previewNetwork">Available wallet balance</div>
-    </div>
-  </div>
-  <div class="asset-balance">
-    <strong id="previewBalance">0.00</strong>
-    <small id="previewSymbol">USDT</small>
-  </div>
-</div>
-
   </section>  <section class="section">
-    <div class="section-title">
-      <h2>Profit Countdown</h2>
-      <span id="countdownAsset">—</span>
-    </div><div class="countdown-card">
-  <div class="countdown-icon">◷</div>
-  <div class="countdown-title">Time until the next calculation of profit</div>
-  <div class="countdown-state" id="countdownState">Checking active deposits...</div>
-  <div id="timerBox" class="hidden">
-    <div class="timer" id="timer">--:--:--</div>
-    <div class="timer-label">HOURS : MINUTES : SECONDS</div>
-  </div>
-</div>
-
+    <div class="section-title"><h2>Partners</h2><span>Referral overview</span></div>
+    <div class="partner-card">
+      <div class="partner-left"><div class="partner-icon">♧</div><div><div class="partner-label">My Partners</div><div class="partner-description">Recorded referrals</div></div></div>
+      <div class="partner-count" id="partnerCount">—</div>
+    </div>
   </section>  <section class="section">
-    <div class="section-title">
-      <h2>Partners</h2>
-      <span>Referral overview</span>
-    </div><div class="partner-card">
-  <div class="partner-left">
-    <div class="partner-icon">♧</div>
-    <div>
-      <div class="partner-label">My Partners</div>
-      <div class="partner-description">Recorded referrals</div>
+    <div class="section-title"><h2>Payment Statistics</h2><span>Account history</span></div>
+    <div class="stats-card">
+      <div class="stat-row"><div class="stat-info"><div class="stat-label">Incoming payments</div><div class="stat-note">Confirmed deposit value</div></div><div class="stat-value green" id="incomingPayments">Loading...</div></div>
+      <div class="stat-row"><div class="stat-info"><div class="stat-label">Outgoing payments</div><div class="stat-note">Completed withdrawals only</div></div><div class="stat-value red" id="outgoingPayments">Loading...</div></div>
     </div>
-  </div>
-  <div class="partner-count" id="partnerCount">—</div>
-</div>
-
   </section>  <section class="section">
-    <div class="section-title">
-      <h2>Payment Statistics</h2>
-      <span>Account history</span>
-    </div><div class="stats-card">
-  <div class="stat-row">
-    <div class="stat-info">
-      <div class="stat-label">Incoming payments</div>
-      <div class="stat-note">Confirmed deposit value</div>
+    <div class="section-title"><h2>Earnings Statistics</h2><span>Account records</span></div>
+    <div class="stats-card">
+      <div class="stat-row"><div class="stat-info"><div class="stat-label">All accruals</div><div class="stat-note">Credited earnings and referral commissions</div></div><div class="stat-value gold" id="allAccruals">Loading...</div></div>
+      <div class="stat-row"><div class="stat-info"><div class="stat-label">Main profit</div><div class="stat-note">Credited investment earnings</div></div><div class="stat-value blue" id="mainProfit">Loading...</div></div>
+      <div class="stat-row"><div class="stat-info"><div class="stat-label">Partners profit</div><div class="stat-note">Credited referral commissions</div></div><div class="stat-value purple" id="partnersProfit">Loading...</div></div>
     </div>
-    <div class="stat-value green" id="incomingPayments">Loading...</div>
-  </div>
-
-  <div class="stat-row">
-    <div class="stat-info">
-      <div class="stat-label">Outgoing payments</div>
-      <div class="stat-note">Completed withdrawals only</div>
-    </div>
-    <div class="stat-value red" id="outgoingPayments">Loading...</div>
-  </div>
-</div>
-
+    <div class="statistics-note" id="statisticsNote">Statistics are loaded from your account records.</div>
   </section>  <section class="section">
-    <div class="section-title">
-      <h2>Earnings Statistics</h2>
-      <span>Account records</span>
-    </div><div class="stats-card">
-  <div class="stat-row">
-    <div class="stat-info">
-      <div class="stat-label">All accruals</div>
-      <div class="stat-note">Credited earning records</div>
+    <div class="section-title"><h2>Quick Access</h2><span>Choose an action</span></div>
+    <div class="quick-grid">
+      <button class="quick-btn market" onclick="go('swap.html')"><span class="quick-icon">⇄</span><span class="quick-text"><strong>Market</strong><small>Explore asset exchange</small></span><span class="quick-arrow">›</span></button>
+      <button class="quick-btn deposit" onclick="go('deposit.html')"><span class="quick-icon">＋</span><span class="quick-text"><strong>Add Funds</strong><small>View deposit options</small></span><span class="quick-arrow">›</span></button>
+      <button class="quick-btn withdraw" onclick="go('withdraw.html')"><span class="quick-icon">↗</span><span class="quick-text"><strong>Withdraw</strong><small>Manage withdrawal requests</small></span><span class="quick-arrow">›</span></button>
     </div>
-    <div class="stat-value gold" id="allAccruals">Loading...</div>
-  </div>
-
-  <div class="stat-row">
-    <div class="stat-info">
-      <div class="stat-label">Main profit</div>
-      <div class="stat-note">Credited earnings</div>
-    </div>
-    <div class="stat-value blue" id="mainProfit">Loading...</div>
-  </div>
-
-  <div class="stat-row">
-    <div class="stat-info">
-      <div class="stat-label">Partners profit</div>
-      <div class="stat-note">Credited referral commissions</div>
-    </div>
-    <div class="stat-value purple" id="partnersProfit">Loading...</div>
-  </div>
-
-  <div class="stat-row">
-    <div class="stat-info">
-      <div class="stat-label">Available USDT</div>
-      <div class="stat-note">Available wallet balance</div>
-    </div>
-    <div class="stat-value green" id="availableUSDT">Loading...</div>
-  </div>
-</div>
-
-<div class="statistics-note" id="statisticsNote">
-  Statistics are loaded from your account records.
-</div>
-
-  </section>  <section class="section">
-    <div class="section-title">
-      <h2>Quick Access</h2>
-      <span>Choose an action</span>
-    </div><div class="quick-grid">
-  <button class="quick-btn market" onclick="go('swap.html')">
-    <span class="quick-icon">⇄</span>
-    <span class="quick-text">
-      <strong>Market</strong>
-      <small>Explore asset exchange</small>
-    </span>
-    <span class="quick-arrow">›</span>
-  </button>
-
-  <button class="quick-btn deposit" onclick="go('deposit.html')">
-    <span class="quick-icon">＋</span>
-    <span class="quick-text">
-      <strong>Add Funds</strong>
-      <small>View deposit options</small>
-    </span>
-    <span class="quick-arrow">›</span>
-  </button>
-
-  <button class="quick-btn withdraw" onclick="go('withdraw.html')">
-    <span class="quick-icon">↗</span>
-    <span class="quick-text">
-      <strong>Withdraw</strong>
-      <small>Manage withdrawal requests</small>
-    </span>
-    <span class="quick-arrow">›</span>
-  </button>
-</div>
-
-  </section>  <div class="info-note">
-    FIAT displays the USD-equivalent value of confirmed deposits. Pending deposits
-    are excluded. Cryptocurrency balances are displayed separately by asset.
-    The countdown is a time indicator and does not itself credit earnings.
-  </div></main><nav class="bottom-nav" aria-label="Bottom navigation">
-  <button class="bottom-link active" onclick="go('dashboard.html')">
-    <span class="bottom-icon">⌂</span><span>Portfolio</span>
-  </button>
-  <button class="bottom-link" onclick="go('deposit.html')">
-    <span class="bottom-icon">＋</span><span>Deposit</span>
-  </button>
-  <button class="bottom-link" onclick="go('transactions.html')">
-    <span class="bottom-icon">≡</span><span>History</span>
-  </button>
-  <button class="bottom-link" onclick="go('profile.html')">
-    <span class="bottom-icon">○</span><span>Account</span>
-  </button>
-</nav></div><div class="toast" id="toast" role="status" aria-live="polite"></div><script>
+  </section>  <div class="info-note">FIAT displays the USD-equivalent value of confirmed deposits. Pending deposits are excluded. Cryptocurrency balances are displayed separately by asset. The countdown is a time indicator and does not itself credit earnings.</div>
+</main><nav class="bottom-nav" aria-label="Bottom navigation">
+  <button class="bottom-link active" onclick="go('dashboard.html')"><span class="bottom-icon">⌂</span><span>Portfolio</span></button>
+  <button class="bottom-link" onclick="go('deposit.html')"><span class="bottom-icon">＋</span><span>Deposit</span></button>
+  <button class="bottom-link" onclick="go('transactions.html')"><span class="bottom-icon">≡</span><span>History</span></button>
+  <button class="bottom-link" onclick="go('profile.html')"><span class="bottom-icon">○</span><span>Account</span></button>
+</nav>
+</div><div class="toast" id="toast" role="status" aria-live="polite"></div><script>
 "use strict";
 
 /* SUPABASE */
-
 const SUPABASE_URL = "https://rihvvwktvgytbqzazage.supabase.co";
 const SUPABASE_KEY = "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
-
 const db = window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
 /* ASSETS */
-
-const LOGO_BASE =
-  "https://cdn.jsdelivr.net/gh/madenix/Crypto-logo-cdn@main/Logos/";
-
+const LOGO_BASE = "https://cdn.jsdelivr.net/gh/madenix/Crypto-logo-cdn@main/Logos/";
 const logoFiles = {
-  BTC:"BTC.svg", ETH:"ETH.svg", USDT:"USDT.svg", USDC:"USDC.svg",
-  BNB:"BNB.svg", SOL:"SOL.svg", XRP:"XRP.svg", TON:"TON.svg",
-  DOGE:"DOGE.svg", ADA:"ADA.svg", TRX:"TRON.svg", LTC:"LTC.svg",
-  AVAX:"AVAX.svg", DOT:"DOT.svg", LINK:"LINK.svg", POL:"MATIC.svg",
-  SHIB:"SHIB.svg", BCH:"BCH.svg", XLM:"XLM.svg", ATOM:"ATOM.svg",
-  NEAR:"NEAR.svg", APT:"APT.svg", ARB:"ARB.svg", OP:"OP.svg"
+  BTC:"BTC.svg",ETH:"ETH.svg",USDT:"USDT.svg",USDC:"USDC.svg",
+  BNB:"BNB.svg",SOL:"SOL.svg",XRP:"XRP.svg",TON:"TON.svg",
+  DOGE:"DOGE.svg",ADA:"ADA.svg",TRX:"TRON.svg",LTC:"LTC.svg",
+  AVAX:"AVAX.svg",DOT:"DOT.svg",LINK:"LINK.svg",POL:"MATIC.svg",
+  SHIB:"SHIB.svg",BCH:"BCH.svg",XLM:"XLM.svg",ATOM:"ATOM.svg",
+  NEAR:"NEAR.svg",APT:"APT.svg",ARB:"ARB.svg",OP:"OP.svg"
 };
-
 const assets = [
-  ["BTC","Bitcoin"],["ETH","Ethereum"],["USDT","Tether"],
-  ["USDC","USD Coin"],["BNB","BNB"],["SOL","Solana"],
-  ["XRP","XRP"],["TON","Toncoin"],["DOGE","Dogecoin"],
-  ["ADA","Cardano"],["TRX","TRON"],["LTC","Litecoin"],
-  ["AVAX","Avalanche"],["DOT","Polkadot"],["LINK","Chainlink"],
-  ["POL","Polygon"],["SHIB","Shiba Inu"],["BCH","Bitcoin Cash"],
-  ["XLM","Stellar"],["ATOM","Cosmos"],["NEAR","NEAR Protocol"],
-  ["APT","Aptos"],["ARB","Arbitrum"],["OP","Optimism"]
+  ["BTC","Bitcoin"],["ETH","Ethereum"],["USDT","Tether"],["USDC","USD Coin"],
+  ["BNB","BNB"],["SOL","Solana"],["XRP","XRP"],["TON","Toncoin"],
+  ["DOGE","Dogecoin"],["ADA","Cardano"],["TRX","TRON"],["LTC","Litecoin"],
+  ["AVAX","Avalanche"],["DOT","Polkadot"],["LINK","Chainlink"],["POL","Polygon"],
+  ["SHIB","Shiba Inu"],["BCH","Bitcoin Cash"],["XLM","Stellar"],["ATOM","Cosmos"],
+  ["NEAR","NEAR Protocol"],["APT","Aptos"],["ARB","Arbitrum"],["OP","Optimism"]
 ];
 
-let currentUser = null;
-let wallets = [];
-let activeDeposits = [];
-let selectedAsset = "USDT";
-let countdownTarget = null;
-let countdownInterval = null;
-let refreshInProgress = false;
-let countdownRefreshTimer = null;
+let currentUser=null;
+let wallets=[];
+let activeDeposits=[];
+let selectedAsset="USDT";
+let countdownTarget=null;
+let countdownInterval=null;
+let refreshInProgress=false;
+let countdownRefreshTimer=null;
 
-/* ASSET-SPECIFIC DECIMAL PRECISION */
-
-const ASSET_DECIMALS = {
-  BTC:8,
-  ETH:8,
-  USDT:2,
-  USDC:2,
-  BNB:8,
-  SOL:8,
-  XRP:6,
-  TON:8,
-  DOGE:8,
-  ADA:6,
-  TRX:6,
-  LTC:8,
-  AVAX:8,
-  DOT:8,
-  LINK:8,
-  POL:8,
-  SHIB:8,
-  BCH:8,
-  XLM:7,
-  ATOM:6,
-  NEAR:8,
-  APT:8,
-  ARB:8,
-  OP:8
+const ASSET_DECIMALS={
+  BTC:8,ETH:8,USDT:2,USDC:2,BNB:8,SOL:8,XRP:6,TON:8,DOGE:8,
+  ADA:6,TRX:6,LTC:8,AVAX:8,DOT:8,LINK:8,POL:8,SHIB:8,BCH:8,
+  XLM:7,ATOM:6,NEAR:8,APT:8,ARB:8,OP:8
 };
 
-const $ = id => document.getElementById(id);
-
-function go(page){
-  window.location.href = page;
-}
-
-function logoURL(symbol){
-  return LOGO_BASE + (logoFiles[symbol] || "");
-}
-
-/*
-  Formats a wallet quantity using the selected asset's precision.
-  Examples:
-  BTC  -> 0.00000000
-  USDT -> 0.00
-  XRP  -> 0.000000
-*/
+const $=id=>document.getElementById(id);
+function go(page){window.location.href=page}
+function logoURL(symbol){return LOGO_BASE+(logoFiles[symbol]||"")}
 
 function formatNumber(value,asset="USDT"){
-  const number = Number(value ?? 0);
-  const symbol = String(asset || "USDT").toUpperCase();
-
-  if(!Number.isFinite(number)) return "—";
-
-  const decimals = ASSET_DECIMALS[symbol] ?? 8;
-
+  const number=Number(value??0);
+  const symbol=String(asset||"USDT").toUpperCase();
+  if(!Number.isFinite(number))return "—";
+  const decimals=ASSET_DECIMALS[symbol]??8;
   return number.toLocaleString("en-US",{
-    minimumFractionDigits:decimals,
-    maximumFractionDigits:decimals,
-    useGrouping:true
+    minimumFractionDigits:decimals,maximumFractionDigits:decimals,useGrouping:true
   });
 }
 
 function formatMoney(value){
-  const number = Number(value);
-
-  if(!Number.isFinite(number)) return "Unavailable";
-
-  return "$" + number.toLocaleString("en-US",{
-    minimumFractionDigits:2,
-    maximumFractionDigits:2
-  });
+  const number=Number(value);
+  if(!Number.isFinite(number))return "Unavailable";
+  return "$"+number.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
 }
 
 function initials(name){
-  const parts = String(name || "").trim().split(/\s+/).filter(Boolean);
-
-  if(!parts.length) return "AV";
-  if(parts.length===1) return parts[0].slice(0,2).toUpperCase();
-
+  const parts=String(name||"").trim().split(/\s+/).filter(Boolean);
+  if(!parts.length)return "AV";
+  if(parts.length===1)return parts[0].slice(0,2).toUpperCase();
   return (parts[0][0]+parts[parts.length-1][0]).toUpperCase();
 }
 
-function setText(id,value){
-  const element = $(id);
-  if(element) element.textContent = value;
-}
+function setText(id,value){const element=$(id);if(element)element.textContent=value}
 
 function showToast(message){
-  const toast = $("toast");
-  toast.textContent = message;
+  const toast=$("toast");
+  toast.textContent=message;
   toast.classList.add("show");
-
   clearTimeout(showToast.timeout);
-
-  showToast.timeout = setTimeout(()=>{
-    toast.classList.remove("show");
-  },3000);
+  showToast.timeout=setTimeout(()=>toast.classList.remove("show"),3000);
 }
 
 /* GREETING */
-
 function setGreeting(){
-  const hour = new Date().getHours();
-
-  setText(
-    "greetingText",
-    hour<12 ? "Good morning" :
-    hour<18 ? "Good afternoon" :
-    "Good evening"
-  );
+  const hour=new Date().getHours();
+  setText("greetingText",hour<12?"Good morning":hour<18?"Good afternoon":"Good evening");
 }
 
 /* DRAWER */
-
-function openDrawer(){
-  $("drawer").classList.add("open");
-  $("overlay").classList.add("show");
-}
-
-function closeDrawer(){
-  $("drawer").classList.remove("open");
-  $("overlay").classList.remove("show");
-}
-
+function openDrawer(){$("drawer").classList.add("open");$("overlay").classList.add("show")}
+function closeDrawer(){$("drawer").classList.remove("open");$("overlay").classList.remove("show")}
 $("menuBtn").addEventListener("click",openDrawer);
 $("closeDrawer").addEventListener("click",closeDrawer);
 $("overlay").addEventListener("click",closeDrawer);
-
 document.addEventListener("keydown",event=>{
-  if(event.key==="Escape"){
-    closeDrawer();
-    closeCryptoPicker();
-  }
+  if(event.key==="Escape"){closeDrawer();closeCryptoPicker()}
 });
 
 /* AUTHENTICATION */
-
 async function checkAuth(){
-  const {data,error} = await db.auth.getSession();
-
+  const {data,error}=await db.auth.getSession();
   if(error){
     console.error("Session verification failed:",error);
     window.location.replace("signin.html");
     return false;
   }
-
-  currentUser = data?.session?.user || null;
-
-  if(!currentUser){
-    window.location.replace("signin.html");
-    return false;
-  }
-
+  currentUser=data?.session?.user||null;
+  if(!currentUser){window.location.replace("signin.html");return false}
   return true;
 }
 
 /* TWO-FACTOR AUTHENTICATION STATUS */
-
 async function loadMfaStatus(){
-  const card = $("securityCard");
-
-  if(!card || !currentUser) return;
+  const card=$("securityCard");
+  if(!card||!currentUser)return;
 
   card.classList.remove("warning","enabled");
   card.classList.add("checking");
-
   setText("securityTitle","Checking account security...");
   setText("securityMessage","Verifying your two-factor authentication status.");
   setText("securityAction","Checking...");
 
   try{
-    const {data,error} = await db.auth.mfa.listFactors();
+    const {data,error}=await db.auth.mfa.listFactors();
+    if(error)throw error;
 
-    if(error) throw error;
-
-    const verifiedTotp = (data?.totp || []).some(factor=>
-      String(factor.status || "").toLowerCase()==="verified"
+    const verifiedTotp=(data?.totp||[]).some(factor=>
+      String(factor.status||"").toLowerCase()==="verified"
     );
 
     card.classList.remove("checking");
@@ -1269,83 +415,68 @@ async function loadMfaStatus(){
 
     if(verifiedTotp){
       setText("securityTitle","Two-factor authentication enabled");
-      setText(
-        "securityMessage",
-        "Your authenticator app is verified. Keep your recovery information safe."
-      );
+      setText("securityMessage","Your authenticator app is verified. Keep your recovery information safe.");
       setText("securityAction","Manage Security");
     }else{
       setText("securityTitle","Protect your account");
-      setText(
-        "securityMessage",
-        "Two-factor authentication is not enabled. Set it up to add another layer of protection."
-      );
+      setText("securityMessage","Two-factor authentication is not enabled. Set it up to add another layer of protection.");
       setText("securityAction","Enable 2FA");
     }
   }catch(error){
     console.error("MFA status check failed:",error);
-
     card.classList.remove("checking","enabled");
     card.classList.add("warning");
-
     setText("securityTitle","Security status unavailable");
-    setText(
-      "securityMessage",
-      "We could not verify your 2FA status. Open Security Settings to check it."
-    );
+    setText("securityMessage","We could not verify your 2FA status. Open Security Settings to check it.");
     setText("securityAction","Check Security");
   }
 }
 
 /* CRYPTO MENU */
-
 function buildCryptoMenu(){
-  const menu = $("cryptoMenu");
+  const menu=$("cryptoMenu");
   menu.replaceChildren();
 
   assets.forEach(([symbol,name])=>{
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "crypto-option";
-    button.dataset.asset = symbol;
+    const button=document.createElement("button");
+    button.type="button";
+    button.className="crypto-option";
+    button.dataset.asset=symbol;
 
-    const logo = document.createElement("img");
-    logo.className = "crypto-logo";
-    logo.src = logoURL(symbol);
-    logo.alt = "";
-    logo.loading = "lazy";
-    logo.onerror = ()=>{logo.style.visibility="hidden";};
+    const logo=document.createElement("img");
+    logo.className="crypto-logo";
+    logo.src=logoURL(symbol);
+    logo.alt="";
+    logo.loading="lazy";
+    logo.onerror=()=>{logo.style.visibility="hidden"};
 
-    const details = document.createElement("div");
-    details.className = "crypto-details";
+    const details=document.createElement("div");
+    details.className="crypto-details";
 
-    const symbolElement = document.createElement("div");
-    symbolElement.className = "crypto-symbol";
-    symbolElement.textContent = symbol;
+    const symbolElement=document.createElement("div");
+    symbolElement.className="crypto-symbol";
+    symbolElement.textContent=symbol;
 
-    const nameElement = document.createElement("div");
-    nameElement.className = "crypto-name";
-    nameElement.textContent = name;
-
+    const nameElement=document.createElement("div");
+    nameElement.className="crypto-name";
+    nameElement.textContent=name;
     details.append(symbolElement,nameElement);
 
-    const amount = document.createElement("div");
-    amount.className = "crypto-amount";
-    amount.dataset.amountFor = symbol;
-    amount.textContent = formatNumber(0,symbol);
+    const amount=document.createElement("div");
+    amount.className="crypto-amount";
+    amount.dataset.amountFor=symbol;
+    amount.textContent=formatNumber(0,symbol);
 
-    const check = document.createElement("div");
-    check.className = "crypto-option-check";
-    check.textContent = "✓";
+    const check=document.createElement("div");
+    check.className="crypto-option-check";
+    check.textContent="✓";
 
     button.append(logo,details,amount,check);
-
     button.addEventListener("click",()=>{
-      selectedAsset = symbol;
+      selectedAsset=symbol;
       renderSelectedAsset();
       closeCryptoPicker();
     });
-
     menu.appendChild(button);
   });
 
@@ -1359,27 +490,19 @@ function openCryptoPicker(){
 }
 
 function closeCryptoPicker(){
-  const picker = $("cryptoPicker");
-  if(!picker) return;
-
+  const picker=$("cryptoPicker");
+  if(!picker)return;
   picker.classList.remove("open");
   $("cryptoSelected").setAttribute("aria-expanded","false");
 }
 
 $("cryptoSelected").addEventListener("click",event=>{
   event.stopPropagation();
-
-  if($("cryptoPicker").classList.contains("open")){
-    closeCryptoPicker();
-  }else{
-    openCryptoPicker();
-  }
+  $("cryptoPicker").classList.contains("open")?closeCryptoPicker():openCryptoPicker();
 });
 
 document.addEventListener("click",event=>{
-  if(!event.target.closest("#cryptoPicker")){
-    closeCryptoPicker();
-  }
+  if(!event.target.closest("#cryptoPicker"))closeCryptoPicker();
 });
 
 function updateActiveCryptoOption(){
@@ -1389,224 +512,135 @@ function updateActiveCryptoOption(){
 }
 
 function getWallet(symbol){
-  return wallets.find(wallet=>
-    String(wallet.asset || "").toUpperCase()===symbol
-  ) || null;
+  return wallets.find(wallet=>String(wallet.asset||"").toUpperCase()===symbol)||null;
 }
 
 function updateCryptoMenuBalances(){
   document.querySelectorAll("[data-amount-for]").forEach(element=>{
-    const symbol = element.dataset.amountFor;
-    const wallet = getWallet(symbol);
-
-    element.textContent = formatNumber(
-      wallet?.available_balance ?? 0,
-      symbol
-    );
+    const symbol=element.dataset.amountFor;
+    const wallet=getWallet(symbol);
+    element.textContent=formatNumber(wallet?.available_balance??0,symbol);
   });
 }
 
 function renderSelectedAsset(){
-  const asset = assets.find(item=>item[0]===selectedAsset);
-  if(!asset) return;
+  const asset=assets.find(item=>item[0]===selectedAsset);
+  if(!asset)return;
 
-  const [symbol,name] = asset;
-  const wallet = getWallet(symbol);
-  const image = logoURL(symbol);
+  const [symbol,name]=asset;
+  const wallet=getWallet(symbol);
+  const image=logoURL(symbol);
 
-  $("selectedLogo").src = image;
-  $("selectedLogo").onerror = ()=>{
-    $("selectedLogo").style.visibility="hidden";
-  };
-  $("selectedLogo").onload = ()=>{
-    $("selectedLogo").style.visibility="visible";
-  };
-
+  $("selectedLogo").src=image;
+  $("selectedLogo").onerror=()=>{$("selectedLogo").style.visibility="hidden"};
+  $("selectedLogo").onload=()=>{$("selectedLogo").style.visibility="visible"};
   setText("selectedSymbol",symbol);
   setText("selectedName",name);
 
-  $("previewLogo").src = image;
-  $("previewLogo").onerror = ()=>{
-    $("previewLogo").style.visibility="hidden";
-  };
-  $("previewLogo").onload = ()=>{
-    $("previewLogo").style.visibility="visible";
-  };
+  $("previewLogo").src=image;
+  $("previewLogo").onerror=()=>{$("previewLogo").style.visibility="hidden"};
+  $("previewLogo").onload=()=>{$("previewLogo").style.visibility="visible"};
 
   setText("previewName",name);
   setText("previewNetwork","Available wallet balance");
-  setText(
-    "previewBalance",
-    formatNumber(wallet?.available_balance ?? 0,symbol)
-  );
+  setText("previewBalance",formatNumber(wallet?.available_balance??0,symbol));
   setText("previewSymbol",symbol);
-
   updateActiveCryptoOption();
 }
 
 /* LIVE CRYPTOCURRENCY USD PRICES */
-
-const COIN_IDS = {
-  BTC:"bitcoin",
-  ETH:"ethereum",
-  USDT:"tether",
-  USDC:"usd-coin",
-  BNB:"binancecoin",
-  SOL:"solana",
-  XRP:"ripple",
-  TON:"the-open-network",
-  DOGE:"dogecoin",
-  ADA:"cardano",
-  TRX:"tron",
-  LTC:"litecoin",
-  AVAX:"avalanche-2",
-  DOT:"polkadot",
-  LINK:"chainlink",
-  POL:"polygon-ecosystem-token",
-  SHIB:"shiba-inu",
-  BCH:"bitcoin-cash",
-  XLM:"stellar",
-  ATOM:"cosmos",
-  NEAR:"near",
-  APT:"aptos",
-  ARB:"arbitrum",
-  OP:"optimism"
+const COIN_IDS={
+  BTC:"bitcoin",ETH:"ethereum",USDT:"tether",USDC:"usd-coin",BNB:"binancecoin",
+  SOL:"solana",XRP:"ripple",TON:"the-open-network",DOGE:"dogecoin",ADA:"cardano",
+  TRX:"tron",LTC:"litecoin",AVAX:"avalanche-2",DOT:"polkadot",LINK:"chainlink",
+  POL:"polygon-ecosystem-token",SHIB:"shiba-inu",BCH:"bitcoin-cash",XLM:"stellar",
+  ATOM:"cosmos",NEAR:"near",APT:"aptos",ARB:"arbitrum",OP:"optimism"
 };
 
-let cryptoUsdPrices = {};
-let pricesUpdatedAt = 0;
-let priceRefreshPromise = null;
-
-const PRICE_CACHE_DURATION = 60*1000;
+let cryptoUsdPrices={};
+let pricesUpdatedAt=0;
+let priceRefreshPromise=null;
+const PRICE_CACHE_DURATION=60*1000;
 
 async function loadCryptoUsdPrices(force=false){
-  if(
-    !force &&
-    Date.now()-pricesUpdatedAt<PRICE_CACHE_DURATION &&
-    Object.keys(cryptoUsdPrices).length
-  ){
+  if(!force&&Date.now()-pricesUpdatedAt<PRICE_CACHE_DURATION&&Object.keys(cryptoUsdPrices).length){
     return cryptoUsdPrices;
   }
+  if(priceRefreshPromise)return priceRefreshPromise;
 
-  if(priceRefreshPromise) return priceRefreshPromise;
-
-  priceRefreshPromise = (async()=>{
-    const ids = [...new Set(Object.values(COIN_IDS))];
-
-    const url =
-      "https://api.coingecko.com/api/v3/simple/price" +
-      "?ids="+encodeURIComponent(ids.join(","))+
-      "&vs_currencies=usd";
+  priceRefreshPromise=(async()=>{
+    const ids=[...new Set(Object.values(COIN_IDS))];
+    const url="https://api.coingecko.com/api/v3/simple/price?ids="+encodeURIComponent(ids.join(","))+"&vs_currencies=usd";
 
     try{
-      const response = await fetch(url,{
-        method:"GET",
-        headers:{Accept:"application/json"},
-        cache:"no-store",
+      const response=await fetch(url,{
+        method:"GET",headers:{Accept:"application/json"},cache:"no-store",
         signal:AbortSignal.timeout(12000)
       });
+      if(!response.ok)throw new Error("Price provider returned HTTP "+response.status);
 
-      if(!response.ok){
-        throw new Error("Price provider returned HTTP "+response.status);
-      }
-
-      const data = await response.json();
-      const nextPrices = {};
+      const data=await response.json();
+      const nextPrices={};
 
       for(const [symbol,coinId] of Object.entries(COIN_IDS)){
-        const price = Number(data?.[coinId]?.usd);
-
-        if(Number.isFinite(price) && price>0){
-          nextPrices[symbol] = price;
-        }
+        const price=Number(data?.[coinId]?.usd);
+        if(Number.isFinite(price)&&price>0)nextPrices[symbol]=price;
       }
 
-      if(!Object.keys(nextPrices).length){
-        throw new Error("No valid cryptocurrency prices returned.");
-      }
-
-      cryptoUsdPrices = nextPrices;
-      pricesUpdatedAt = Date.now();
-
+      if(!Object.keys(nextPrices).length)throw new Error("No valid cryptocurrency prices returned.");
+      cryptoUsdPrices=nextPrices;
+      pricesUpdatedAt=Date.now();
       return cryptoUsdPrices;
     }catch(error){
       console.error("Cryptocurrency price loading failed:",error);
       return cryptoUsdPrices;
     }finally{
-      priceRefreshPromise = null;
+      priceRefreshPromise=null;
     }
   })();
 
   return priceRefreshPromise;
 }
 
-/* CONVERT CRYPTOCURRENCY AMOUNTS TO USD */
-
 function cryptoAmountToUsd(amount,symbol){
-  const quantity = Number(amount);
-  const asset = String(symbol || "").toUpperCase();
-
-  if(!Number.isFinite(quantity) || quantity<0) return null;
-
-  const price = cryptoUsdPrices[asset];
-
-  if(!Number.isFinite(price) || price<=0) return null;
-
+  const quantity=Number(amount);
+  const asset=String(symbol||"").toUpperCase();
+  if(!Number.isFinite(quantity)||quantity<0)return null;
+  const price=cryptoUsdPrices[asset];
+  if(!Number.isFinite(price)||price<=0)return null;
   return quantity*price;
 }
 
-function formatCryptoUsd(amount,symbol){
-  const value = cryptoAmountToUsd(amount,symbol);
-  return value===null ? "Price unavailable" : formatMoney(value);
-}
-
 /* PROFILE */
-
 async function loadProfile(){
-  const {data,error} = await db
-    .from("profiles")
+  const {data,error}=await db.from("profiles")
     .select("id,full_name,email,account_status")
     .eq("id",currentUser.id)
     .maybeSingle();
 
-  if(error){
-    console.error("Profile loading error:",error);
-    return;
-  }
+  if(error){console.error("Profile loading error:",error);return}
 
-  const name =
-    data?.full_name ||
-    currentUser.user_metadata?.full_name ||
-    "Welcome";
-
+  const name=data?.full_name||currentUser.user_metadata?.full_name||"Welcome";
   setText("userName",name);
   setText("profileInitial",initials(name));
 
-  const status = String(data?.account_status || "PENDING").toUpperCase();
-
-  const color =
-    status==="ACTIVE" ? "var(--green)" :
-    status==="SUSPENDED" ? "var(--red)" :
-    "var(--gold)";
-
-  const container = $("accountStatus");
+  const status=String(data?.account_status||"PENDING").toUpperCase();
+  const color=status==="ACTIVE"?"var(--green)":status==="SUSPENDED"?"var(--red)":"var(--gold)";
+  const container=$("accountStatus");
   container.replaceChildren();
 
-  const dot = document.createElement("span");
-  dot.className = "status-dot";
-  dot.style.background = color;
+  const dot=document.createElement("span");
+  dot.className="status-dot";
+  dot.style.background=color;
 
-  const label = document.createElement("span");
-  label.textContent = status;
-
+  const label=document.createElement("span");
+  label.textContent=status;
   container.append(dot,label);
 }
 
-/* WALLETS */
-
+/* WALLETS — AVAILABLE USDT STATISTICS ROW REMOVED */
 async function loadWallets(){
-  const {data,error} = await db
-    .from("wallets")
+  const {data,error}=await db.from("wallets")
     .select("id,asset,available_balance,locked_balance,principal_balance,profit_balance")
     .eq("user_id",currentUser.id);
 
@@ -1616,31 +650,17 @@ async function loadWallets(){
     return false;
   }
 
-  wallets = data || [];
-
+  wallets=data||[];
   renderSelectedAsset();
   updateCryptoMenuBalances();
-  renderAvailableUSDT();
-
   return true;
 }
 
-function renderAvailableUSDT(){
-  const wallet = getWallet("USDT");
-
-  setText(
-    "availableUSDT",
-    formatMoney(Number(wallet?.available_balance ?? 0))
-  );
-}
-
 /* FIAT PORTFOLIO */
-
 async function renderPortfolio(){
   setText("portfolioValue","Loading...");
 
-  const {data,error} = await db
-    .from("deposits")
+  const {data,error}=await db.from("deposits")
     .select("asset,amount,credited_amount,status")
     .eq("user_id",currentUser.id)
     .eq("status","CONFIRMED");
@@ -1651,42 +671,30 @@ async function renderPortfolio(){
     return null;
   }
 
-  const deposits = data || [];
-
   await loadCryptoUsdPrices();
 
-  let totalUsd = 0;
-  const missingPrices = [];
+  let totalUsd=0;
+  const missingPrices=[];
 
-  for(const deposit of deposits){
-    const asset = String(deposit.asset || "").toUpperCase();
-    const credited = Number(deposit.credited_amount);
-    const submitted = Number(deposit.amount);
+  for(const deposit of data||[]){
+    const asset=String(deposit.asset||"").toUpperCase();
+    const credited=Number(deposit.credited_amount);
+    const submitted=Number(deposit.amount);
+    const quantity=Number.isFinite(credited)&&credited>0?credited:submitted;
 
-    const quantity =
-      Number.isFinite(credited) && credited>0
-        ? credited
-        : submitted;
-
-    if(!Number.isFinite(quantity) || quantity<=0) continue;
-
-    const usdValue = cryptoAmountToUsd(quantity,asset);
+    if(!Number.isFinite(quantity)||quantity<=0)continue;
+    const usdValue=cryptoAmountToUsd(quantity,asset);
 
     if(usdValue===null){
-      if(!missingPrices.includes(asset)) missingPrices.push(asset);
+      if(!missingPrices.includes(asset))missingPrices.push(asset);
       continue;
     }
-
-    totalUsd += usdValue;
+    totalUsd+=usdValue;
   }
 
   if(missingPrices.length){
-    setText("portfolioValue",formatMoney(totalUsd)+" + unavailable");
-    setText(
-      "statisticsNote",
-      "Some deposit valuations are unavailable because market prices could not be retrieved for: "+
-      missingPrices.join(", ")+". The displayed total excludes those deposits."
-    );
+    setText("portfolioValue",formatMoney(totalUsd)+" +");
+    setText("statisticsNote","Some deposit valuations are unavailable because market prices could not be retrieved for: "+missingPrices.join(", ")+". Displayed totals exclude those deposits.");
     return totalUsd;
   }
 
@@ -1695,10 +703,8 @@ async function renderPortfolio(){
 }
 
 /* ACTIVE CONFIRMED DEPOSITS */
-
 async function loadActiveDeposits(){
-  const {data,error} = await db
-    .from("deposits")
+  const {data,error}=await db.from("deposits")
     .select("id,asset,network,earning_principal,earning_started_at,earning_ended_at,status")
     .eq("user_id",currentUser.id)
     .eq("status","CONFIRMED")
@@ -1708,31 +714,24 @@ async function loadActiveDeposits(){
 
   if(error){
     console.error("Active deposit verification error:",error);
-    activeDeposits = [];
-
+    activeDeposits=[];
     setText("countdownState","Unable to verify active deposits.");
     setText("countdownAsset","—");
     $("timerBox").classList.add("hidden");
-
     stopCountdown();
     return false;
   }
 
-  activeDeposits = data || [];
+  activeDeposits=data||[];
   setupCountdown();
-
   return true;
 }
 
 function getNextCalculationTime(startedAt,nowMs){
-  const start = new Date(startedAt).getTime();
-
-  if(!Number.isFinite(start)) return null;
-
-  const cycle = 24*60*60*1000;
-
-  if(nowMs<start) return start;
-
+  const start=new Date(startedAt).getTime();
+  if(!Number.isFinite(start))return null;
+  const cycle=24*60*60*1000;
+  if(nowMs<start)return start;
   return start+(Math.floor((nowMs-start)/cycle)+1)*cycle;
 }
 
@@ -1747,14 +746,10 @@ function setupCountdown(){
     return;
   }
 
-  const now = Date.now();
-
-  const prepared = activeDeposits
-    .map(deposit=>({
-      ...deposit,
-      target:getNextCalculationTime(deposit.earning_started_at,now)
-    }))
-    .filter(item=>Number.isFinite(item.target));
+  const now=Date.now();
+  const prepared=activeDeposits.map(deposit=>({
+    ...deposit,target:getNextCalculationTime(deposit.earning_started_at,now)
+  })).filter(item=>Number.isFinite(item.target));
 
   if(!prepared.length){
     setText("countdownState","No valid calculation time is available.");
@@ -1764,74 +759,45 @@ function setupCountdown(){
   }
 
   prepared.sort((a,b)=>a.target-b.target);
+  const next=prepared[0];
+  countdownTarget=next.target;
 
-  const next = prepared[0];
-
-  countdownTarget = next.target;
-
-  setText("countdownAsset",next.asset || "—");
-  setText(
-    "countdownState",
-    "Active deposit verified. Waiting for the next calculation time."
-  );
-
+  setText("countdownAsset",next.asset||"—");
+  setText("countdownState","Active deposit verified. Waiting for the next calculation time.");
   $("timerBox").classList.remove("hidden");
-
   updateCountdown();
-  countdownInterval = setInterval(updateCountdown,1000);
+  countdownInterval=setInterval(updateCountdown,1000);
 }
 
 function updateCountdown(){
-  if(!countdownTarget) return;
-
-  const remaining = Math.max(0,countdownTarget-Date.now());
+  if(!countdownTarget)return;
+  const remaining=Math.max(0,countdownTarget-Date.now());
 
   if(remaining<=0){
     setText("timer","00:00:00");
-
     stopCountdown();
-
-    setText(
-      "countdownState",
-      "Calculation time reached. Checking account records..."
-    );
-
+    setText("countdownState","Calculation time reached. Checking account records...");
     clearTimeout(countdownRefreshTimer);
-
-    countdownRefreshTimer = setTimeout(()=>{
-      refreshDashboardData();
-    },1500);
-
+    countdownRefreshTimer=setTimeout(()=>refreshDashboardData(),1500);
     return;
   }
 
-  const seconds = Math.floor(remaining/1000);
-  const hours = Math.floor(seconds/3600);
-  const minutes = Math.floor((seconds%3600)/60);
-  const secs = seconds%60;
+  const seconds=Math.floor(remaining/1000);
+  const hours=Math.floor(seconds/3600);
+  const minutes=Math.floor((seconds%3600)/60);
+  const secs=seconds%60;
 
-  setText(
-    "timer",
-    String(hours).padStart(2,"0")+":"+
-    String(minutes).padStart(2,"0")+":"+
-    String(secs).padStart(2,"0")
-  );
+  setText("timer",String(hours).padStart(2,"0")+":"+String(minutes).padStart(2,"0")+":"+String(secs).padStart(2,"0"));
 }
 
 function stopCountdown(){
-  if(countdownInterval){
-    clearInterval(countdownInterval);
-    countdownInterval = null;
-  }
-
-  countdownTarget = null;
+  if(countdownInterval){clearInterval(countdownInterval);countdownInterval=null}
+  countdownTarget=null;
 }
 
 /* PARTNERS */
-
 async function loadPartnerStatistics(){
-  const {count,error} = await db
-    .from("referrals")
+  const {count,error}=await db.from("referrals")
     .select("*",{count:"exact",head:true})
     .eq("referrer_id",currentUser.id);
 
@@ -1840,15 +806,12 @@ async function loadPartnerStatistics(){
     setText("partnerCount","Unavailable");
     return;
   }
-
-  setText("partnerCount",String(count ?? 0));
+  setText("partnerCount",String(count??0));
 }
 
 /* PAYMENT STATISTICS */
-
 async function loadPaymentStatistics(){
-  const depositsResult = await db
-    .from("deposits")
+  const depositsResult=await db.from("deposits")
     .select("asset,amount,credited_amount,status")
     .eq("user_id",currentUser.id)
     .eq("status","CONFIRMED");
@@ -1858,44 +821,28 @@ async function loadPaymentStatistics(){
     setText("incomingPayments","Unavailable");
   }else{
     await loadCryptoUsdPrices();
+    let incomingUsd=0;
+    const missingIncomingAssets=[];
 
-    let incomingUsd = 0;
-    const missingIncomingAssets = [];
+    for(const deposit of depositsResult.data||[]){
+      const asset=String(deposit.asset||"").toUpperCase();
+      const credited=Number(deposit.credited_amount);
+      const submitted=Number(deposit.amount);
+      const quantity=Number.isFinite(credited)&&credited>0?credited:submitted;
+      if(!Number.isFinite(quantity)||quantity<=0)continue;
 
-    for(const deposit of depositsResult.data || []){
-      const asset = String(deposit.asset || "").toUpperCase();
-      const credited = Number(deposit.credited_amount);
-      const submitted = Number(deposit.amount);
-
-      const quantity =
-        Number.isFinite(credited) && credited>0
-          ? credited
-          : submitted;
-
-      if(!Number.isFinite(quantity) || quantity<=0) continue;
-
-      const usdValue = cryptoAmountToUsd(quantity,asset);
-
+      const usdValue=cryptoAmountToUsd(quantity,asset);
       if(usdValue===null){
-        if(!missingIncomingAssets.includes(asset)){
-          missingIncomingAssets.push(asset);
-        }
+        if(!missingIncomingAssets.includes(asset))missingIncomingAssets.push(asset);
         continue;
       }
-
-      incomingUsd += usdValue;
+      incomingUsd+=usdValue;
     }
 
-    setText(
-      "incomingPayments",
-      missingIncomingAssets.length
-        ? formatMoney(incomingUsd)+" + unavailable"
-        : formatMoney(incomingUsd)
-    );
+    setText("incomingPayments",missingIncomingAssets.length?formatMoney(incomingUsd)+" +":formatMoney(incomingUsd));
   }
 
-  const withdrawalsResult = await db
-    .from("withdrawals")
+  const withdrawalsResult=await db.from("withdrawals")
     .select("asset,amount,net_amount,status")
     .eq("user_id",currentUser.id)
     .eq("status","COMPLETED");
@@ -1907,192 +854,148 @@ async function loadPaymentStatistics(){
   }
 
   await loadCryptoUsdPrices();
+  let outgoingUsd=0;
+  const missingOutgoingAssets=[];
 
-  let outgoingUsd = 0;
-  const missingOutgoingAssets = [];
+  for(const withdrawal of withdrawalsResult.data||[]){
+    const asset=String(withdrawal.asset||"").toUpperCase();
+    const netAmount=Number(withdrawal.net_amount);
+    const requestedAmount=Number(withdrawal.amount);
+    const quantity=Number.isFinite(netAmount)&&netAmount>0?netAmount:requestedAmount;
+    if(!Number.isFinite(quantity)||quantity<=0)continue;
 
-  for(const withdrawal of withdrawalsResult.data || []){
-    const asset = String(withdrawal.asset || "").toUpperCase();
-    const netAmount = Number(withdrawal.net_amount);
-    const requestedAmount = Number(withdrawal.amount);
-
-    const quantity =
-      Number.isFinite(netAmount) && netAmount>0
-        ? netAmount
-        : requestedAmount;
-
-    if(!Number.isFinite(quantity) || quantity<=0) continue;
-
-    const usdValue = cryptoAmountToUsd(quantity,asset);
-
+    const usdValue=cryptoAmountToUsd(quantity,asset);
     if(usdValue===null){
-      if(!missingOutgoingAssets.includes(asset)){
-        missingOutgoingAssets.push(asset);
-      }
+      if(!missingOutgoingAssets.includes(asset))missingOutgoingAssets.push(asset);
       continue;
     }
-
-    outgoingUsd += usdValue;
+    outgoingUsd+=usdValue;
   }
 
-  setText(
-    "outgoingPayments",
-    missingOutgoingAssets.length
-      ? formatMoney(outgoingUsd)+" + unavailable"
-      : formatMoney(outgoingUsd)
-  );
+  setText("outgoingPayments",missingOutgoingAssets.length?formatMoney(outgoingUsd)+" +":formatMoney(outgoingUsd));
 }
 
-/* EARNINGS STATISTICS */
-
+/* EARNINGS STATISTICS — USD VALUE ACROSS SUPPORTED ASSETS */
 async function loadEarningsStatistics(){
   setText("allAccruals","Loading...");
   setText("mainProfit","Loading...");
   setText("partnersProfit","Loading...");
+  setText("statisticsNote","Calculating credited earnings and referral commissions across supported assets...");
 
-  const earningsResult = await db
-    .from("earning_records")
+  await loadCryptoUsdPrices();
+
+  let mainProfitUsd=0;
+  let partnersProfitUsd=0;
+  let mainProfitIncomplete=false;
+  let partnersProfitIncomplete=false;
+
+  const earningsResult=await db.from("earning_records")
     .select("earning_amount,asset,status")
     .eq("user_id",currentUser.id)
     .eq("status","CREDITED");
 
   if(earningsResult.error){
     console.error("Earnings statistics error:",earningsResult.error);
-
-    setText("allAccruals","Unavailable");
-    setText("mainProfit","Unavailable");
-    setText(
-      "statisticsNote",
-      "Earnings records could not be verified. Please try again later."
-    );
+    mainProfitIncomplete=true;
   }else{
-    const earnings = earningsResult.data || [];
+    for(const record of earningsResult.data||[]){
+      const amount=Number(record.earning_amount);
+      const asset=String(record.asset||"").toUpperCase();
+      if(!Number.isFinite(amount)||amount<=0)continue;
 
-    const usdtEarnings = earnings.reduce((sum,record)=>{
-      if(String(record.asset || "").toUpperCase()!=="USDT") return sum;
-
-      const amount = Number(record.earning_amount);
-
-      return sum+(
-        Number.isFinite(amount) && amount>0
-          ? amount
-          : 0
-      );
-    },0);
-
-    setText("allAccruals",formatMoney(usdtEarnings));
-    setText("mainProfit",formatMoney(usdtEarnings));
-
-    setText(
-      "statisticsNote",
-      "Earnings totals include credited USDT records only. Other assets are excluded because their USD values have not been calculated."
-    );
+      const usdValue=cryptoAmountToUsd(amount,asset);
+      if(usdValue===null){mainProfitIncomplete=true;continue}
+      mainProfitUsd+=usdValue;
+    }
   }
 
-  const commissionsResult = await db
-    .from("referral_commission_records")
+  const commissionsResult=await db.from("referral_commission_records")
     .select("commission_amount,asset,referrer_id")
     .eq("referrer_id",currentUser.id);
 
   if(commissionsResult.error){
     console.error("Referral commission statistics error:",commissionsResult.error);
-    setText("partnersProfit","Unavailable");
+    partnersProfitIncomplete=true;
   }else{
-    const commissions = commissionsResult.data || [];
+    for(const record of commissionsResult.data||[]){
+      const amount=Number(record.commission_amount);
+      const asset=String(record.asset||"").toUpperCase();
+      if(!Number.isFinite(amount)||amount<=0)continue;
 
-    const usdtCommissions = commissions.reduce((sum,record)=>{
-      if(String(record.asset || "").toUpperCase()!=="USDT") return sum;
-
-      const amount = Number(record.commission_amount);
-
-      return sum+(
-        Number.isFinite(amount) && amount>0
-          ? amount
-          : 0
-      );
-    },0);
-
-    setText("partnersProfit",formatMoney(usdtCommissions));
+      const usdValue=cryptoAmountToUsd(amount,asset);
+      if(usdValue===null){partnersProfitIncomplete=true;continue}
+      partnersProfitUsd+=usdValue;
+    }
   }
+
+  setText("mainProfit",formatMoney(mainProfitUsd)+(mainProfitIncomplete?" +":""));
+  setText("partnersProfit",formatMoney(partnersProfitUsd)+(partnersProfitIncomplete?" +":""));
+
+  const allAccrualsUsd=mainProfitUsd+partnersProfitUsd;
+  setText("allAccruals",formatMoney(allAccrualsUsd)+(mainProfitIncomplete||partnersProfitIncomplete?" +":""));
+
+  setText("statisticsNote",
+    mainProfitIncomplete||partnersProfitIncomplete
+      ? "USD totals include records whose asset prices were available. A trailing + means some records could not be valued or verified. Referral commissions are counted from the commission records available to your account."
+      : "All accruals combines credited investment earnings and recorded referral commissions. Main profit shows credited investment earnings; Partners profit shows referral commissions. USD values use available market prices and can change."
+  );
 }
 
 /* REFRESH */
-
 async function refreshDashboardData(){
-  if(!currentUser || refreshInProgress) return;
-
-  refreshInProgress = true;
+  if(!currentUser||refreshInProgress)return;
+  refreshInProgress=true;
 
   try{
     await Promise.all([
-      loadProfile(),
-      loadWallets(),
-      renderPortfolio(),
-      loadActiveDeposits(),
-      loadPartnerStatistics(),
-      loadPaymentStatistics(),
-      loadEarningsStatistics(),
-      loadMfaStatus()
+      loadProfile(),loadWallets(),renderPortfolio(),loadActiveDeposits(),
+      loadPartnerStatistics(),loadPaymentStatistics(),loadEarningsStatistics(),loadMfaStatus()
     ]);
   }catch(error){
     console.error("Dashboard refresh error:",error);
     showToast("Some dashboard information could not be loaded.");
   }finally{
-    refreshInProgress = false;
+    refreshInProgress=false;
   }
 }
 
 /* LOGOUT */
-
 $("logoutBtn").addEventListener("click",async()=>{
-  const button = $("logoutBtn");
-  button.disabled = true;
-
-  const {error} = await db.auth.signOut();
+  const button=$("logoutBtn");
+  button.disabled=true;
+  const {error}=await db.auth.signOut();
 
   if(error){
     console.error("Logout error:",error);
     showToast("Unable to log out. Please try again.");
-    button.disabled = false;
+    button.disabled=false;
     return;
   }
-
   window.location.replace("signin.html");
 });
 
 /* REFRESH WHEN RETURNING TO PAGE */
-
 document.addEventListener("visibilitychange",()=>{
-  if(document.visibilityState==="visible"){
-    refreshDashboardData();
-  }
+  if(document.visibilityState==="visible")refreshDashboardData();
 });
 
 setInterval(()=>{
-  if(document.visibilityState==="visible"){
-    refreshDashboardData();
-  }
+  if(document.visibilityState==="visible")refreshDashboardData();
 },30000);
 
 /* INITIALIZATION */
-
 (async function init(){
   try{
     setGreeting();
     buildCryptoMenu();
-
-    const authenticated = await checkAuth();
-
-    if(!authenticated) return;
-
+    const authenticated=await checkAuth();
+    if(!authenticated)return;
     await refreshDashboardData();
   }catch(error){
     console.error("Dashboard initialization error:",error);
     showToast("Unable to load dashboard. Please refresh.");
   }finally{
-    setTimeout(()=>{
-      $("loadingScreen").style.display="none";
-    },300);
+    setTimeout(()=>{$("loadingScreen").style.display="none"},300);
   }
 })();
 </script></body>
