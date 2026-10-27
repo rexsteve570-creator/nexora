@@ -1,22 +1,25 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#07111f">
 <title>AITIVEST — Portfolio</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
 :root{
   --bg:#07111f;--bg2:#091626;--card:#0d1b2d;--card2:#112238;
   --border:rgba(255,255,255,.08);--text:#f5f7fa;--muted:#9aa7b8;
   --gold:#d9a441;--gold2:#f0c866;--green:#32c48d;--red:#ef6b73;
-  --blue:#5b8def;--purple:#a78bfa;--shadow:0 18px 50px rgba(0,0,0,.25);
+  --blue:#5b8def;--purple:#a78bfa;--shadow:0 18px 50px rgba(0,0,0,.25)
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{
   min-height:100vh;
   background:radial-gradient(circle at 90% 0%,rgba(217,164,65,.09),transparent 30%),linear-gradient(180deg,#07111f,#050c15);
-  color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  color:var(--text);
+  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif
 }
 button{font:inherit;cursor:pointer}
 button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
@@ -25,31 +28,59 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
 .loading-box{text-align:center}
 .brand-logo{display:flex;align-items:center;justify-content:center;gap:10px}
 .brand-mark{
-  width:38px;height:38px;border:2px solid var(--gold);border-radius:12px 12px 12px 3px;
-  display:flex;align-items:center;justify-content:center;color:var(--gold2);font-size:20px;
+  width:38px;height:38px;border:2px solid var(--gold);
+  border-radius:12px 12px 12px 3px;display:flex;align-items:center;
+  justify-content:center;color:var(--gold2);font-size:20px;
   font-weight:900;transform:rotate(-3deg)
 }
 .brand-name{font-size:22px;font-weight:900;letter-spacing:2px;white-space:nowrap}
 .brand-name span{color:var(--gold)}
 .loading-logo .brand-name{font-size:29px}
-.spinner{width:28px;height:28px;border:3px solid rgba(217,164,65,.18);border-top-color:var(--gold);border-radius:50%;margin:20px auto 0;animation:spin .8s linear infinite}
+.spinner{
+  width:28px;height:28px;border:3px solid rgba(217,164,65,.18);
+  border-top-color:var(--gold);border-radius:50%;margin:20px auto 0;
+  animation:spin .8s linear infinite
+}
 @keyframes spin{to{transform:rotate(360deg)}}
-.topbar{height:68px;position:sticky;top:0;z-index:100;background:rgba(7,17,31,.96);backdrop-filter:blur(18px);border-bottom:1px solid var(--border)}
-.topbar-inner{height:100%;padding:0 18px;display:flex;align-items:center;justify-content:space-between;position:relative}
+.topbar{
+  height:68px;position:sticky;top:0;z-index:100;
+  background:rgba(7,17,31,.96);backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--border)
+}
+.topbar-inner{
+  height:100%;padding:0 18px;display:flex;align-items:center;
+  justify-content:space-between;position:relative
+}
 .menu-btn{width:42px;height:42px;border:0;background:transparent;color:#fff;font-size:25px}
 .topbar .brand-logo{position:absolute;left:50%;transform:translateX(-50%)}
 .topbar .brand-mark{width:31px;height:31px;border-radius:9px 9px 9px 2px;font-size:16px}
 .topbar .brand-name{font-size:18px;letter-spacing:1.5px}
-.profile-initial{width:38px;height:38px;border-radius:50%;background:linear-gradient(145deg,#efc25e,#987021);color:#07111f;font-size:12px;font-weight:850;display:flex;align-items:center;justify-content:center}
+.profile-initial{
+  width:38px;height:38px;border-radius:50%;
+  background:linear-gradient(145deg,#efc25e,#987021);color:#07111f;
+  font-size:12px;font-weight:850;display:flex;align-items:center;justify-content:center
+}
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:190;display:none}
 .overlay.show{display:block}
-.drawer{position:fixed;left:-320px;top:0;width:290px;max-width:86%;height:100vh;height:100dvh;background:#091625;border-right:1px solid var(--border);z-index:200;transition:left .25s ease;padding:22px 15px;overflow-y:auto}
+.drawer{
+  position:fixed;left:-320px;top:0;width:290px;max-width:86%;
+  height:100vh;height:100dvh;background:#091625;
+  border-right:1px solid var(--border);z-index:200;transition:left .25s ease;
+  padding:22px 15px;overflow-y:auto
+}
 .drawer.open{left:0}
-.drawer-head{display:flex;align-items:center;justify-content:space-between;padding:8px 7px 25px;border-bottom:1px solid var(--border)}
+.drawer-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 7px 25px;border-bottom:1px solid var(--border)
+}
 .drawer-head .brand-name{font-size:19px}
 .close-drawer{border:0;background:none;color:#fff;font-size:27px}
 .drawer-nav{padding-top:18px}
-.drawer-link{width:100%;border:0;background:transparent;color:#d7dce4;padding:14px 13px;border-radius:11px;display:flex;align-items:center;gap:13px;text-align:left;margin-bottom:4px}
+.drawer-link{
+  width:100%;border:0;background:transparent;color:#d7dce4;
+  padding:14px 13px;border-radius:11px;display:flex;align-items:center;
+  gap:13px;text-align:left;margin-bottom:4px
+}
 .drawer-link:hover{background:rgba(217,164,65,.08);color:var(--gold2)}
 .drawer-icon{width:22px;text-align:center;color:var(--gold)}
 .drawer-link.logout{margin-top:15px;color:#ef8990}
@@ -57,34 +88,62 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
 .greeting{margin-bottom:20px}
 .greeting small{color:var(--muted);font-size:13px}
 .greeting h1{margin-top:4px;font-size:24px;font-weight:760;overflow-wrap:anywhere}
-.portfolio-card{background:radial-gradient(circle at top right,rgba(217,164,65,.16),transparent 42%),linear-gradient(145deg,#102238,#0b1829);border:1px solid rgba(217,164,65,.18);border-radius:20px;padding:25px 22px 20px;box-shadow:var(--shadow)}
+.portfolio-card{
+  background:radial-gradient(circle at top right,rgba(217,164,65,.16),transparent 42%),linear-gradient(145deg,#102238,#0b1829);
+  border:1px solid rgba(217,164,65,.18);border-radius:20px;
+  padding:25px 22px 20px;box-shadow:var(--shadow)
+}
 .card-label{color:var(--muted);font-size:13px;letter-spacing:1.5px;text-transform:uppercase}
-.portfolio-value{font-size:clamp(20px,5vw,30px);font-weight:850;margin-top:12px;letter-spacing:-.5px;overflow-wrap:anywhere;line-height:1.5}
+.portfolio-value{
+  font-size:22px;font-weight:850;margin-top:13px;letter-spacing:0;
+  line-height:1.7;overflow-wrap:anywhere;word-break:break-word
+}
 .portfolio-caption{color:var(--muted);font-size:11px;margin-top:6px;line-height:1.7}
-.status-row{margin-top:20px;border-top:1px solid var(--border);padding-top:15px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.status-row{
+  margin-top:20px;border-top:1px solid var(--border);padding-top:15px;
+  display:flex;align-items:center;justify-content:space-between;gap:10px
+}
 .status-label{color:var(--muted);font-size:12px}
 .status{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:700}
 .status-dot{width:8px;height:8px;border-radius:50%;background:var(--green)}
-.security-card{margin-top:18px;padding:17px;display:flex;align-items:center;justify-content:space-between;gap:14px;border:1px solid rgba(239,107,115,.38);border-radius:17px;background:rgba(239,107,115,.07);transition:background .2s,border-color .2s}
+.security-card{
+  margin-top:18px;padding:17px;display:flex;align-items:center;
+  justify-content:space-between;gap:14px;border:1px solid rgba(239,107,115,.38);
+  border-radius:17px;background:rgba(239,107,115,.07);transition:background .2s,border-color .2s
+}
 .security-card.warning{border-color:rgba(239,107,115,.4);background:rgba(239,107,115,.07)}
 .security-card.enabled{border-color:rgba(50,196,141,.4);background:rgba(50,196,141,.07)}
 .security-card.checking{border-color:rgba(217,164,65,.35);background:rgba(217,164,65,.05)}
 .security-copy{min-width:0;flex:1}
 .security-heading{display:flex;align-items:center;gap:9px;font-size:14px;font-weight:800;line-height:1.5}
-.security-indicator{width:9px;height:9px;border-radius:50%;flex:none;background:var(--red);box-shadow:0 0 10px rgba(239,107,115,.35)}
+.security-indicator{
+  width:9px;height:9px;border-radius:50%;flex:none;background:var(--red);
+  box-shadow:0 0 10px rgba(239,107,115,.35)
+}
 .security-card.enabled .security-indicator{background:var(--green);box-shadow:0 0 10px rgba(50,196,141,.35)}
 .security-card.checking .security-indicator{background:var(--gold);box-shadow:none}
 .security-message{margin-top:6px;color:var(--muted);font-size:11px;line-height:1.7}
-.security-action{flex:none;border:1px solid rgba(239,107,115,.4);border-radius:10px;padding:10px 12px;color:#fff;background:rgba(239,107,115,.14);font-size:11px;font-weight:800}
+.security-action{
+  flex:none;border:1px solid rgba(239,107,115,.4);border-radius:10px;
+  padding:10px 12px;color:#fff;background:rgba(239,107,115,.14);
+  font-size:11px;font-weight:800
+}
 .security-card.enabled .security-action{border-color:rgba(50,196,141,.4);background:rgba(50,196,141,.12)}
 .security-card.checking .security-action{border-color:rgba(217,164,65,.35);background:rgba(217,164,65,.1)}
 .security-action:hover{filter:brightness(1.15)}
 .section{margin-top:25px}
-.section-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+.section-title{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:10px;margin-bottom:12px
+}
 .section-title h2{font-size:16px;font-weight:750}
 .section-title span{color:var(--muted);font-size:11px}
 .crypto-picker{position:relative}
-.crypto-selected{width:100%;min-height:70px;padding:12px 15px;background:var(--card);border:1px solid var(--border);border-radius:16px;color:#fff;display:flex;align-items:center;justify-content:space-between}
+.crypto-selected{
+  width:100%;min-height:70px;padding:12px 15px;background:var(--card);
+  border:1px solid var(--border);border-radius:16px;color:#fff;
+  display:flex;align-items:center;justify-content:space-between
+}
 .selected-left{display:flex;align-items:center;gap:12px;min-width:0}
 .selected-logo,.preview-logo{width:40px;height:40px;flex:none;object-fit:contain}
 .selected-info{text-align:left;min-width:0}
@@ -92,9 +151,18 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
 .selected-name{margin-top:3px;color:var(--muted);font-size:11px}
 .selected-arrow{color:var(--gold2);font-size:20px;margin-left:10px;transition:transform .2s}
 .crypto-picker.open .selected-arrow{transform:rotate(180deg)}
-.crypto-menu{position:absolute;left:0;right:0;top:calc(100% + 7px);background:#0b192a;border:1px solid rgba(217,164,65,.16);border-radius:16px;box-shadow:0 25px 65px rgba(0,0,0,.48);padding:8px;z-index:80;display:none;max-height:350px;overflow-y:auto}
+.crypto-menu{
+  position:absolute;left:0;right:0;top:calc(100% + 7px);
+  background:#0b192a;border:1px solid rgba(217,164,65,.16);
+  border-radius:16px;box-shadow:0 25px 65px rgba(0,0,0,.48);
+  padding:8px;z-index:80;display:none;max-height:350px;overflow-y:auto
+}
 .crypto-picker.open .crypto-menu{display:block}
-.crypto-option{width:100%;border:0;background:transparent;color:#fff;min-height:55px;border-radius:11px;padding:9px 10px;display:flex;align-items:center;gap:12px;text-align:left}
+.crypto-option{
+  width:100%;border:0;background:transparent;color:#fff;min-height:55px;
+  border-radius:11px;padding:9px 10px;display:flex;align-items:center;
+  gap:12px;text-align:left
+}
 .crypto-option:hover,.crypto-option.active{background:rgba(217,164,65,.09)}
 .crypto-logo{width:35px;height:35px;object-fit:contain;flex:none}
 .crypto-details{min-width:0;flex:1}
@@ -103,59 +171,113 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
 .crypto-amount{text-align:right;font-size:12px;font-weight:750;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
 .crypto-option-check{color:var(--gold2);display:none}
 .crypto-option.active .crypto-option-check{display:block}
-.asset-preview{margin-top:10px;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:17px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.asset-preview{
+  margin-top:10px;background:var(--card);border:1px solid var(--border);
+  border-radius:16px;padding:17px;display:flex;align-items:center;
+  justify-content:space-between;gap:10px
+}
 .asset-left{display:flex;align-items:center;gap:12px;min-width:0}
 .asset-name{font-weight:750;font-size:14px}
 .asset-network{color:var(--muted);font-size:11px;margin-top:3px}
 .asset-balance{text-align:right;min-width:0;overflow-wrap:anywhere}
 .asset-balance strong{display:block;font-size:15px;font-variant-numeric:tabular-nums}
 .asset-balance small{color:var(--muted);font-size:10px}
-.countdown-card{background:linear-gradient(145deg,#111f32,#0c1727);border:1px solid rgba(217,164,65,.18);border-radius:19px;padding:25px 18px;text-align:center}
-.countdown-icon{width:45px;height:45px;border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;background:rgba(217,164,65,.1);color:var(--gold2);font-size:23px}
+.countdown-card{
+  background:linear-gradient(145deg,#111f32,#0c1727);
+  border:1px solid rgba(217,164,65,.18);border-radius:19px;
+  padding:25px 18px;text-align:center
+}
+.countdown-icon{
+  width:45px;height:45px;border-radius:50%;margin:0 auto 12px;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(217,164,65,.1);color:var(--gold2);font-size:23px
+}
 .countdown-title{font-size:14px;font-weight:750}
 .countdown-state{color:var(--muted);font-size:11px;margin-top:7px;line-height:1.6}
 .timer{margin-top:17px;font-size:32px;letter-spacing:3px;font-weight:850;color:var(--gold2);font-variant-numeric:tabular-nums}
 .timer-label{color:#697789;font-size:9px;letter-spacing:2px;margin-top:6px}
 .hidden{display:none!important}
-.partner-card{background:linear-gradient(145deg,#102238,#0b1829);border:1px solid var(--border);border-radius:17px;padding:20px;display:flex;align-items:center;justify-content:space-between;gap:15px}
+.partner-card{
+  background:linear-gradient(145deg,#102238,#0b1829);
+  border:1px solid var(--border);border-radius:17px;padding:20px;
+  display:flex;align-items:center;justify-content:space-between;gap:15px
+}
 .partner-left{display:flex;align-items:center;gap:13px}
-.partner-icon{width:44px;height:44px;display:flex;align-items:center;justify-content:center;border-radius:13px;color:var(--gold2);background:rgba(217,164,65,.12);font-size:23px}
+.partner-icon{
+  width:44px;height:44px;display:flex;align-items:center;justify-content:center;
+  border-radius:13px;color:var(--gold2);background:rgba(217,164,65,.12);font-size:23px
+}
 .partner-label{font-size:14px;font-weight:750}
 .partner-description{font-size:11px;color:var(--muted);margin-top:4px}
 .partner-count{font-size:25px;font-weight:850;color:var(--gold2)}
 .stats-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:4px 18px}
-.stat-row{padding:17px 0;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.stat-row{
+  padding:17px 0;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;gap:12px
+}
 .stat-row:last-child{border-bottom:0}
 .stat-info{min-width:0;flex:1}
 .stat-label{font-size:13px;color:var(--muted)}
 .stat-note{margin-top:5px;font-size:10px;color:#728096;line-height:1.5}
-.stat-value{font-size:clamp(12px,3.7vw,17px);font-weight:800;text-align:right;overflow-wrap:anywhere;max-width:58%;line-height:1.7}
+.stat-value{
+  font-size:14px;font-weight:800;text-align:right;overflow-wrap:anywhere;
+  word-break:break-word;max-width:60%;line-height:1.7;font-variant-numeric:tabular-nums
+}
 .green{color:var(--green)}.gold{color:var(--gold2)}.blue{color:var(--blue)}.purple{color:var(--purple)}.red{color:var(--red)}
 .statistics-note{margin-top:12px;color:var(--muted);font-size:10px;line-height:1.7}
 .quick-grid{display:flex;flex-direction:column;gap:12px}
-.quick-btn{width:100%;min-height:75px;border:1px solid var(--border);border-radius:16px;color:#fff;padding:15px 17px;display:flex;align-items:center;gap:14px;text-align:left;transition:transform .18s,filter .18s}
+.quick-btn{
+  width:100%;min-height:75px;border:1px solid var(--border);
+  border-radius:16px;color:#fff;padding:15px 17px;display:flex;
+  align-items:center;gap:14px; text-align:left;transition:transform .18s,filter .18s
+}
 .quick-btn:hover{filter:brightness(1.1);transform:translateY(-1px)}
 .quick-btn.market{background:linear-gradient(110deg,#173d68,#102746);border-color:rgba(91,141,239,.32)}
 .quick-btn.deposit{background:linear-gradient(110deg,#126b50,#104536);border-color:rgba(50,196,141,.32)}
 .quick-btn.withdraw{background:linear-gradient(110deg,#80591c,#4b3517);border-color:rgba(217,164,65,.32)}
-.quick-icon{width:43px;height:43px;flex:none;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:22px;background:rgba(255,255,255,.1)}
+.quick-icon{
+  width:43px;height:43px;flex:none;border-radius:13px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;background:rgba(255,255,255,.1)
+}
 .quick-text{min-width:0;flex:1}
 .quick-text strong{display:block;font-size:14px;font-weight:800}
 .quick-text small{display:block;font-size:11px;color:rgba(255,255,255,.72);margin-top:5px;line-height:1.5}
 .quick-arrow{font-size:21px;color:rgba(255,255,255,.75)}
-.info-note{margin-top:20px;padding:14px;border:1px solid var(--border);border-radius:13px;color:var(--muted);font-size:10px;line-height:1.8;background:rgba(255,255,255,.015)}
-.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:760px;min-height:70px;padding-bottom:env(safe-area-inset-bottom);background:rgba(8,18,31,.98);backdrop-filter:blur(18px);border-top:1px solid var(--border);z-index:120;display:grid;grid-template-columns:repeat(4,1fr)}
-.bottom-link{border:0;background:transparent;color:#7e8998;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;font-size:10px}
+.info-note{
+  margin-top:20px;padding:14px;border:1px solid var(--border);
+  border-radius:13px;color:var(--muted);font-size:10px;line-height:1.8;
+  background:rgba(255,255,255,.015)
+}
+.bottom-nav{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:760px;min-height:70px;padding-bottom:env(safe-area-inset-bottom);
+  background:rgba(8,18,31,.98);backdrop-filter:blur(18px);
+  border-top:1px solid var(--border);z-index:120;
+  display:grid;grid-template-columns:repeat(4,1fr)
+}
+.bottom-link{
+  border:0;background:transparent;color:#7e8998;display:flex;
+  flex-direction:column;align-items:center;justify-content:center;gap:5px;font-size:10px
+}
 .bottom-link.active{color:var(--gold2)}
 .bottom-icon{font-size:20px}
-.toast{position:fixed;left:50%;bottom:85px;transform:translateX(-50%) translateY(15px);background:#142337;border:1px solid var(--border);color:#fff;padding:12px 16px;border-radius:10px;font-size:12px;opacity:0;pointer-events:none;transition:.25s;z-index:500;width:max-content;max-width:90%;text-align:center}
+.toast{
+  position:fixed;left:50%;bottom:85px;transform:translateX(-50%) translateY(15px);
+  background:#142337;border:1px solid var(--border);color:#fff;
+  padding:12px 16px;border-radius:10px;font-size:12px;opacity:0;
+  pointer-events:none;transition:.25s;z-index:500;width:max-content;
+  max-width:90%;text-align:center
+}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 @media(max-width:400px){
   .security-card{padding:14px;gap:9px}
   .security-action{padding:9px;font-size:10px}
   .security-heading{font-size:12px}
   .content{padding-left:14px;padding-right:14px}
+  .portfolio-value{font-size:18px}
   .timer{font-size:27px}
+  .stat-value{font-size:12px;max-width:58%}
   .topbar .brand-name{font-size:15px}
   .topbar .brand-mark{width:27px;height:27px}
 }
@@ -164,7 +286,9 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
 }
 </style>
 </head>
-<body><div id="loadingScreen" class="loading-screen">
+
+<body>
+<div id="loadingScreen" class="loading-screen">
   <div class="loading-box">
     <div class="brand-logo loading-logo">
       <div class="brand-mark">A</div>
@@ -172,7 +296,9 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
     </div>
     <div class="spinner"></div>
   </div>
-</div><div class="app">
+</div>
+
+<div class="app">
 <header class="topbar">
   <div class="topbar-inner">
     <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
@@ -182,7 +308,11 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
     </div>
     <div class="profile-initial" id="profileInitial">AV</div>
   </div>
-</header><div class="overlay" id="overlay"></div><aside class="drawer" id="drawer" aria-label="Main navigation">
+</header>
+
+<div class="overlay" id="overlay"></div>
+
+<aside class="drawer" id="drawer" aria-label="Main navigation">
   <div class="drawer-head">
     <div class="brand-logo">
       <div class="brand-mark">A</div>
@@ -190,6 +320,7 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
     </div>
     <button class="close-drawer" id="closeDrawer" aria-label="Close menu">×</button>
   </div>
+
   <nav class="drawer-nav">
     <button class="drawer-link" onclick="go('dashboard.html')"><span class="drawer-icon">⌂</span>Portfolio</button>
     <button class="drawer-link" onclick="go('deposit.html')"><span class="drawer-icon">＋</span>Deposit</button>
@@ -202,25 +333,40 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
     <button class="drawer-link" onclick="go('notifications.html')"><span class="drawer-icon">♢</span>Notifications</button>
     <button class="drawer-link logout" id="logoutBtn"><span class="drawer-icon">↪</span>Logout</button>
   </nav>
-</aside><main class="content">
+</aside>
+
+<main class="content">
   <div class="greeting">
     <small id="greetingText">Welcome back</small>
     <h1 id="userName">Welcome</h1>
-  </div>  <section class="portfolio-card">
-    <div class="card-label">CRYPTO PORTFOLIO</div>
+  </div>
+
+  <section class="portfolio-card">
+    <div class="card-label">CONFIRMED DEPOSITS</div>
     <div class="portfolio-value" id="portfolioValue">Loading...</div>
-    <div class="portfolio-caption">Confirmed deposit amounts by cryptocurrency. Market price changes do not change these recorded amounts.</div>
+    <div class="portfolio-caption" id="portfolioCaption">
+      Recorded credited quantities by asset. Live market prices do not change these displayed amounts.
+    </div>
     <div class="status-row">
       <div class="status-label">Account status</div>
-      <div class="status" id="accountStatus"><span class="status-dot"></span><span>Loading...</span></div>
+      <div class="status" id="accountStatus">
+        <span class="status-dot"></span><span>Loading...</span>
+      </div>
     </div>
-  </section>  <section class="security-card checking" id="securityCard" aria-live="polite">
+  </section>
+
+  <section class="security-card checking" id="securityCard" aria-live="polite">
     <div class="security-copy">
-      <div class="security-heading"><span class="security-indicator" aria-hidden="true"></span><span id="securityTitle">Checking account security...</span></div>
+      <div class="security-heading">
+        <span class="security-indicator" aria-hidden="true"></span>
+        <span id="securityTitle">Checking account security...</span>
+      </div>
       <div class="security-message" id="securityMessage">Verifying your two-factor authentication status.</div>
     </div>
     <button type="button" class="security-action" id="securityAction" onclick="go('security.html')">Checking...</button>
-  </section>  <section class="section">
+  </section>
+
+  <section class="section">
     <div class="section-title"><h2>CRYPTO</h2><span>Supported assets</span></div>
     <div class="crypto-picker" id="cryptoPicker">
       <button type="button" class="crypto-selected" id="cryptoSelected" aria-expanded="false" aria-controls="cryptoMenu">
@@ -234,21 +380,24 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
         <div class="selected-arrow">⌄</div>
       </button>
       <div class="crypto-menu" id="cryptoMenu"></div>
-    </div><div class="asset-preview">
-  <div class="asset-left">
-    <img id="previewLogo" class="preview-logo" src="" alt="">
-    <div>
-      <div class="asset-name" id="previewName">Tether</div>
-      <div class="asset-network" id="previewNetwork">Available wallet balance</div>
     </div>
-  </div>
-  <div class="asset-balance">
-    <strong id="previewBalance">0.00</strong>
-    <small id="previewSymbol">USDT</small>
-  </div>
-</div>
 
-  </section>  <section class="section">
+    <div class="asset-preview">
+      <div class="asset-left">
+        <img id="previewLogo" class="preview-logo" src="" alt="">
+        <div>
+          <div class="asset-name" id="previewName">Tether</div>
+          <div class="asset-network" id="previewNetwork">Available wallet balance</div>
+        </div>
+      </div>
+      <div class="asset-balance">
+        <strong id="previewBalance">0.00</strong>
+        <small id="previewSymbol">USDT</small>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
     <div class="section-title"><h2>Profit Countdown</h2><span id="countdownAsset">—</span></div>
     <div class="countdown-card">
       <div class="countdown-icon">◷</div>
@@ -259,7 +408,9 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
         <div class="timer-label">HOURS : MINUTES : SECONDS</div>
       </div>
     </div>
-  </section>  <section class="section">
+  </section>
+
+  <section class="section">
     <div class="section-title"><h2>Partners</h2><span>Referral overview</span></div>
     <div class="partner-card">
       <div class="partner-left">
@@ -271,25 +422,29 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
       </div>
       <div class="partner-count" id="partnerCount">—</div>
     </div>
-  </section>  <section class="section">
+  </section>
+
+  <section class="section">
     <div class="section-title"><h2>Payment Statistics</h2><span>Account history</span></div>
     <div class="stats-card">
       <div class="stat-row">
         <div class="stat-info">
           <div class="stat-label">Incoming payments</div>
-          <div class="stat-note">Confirmed deposit amounts by asset</div>
+          <div class="stat-note">Confirmed deposit quantities by asset</div>
         </div>
         <div class="stat-value green" id="incomingPayments">Loading...</div>
       </div>
       <div class="stat-row">
         <div class="stat-info">
           <div class="stat-label">Outgoing payments</div>
-          <div class="stat-note">Completed withdrawals by asset</div>
+          <div class="stat-note">Completed withdrawal quantities by asset</div>
         </div>
         <div class="stat-value red" id="outgoingPayments">Loading...</div>
       </div>
     </div>
-  </section>  <section class="section">
+  </section>
+
+  <section class="section">
     <div class="section-title"><h2>Earnings Statistics</h2><span>Account records</span></div>
     <div class="stats-card">
       <div class="stat-row">
@@ -302,20 +457,24 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
       <div class="stat-row">
         <div class="stat-info">
           <div class="stat-label">Main profit</div>
-          <div class="stat-note">Credited investment earnings</div>
+          <div class="stat-note">Credited investment earnings by asset</div>
         </div>
         <div class="stat-value blue" id="mainProfit">Loading...</div>
       </div>
       <div class="stat-row">
         <div class="stat-info">
           <div class="stat-label">Partners profit</div>
-          <div class="stat-note">Recorded referral commissions</div>
+          <div class="stat-note">Recorded referral commissions by asset</div>
         </div>
         <div class="stat-value purple" id="partnersProfit">Loading...</div>
       </div>
     </div>
-    <div class="statistics-note" id="statisticsNote">Loading account records...</div>
-  </section>  <section class="section">
+    <div class="statistics-note" id="statisticsNote">
+      Amounts are displayed in their original cryptocurrency. No live market conversion is applied.
+    </div>
+  </section>
+
+  <section class="section">
     <div class="section-title"><h2>Quick Access</h2><span>Choose an action</span></div>
     <div class="quick-grid">
       <button class="quick-btn market" onclick="go('swap.html')">
@@ -334,16 +493,26 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
         <span class="quick-arrow">›</span>
       </button>
     </div>
-  </section>  <div class="info-note">
-    Cryptocurrency balances and recorded transactions are displayed in their original assets. Market prices do not change amounts already credited to an account. Deposit confirmation and withdrawal processing must be handled by the secure server-side database functions.
+  </section>
+
+  <div class="info-note">
+    Confirmed deposit amounts and wallet balances are displayed in their original cryptocurrency.
+    This dashboard does not use live market prices to revalue credited deposits, earnings, or withdrawals.
+    Pending deposits are excluded. The countdown is a time indicator and does not itself credit earnings.
   </div>
-</main><nav class="bottom-nav" aria-label="Bottom navigation">
+</main>
+
+<nav class="bottom-nav" aria-label="Bottom navigation">
   <button class="bottom-link active" onclick="go('dashboard.html')"><span class="bottom-icon">⌂</span><span>Portfolio</span></button>
   <button class="bottom-link" onclick="go('deposit.html')"><span class="bottom-icon">＋</span><span>Deposit</span></button>
   <button class="bottom-link" onclick="go('transactions.html')"><span class="bottom-icon">≡</span><span>History</span></button>
   <button class="bottom-link" onclick="go('profile.html')"><span class="bottom-icon">○</span><span>Account</span></button>
 </nav>
-</div><div class="toast" id="toast" role="status" aria-live="polite"></div><script>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
 "use strict";
 
 /* SUPABASE */
@@ -351,16 +520,15 @@ const SUPABASE_URL = "https://rihvvwktvgytbqzazage.supabase.co";
 const SUPABASE_KEY = "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-/* ASSETS */
+/* ASSET LOGOS */
 const LOGO_BASE = "https://cdn.jsdelivr.net/gh/madenix/Crypto-logo-cdn@main/Logos/";
-
 const logoFiles = {
-  BTC:"BTC.svg", ETH:"ETH.svg", USDT:"USDT.svg", USDC:"USDC.svg",
-  BNB:"BNB.svg", SOL:"SOL.svg", XRP:"XRP.svg", TON:"TON.svg",
-  DOGE:"DOGE.svg", ADA:"ADA.svg", TRX:"TRON.svg", LTC:"LTC.svg",
-  AVAX:"AVAX.svg", DOT:"DOT.svg", LINK:"LINK.svg", POL:"MATIC.svg",
-  SHIB:"SHIB.svg", BCH:"BCH.svg", XLM:"XLM.svg", ATOM:"ATOM.svg",
-  NEAR:"NEAR.svg", APT:"APT.svg", ARB:"ARB.svg", OP:"OP.svg"
+  BTC:"BTC.svg",ETH:"ETH.svg",USDT:"USDT.svg",USDC:"USDC.svg",
+  BNB:"BNB.svg",SOL:"SOL.svg",XRP:"XRP.svg",TON:"TON.svg",
+  DOGE:"DOGE.svg",ADA:"ADA.svg",TRX:"TRON.svg",LTC:"LTC.svg",
+  AVAX:"AVAX.svg",DOT:"DOT.svg",LINK:"LINK.svg",POL:"MATIC.svg",
+  SHIB:"SHIB.svg",BCH:"BCH.svg",XLM:"XLM.svg",ATOM:"ATOM.svg",
+  NEAR:"NEAR.svg",APT:"APT.svg",ARB:"ARB.svg",OP:"OP.svg"
 };
 
 const assets = [
@@ -373,9 +541,9 @@ const assets = [
 ];
 
 const ASSET_DECIMALS = {
-  BTC:8, ETH:8, USDT:2, USDC:2, BNB:8, SOL:8, XRP:6, TON:8,
-  DOGE:8, ADA:6, TRX:6, LTC:8, AVAX:8, DOT:8, LINK:8, POL:8,
-  SHIB:8, BCH:8, XLM:7, ATOM:6, NEAR:8, APT:8, ARB:8, OP:8
+  BTC:8,ETH:8,USDT:2,USDC:2,BNB:8,SOL:8,XRP:6,TON:8,DOGE:8,
+  ADA:6,TRX:6,LTC:8,AVAX:8,DOT:8,LINK:8,POL:8,SHIB:8,BCH:8,
+  XLM:7,ATOM:6,NEAR:8,APT:8,ARB:8,OP:8
 };
 
 let currentUser = null;
@@ -403,20 +571,12 @@ function formatNumber(value, asset = "USDT") {
 
   if (!Number.isFinite(number)) return "—";
 
+  const decimals = ASSET_DECIMALS[symbol] ?? 8;
+
   return number.toLocaleString("en-US", {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: ASSET_DECIMALS[symbol] ?? 8,
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals,
     useGrouping: true
-  });
-}
-
-function formatMoney(value) {
-  const number = Number(value);
-  if (!Number.isFinite(number)) return "Unavailable";
-
-  return "$" + number.toLocaleString("en-US", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
   });
 }
 
@@ -425,55 +585,76 @@ function setText(id, value) {
   if (element) element.textContent = value;
 }
 
-function initials(name) {
-  const parts = String(name || "").trim().split(/\s+/).filter(Boolean);
-
-  if (!parts.length) return "AV";
-  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
-
-  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
-}
-
 function showToast(message) {
   const toast = $("toast");
   toast.textContent = message;
   toast.classList.add("show");
 
   clearTimeout(showToast.timeout);
-  showToast.timeout = setTimeout(() => toast.classList.remove("show"), 3000);
+  showToast.timeout = setTimeout(() => {
+    toast.classList.remove("show");
+  }, 3000);
 }
 
 /*
- * Format separate cryptocurrency quantities.
- * This intentionally does not convert one cryptocurrency into another
- * and does not request any live market price.
+ * AMOUNT HELPERS
+ * No market-price API is used.
+ * Amounts remain in their original asset.
  */
-function formatAssetTotals(rows, amountField) {
+
+function getRecordedDepositAmount(row) {
+  const credited = Number(row.credited_amount);
+  const submitted = Number(row.amount);
+
+  if (Number.isFinite(credited) && credited > 0) {
+    return credited;
+  }
+
+  return Number.isFinite(submitted) && submitted > 0 ? submitted : 0;
+}
+
+function groupAmountsByAsset(rows, amountGetter) {
   const totals = {};
 
   for (const row of rows || []) {
     const asset = String(row.asset || "").trim().toUpperCase();
-    const amount = Number(row[amountField]);
+    const amount = Number(amountGetter(row));
 
     if (!asset || !Number.isFinite(amount) || amount <= 0) continue;
 
     totals[asset] = (totals[asset] || 0) + amount;
   }
 
-  const entries = Object.entries(totals)
+  return totals;
+}
+
+function mergeAssetTotals(first, second) {
+  const combined = { ...(first || {}) };
+
+  for (const [asset, amount] of Object.entries(second || {})) {
+    combined[asset] = (combined[asset] || 0) + Number(amount || 0);
+  }
+
+  return combined;
+}
+
+function formatAssetTotals(totals) {
+  const entries = Object.entries(totals || {})
+    .filter(([asset, amount]) =>
+      Boolean(asset) && Number.isFinite(Number(amount)) && Number(amount) > 0
+    )
     .sort(([assetA], [assetB]) => assetA.localeCompare(assetB));
 
-  if (!entries.length) return "0.00";
+  if (!entries.length) return "0";
 
-  return entries.map(([asset, amount]) => {
-    return formatNumber(amount, asset) + " " + asset;
-  }).join(" · ");
+  return entries.map(([asset, amount]) =>
+    asset + " " + formatNumber(amount, asset)
+  ).join(" · ");
 }
 
 /* GREETING */
 function setGreeting() {
   const hour = new Date().getHours();
-
   setText(
     "greetingText",
     hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening"
@@ -548,11 +729,17 @@ async function loadMfaStatus() {
 
     if (verifiedTotp) {
       setText("securityTitle", "Two-factor authentication enabled");
-      setText("securityMessage", "Your authenticator app is verified. Keep your recovery information safe.");
+      setText(
+        "securityMessage",
+        "Your authenticator app is verified. Keep your recovery information safe."
+      );
       setText("securityAction", "Manage Security");
     } else {
       setText("securityTitle", "Protect your account");
-      setText("securityMessage", "Two-factor authentication is not enabled. Set it up to add another layer of protection.");
+      setText(
+        "securityMessage",
+        "Two-factor authentication is not enabled. Set it up to add another layer of protection."
+      );
       setText("securityAction", "Enable 2FA");
     }
   } catch (error) {
@@ -562,7 +749,10 @@ async function loadMfaStatus() {
     card.classList.add("warning");
 
     setText("securityTitle", "Security status unavailable");
-    setText("securityMessage", "We could not verify your 2FA status. Open Security Settings to check it.");
+    setText(
+      "securityMessage",
+      "We could not verify your 2FA status. Open Security Settings to check it."
+    );
     setText("securityAction", "Check Security");
   }
 }
@@ -583,7 +773,9 @@ function buildCryptoMenu() {
     logo.src = logoURL(symbol);
     logo.alt = "";
     logo.loading = "lazy";
-    logo.onerror = () => { logo.style.visibility = "hidden"; };
+    logo.onerror = () => {
+      logo.style.visibility = "hidden";
+    };
 
     const details = document.createElement("div");
     details.className = "crypto-details";
@@ -717,17 +909,20 @@ async function loadProfile() {
     return;
   }
 
-  const name = data?.full_name || currentUser.user_metadata?.full_name || "Welcome";
+  const name =
+    data?.full_name ||
+    currentUser.user_metadata?.full_name ||
+    "Welcome";
 
   setText("userName", name);
   setText("profileInitial", initials(name));
 
   const status = String(data?.account_status || "PENDING").toUpperCase();
-  const color = status === "ACTIVE"
-    ? "var(--green)"
-    : status === "SUSPENDED"
-      ? "var(--red)"
-      : "var(--gold)";
+
+  const color =
+    status === "ACTIVE" ? "var(--green)" :
+    status === "SUSPENDED" ? "var(--red)" :
+    "var(--gold)";
 
   const container = $("accountStatus");
   container.replaceChildren();
@@ -742,7 +937,16 @@ async function loadProfile() {
   container.append(dot, label);
 }
 
-/* WALLETS */
+function initials(name) {
+  const parts = String(name || "").trim().split(/\s+/).filter(Boolean);
+
+  if (!parts.length) return "AV";
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+
+/* WALLETS — DISPLAY ACTUAL STORED CRYPTO BALANCES */
 async function loadWallets() {
   const { data, error } = await db.from("wallets")
     .select("id,asset,available_balance,locked_balance,principal_balance,profit_balance")
@@ -755,6 +959,7 @@ async function loadWallets() {
   }
 
   wallets = data || [];
+
   renderSelectedAsset();
   updateCryptoMenuBalances();
 
@@ -763,8 +968,8 @@ async function loadWallets() {
 
 /*
  * PORTFOLIO
- * Displays the actual confirmed deposit quantities by cryptocurrency.
- * No USD price API is used here.
+ * No live prices and no mixed-asset USD total.
+ * Confirmed deposits are grouped by the asset actually credited.
  */
 async function renderPortfolio() {
   setText("portfolioValue", "Loading...");
@@ -777,22 +982,22 @@ async function renderPortfolio() {
   if (error) {
     console.error("Portfolio loading error:", error);
     setText("portfolioValue", "Unavailable");
-    return;
+    setText(
+      "portfolioCaption",
+      "Unable to load confirmed deposit records. Please refresh and try again."
+    );
+    return null;
   }
 
-  const rows = (data || []).map(deposit => {
-    const credited = Number(deposit.credited_amount);
-    const submitted = Number(deposit.amount);
+  const totals = groupAmountsByAsset(data || [], getRecordedDepositAmount);
 
-    return {
-      asset: deposit.asset,
-      amount: Number.isFinite(credited) && credited > 0
-        ? credited
-        : submitted
-    };
-  });
+  setText("portfolioValue", formatAssetTotals(totals));
+  setText(
+    "portfolioCaption",
+    "Recorded confirmed deposit quantities by asset. No live market-price conversion."
+  );
 
-  setText("portfolioValue", formatAssetTotals(rows, "amount"));
+  return totals;
 }
 
 /* ACTIVE CONFIRMED DEPOSITS */
@@ -807,8 +1012,8 @@ async function loadActiveDeposits() {
 
   if (error) {
     console.error("Active deposit verification error:", error);
-    activeDeposits = [];
 
+    activeDeposits = [];
     setText("countdownState", "Unable to verify active deposits.");
     setText("countdownAsset", "—");
     $("timerBox").classList.add("hidden");
@@ -825,6 +1030,7 @@ async function loadActiveDeposits() {
 
 function getNextCalculationTime(startedAt, nowMs) {
   const start = new Date(startedAt).getTime();
+
   if (!Number.isFinite(start)) return null;
 
   const cycle = 24 * 60 * 60 * 1000;
@@ -865,7 +1071,11 @@ function setupCountdown() {
   countdownTarget = next.target;
 
   setText("countdownAsset", next.asset || "—");
-  setText("countdownState", "Active deposit verified. Waiting for the next calculation time.");
+  setText(
+    "countdownState",
+    "Active deposit verified. Waiting for the next calculation time."
+  );
+
   $("timerBox").classList.remove("hidden");
 
   updateCountdown();
@@ -879,9 +1089,13 @@ function updateCountdown() {
 
   if (remaining <= 0) {
     setText("timer", "00:00:00");
+
     stopCountdown();
 
-    setText("countdownState", "Calculation time reached. Checking account records...");
+    setText(
+      "countdownState",
+      "Calculation time reached. Checking account records..."
+    );
 
     clearTimeout(countdownRefreshTimer);
     countdownRefreshTimer = setTimeout(() => refreshDashboardData(), 1500);
@@ -926,7 +1140,10 @@ async function loadPartnerStatistics() {
   setText("partnerCount", String(count ?? 0));
 }
 
-/* PAYMENT STATISTICS — NO LIVE PRICE CONVERSION */
+/*
+ * PAYMENT STATISTICS
+ * Incoming and outgoing amounts remain separated by cryptocurrency.
+ */
 async function loadPaymentStatistics() {
   const depositsResult = await db.from("deposits")
     .select("asset,amount,credited_amount,status")
@@ -934,22 +1151,18 @@ async function loadPaymentStatistics() {
     .eq("status", "CONFIRMED");
 
   if (depositsResult.error) {
-    console.error("Incoming payment statistics error:", depositsResult.error);
+    console.error(
+      "Incoming payment statistics error:",
+      depositsResult.error
+    );
     setText("incomingPayments", "Unavailable");
   } else {
-    const incomingRows = (depositsResult.data || []).map(deposit => {
-      const credited = Number(deposit.credited_amount);
-      const submitted = Number(deposit.amount);
+    const incomingTotals = groupAmountsByAsset(
+      depositsResult.data || [],
+      getRecordedDepositAmount
+    );
 
-      return {
-        asset: deposit.asset,
-        amount: Number.isFinite(credited) && credited > 0
-          ? credited
-          : submitted
-      };
-    });
-
-    setText("incomingPayments", formatAssetTotals(incomingRows, "amount"));
+    setText("incomingPayments", formatAssetTotals(incomingTotals));
   }
 
   const withdrawalsResult = await db.from("withdrawals")
@@ -958,123 +1171,130 @@ async function loadPaymentStatistics() {
     .eq("status", "COMPLETED");
 
   if (withdrawalsResult.error) {
-    console.error("Outgoing payment statistics error:", withdrawalsResult.error);
+    console.error(
+      "Outgoing payment statistics error:",
+      withdrawalsResult.error
+    );
     setText("outgoingPayments", "Unavailable");
     return;
   }
 
-  const outgoingRows = (withdrawalsResult.data || []).map(withdrawal => {
-    const netAmount = Number(withdrawal.net_amount);
-    const requestedAmount = Number(withdrawal.amount);
+  const outgoingTotals = groupAmountsByAsset(
+    withdrawalsResult.data || [],
+    withdrawal => {
+      const net = Number(withdrawal.net_amount);
+      const amount = Number(withdrawal.amount);
 
-    return {
-      asset: withdrawal.asset,
-      amount: Number.isFinite(netAmount) && netAmount > 0
-        ? netAmount
-        : requestedAmount
-    };
-  });
+      return Number.isFinite(net) && net > 0
+        ? net
+        : Number.isFinite(amount) && amount > 0
+          ? amount
+          : 0;
+    }
+  );
 
-  setText("outgoingPayments", formatAssetTotals(outgoingRows, "amount"));
+  setText("outgoingPayments", formatAssetTotals(outgoingTotals));
 }
 
-/* EARNINGS STATISTICS — RECORDED CRYPTO AMOUNTS ONLY */
+/*
+ * EARNINGS STATISTICS
+ * Uses stored earning and commission quantities.
+ * Reversed earnings are excluded by querying CREDITED records only.
+ * Referral commissions count only when status is RECORDED.
+ */
 async function loadEarningsStatistics() {
-  setText("allAccruals", "Loading...");
+  const mainEl = $("mainProfit");
+  const partnersEl = $("partnersProfit");
+  const totalEl = $("allAccruals");
+  const noteEl = $("statisticsNote");
+
   setText("mainProfit", "Loading...");
   setText("partnersProfit", "Loading...");
+  setText("allAccruals", "Loading...");
   setText("statisticsNote", "Loading earnings records...");
 
   if (!currentUser) {
-    setText("allAccruals", "Unavailable");
-    setText("mainProfit", "Unavailable");
-    setText("partnersProfit", "Unavailable");
     setText("statisticsNote", "Please sign in to view earnings.");
     return;
   }
 
-  const earningsResult = await db.from("earning_records")
-    .select("earning_amount,asset,status")
-    .eq("user_id", currentUser.id)
-    .eq("status", "CREDITED");
+  let mainTotals = {};
+  let partnersTotals = {};
+  let mainFailed = false;
+  let partnersFailed = false;
 
-  const commissionsResult = await db.from("referral_commission_records")
-    .select("commission_amount,asset,referrer_id,status")
-    .eq("referrer_id", currentUser.id)
-    .eq("status", "RECORDED");
+  /* Investment earnings */
+  try {
+    const { data, error } = await db.from("earning_records")
+      .select("earning_amount,asset,status")
+      .eq("user_id", currentUser.id)
+      .eq("status", "CREDITED");
 
-  if (earningsResult.error) {
-    console.error("Investment earnings query failed:", earningsResult.error);
-    setText("mainProfit", "Unavailable");
-  } else {
-    setText(
-      "mainProfit",
-      formatAssetTotals(earningsResult.data || [], "earning_amount")
+    if (error) throw error;
+
+    mainTotals = groupAmountsByAsset(data || [], row => row.earning_amount);
+
+    mainEl.textContent = formatAssetTotals(mainTotals);
+  } catch (error) {
+    mainFailed = true;
+
+    console.error("Investment earnings query failed:", error);
+    mainEl.textContent = "Unavailable";
+  }
+
+  /* Referral commissions */
+  try {
+    const { data, error } = await db.from("referral_commission_records")
+      .select("commission_amount,asset,referrer_id,status")
+      .eq("referrer_id", currentUser.id)
+      .eq("status", "RECORDED");
+
+    if (error) throw error;
+
+    partnersTotals = groupAmountsByAsset(
+      data || [],
+      row => row.commission_amount
     );
+
+    partnersEl.textContent = formatAssetTotals(partnersTotals);
+  } catch (error) {
+    partnersFailed = true;
+
+    console.error("Referral commissions query failed:", error);
+    partnersEl.textContent = "Unavailable";
   }
 
-  if (commissionsResult.error) {
-    console.error("Referral commissions query failed:", commissionsResult.error);
-    setText("partnersProfit", "Unavailable");
+  /* Total is grouped by asset, never added across different coins. */
+  if (mainFailed || partnersFailed) {
+    totalEl.textContent = "Unavailable";
   } else {
-    setText(
-      "partnersProfit",
-      formatAssetTotals(commissionsResult.data || [], "commission_amount")
-    );
+    const combinedTotals = mergeAssetTotals(mainTotals, partnersTotals);
+    totalEl.textContent = formatAssetTotals(combinedTotals);
   }
 
-  if (earningsResult.error || commissionsResult.error) {
-    setText("allAccruals", "Unavailable");
-
-    if (earningsResult.error && commissionsResult.error) {
-      setText("statisticsNote", "Investment earnings and referral commissions could not be loaded. Please try again.");
-    } else if (earningsResult.error) {
-      setText("statisticsNote", "Investment earnings could not be loaded. Referral commissions are shown separately.");
-    } else {
-      setText("statisticsNote", "Referral commissions could not be loaded. Investment earnings are shown separately.");
-    }
-
-    return;
+  if (mainFailed && partnersFailed) {
+    noteEl.textContent =
+      "Both earnings queries failed. Check the browser console for the database error.";
+  } else if (mainFailed) {
+    noteEl.textContent =
+      "Investment earnings could not load. Referral commissions are shown separately.";
+  } else if (partnersFailed) {
+    noteEl.textContent =
+      "Referral commissions could not load. Investment earnings are shown separately.";
+  } else {
+    noteEl.textContent =
+      "Amounts are read from stored account records and displayed by asset. No live prices are used.";
   }
 
-  /*
-   * Combine amounts only when the asset is the same.
-   * Example: BTC earnings + BTC commissions = BTC total.
-   * BTC and USDT are never added together as one monetary value.
-   */
-  const combined = {};
-
-  for (const row of earningsResult.data || []) {
-    const asset = String(row.asset || "").toUpperCase();
-    const amount = Number(row.earning_amount);
-
-    if (!asset || !Number.isFinite(amount) || amount <= 0) continue;
-
-    combined[asset] = (combined[asset] || 0) + amount;
-  }
-
-  for (const row of commissionsResult.data || []) {
-    const asset = String(row.asset || "").toUpperCase();
-    const amount = Number(row.commission_amount);
-
-    if (!asset || !Number.isFinite(amount) || amount <= 0) continue;
-
-    combined[asset] = (combined[asset] || 0) + amount;
-  }
-
-  const totals = Object.entries(combined)
-    .sort(([assetA], [assetB]) => assetA.localeCompare(assetB))
-    .map(([asset, amount]) => formatNumber(amount, asset) + " " + asset);
-
-  setText("allAccruals", totals.length ? totals.join(" · ") : "0.00");
-
-  setText(
-    "statisticsNote",
-    "Amounts are taken from credited investment earnings and recorded referral commissions. Each cryptocurrency is shown separately; live market prices do not change these recorded amounts."
-  );
+  console.log("AITIVEST earnings refresh:", {
+    mainTotals,
+    partnersTotals,
+    mainFailed,
+    partnersFailed
+  });
 }
 
-/* REFRESH */
+/* REFRESH DASHBOARD */
 async function refreshDashboardData() {
   if (!currentUser || refreshInProgress) return;
 
@@ -1118,11 +1338,15 @@ $("logoutBtn").addEventListener("click", async () => {
 
 /* REFRESH WHEN RETURNING TO PAGE */
 document.addEventListener("visibilitychange", () => {
-  if (document.visibilityState === "visible") refreshDashboardData();
+  if (document.visibilityState === "visible") {
+    refreshDashboardData();
+  }
 });
 
 setInterval(() => {
-  if (document.visibilityState === "visible") refreshDashboardData();
+  if (document.visibilityState === "visible") {
+    refreshDashboardData();
+  }
 }, 30000);
 
 /* INITIALIZATION */
@@ -1144,5 +1368,6 @@ setInterval(() => {
     }, 300);
   }
 })();
-</script></body>
+</script>
+</body>
 </html>
