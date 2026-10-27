@@ -876,71 +876,146 @@ async function loadPaymentStatistics(){
 }
 
 /* EARNINGS STATISTICS — USD VALUE ACROSS SUPPORTED ASSETS */
-async function loadEarningsStatistics(){
-  setText("allAccruals","Loading...");
-  setText("mainProfit","Loading...");
-  setText("partnersProfit","Loading...");
-  setText("statisticsNote","Calculating credited earnings and referral commissions across supported assets...");
+  
+async function loadEarningsStatistics() {
+  const mainProfitEl = document.getElementById("mainProfit");
+  const partnersProfitEl = document.getElementById("partnersProfit");
+  const allAccrualsEl = document.getElementById("allAccruals");
 
-  await loadCryptoUsdPrices();
+  try {
+    if (!currentUser) {
+      throw new Error("User session is unavailable.");
+    }
 
-  let mainProfitUsd=0;
-  let partnersProfitUsd=0;
-  let mainProfitIncomplete=false;
-  let partnersProfitIncomplete=false;
+    // Load current cryptocurrency prices.
+    await loadCryptoUsdPrices();
 
-  const earningsResult=await db.from("earning_records")
-    .select("earning_amount,asset,status")
-    .eq("user_id",currentUser.id)
-    .eq("status","CREDITED");
+    // Load credited investment earnings for the signed-in user.
+    const earningsResult = await db
+      .from("earning_records")
+      .select("earning_amount, asset, status")
+      .eq("user_id", currentUser.id)
+      .eq("status", "CREDITED");
 
-  if(earningsResult.error){
-    console.error("Earnings statistics error:",earningsResult.error);
-    mainProfitIncomplete=true;
-  }else{
-    for(const record of earningsResult.data||[]){
-      const amount=Number(record.earning_amount);
-      const asset=String(record.asset||"").toUpperCase();
-      if(!Number.isFinite(amount)||amount<=0)continue;
+    if (earningsResult.error) {
+      throw earningsResult.error;
+    }
 
-      const usdValue=cryptoAmountToUsd(amount,asset);
-      if(usdValue===null){mainProfitIncomplete=true;continue}
-      mainProfitUsd+=usdValue;
+    // Only count referral commissions that have been recorded.
+    const commissionsResult = await db
+      .from("referral_commission_records")
+      .select("commission_amount, asset, status, referrer_id")
+      .eq("referrer_id", currentUser.id)
+      .eq("status", "RECORDED");
+
+    if (commissionsResult.error) {
+      throw commissionsResult.error;
+    }
+
+    let mainProfitUsd = 0;
+    let partnersProfitUsd = 0;
+    let missingMainPrices = false;
+    let missingCommissionPrices = false;
+
+    // Convert credited investment earnings into USD.
+    for (const record of (earningsResult.data || [])) {
+      const amount = Number(record.earning_amount) || 0;
+      const asset = String(record.asset || "").toUpperCase();
+
+      if (amount <= 0) continue;
+
+      const usdValue = cryptoAmountToUsd(amount, asset);
+
+      if (usdValue === null || !Number.isFinite(usdValue)) {
+        missingMainPrices = true;
+        continue;
+      }
+
+      mainProfitUsd += usdValue;
+    }
+
+    // Convert recorded referral commissions into USD.
+    for (const record of (commissionsResult.data || [])) {
+      const amount = Number(record.commission_amount) || 0;
+      const asset = String(record.asset || "").toUpperCase();
+
+      if (amount <= 0) continue;
+
+      const usdValue = cryptoAmountToUsd(amount, asset);
+
+      if (usdValue === null || !Number.isFinite(usdValue)) {
+        missingCommissionPrices = true;
+        continue;
+      }
+
+      partnersProfitUsd += usdValue;
+    }
+
+    const allAccrualsUsd = mainProfitUsd + partnersProfitUsd;
+
+    // Display the totals using the existing dashboard elements.
+    if (mainProfitEl) {
+      mainProfitEl.textContent =
+        "$" + mainProfitUsd.toLocaleString("en-US", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        });
+    }
+
+    if (partnersProfitEl) {
+      partnersProfitEl.textContent =
+        "$" + partnersProfitUsd.toLocaleString("en-US", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        });
+    }
+
+    if (allAccrualsEl) {
+      allAccrualsEl.textContent =
+        "$" + allAccrualsUsd.toLocaleString("en-US", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        });
+    }
+
+    // Show price-data warnings instead of silently treating incomplete
+    // conversions as complete totals.
+    const notes = [];
+
+    if (missingMainPrices) {
+      notes.push("Some investment earnings could not be valued because prices are unavailable.");
+    }
+
+    if (missingCommissionPrices) {
+      notes.push("Some referral commissions could not be valued because prices are unavailable.");
+    }
+
+    const statisticsNote = document.getElementById("statisticsNote");
+
+    if (statisticsNote && notes.length) {
+      statisticsNote.textContent = notes.join(" ");
+    }
+
+    console.log("AITIVEST earnings statistics:", {
+      userId: currentUser.id,
+      mainProfitUsd,
+      partnersProfitUsd,
+      allAccrualsUsd,
+      missingMainPrices,
+      missingCommissionPrices
+    });
+
+  } catch (error) {
+    console.error("Unable to load earnings statistics:", error);
+
+    const statisticsNote = document.getElementById("statisticsNote");
+
+    if (statisticsNote) {
+      statisticsNote.textContent =
+        "Earnings could not be refreshed. Please try again.";
     }
   }
-
-  const commissionsResult=await db.from("referral_commission_records")
-    .select("commission_amount,asset,referrer_id")
-    .eq("referrer_id",currentUser.id);
-
-  if(commissionsResult.error){
-    console.error("Referral commission statistics error:",commissionsResult.error);
-    partnersProfitIncomplete=true;
-  }else{
-    for(const record of commissionsResult.data||[]){
-      const amount=Number(record.commission_amount);
-      const asset=String(record.asset||"").toUpperCase();
-      if(!Number.isFinite(amount)||amount<=0)continue;
-
-      const usdValue=cryptoAmountToUsd(amount,asset);
-      if(usdValue===null){partnersProfitIncomplete=true;continue}
-      partnersProfitUsd+=usdValue;
-    }
-  }
-
-  setText("mainProfit",formatMoney(mainProfitUsd)+(mainProfitIncomplete?" +":""));
-  setText("partnersProfit",formatMoney(partnersProfitUsd)+(partnersProfitIncomplete?" +":""));
-
-  const allAccrualsUsd=mainProfitUsd+partnersProfitUsd;
-  setText("allAccruals",formatMoney(allAccrualsUsd)+(mainProfitIncomplete||partnersProfitIncomplete?" +":""));
-
-  setText("statisticsNote",
-    mainProfitIncomplete||partnersProfitIncomplete
-      ? "USD totals include records whose asset prices were available. A trailing + means some records could not be valued or verified. Referral commissions are counted from the commission records available to your account."
-      : "All accruals combines credited investment earnings and recorded referral commissions. Main profit shows credited investment earnings; Partners profit shows referral commissions. USD values use available market prices and can change."
-  );
 }
-
 /* REFRESH */
 async function refreshDashboardData(){
   if(!currentUser||refreshInProgress)return;
