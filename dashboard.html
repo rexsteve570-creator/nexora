@@ -59,8 +59,8 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
 .greeting h1{margin-top:4px;font-size:24px;font-weight:760;overflow-wrap:anywhere}
 .portfolio-card{background:radial-gradient(circle at top right,rgba(217,164,65,.16),transparent 42%),linear-gradient(145deg,#102238,#0b1829);border:1px solid rgba(217,164,65,.18);border-radius:20px;padding:25px 22px 20px;box-shadow:var(--shadow)}
 .card-label{color:var(--muted);font-size:13px;letter-spacing:1.5px;text-transform:uppercase}
-.portfolio-value{font-size:37px;font-weight:850;margin-top:9px;letter-spacing:-1px;overflow-wrap:anywhere}
-.portfolio-caption{color:var(--muted);font-size:11px;margin-top:6px}
+.portfolio-value{font-size:clamp(20px,5vw,30px);font-weight:850;margin-top:12px;letter-spacing:-.5px;overflow-wrap:anywhere;line-height:1.5}
+.portfolio-caption{color:var(--muted);font-size:11px;margin-top:6px;line-height:1.7}
 .status-row{margin-top:20px;border-top:1px solid var(--border);padding-top:15px;display:flex;align-items:center;justify-content:space-between;gap:10px}
 .status-label{color:var(--muted);font-size:12px}
 .status{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:700}
@@ -126,10 +126,10 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
 .stats-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:4px 18px}
 .stat-row{padding:17px 0;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px}
 .stat-row:last-child{border-bottom:0}
-.stat-info{min-width:0}
+.stat-info{min-width:0;flex:1}
 .stat-label{font-size:13px;color:var(--muted)}
 .stat-note{margin-top:5px;font-size:10px;color:#728096;line-height:1.5}
-.stat-value{font-size:19px;font-weight:800;text-align:right;overflow-wrap:anywhere}
+.stat-value{font-size:clamp(12px,3.7vw,17px);font-weight:800;text-align:right;overflow-wrap:anywhere;max-width:58%;line-height:1.7}
 .green{color:var(--green)}.gold{color:var(--gold2)}.blue{color:var(--blue)}.purple{color:var(--purple)}.red{color:var(--red)}
 .statistics-note{margin-top:12px;color:var(--muted);font-size:10px;line-height:1.7}
 .quick-grid{display:flex;flex-direction:column;gap:12px}
@@ -155,9 +155,7 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
   .security-action{padding:9px;font-size:10px}
   .security-heading{font-size:12px}
   .content{padding-left:14px;padding-right:14px}
-  .portfolio-value{font-size:31px}
   .timer{font-size:27px}
-  .stat-value{font-size:17px}
   .topbar .brand-name{font-size:15px}
   .topbar .brand-mark{width:27px;height:27px}
 }
@@ -166,11 +164,11 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
 }
 </style>
 </head>
-<body>
-<div id="loadingScreen" class="loading-screen">
+<body><div id="loadingScreen" class="loading-screen">
   <div class="loading-box">
     <div class="brand-logo loading-logo">
-      <div class="brand-mark">A</div><div class="brand-name">AITI<span>VEST</span></div>
+      <div class="brand-mark">A</div>
+      <div class="brand-name">AITI<span>VEST</span></div>
     </div>
     <div class="spinner"></div>
   </div>
@@ -179,15 +177,16 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
   <div class="topbar-inner">
     <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
     <div class="brand-logo" aria-label="AITIVEST">
-      <div class="brand-mark">A</div><div class="brand-name">AITI<span>VEST</span></div>
+      <div class="brand-mark">A</div>
+      <div class="brand-name">AITI<span>VEST</span></div>
     </div>
     <div class="profile-initial" id="profileInitial">AV</div>
   </div>
-</header><div class="overlay" id="overlay"></div>
-<aside class="drawer" id="drawer" aria-label="Main navigation">
+</header><div class="overlay" id="overlay"></div><aside class="drawer" id="drawer" aria-label="Main navigation">
   <div class="drawer-head">
     <div class="brand-logo">
-      <div class="brand-mark">A</div><div class="brand-name">AITI<span>VEST</span></div>
+      <div class="brand-mark">A</div>
+      <div class="brand-name">AITI<span>VEST</span></div>
     </div>
     <button class="close-drawer" id="closeDrawer" aria-label="Close menu">×</button>
   </div>
@@ -208,9 +207,9 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
     <small id="greetingText">Welcome back</small>
     <h1 id="userName">Welcome</h1>
   </div>  <section class="portfolio-card">
-    <div class="card-label">FIAT</div>
+    <div class="card-label">CRYPTO PORTFOLIO</div>
     <div class="portfolio-value" id="portfolioValue">Loading...</div>
-    <div class="portfolio-caption">Total USD value of confirmed deposits</div>
+    <div class="portfolio-caption">Confirmed deposit amounts by cryptocurrency. Market price changes do not change these recorded amounts.</div>
     <div class="status-row">
       <div class="status-label">Account status</div>
       <div class="status" id="accountStatus"><span class="status-dot"></span><span>Loading...</span></div>
@@ -227,55 +226,117 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
       <button type="button" class="crypto-selected" id="cryptoSelected" aria-expanded="false" aria-controls="cryptoMenu">
         <div class="selected-left">
           <img id="selectedLogo" class="selected-logo" src="" alt="">
-          <div class="selected-info"><div class="selected-symbol" id="selectedSymbol">USDT</div><div class="selected-name" id="selectedName">Tether</div></div>
+          <div class="selected-info">
+            <div class="selected-symbol" id="selectedSymbol">USDT</div>
+            <div class="selected-name" id="selectedName">Tether</div>
+          </div>
         </div>
         <div class="selected-arrow">⌄</div>
       </button>
       <div class="crypto-menu" id="cryptoMenu"></div>
+    </div><div class="asset-preview">
+  <div class="asset-left">
+    <img id="previewLogo" class="preview-logo" src="" alt="">
+    <div>
+      <div class="asset-name" id="previewName">Tether</div>
+      <div class="asset-network" id="previewNetwork">Available wallet balance</div>
     </div>
-    <div class="asset-preview">
-      <div class="asset-left">
-        <img id="previewLogo" class="preview-logo" src="" alt="">
-        <div><div class="asset-name" id="previewName">Tether</div><div class="asset-network" id="previewNetwork">Available wallet balance</div></div>
-      </div>
-      <div class="asset-balance"><strong id="previewBalance">0.00</strong><small id="previewSymbol">USDT</small></div>
-    </div>
+  </div>
+  <div class="asset-balance">
+    <strong id="previewBalance">0.00</strong>
+    <small id="previewSymbol">USDT</small>
+  </div>
+</div>
+
   </section>  <section class="section">
     <div class="section-title"><h2>Profit Countdown</h2><span id="countdownAsset">—</span></div>
     <div class="countdown-card">
       <div class="countdown-icon">◷</div>
       <div class="countdown-title">Time until the next calculation of profit</div>
       <div class="countdown-state" id="countdownState">Checking active deposits...</div>
-      <div id="timerBox" class="hidden"><div class="timer" id="timer">--:--:--</div><div class="timer-label">HOURS : MINUTES : SECONDS</div></div>
+      <div id="timerBox" class="hidden">
+        <div class="timer" id="timer">--:--:--</div>
+        <div class="timer-label">HOURS : MINUTES : SECONDS</div>
+      </div>
     </div>
   </section>  <section class="section">
     <div class="section-title"><h2>Partners</h2><span>Referral overview</span></div>
     <div class="partner-card">
-      <div class="partner-left"><div class="partner-icon">♧</div><div><div class="partner-label">My Partners</div><div class="partner-description">Recorded referrals</div></div></div>
+      <div class="partner-left">
+        <div class="partner-icon">♧</div>
+        <div>
+          <div class="partner-label">My Partners</div>
+          <div class="partner-description">Recorded referrals</div>
+        </div>
+      </div>
       <div class="partner-count" id="partnerCount">—</div>
     </div>
   </section>  <section class="section">
     <div class="section-title"><h2>Payment Statistics</h2><span>Account history</span></div>
     <div class="stats-card">
-      <div class="stat-row"><div class="stat-info"><div class="stat-label">Incoming payments</div><div class="stat-note">Confirmed deposit value</div></div><div class="stat-value green" id="incomingPayments">Loading...</div></div>
-      <div class="stat-row"><div class="stat-info"><div class="stat-label">Outgoing payments</div><div class="stat-note">Completed withdrawals only</div></div><div class="stat-value red" id="outgoingPayments">Loading...</div></div>
+      <div class="stat-row">
+        <div class="stat-info">
+          <div class="stat-label">Incoming payments</div>
+          <div class="stat-note">Confirmed deposit amounts by asset</div>
+        </div>
+        <div class="stat-value green" id="incomingPayments">Loading...</div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-info">
+          <div class="stat-label">Outgoing payments</div>
+          <div class="stat-note">Completed withdrawals by asset</div>
+        </div>
+        <div class="stat-value red" id="outgoingPayments">Loading...</div>
+      </div>
     </div>
   </section>  <section class="section">
     <div class="section-title"><h2>Earnings Statistics</h2><span>Account records</span></div>
     <div class="stats-card">
-      <div class="stat-row"><div class="stat-info"><div class="stat-label">All accruals</div><div class="stat-note">Credited earnings and referral commissions</div></div><div class="stat-value gold" id="allAccruals">Loading...</div></div>
-      <div class="stat-row"><div class="stat-info"><div class="stat-label">Main profit</div><div class="stat-note">Credited investment earnings</div></div><div class="stat-value blue" id="mainProfit">Loading...</div></div>
-      <div class="stat-row"><div class="stat-info"><div class="stat-label">Partners profit</div><div class="stat-note">Credited referral commissions</div></div><div class="stat-value purple" id="partnersProfit">Loading...</div></div>
+      <div class="stat-row">
+        <div class="stat-info">
+          <div class="stat-label">All accruals</div>
+          <div class="stat-note">Credited earnings and recorded referral commissions</div>
+        </div>
+        <div class="stat-value gold" id="allAccruals">Loading...</div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-info">
+          <div class="stat-label">Main profit</div>
+          <div class="stat-note">Credited investment earnings</div>
+        </div>
+        <div class="stat-value blue" id="mainProfit">Loading...</div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-info">
+          <div class="stat-label">Partners profit</div>
+          <div class="stat-note">Recorded referral commissions</div>
+        </div>
+        <div class="stat-value purple" id="partnersProfit">Loading...</div>
+      </div>
     </div>
-    <div class="statistics-note" id="statisticsNote">Statistics are loaded from your account records.</div>
+    <div class="statistics-note" id="statisticsNote">Loading account records...</div>
   </section>  <section class="section">
     <div class="section-title"><h2>Quick Access</h2><span>Choose an action</span></div>
     <div class="quick-grid">
-      <button class="quick-btn market" onclick="go('swap.html')"><span class="quick-icon">⇄</span><span class="quick-text"><strong>Market</strong><small>Explore asset exchange</small></span><span class="quick-arrow">›</span></button>
-      <button class="quick-btn deposit" onclick="go('deposit.html')"><span class="quick-icon">＋</span><span class="quick-text"><strong>Add Funds</strong><small>View deposit options</small></span><span class="quick-arrow">›</span></button>
-      <button class="quick-btn withdraw" onclick="go('withdraw.html')"><span class="quick-icon">↗</span><span class="quick-text"><strong>Withdraw</strong><small>Manage withdrawal requests</small></span><span class="quick-arrow">›</span></button>
+      <button class="quick-btn market" onclick="go('swap.html')">
+        <span class="quick-icon">⇄</span>
+        <span class="quick-text"><strong>Market</strong><small>Explore asset exchange</small></span>
+        <span class="quick-arrow">›</span>
+      </button>
+      <button class="quick-btn deposit" onclick="go('deposit.html')">
+        <span class="quick-icon">＋</span>
+        <span class="quick-text"><strong>Add Funds</strong><small>View deposit options</small></span>
+        <span class="quick-arrow">›</span>
+      </button>
+      <button class="quick-btn withdraw" onclick="go('withdraw.html')">
+        <span class="quick-icon">↗</span>
+        <span class="quick-text"><strong>Withdraw</strong><small>Manage withdrawal requests</small></span>
+        <span class="quick-arrow">›</span>
+      </button>
     </div>
-  </section>  <div class="info-note">FIAT displays the USD-equivalent value of confirmed deposits. Pending deposits are excluded. Cryptocurrency balances are displayed separately by asset. The countdown is a time indicator and does not itself credit earnings.</div>
+  </section>  <div class="info-note">
+    Cryptocurrency balances and recorded transactions are displayed in their original assets. Market prices do not change amounts already credited to an account. Deposit confirmation and withdrawal processing must be handled by the secure server-side database functions.
+  </div>
 </main><nav class="bottom-nav" aria-label="Bottom navigation">
   <button class="bottom-link active" onclick="go('dashboard.html')"><span class="bottom-icon">⌂</span><span>Portfolio</span></button>
   <button class="bottom-link" onclick="go('deposit.html')"><span class="bottom-icon">＋</span><span>Deposit</span></button>
@@ -288,18 +349,20 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
 /* SUPABASE */
 const SUPABASE_URL = "https://rihvvwktvgytbqzazage.supabase.co";
 const SUPABASE_KEY = "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
-const db = window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 /* ASSETS */
 const LOGO_BASE = "https://cdn.jsdelivr.net/gh/madenix/Crypto-logo-cdn@main/Logos/";
+
 const logoFiles = {
-  BTC:"BTC.svg",ETH:"ETH.svg",USDT:"USDT.svg",USDC:"USDC.svg",
-  BNB:"BNB.svg",SOL:"SOL.svg",XRP:"XRP.svg",TON:"TON.svg",
-  DOGE:"DOGE.svg",ADA:"ADA.svg",TRX:"TRON.svg",LTC:"LTC.svg",
-  AVAX:"AVAX.svg",DOT:"DOT.svg",LINK:"LINK.svg",POL:"MATIC.svg",
-  SHIB:"SHIB.svg",BCH:"BCH.svg",XLM:"XLM.svg",ATOM:"ATOM.svg",
-  NEAR:"NEAR.svg",APT:"APT.svg",ARB:"ARB.svg",OP:"OP.svg"
+  BTC:"BTC.svg", ETH:"ETH.svg", USDT:"USDT.svg", USDC:"USDC.svg",
+  BNB:"BNB.svg", SOL:"SOL.svg", XRP:"XRP.svg", TON:"TON.svg",
+  DOGE:"DOGE.svg", ADA:"ADA.svg", TRX:"TRON.svg", LTC:"LTC.svg",
+  AVAX:"AVAX.svg", DOT:"DOT.svg", LINK:"LINK.svg", POL:"MATIC.svg",
+  SHIB:"SHIB.svg", BCH:"BCH.svg", XLM:"XLM.svg", ATOM:"ATOM.svg",
+  NEAR:"NEAR.svg", APT:"APT.svg", ARB:"ARB.svg", OP:"OP.svg"
 };
+
 const assets = [
   ["BTC","Bitcoin"],["ETH","Ethereum"],["USDT","Tether"],["USDC","USD Coin"],
   ["BNB","BNB"],["SOL","Solana"],["XRP","XRP"],["TON","Toncoin"],
@@ -309,174 +372,249 @@ const assets = [
   ["NEAR","NEAR Protocol"],["APT","Aptos"],["ARB","Arbitrum"],["OP","Optimism"]
 ];
 
-let currentUser=null;
-let wallets=[];
-let activeDeposits=[];
-let selectedAsset="USDT";
-let countdownTarget=null;
-let countdownInterval=null;
-let refreshInProgress=false;
-let countdownRefreshTimer=null;
-
-const ASSET_DECIMALS={
-  BTC:8,ETH:8,USDT:2,USDC:2,BNB:8,SOL:8,XRP:6,TON:8,DOGE:8,
-  ADA:6,TRX:6,LTC:8,AVAX:8,DOT:8,LINK:8,POL:8,SHIB:8,BCH:8,
-  XLM:7,ATOM:6,NEAR:8,APT:8,ARB:8,OP:8
+const ASSET_DECIMALS = {
+  BTC:8, ETH:8, USDT:2, USDC:2, BNB:8, SOL:8, XRP:6, TON:8,
+  DOGE:8, ADA:6, TRX:6, LTC:8, AVAX:8, DOT:8, LINK:8, POL:8,
+  SHIB:8, BCH:8, XLM:7, ATOM:6, NEAR:8, APT:8, ARB:8, OP:8
 };
 
-const $=id=>document.getElementById(id);
-function go(page){window.location.href=page}
-function logoURL(symbol){return LOGO_BASE+(logoFiles[symbol]||"")}
+let currentUser = null;
+let wallets = [];
+let activeDeposits = [];
+let selectedAsset = "USDT";
+let countdownTarget = null;
+let countdownInterval = null;
+let refreshInProgress = false;
+let countdownRefreshTimer = null;
 
-function formatNumber(value,asset="USDT"){
-  const number=Number(value??0);
-  const symbol=String(asset||"USDT").toUpperCase();
-  if(!Number.isFinite(number))return "—";
-  const decimals=ASSET_DECIMALS[symbol]??8;
-  return number.toLocaleString("en-US",{
-    minimumFractionDigits:decimals,maximumFractionDigits:decimals,useGrouping:true
+const $ = id => document.getElementById(id);
+
+function go(page) {
+  window.location.href = page;
+}
+
+function logoURL(symbol) {
+  return LOGO_BASE + (logoFiles[symbol] || "");
+}
+
+function formatNumber(value, asset = "USDT") {
+  const number = Number(value ?? 0);
+  const symbol = String(asset || "USDT").toUpperCase();
+
+  if (!Number.isFinite(number)) return "—";
+
+  return number.toLocaleString("en-US", {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: ASSET_DECIMALS[symbol] ?? 8,
+    useGrouping: true
   });
 }
 
-function formatMoney(value){
-  const number=Number(value);
-  if(!Number.isFinite(number))return "Unavailable";
-  return "$"+number.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
+function formatMoney(value) {
+  const number = Number(value);
+  if (!Number.isFinite(number)) return "Unavailable";
+
+  return "$" + number.toLocaleString("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
 }
 
-function initials(name){
-  const parts=String(name||"").trim().split(/\s+/).filter(Boolean);
-  if(!parts.length)return "AV";
-  if(parts.length===1)return parts[0].slice(0,2).toUpperCase();
-  return (parts[0][0]+parts[parts.length-1][0]).toUpperCase();
+function setText(id, value) {
+  const element = $(id);
+  if (element) element.textContent = value;
 }
 
-function setText(id,value){const element=$(id);if(element)element.textContent=value}
+function initials(name) {
+  const parts = String(name || "").trim().split(/\s+/).filter(Boolean);
 
-function showToast(message){
-  const toast=$("toast");
-  toast.textContent=message;
+  if (!parts.length) return "AV";
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+
+function showToast(message) {
+  const toast = $("toast");
+  toast.textContent = message;
   toast.classList.add("show");
+
   clearTimeout(showToast.timeout);
-  showToast.timeout=setTimeout(()=>toast.classList.remove("show"),3000);
+  showToast.timeout = setTimeout(() => toast.classList.remove("show"), 3000);
+}
+
+/*
+ * Format separate cryptocurrency quantities.
+ * This intentionally does not convert one cryptocurrency into another
+ * and does not request any live market price.
+ */
+function formatAssetTotals(rows, amountField) {
+  const totals = {};
+
+  for (const row of rows || []) {
+    const asset = String(row.asset || "").trim().toUpperCase();
+    const amount = Number(row[amountField]);
+
+    if (!asset || !Number.isFinite(amount) || amount <= 0) continue;
+
+    totals[asset] = (totals[asset] || 0) + amount;
+  }
+
+  const entries = Object.entries(totals)
+    .sort(([assetA], [assetB]) => assetA.localeCompare(assetB));
+
+  if (!entries.length) return "0.00";
+
+  return entries.map(([asset, amount]) => {
+    return formatNumber(amount, asset) + " " + asset;
+  }).join(" · ");
 }
 
 /* GREETING */
-function setGreeting(){
-  const hour=new Date().getHours();
-  setText("greetingText",hour<12?"Good morning":hour<18?"Good afternoon":"Good evening");
+function setGreeting() {
+  const hour = new Date().getHours();
+
+  setText(
+    "greetingText",
+    hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening"
+  );
 }
 
 /* DRAWER */
-function openDrawer(){$("drawer").classList.add("open");$("overlay").classList.add("show")}
-function closeDrawer(){$("drawer").classList.remove("open");$("overlay").classList.remove("show")}
-$("menuBtn").addEventListener("click",openDrawer);
-$("closeDrawer").addEventListener("click",closeDrawer);
-$("overlay").addEventListener("click",closeDrawer);
-document.addEventListener("keydown",event=>{
-  if(event.key==="Escape"){closeDrawer();closeCryptoPicker()}
+function openDrawer() {
+  $("drawer").classList.add("open");
+  $("overlay").classList.add("show");
+}
+
+function closeDrawer() {
+  $("drawer").classList.remove("open");
+  $("overlay").classList.remove("show");
+}
+
+$("menuBtn").addEventListener("click", openDrawer);
+$("closeDrawer").addEventListener("click", closeDrawer);
+$("overlay").addEventListener("click", closeDrawer);
+
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape") {
+    closeDrawer();
+    closeCryptoPicker();
+  }
 });
 
 /* AUTHENTICATION */
-async function checkAuth(){
-  const {data,error}=await db.auth.getSession();
-  if(error){
-    console.error("Session verification failed:",error);
+async function checkAuth() {
+  const { data, error } = await db.auth.getSession();
+
+  if (error) {
+    console.error("Session verification failed:", error);
     window.location.replace("signin.html");
     return false;
   }
-  currentUser=data?.session?.user||null;
-  if(!currentUser){window.location.replace("signin.html");return false}
+
+  currentUser = data?.session?.user || null;
+
+  if (!currentUser) {
+    window.location.replace("signin.html");
+    return false;
+  }
+
   return true;
 }
 
-/* TWO-FACTOR AUTHENTICATION STATUS */
-async function loadMfaStatus(){
-  const card=$("securityCard");
-  if(!card||!currentUser)return;
+/* TWO-FACTOR AUTHENTICATION */
+async function loadMfaStatus() {
+  const card = $("securityCard");
+  if (!card || !currentUser) return;
 
-  card.classList.remove("warning","enabled");
+  card.classList.remove("warning", "enabled");
   card.classList.add("checking");
-  setText("securityTitle","Checking account security...");
-  setText("securityMessage","Verifying your two-factor authentication status.");
-  setText("securityAction","Checking...");
 
-  try{
-    const {data,error}=await db.auth.mfa.listFactors();
-    if(error)throw error;
+  setText("securityTitle", "Checking account security...");
+  setText("securityMessage", "Verifying your two-factor authentication status.");
+  setText("securityAction", "Checking...");
 
-    const verifiedTotp=(data?.totp||[]).some(factor=>
-      String(factor.status||"").toLowerCase()==="verified"
+  try {
+    const { data, error } = await db.auth.mfa.listFactors();
+    if (error) throw error;
+
+    const verifiedTotp = (data?.totp || []).some(factor =>
+      String(factor.status || "").toLowerCase() === "verified"
     );
 
     card.classList.remove("checking");
-    card.classList.toggle("enabled",verifiedTotp);
-    card.classList.toggle("warning",!verifiedTotp);
+    card.classList.toggle("enabled", verifiedTotp);
+    card.classList.toggle("warning", !verifiedTotp);
 
-    if(verifiedTotp){
-      setText("securityTitle","Two-factor authentication enabled");
-      setText("securityMessage","Your authenticator app is verified. Keep your recovery information safe.");
-      setText("securityAction","Manage Security");
-    }else{
-      setText("securityTitle","Protect your account");
-      setText("securityMessage","Two-factor authentication is not enabled. Set it up to add another layer of protection.");
-      setText("securityAction","Enable 2FA");
+    if (verifiedTotp) {
+      setText("securityTitle", "Two-factor authentication enabled");
+      setText("securityMessage", "Your authenticator app is verified. Keep your recovery information safe.");
+      setText("securityAction", "Manage Security");
+    } else {
+      setText("securityTitle", "Protect your account");
+      setText("securityMessage", "Two-factor authentication is not enabled. Set it up to add another layer of protection.");
+      setText("securityAction", "Enable 2FA");
     }
-  }catch(error){
-    console.error("MFA status check failed:",error);
-    card.classList.remove("checking","enabled");
+  } catch (error) {
+    console.error("MFA status check failed:", error);
+
+    card.classList.remove("checking", "enabled");
     card.classList.add("warning");
-    setText("securityTitle","Security status unavailable");
-    setText("securityMessage","We could not verify your 2FA status. Open Security Settings to check it.");
-    setText("securityAction","Check Security");
+
+    setText("securityTitle", "Security status unavailable");
+    setText("securityMessage", "We could not verify your 2FA status. Open Security Settings to check it.");
+    setText("securityAction", "Check Security");
   }
 }
 
 /* CRYPTO MENU */
-function buildCryptoMenu(){
-  const menu=$("cryptoMenu");
+function buildCryptoMenu() {
+  const menu = $("cryptoMenu");
   menu.replaceChildren();
 
-  assets.forEach(([symbol,name])=>{
-    const button=document.createElement("button");
-    button.type="button";
-    button.className="crypto-option";
-    button.dataset.asset=symbol;
+  assets.forEach(([symbol, name]) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "crypto-option";
+    button.dataset.asset = symbol;
 
-    const logo=document.createElement("img");
-    logo.className="crypto-logo";
-    logo.src=logoURL(symbol);
-    logo.alt="";
-    logo.loading="lazy";
-    logo.onerror=()=>{logo.style.visibility="hidden"};
+    const logo = document.createElement("img");
+    logo.className = "crypto-logo";
+    logo.src = logoURL(symbol);
+    logo.alt = "";
+    logo.loading = "lazy";
+    logo.onerror = () => { logo.style.visibility = "hidden"; };
 
-    const details=document.createElement("div");
-    details.className="crypto-details";
+    const details = document.createElement("div");
+    details.className = "crypto-details";
 
-    const symbolElement=document.createElement("div");
-    symbolElement.className="crypto-symbol";
-    symbolElement.textContent=symbol;
+    const symbolElement = document.createElement("div");
+    symbolElement.className = "crypto-symbol";
+    symbolElement.textContent = symbol;
 
-    const nameElement=document.createElement("div");
-    nameElement.className="crypto-name";
-    nameElement.textContent=name;
-    details.append(symbolElement,nameElement);
+    const nameElement = document.createElement("div");
+    nameElement.className = "crypto-name";
+    nameElement.textContent = name;
 
-    const amount=document.createElement("div");
-    amount.className="crypto-amount";
-    amount.dataset.amountFor=symbol;
-    amount.textContent=formatNumber(0,symbol);
+    details.append(symbolElement, nameElement);
 
-    const check=document.createElement("div");
-    check.className="crypto-option-check";
-    check.textContent="✓";
+    const amount = document.createElement("div");
+    amount.className = "crypto-amount";
+    amount.dataset.amountFor = symbol;
+    amount.textContent = formatNumber(0, symbol);
 
-    button.append(logo,details,amount,check);
-    button.addEventListener("click",()=>{
-      selectedAsset=symbol;
+    const check = document.createElement("div");
+    check.className = "crypto-option-check";
+    check.textContent = "✓";
+
+    button.append(logo, details, amount, check);
+
+    button.addEventListener("click", () => {
+      selectedAsset = symbol;
       renderSelectedAsset();
       closeCryptoPicker();
     });
+
     menu.appendChild(button);
   });
 
@@ -484,602 +622,526 @@ function buildCryptoMenu(){
   updateActiveCryptoOption();
 }
 
-function openCryptoPicker(){
+function openCryptoPicker() {
   $("cryptoPicker").classList.add("open");
-  $("cryptoSelected").setAttribute("aria-expanded","true");
+  $("cryptoSelected").setAttribute("aria-expanded", "true");
 }
 
-function closeCryptoPicker(){
-  const picker=$("cryptoPicker");
-  if(!picker)return;
+function closeCryptoPicker() {
+  const picker = $("cryptoPicker");
+  if (!picker) return;
+
   picker.classList.remove("open");
-  $("cryptoSelected").setAttribute("aria-expanded","false");
+  $("cryptoSelected").setAttribute("aria-expanded", "false");
 }
 
-$("cryptoSelected").addEventListener("click",event=>{
+$("cryptoSelected").addEventListener("click", event => {
   event.stopPropagation();
-  $("cryptoPicker").classList.contains("open")?closeCryptoPicker():openCryptoPicker();
+
+  if ($("cryptoPicker").classList.contains("open")) {
+    closeCryptoPicker();
+  } else {
+    openCryptoPicker();
+  }
 });
 
-document.addEventListener("click",event=>{
-  if(!event.target.closest("#cryptoPicker"))closeCryptoPicker();
+document.addEventListener("click", event => {
+  if (!event.target.closest("#cryptoPicker")) closeCryptoPicker();
 });
 
-function updateActiveCryptoOption(){
-  document.querySelectorAll(".crypto-option").forEach(button=>{
-    button.classList.toggle("active",button.dataset.asset===selectedAsset);
+function updateActiveCryptoOption() {
+  document.querySelectorAll(".crypto-option").forEach(button => {
+    button.classList.toggle("active", button.dataset.asset === selectedAsset);
   });
 }
 
-function getWallet(symbol){
-  return wallets.find(wallet=>String(wallet.asset||"").toUpperCase()===symbol)||null;
+function getWallet(symbol) {
+  return wallets.find(wallet =>
+    String(wallet.asset || "").toUpperCase() === symbol
+  ) || null;
 }
 
-function updateCryptoMenuBalances(){
-  document.querySelectorAll("[data-amount-for]").forEach(element=>{
-    const symbol=element.dataset.amountFor;
-    const wallet=getWallet(symbol);
-    element.textContent=formatNumber(wallet?.available_balance??0,symbol);
+function updateCryptoMenuBalances() {
+  document.querySelectorAll("[data-amount-for]").forEach(element => {
+    const symbol = element.dataset.amountFor;
+    const wallet = getWallet(symbol);
+
+    element.textContent = formatNumber(wallet?.available_balance ?? 0, symbol);
   });
 }
 
-function renderSelectedAsset(){
-  const asset=assets.find(item=>item[0]===selectedAsset);
-  if(!asset)return;
+function renderSelectedAsset() {
+  const asset = assets.find(item => item[0] === selectedAsset);
+  if (!asset) return;
 
-  const [symbol,name]=asset;
-  const wallet=getWallet(symbol);
-  const image=logoURL(symbol);
+  const [symbol, name] = asset;
+  const wallet = getWallet(symbol);
+  const image = logoURL(symbol);
 
-  $("selectedLogo").src=image;
-  $("selectedLogo").onerror=()=>{$("selectedLogo").style.visibility="hidden"};
-  $("selectedLogo").onload=()=>{$("selectedLogo").style.visibility="visible"};
-  setText("selectedSymbol",symbol);
-  setText("selectedName",name);
+  $("selectedLogo").src = image;
+  $("selectedLogo").onerror = () => {
+    $("selectedLogo").style.visibility = "hidden";
+  };
+  $("selectedLogo").onload = () => {
+    $("selectedLogo").style.visibility = "visible";
+  };
 
-  $("previewLogo").src=image;
-  $("previewLogo").onerror=()=>{$("previewLogo").style.visibility="hidden"};
-  $("previewLogo").onload=()=>{$("previewLogo").style.visibility="visible"};
+  setText("selectedSymbol", symbol);
+  setText("selectedName", name);
 
-  setText("previewName",name);
-  setText("previewNetwork","Available wallet balance");
-  setText("previewBalance",formatNumber(wallet?.available_balance??0,symbol));
-  setText("previewSymbol",symbol);
+  $("previewLogo").src = image;
+  $("previewLogo").onerror = () => {
+    $("previewLogo").style.visibility = "hidden";
+  };
+  $("previewLogo").onload = () => {
+    $("previewLogo").style.visibility = "visible";
+  };
+
+  setText("previewName", name);
+  setText("previewNetwork", "Available wallet balance");
+  setText("previewBalance", formatNumber(wallet?.available_balance ?? 0, symbol));
+  setText("previewSymbol", symbol);
+
   updateActiveCryptoOption();
 }
 
-/* LIVE CRYPTOCURRENCY USD PRICES */
-const COIN_IDS={
-  BTC:"bitcoin",ETH:"ethereum",USDT:"tether",USDC:"usd-coin",BNB:"binancecoin",
-  SOL:"solana",XRP:"ripple",TON:"the-open-network",DOGE:"dogecoin",ADA:"cardano",
-  TRX:"tron",LTC:"litecoin",AVAX:"avalanche-2",DOT:"polkadot",LINK:"chainlink",
-  POL:"polygon-ecosystem-token",SHIB:"shiba-inu",BCH:"bitcoin-cash",XLM:"stellar",
-  ATOM:"cosmos",NEAR:"near",APT:"aptos",ARB:"arbitrum",OP:"optimism"
-};
-
-let cryptoUsdPrices={};
-let pricesUpdatedAt=0;
-let priceRefreshPromise=null;
-const PRICE_CACHE_DURATION=60*1000;
-
-async function loadCryptoUsdPrices(force=false){
-  if(!force&&Date.now()-pricesUpdatedAt<PRICE_CACHE_DURATION&&Object.keys(cryptoUsdPrices).length){
-    return cryptoUsdPrices;
-  }
-  if(priceRefreshPromise)return priceRefreshPromise;
-
-  priceRefreshPromise=(async()=>{
-    const ids=[...new Set(Object.values(COIN_IDS))];
-    const url="https://api.coingecko.com/api/v3/simple/price?ids="+encodeURIComponent(ids.join(","))+"&vs_currencies=usd";
-
-    try{
-      const response=await fetch(url,{
-        method:"GET",headers:{Accept:"application/json"},cache:"no-store",
-        signal:AbortSignal.timeout(12000)
-      });
-      if(!response.ok)throw new Error("Price provider returned HTTP "+response.status);
-
-      const data=await response.json();
-      const nextPrices={};
-
-      for(const [symbol,coinId] of Object.entries(COIN_IDS)){
-        const price=Number(data?.[coinId]?.usd);
-        if(Number.isFinite(price)&&price>0)nextPrices[symbol]=price;
-      }
-
-      if(!Object.keys(nextPrices).length)throw new Error("No valid cryptocurrency prices returned.");
-      cryptoUsdPrices=nextPrices;
-      pricesUpdatedAt=Date.now();
-      return cryptoUsdPrices;
-    }catch(error){
-      console.error("Cryptocurrency price loading failed:",error);
-      return cryptoUsdPrices;
-    }finally{
-      priceRefreshPromise=null;
-    }
-  })();
-
-  return priceRefreshPromise;
-}
-
-function cryptoAmountToUsd(amount,symbol){
-  const quantity=Number(amount);
-  const asset=String(symbol||"").toUpperCase();
-  if(!Number.isFinite(quantity)||quantity<0)return null;
-  const price=cryptoUsdPrices[asset];
-  if(!Number.isFinite(price)||price<=0)return null;
-  return quantity*price;
-}
-
 /* PROFILE */
-async function loadProfile(){
-  const {data,error}=await db.from("profiles")
+async function loadProfile() {
+  const { data, error } = await db.from("profiles")
     .select("id,full_name,email,account_status")
-    .eq("id",currentUser.id)
+    .eq("id", currentUser.id)
     .maybeSingle();
 
-  if(error){console.error("Profile loading error:",error);return}
+  if (error) {
+    console.error("Profile loading error:", error);
+    return;
+  }
 
-  const name=data?.full_name||currentUser.user_metadata?.full_name||"Welcome";
-  setText("userName",name);
-  setText("profileInitial",initials(name));
+  const name = data?.full_name || currentUser.user_metadata?.full_name || "Welcome";
 
-  const status=String(data?.account_status||"PENDING").toUpperCase();
-  const color=status==="ACTIVE"?"var(--green)":status==="SUSPENDED"?"var(--red)":"var(--gold)";
-  const container=$("accountStatus");
+  setText("userName", name);
+  setText("profileInitial", initials(name));
+
+  const status = String(data?.account_status || "PENDING").toUpperCase();
+  const color = status === "ACTIVE"
+    ? "var(--green)"
+    : status === "SUSPENDED"
+      ? "var(--red)"
+      : "var(--gold)";
+
+  const container = $("accountStatus");
   container.replaceChildren();
 
-  const dot=document.createElement("span");
-  dot.className="status-dot";
-  dot.style.background=color;
+  const dot = document.createElement("span");
+  dot.className = "status-dot";
+  dot.style.background = color;
 
-  const label=document.createElement("span");
-  label.textContent=status;
-  container.append(dot,label);
+  const label = document.createElement("span");
+  label.textContent = status;
+
+  container.append(dot, label);
 }
 
-/* WALLETS — AVAILABLE USDT STATISTICS ROW REMOVED */
-async function loadWallets(){
-  const {data,error}=await db.from("wallets")
+/* WALLETS */
+async function loadWallets() {
+  const { data, error } = await db.from("wallets")
     .select("id,asset,available_balance,locked_balance,principal_balance,profit_balance")
-    .eq("user_id",currentUser.id);
+    .eq("user_id", currentUser.id);
 
-  if(error){
-    console.error("Wallet loading error:",error);
+  if (error) {
+    console.error("Wallet loading error:", error);
     showToast("Unable to load wallet balances.");
     return false;
   }
 
-  wallets=data||[];
+  wallets = data || [];
   renderSelectedAsset();
   updateCryptoMenuBalances();
+
   return true;
 }
 
-/* FIAT PORTFOLIO */
-async function renderPortfolio(){
-  setText("portfolioValue","Loading...");
+/*
+ * PORTFOLIO
+ * Displays the actual confirmed deposit quantities by cryptocurrency.
+ * No USD price API is used here.
+ */
+async function renderPortfolio() {
+  setText("portfolioValue", "Loading...");
 
-  const {data,error}=await db.from("deposits")
+  const { data, error } = await db.from("deposits")
     .select("asset,amount,credited_amount,status")
-    .eq("user_id",currentUser.id)
-    .eq("status","CONFIRMED");
+    .eq("user_id", currentUser.id)
+    .eq("status", "CONFIRMED");
 
-  if(error){
-    console.error("Portfolio loading error:",error);
-    setText("portfolioValue","Unavailable");
-    return null;
+  if (error) {
+    console.error("Portfolio loading error:", error);
+    setText("portfolioValue", "Unavailable");
+    return;
   }
 
-  await loadCryptoUsdPrices();
+  const rows = (data || []).map(deposit => {
+    const credited = Number(deposit.credited_amount);
+    const submitted = Number(deposit.amount);
 
-  let totalUsd=0;
-  const missingPrices=[];
+    return {
+      asset: deposit.asset,
+      amount: Number.isFinite(credited) && credited > 0
+        ? credited
+        : submitted
+    };
+  });
 
-  for(const deposit of data||[]){
-    const asset=String(deposit.asset||"").toUpperCase();
-    const credited=Number(deposit.credited_amount);
-    const submitted=Number(deposit.amount);
-    const quantity=Number.isFinite(credited)&&credited>0?credited:submitted;
-
-    if(!Number.isFinite(quantity)||quantity<=0)continue;
-    const usdValue=cryptoAmountToUsd(quantity,asset);
-
-    if(usdValue===null){
-      if(!missingPrices.includes(asset))missingPrices.push(asset);
-      continue;
-    }
-    totalUsd+=usdValue;
-  }
-
-  if(missingPrices.length){
-    setText("portfolioValue",formatMoney(totalUsd)+" +");
-    setText("statisticsNote","Some deposit valuations are unavailable because market prices could not be retrieved for: "+missingPrices.join(", ")+". Displayed totals exclude those deposits.");
-    return totalUsd;
-  }
-
-  setText("portfolioValue",formatMoney(totalUsd));
-  return totalUsd;
+  setText("portfolioValue", formatAssetTotals(rows, "amount"));
 }
 
 /* ACTIVE CONFIRMED DEPOSITS */
-async function loadActiveDeposits(){
-  const {data,error}=await db.from("deposits")
+async function loadActiveDeposits() {
+  const { data, error } = await db.from("deposits")
     .select("id,asset,network,earning_principal,earning_started_at,earning_ended_at,status")
-    .eq("user_id",currentUser.id)
-    .eq("status","CONFIRMED")
-    .gt("earning_principal",0)
-    .not("earning_started_at","is",null)
-    .is("earning_ended_at",null);
+    .eq("user_id", currentUser.id)
+    .eq("status", "CONFIRMED")
+    .gt("earning_principal", 0)
+    .not("earning_started_at", "is", null)
+    .is("earning_ended_at", null);
 
-  if(error){
-    console.error("Active deposit verification error:",error);
-    activeDeposits=[];
-    setText("countdownState","Unable to verify active deposits.");
-    setText("countdownAsset","—");
+  if (error) {
+    console.error("Active deposit verification error:", error);
+    activeDeposits = [];
+
+    setText("countdownState", "Unable to verify active deposits.");
+    setText("countdownAsset", "—");
     $("timerBox").classList.add("hidden");
+
     stopCountdown();
     return false;
   }
 
-  activeDeposits=data||[];
+  activeDeposits = data || [];
   setupCountdown();
+
   return true;
 }
 
-function getNextCalculationTime(startedAt,nowMs){
-  const start=new Date(startedAt).getTime();
-  if(!Number.isFinite(start))return null;
-  const cycle=24*60*60*1000;
-  if(nowMs<start)return start;
-  return start+(Math.floor((nowMs-start)/cycle)+1)*cycle;
+function getNextCalculationTime(startedAt, nowMs) {
+  const start = new Date(startedAt).getTime();
+  if (!Number.isFinite(start)) return null;
+
+  const cycle = 24 * 60 * 60 * 1000;
+
+  if (nowMs < start) return start;
+
+  return start + (Math.floor((nowMs - start) / cycle) + 1) * cycle;
 }
 
-function setupCountdown(){
+function setupCountdown() {
   stopCountdown();
 
-  if(!activeDeposits.length){
-    setText("countdownState","Awaiting confirmed active deposit");
-    setText("countdownAsset","—");
-    setText("timer","--:--:--");
+  if (!activeDeposits.length) {
+    setText("countdownState", "Awaiting confirmed active deposit");
+    setText("countdownAsset", "—");
+    setText("timer", "--:--:--");
     $("timerBox").classList.add("hidden");
     return;
   }
 
-  const now=Date.now();
-  const prepared=activeDeposits.map(deposit=>({
-    ...deposit,target:getNextCalculationTime(deposit.earning_started_at,now)
-  })).filter(item=>Number.isFinite(item.target));
+  const now = Date.now();
 
-  if(!prepared.length){
-    setText("countdownState","No valid calculation time is available.");
-    setText("countdownAsset","—");
+  const prepared = activeDeposits.map(deposit => ({
+    ...deposit,
+    target: getNextCalculationTime(deposit.earning_started_at, now)
+  })).filter(item => Number.isFinite(item.target));
+
+  if (!prepared.length) {
+    setText("countdownState", "No valid calculation time is available.");
+    setText("countdownAsset", "—");
     $("timerBox").classList.add("hidden");
     return;
   }
 
-  prepared.sort((a,b)=>a.target-b.target);
-  const next=prepared[0];
-  countdownTarget=next.target;
+  prepared.sort((a, b) => a.target - b.target);
 
-  setText("countdownAsset",next.asset||"—");
-  setText("countdownState","Active deposit verified. Waiting for the next calculation time.");
+  const next = prepared[0];
+  countdownTarget = next.target;
+
+  setText("countdownAsset", next.asset || "—");
+  setText("countdownState", "Active deposit verified. Waiting for the next calculation time.");
   $("timerBox").classList.remove("hidden");
+
   updateCountdown();
-  countdownInterval=setInterval(updateCountdown,1000);
+  countdownInterval = setInterval(updateCountdown, 1000);
 }
 
-function updateCountdown(){
-  if(!countdownTarget)return;
-  const remaining=Math.max(0,countdownTarget-Date.now());
+function updateCountdown() {
+  if (!countdownTarget) return;
 
-  if(remaining<=0){
-    setText("timer","00:00:00");
+  const remaining = Math.max(0, countdownTarget - Date.now());
+
+  if (remaining <= 0) {
+    setText("timer", "00:00:00");
     stopCountdown();
-    setText("countdownState","Calculation time reached. Checking account records...");
+
+    setText("countdownState", "Calculation time reached. Checking account records...");
+
     clearTimeout(countdownRefreshTimer);
-    countdownRefreshTimer=setTimeout(()=>refreshDashboardData(),1500);
+    countdownRefreshTimer = setTimeout(() => refreshDashboardData(), 1500);
+
     return;
   }
 
-  const seconds=Math.floor(remaining/1000);
-  const hours=Math.floor(seconds/3600);
-  const minutes=Math.floor((seconds%3600)/60);
-  const secs=seconds%60;
+  const seconds = Math.floor(remaining / 1000);
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const secs = seconds % 60;
 
-  setText("timer",String(hours).padStart(2,"0")+":"+String(minutes).padStart(2,"0")+":"+String(secs).padStart(2,"0"));
+  setText(
+    "timer",
+    String(hours).padStart(2, "0") + ":" +
+    String(minutes).padStart(2, "0") + ":" +
+    String(secs).padStart(2, "0")
+  );
 }
 
-function stopCountdown(){
-  if(countdownInterval){clearInterval(countdownInterval);countdownInterval=null}
-  countdownTarget=null;
+function stopCountdown() {
+  if (countdownInterval) {
+    clearInterval(countdownInterval);
+    countdownInterval = null;
+  }
+
+  countdownTarget = null;
 }
 
 /* PARTNERS */
-async function loadPartnerStatistics(){
-  const {count,error}=await db.from("referrals")
-    .select("*",{count:"exact",head:true})
-    .eq("referrer_id",currentUser.id);
+async function loadPartnerStatistics() {
+  const { count, error } = await db.from("referrals")
+    .select("*", { count: "exact", head: true })
+    .eq("referrer_id", currentUser.id);
 
-  if(error){
-    console.error("Referral statistics error:",error);
-    setText("partnerCount","Unavailable");
+  if (error) {
+    console.error("Referral statistics error:", error);
+    setText("partnerCount", "Unavailable");
     return;
   }
-  setText("partnerCount",String(count??0));
+
+  setText("partnerCount", String(count ?? 0));
 }
 
-/* PAYMENT STATISTICS */
-async function loadPaymentStatistics(){
-  const depositsResult=await db.from("deposits")
+/* PAYMENT STATISTICS — NO LIVE PRICE CONVERSION */
+async function loadPaymentStatistics() {
+  const depositsResult = await db.from("deposits")
     .select("asset,amount,credited_amount,status")
-    .eq("user_id",currentUser.id)
-    .eq("status","CONFIRMED");
+    .eq("user_id", currentUser.id)
+    .eq("status", "CONFIRMED");
 
-  if(depositsResult.error){
-    console.error("Incoming payment statistics error:",depositsResult.error);
-    setText("incomingPayments","Unavailable");
-  }else{
-    await loadCryptoUsdPrices();
-    let incomingUsd=0;
-    const missingIncomingAssets=[];
+  if (depositsResult.error) {
+    console.error("Incoming payment statistics error:", depositsResult.error);
+    setText("incomingPayments", "Unavailable");
+  } else {
+    const incomingRows = (depositsResult.data || []).map(deposit => {
+      const credited = Number(deposit.credited_amount);
+      const submitted = Number(deposit.amount);
 
-    for(const deposit of depositsResult.data||[]){
-      const asset=String(deposit.asset||"").toUpperCase();
-      const credited=Number(deposit.credited_amount);
-      const submitted=Number(deposit.amount);
-      const quantity=Number.isFinite(credited)&&credited>0?credited:submitted;
-      if(!Number.isFinite(quantity)||quantity<=0)continue;
-
-      const usdValue=cryptoAmountToUsd(quantity,asset);
-      if(usdValue===null){
-        if(!missingIncomingAssets.includes(asset))missingIncomingAssets.push(asset);
-        continue;
-      }
-      incomingUsd+=usdValue;
-    }
-
-    setText("incomingPayments",missingIncomingAssets.length?formatMoney(incomingUsd)+" +":formatMoney(incomingUsd));
-  }
-
-  const withdrawalsResult=await db.from("withdrawals")
-    .select("asset,amount,net_amount,status")
-    .eq("user_id",currentUser.id)
-    .eq("status","COMPLETED");
-
-  if(withdrawalsResult.error){
-    console.error("Outgoing payment statistics error:",withdrawalsResult.error);
-    setText("outgoingPayments","Unavailable");
-    return;
-  }
-
-  await loadCryptoUsdPrices();
-  let outgoingUsd=0;
-  const missingOutgoingAssets=[];
-
-  for(const withdrawal of withdrawalsResult.data||[]){
-    const asset=String(withdrawal.asset||"").toUpperCase();
-    const netAmount=Number(withdrawal.net_amount);
-    const requestedAmount=Number(withdrawal.amount);
-    const quantity=Number.isFinite(netAmount)&&netAmount>0?netAmount:requestedAmount;
-    if(!Number.isFinite(quantity)||quantity<=0)continue;
-
-    const usdValue=cryptoAmountToUsd(quantity,asset);
-    if(usdValue===null){
-      if(!missingOutgoingAssets.includes(asset))missingOutgoingAssets.push(asset);
-      continue;
-    }
-    outgoingUsd+=usdValue;
-  }
-
-  setText("outgoingPayments",missingOutgoingAssets.length?formatMoney(outgoingUsd)+" +":formatMoney(outgoingUsd));
-}
-
-/* EARNINGS STATISTICS — USD VALUE ACROSS SUPPORTED ASSETS */
-  async function loadEarningsStatistics() {
-  const mainEl = document.getElementById("mainProfit");
-  const partnersEl = document.getElementById("partnersProfit");
-  const totalEl = document.getElementById("allAccruals");
-  const noteEl = document.getElementById("statisticsNote");
-
-  if (mainEl) mainEl.textContent = "Loading...";
-  if (partnersEl) partnersEl.textContent = "Loading...";
-  if (totalEl) totalEl.textContent = "Loading...";
-  if (noteEl) noteEl.textContent = "Loading earnings records...";
-
-  if (!currentUser) {
-    if (noteEl) noteEl.textContent = "Please sign in to view earnings.";
-    return;
-  }
-
-  const money = value =>
-    "$" + Number(value).toLocaleString("en-US", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
+      return {
+        asset: deposit.asset,
+        amount: Number.isFinite(credited) && credited > 0
+          ? credited
+          : submitted
+      };
     });
 
-  let mainUsd = 0;
-  let partnersUsd = 0;
-  let mainIncomplete = false;
-  let partnersIncomplete = false;
-  let mainFailed = false;
-  let partnersFailed = false;
-
-  try {
-    await loadCryptoUsdPrices();
-  } catch (error) {
-    console.error("Price loading error:", error);
+    setText("incomingPayments", formatAssetTotals(incomingRows, "amount"));
   }
 
-  // INVESTMENT EARNINGS
-  try {
-    const { data, error } = await db
-      .from("earning_records")
-      .select("earning_amount, asset, status")
-      .eq("user_id", currentUser.id)
-      .eq("status", "CREDITED");
+  const withdrawalsResult = await db.from("withdrawals")
+    .select("asset,amount,net_amount,status")
+    .eq("user_id", currentUser.id)
+    .eq("status", "COMPLETED");
 
-    if (error) throw error;
-
-    for (const row of data || []) {
-      const amount = Number(row.earning_amount);
-      const asset = String(row.asset || "").toUpperCase();
-
-      if (!Number.isFinite(amount) || amount <= 0) continue;
-
-      const usd = cryptoAmountToUsd(amount, asset);
-
-      if (usd === null || !Number.isFinite(usd)) {
-        mainIncomplete = true;
-        continue;
-      }
-
-      mainUsd += usd;
-    }
-
-    if (mainEl) {
-      mainEl.textContent = money(mainUsd) + (mainIncomplete ? " +" : "");
-    }
-  } catch (error) {
-    mainFailed = true;
-    console.error("Investment earnings query failed:", error);
-
-    if (mainEl) mainEl.textContent = "Unavailable";
+  if (withdrawalsResult.error) {
+    console.error("Outgoing payment statistics error:", withdrawalsResult.error);
+    setText("outgoingPayments", "Unavailable");
+    return;
   }
 
-  // REFERRAL COMMISSIONS
-  try {
-    const { data, error } = await db
-      .from("referral_commission_records")
-      .select("commission_amount, asset, referrer_id, status")
-      .eq("referrer_id", currentUser.id);
+  const outgoingRows = (withdrawalsResult.data || []).map(withdrawal => {
+    const netAmount = Number(withdrawal.net_amount);
+    const requestedAmount = Number(withdrawal.amount);
 
-    if (error) throw error;
-
-    for (const row of data || []) {
-      // Count only commissions that have actually been recorded.
-      if (String(row.status || "").toUpperCase() !== "RECORDED") {
-        continue;
-      }
-
-      const amount = Number(row.commission_amount);
-      const asset = String(row.asset || "").toUpperCase();
-
-      if (!Number.isFinite(amount) || amount <= 0) continue;
-
-      const usd = cryptoAmountToUsd(amount, asset);
-
-      if (usd === null || !Number.isFinite(usd)) {
-        partnersIncomplete = true;
-        continue;
-      }
-
-      partnersUsd += usd;
-    }
-
-    if (partnersEl) {
-      partnersEl.textContent =
-        money(partnersUsd) + (partnersIncomplete ? " +" : "");
-    }
-  } catch (error) {
-    partnersFailed = true;
-    console.error("Referral commissions query failed:", error);
-
-    if (partnersEl) partnersEl.textContent = "Unavailable";
-  }
-
-  // TOTAL — don't present a false total when either query failed.
-  if (totalEl) {
-    totalEl.textContent =
-      mainFailed || partnersFailed
-        ? "Unavailable"
-        : money(mainUsd + partnersUsd) +
-          (mainIncomplete || partnersIncomplete ? " +" : "");
-  }
-
-  if (noteEl) {
-    if (mainFailed && partnersFailed) {
-      noteEl.textContent =
-        "Both earnings queries failed. Check the browser console for the database error.";
-    } else if (mainFailed) {
-      noteEl.textContent =
-        "Investment earnings could not load. Referral commissions are shown separately.";
-    } else if (partnersFailed) {
-      noteEl.textContent =
-        "Referral commissions could not load. Investment earnings are shown separately.";
-    } else if (mainIncomplete || partnersIncomplete) {
-      noteEl.textContent =
-        "Some cryptocurrency prices are unavailable. The + symbol indicates an incomplete USD valuation.";
-    } else {
-      noteEl.textContent =
-        "Totals include credited investment earnings and recorded referral commissions, converted to USD using available cryptocurrency prices.";
-    }
-  }
-
-  console.log("AITIVEST earnings refresh:", {
-    mainUsd,
-    partnersUsd,
-    mainFailed,
-    partnersFailed,
-    mainIncomplete,
-    partnersIncomplete
+    return {
+      asset: withdrawal.asset,
+      amount: Number.isFinite(netAmount) && netAmount > 0
+        ? netAmount
+        : requestedAmount
+    };
   });
-}
-/* REFRESH */
-async function refreshDashboardData(){
-  if(!currentUser||refreshInProgress)return;
-  refreshInProgress=true;
 
-  try{
+  setText("outgoingPayments", formatAssetTotals(outgoingRows, "amount"));
+}
+
+/* EARNINGS STATISTICS — RECORDED CRYPTO AMOUNTS ONLY */
+async function loadEarningsStatistics() {
+  setText("allAccruals", "Loading...");
+  setText("mainProfit", "Loading...");
+  setText("partnersProfit", "Loading...");
+  setText("statisticsNote", "Loading earnings records...");
+
+  if (!currentUser) {
+    setText("allAccruals", "Unavailable");
+    setText("mainProfit", "Unavailable");
+    setText("partnersProfit", "Unavailable");
+    setText("statisticsNote", "Please sign in to view earnings.");
+    return;
+  }
+
+  const earningsResult = await db.from("earning_records")
+    .select("earning_amount,asset,status")
+    .eq("user_id", currentUser.id)
+    .eq("status", "CREDITED");
+
+  const commissionsResult = await db.from("referral_commission_records")
+    .select("commission_amount,asset,referrer_id,status")
+    .eq("referrer_id", currentUser.id)
+    .eq("status", "RECORDED");
+
+  if (earningsResult.error) {
+    console.error("Investment earnings query failed:", earningsResult.error);
+    setText("mainProfit", "Unavailable");
+  } else {
+    setText(
+      "mainProfit",
+      formatAssetTotals(earningsResult.data || [], "earning_amount")
+    );
+  }
+
+  if (commissionsResult.error) {
+    console.error("Referral commissions query failed:", commissionsResult.error);
+    setText("partnersProfit", "Unavailable");
+  } else {
+    setText(
+      "partnersProfit",
+      formatAssetTotals(commissionsResult.data || [], "commission_amount")
+    );
+  }
+
+  if (earningsResult.error || commissionsResult.error) {
+    setText("allAccruals", "Unavailable");
+
+    if (earningsResult.error && commissionsResult.error) {
+      setText("statisticsNote", "Investment earnings and referral commissions could not be loaded. Please try again.");
+    } else if (earningsResult.error) {
+      setText("statisticsNote", "Investment earnings could not be loaded. Referral commissions are shown separately.");
+    } else {
+      setText("statisticsNote", "Referral commissions could not be loaded. Investment earnings are shown separately.");
+    }
+
+    return;
+  }
+
+  /*
+   * Combine amounts only when the asset is the same.
+   * Example: BTC earnings + BTC commissions = BTC total.
+   * BTC and USDT are never added together as one monetary value.
+   */
+  const combined = {};
+
+  for (const row of earningsResult.data || []) {
+    const asset = String(row.asset || "").toUpperCase();
+    const amount = Number(row.earning_amount);
+
+    if (!asset || !Number.isFinite(amount) || amount <= 0) continue;
+
+    combined[asset] = (combined[asset] || 0) + amount;
+  }
+
+  for (const row of commissionsResult.data || []) {
+    const asset = String(row.asset || "").toUpperCase();
+    const amount = Number(row.commission_amount);
+
+    if (!asset || !Number.isFinite(amount) || amount <= 0) continue;
+
+    combined[asset] = (combined[asset] || 0) + amount;
+  }
+
+  const totals = Object.entries(combined)
+    .sort(([assetA], [assetB]) => assetA.localeCompare(assetB))
+    .map(([asset, amount]) => formatNumber(amount, asset) + " " + asset);
+
+  setText("allAccruals", totals.length ? totals.join(" · ") : "0.00");
+
+  setText(
+    "statisticsNote",
+    "Amounts are taken from credited investment earnings and recorded referral commissions. Each cryptocurrency is shown separately; live market prices do not change these recorded amounts."
+  );
+}
+
+/* REFRESH */
+async function refreshDashboardData() {
+  if (!currentUser || refreshInProgress) return;
+
+  refreshInProgress = true;
+
+  try {
     await Promise.all([
-      loadProfile(),loadWallets(),renderPortfolio(),loadActiveDeposits(),
-      loadPartnerStatistics(),loadPaymentStatistics(),loadEarningsStatistics(),loadMfaStatus()
+      loadProfile(),
+      loadWallets(),
+      renderPortfolio(),
+      loadActiveDeposits(),
+      loadPartnerStatistics(),
+      loadPaymentStatistics(),
+      loadEarningsStatistics(),
+      loadMfaStatus()
     ]);
-  }catch(error){
-    console.error("Dashboard refresh error:",error);
+  } catch (error) {
+    console.error("Dashboard refresh error:", error);
     showToast("Some dashboard information could not be loaded.");
-  }finally{
-    refreshInProgress=false;
+  } finally {
+    refreshInProgress = false;
   }
 }
 
 /* LOGOUT */
-$("logoutBtn").addEventListener("click",async()=>{
-  const button=$("logoutBtn");
-  button.disabled=true;
-  const {error}=await db.auth.signOut();
+$("logoutBtn").addEventListener("click", async () => {
+  const button = $("logoutBtn");
+  button.disabled = true;
 
-  if(error){
-    console.error("Logout error:",error);
+  const { error } = await db.auth.signOut();
+
+  if (error) {
+    console.error("Logout error:", error);
     showToast("Unable to log out. Please try again.");
-    button.disabled=false;
+    button.disabled = false;
     return;
   }
+
   window.location.replace("signin.html");
 });
 
 /* REFRESH WHEN RETURNING TO PAGE */
-document.addEventListener("visibilitychange",()=>{
-  if(document.visibilityState==="visible")refreshDashboardData();
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible") refreshDashboardData();
 });
 
-setInterval(()=>{
-  if(document.visibilityState==="visible")refreshDashboardData();
-},30000);
+setInterval(() => {
+  if (document.visibilityState === "visible") refreshDashboardData();
+}, 30000);
 
 /* INITIALIZATION */
-(async function init(){
-  try{
+(async function init() {
+  try {
     setGreeting();
     buildCryptoMenu();
-    const authenticated=await checkAuth();
-    if(!authenticated)return;
+
+    const authenticated = await checkAuth();
+    if (!authenticated) return;
+
     await refreshDashboardData();
-  }catch(error){
-    console.error("Dashboard initialization error:",error);
+  } catch (error) {
+    console.error("Dashboard initialization error:", error);
     showToast("Unable to load dashboard. Please refresh.");
-  }finally{
-    setTimeout(()=>{$("loadingScreen").style.display="none"},300);
+  } finally {
+    setTimeout(() => {
+      $("loadingScreen").style.display = "none";
+    }, 300);
   }
 })();
 </script></body>
