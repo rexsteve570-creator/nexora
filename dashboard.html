@@ -2,1101 +2,1033 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#07122c">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#07111f">
 <title>AITIVEST — Portfolio</title>
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <style>
 :root{
-  --bg:#07122c;
-  --card:#0a1a3f;
-  --panel:#0f2352;
-  --hover:#1a3270;
-  --line:#1e3670;
-  --text:#f5e6b8;
-  --label:#8fa0c4;
-  --muted:#6f80a8;
-  --gold:#f2c14e;
-  --gold2:#ffd36b;
-  --green:#32c48d;
-  --red:#ef6b73;
-  --shadow:0 12px 35px rgba(0,0,0,.18);
-}
-[data-theme="light"]{
-  --bg:#f1f4fa;
-  --card:#ffffff;
-  --panel:#f7f9ff;
-  --hover:#e7edfa;
-  --line:#dbe3f3;
-  --text:#152443;
-  --label:#62718f;
-  --muted:#7a89a5;
-  --gold:#a87508;
-  --gold2:#b78111;
-  --shadow:0 12px 35px rgba(25,40,75,.08);
+  --bg:#07111f;--bg2:#091626;--card:#0d1b2d;--card2:#112238;
+  --border:rgba(255,255,255,.08);--text:#f5f7fa;--muted:#9aa7b8;
+  --gold:#d9a441;--gold2:#f0c866;--gold3:#e5a823;--cream:#f5e6b8;
+  --green:#32c48d;--red:#ef6b73;
+  --blue:#5b8def;--purple:#a78bfa;--shadow:0 18px 50px rgba(0,0,0,.25);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{
-  background:var(--bg);
-  color:var(--text);
-  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
   min-height:100vh;
-  padding-bottom:90px;
+  background:radial-gradient(circle at 90% 0%,rgba(217,164,65,.09),transparent 30%),linear-gradient(180deg,#07111f,#050c15);
+  color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
 }
-button,a{font:inherit}
-button{cursor:pointer}
-a{color:inherit;text-decoration:none}
-button:focus-visible,a:focus-visible{
-  outline:2px solid var(--gold);outline-offset:3px
+button{font:inherit;cursor:pointer}
+button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
+.app{width:100%;max-width:760px;min-height:100vh;margin:auto;padding-bottom:95px}
+.loading-screen{position:fixed;inset:0;background:#07111f;display:flex;align-items:center;justify-content:center;z-index:9999}
+.loading-box{text-align:center}
+.brand-logo{display:flex;align-items:center;justify-content:center;gap:10px}
+.brand-mark{
+  width:38px;height:38px;border:2px solid var(--gold);border-radius:12px 12px 12px 3px;
+  display:flex;align-items:center;justify-content:center;color:var(--gold2);font-size:20px;
+  font-weight:900;transform:rotate(-3deg)
 }
-button:disabled{opacity:.5;cursor:not-allowed}
+.brand-name{font-size:22px;font-weight:900;letter-spacing:2px;white-space:nowrap}
+.brand-name span{color:var(--gold)}
+.loading-logo .brand-name{font-size:29px}
+.spinner{width:28px;height:28px;border:3px solid rgba(217,164,65,.18);border-top-color:var(--gold);border-radius:50%;margin:20px auto 0;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.topbar{height:68px;position:sticky;top:0;z-index:100;background:rgba(7,17,31,.96);backdrop-filter:blur(18px);border-bottom:1px solid var(--border)}
+.topbar-inner{height:100%;padding:0 18px;display:flex;align-items:center;justify-content:space-between;position:relative}
+.menu-btn{width:42px;height:42px;border:0;background:transparent;color:#fff;font-size:25px}
+.topbar .brand-logo{position:absolute;left:50%;transform:translateX(-50%)}
+.topbar .brand-mark{width:31px;height:31px;border-radius:9px 9px 9px 2px;font-size:16px}
+.topbar .brand-name{font-size:18px;letter-spacing:1.5px}
+.profile-initial{width:38px;height:38px;border-radius:50%;background:linear-gradient(145deg,#efc25e,#987021);color:#07111f;font-size:12px;font-weight:850;display:flex;align-items:center;justify-content:center}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:190;display:none}
+.overlay.show{display:block}
+.drawer{position:fixed;left:-320px;top:0;width:290px;max-width:86%;height:100vh;height:100dvh;background:#091625;border-right:1px solid var(--border);z-index:200;transition:left .25s ease;padding:22px 15px;overflow-y:auto}
+.drawer.open{left:0}
+.drawer-head{display:flex;align-items:center;justify-content:space-between;padding:8px 7px 25px;border-bottom:1px solid var(--border)}
+.drawer-head .brand-name{font-size:19px}
+.close-drawer{border:0;background:none;color:#fff;font-size:27px}
+.drawer-nav{padding-top:18px}
+.drawer-link{width:100%;border:0;background:transparent;color:#d7dce4;padding:14px 13px;border-radius:11px;display:flex;align-items:center;gap:13px;text-align:left;margin-bottom:4px}
+.drawer-link:hover{background:rgba(217,164,65,.08);color:var(--gold2)}
+.drawer-icon{width:22px;text-align:center;color:var(--gold)}
+.drawer-link.logout{margin-top:15px;color:#ef8990}
+.content{padding:23px 18px 0}
+.greeting{margin-bottom:20px;display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+.greeting small{color:var(--muted);font-size:13px}
+.greeting h1{margin-top:4px;font-size:24px;font-weight:760;overflow-wrap:anywhere}
+.status{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:700;flex:none;padding-bottom:4px}
+.status-dot{width:8px;height:8px;border-radius:50%;background:var(--green)}
 
-/* Top bar */
-.topbar{
-  height:68px;position:sticky;top:0;z-index:50;
-  display:flex;align-items:center;justify-content:space-between;
-  gap:12px;padding:0 18px;
-  background:var(--card);border-bottom:1px solid var(--line);
+/* ---------- Main dashboard card ---------- */
+.dash-card{
+  background:radial-gradient(circle at top right,rgba(217,164,65,.14),transparent 42%),linear-gradient(145deg,#102238,#0b1829);
+  border:1px solid rgba(217,164,65,.18);border-radius:20px;padding:28px 22px 22px;
+  box-shadow:var(--shadow);text-align:center;
 }
-.brand{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:1px}
-.brand-icon{
-  width:36px;height:36px;border-radius:11px;
-  background:linear-gradient(135deg,var(--gold2),var(--gold));
-  color:#07122c;display:grid;place-items:center;font-weight:1000;
-}
-.top-actions{display:flex;align-items:center;gap:8px}
-.icon-btn{
-  width:40px;height:40px;border-radius:12px;
-  border:1px solid var(--line);background:var(--panel);
-  color:var(--text);display:grid;place-items:center;font-size:18px;
-}
-.avatar{
-  width:38px;height:38px;border-radius:50%;
-  display:grid;place-items:center;background:var(--gold);
-  color:#07122c;font-weight:900;
-}
+.dash-title{font-size:17px;letter-spacing:1px;color:var(--muted)}
+.dash-big{font-size:34px;font-weight:800;margin:3px 0 18px;overflow-wrap:anywhere}
+.dash-big.fiat{color:var(--gold2)}
+.dash-big.crypto{color:var(--gold3)}
+.dash-label{font-size:14px;color:var(--muted)}
+.dash-sub{font-size:12px;color:#728096;margin-top:6px;line-height:1.5}
+.dash-sub:empty{display:none}
+.timer-row{display:flex;align-items:center;justify-content:center;gap:10px;margin:8px 0 0;font-size:32px;font-weight:800;color:var(--gold2);font-variant-numeric:tabular-nums}
+.timer-row svg{width:28px;height:28px;stroke:var(--gold2);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.timer-wrap{margin-bottom:20px}
+.partners-row{display:flex;align-items:center;justify-content:center;gap:10px;margin:4px 0 20px;font-size:28px;font-weight:800;color:var(--cream)}
+.partners-row svg{width:30px;height:30px;stroke:var(--cream);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.dash-hr{border:0;border-top:1px solid rgba(255,255,255,.1);margin:0 0 18px}
+.row-label{font-size:15px;color:var(--muted)}
+.row-label .star{color:var(--gold3)}
+.row-value{font-size:28px;font-weight:800;margin:2px 0 14px;color:#7f8fb0;overflow-wrap:anywhere}
+.row-value.strong{color:var(--cream)}
+.row-value.last{margin-bottom:18px}
+.dash-note{font-size:12px;font-style:italic;color:var(--muted);text-align:left;line-height:1.6;margin-top:14px}
+.statistics-note{margin-top:8px;color:var(--muted);font-size:10px;line-height:1.7;text-align:left}
+.statistics-note:empty{display:none}
+.hidden{display:none!important}
 
-/* Side drawer */
-.drawer-backdrop{
-  position:fixed;inset:0;background:rgba(0,0,0,.58);
-  z-index:80;display:none;
+/* ---------- Crypto dropdown ---------- */
+.crypto-picker{position:relative;width:100%}
+.crypto-selected{
+  background:none;border:0;color:inherit;font:inherit;font-weight:inherit;
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:0;max-width:100%
 }
-.drawer{
-  position:fixed;top:0;bottom:0;width:min(300px,85vw);
-  z-index:81;background:var(--card);padding:20px;
-  overflow-y:auto;transition:transform .22s ease;
+.crypto-selected:focus-visible{outline:2px solid var(--gold2);outline-offset:5px;border-radius:8px}
+.crypto-selected .selected-logo{width:30px;height:30px;flex:none;object-fit:contain}
+.crypto-selected .selected-amount{overflow-wrap:anywhere}
+.crypto-picker.open .selected-amount{text-decoration:underline;text-underline-offset:6px}
+.selected-arrow{font-size:14px;color:var(--gold3);transition:transform .15s ease}
+.crypto-picker.open .selected-arrow{transform:rotate(180deg)}
+.crypto-menu{
+  display:none;position:absolute;top:calc(100% + 10px);left:0;
+  width:min(330px,100%);background:#0c1b2f;border:1px solid rgba(217,164,65,.22);
+  border-radius:14px;box-shadow:0 25px 60px rgba(0,0,0,.55);z-index:80;overflow:hidden;text-align:left
 }
-.drawer.left{left:0;transform:translateX(-105%)}
-.drawer.right{right:0;transform:translateX(105%)}
-.drawer.open{transform:translateX(0)}
-.drawer-head{
-  display:flex;justify-content:space-between;align-items:center;
-  margin-bottom:24px;padding-bottom:18px;border-bottom:1px solid var(--line);
+.crypto-picker.open .crypto-menu{display:block}
+.menu-total{display:flex;align-items:center;gap:12px;padding:16px 16px 14px;font-size:24px;font-weight:800;color:var(--gold3);font-variant-numeric:tabular-nums}
+.menu-total img{width:32px;height:32px;object-fit:contain;flex:none}
+.menu-total span{overflow-wrap:anywhere}
+.menu-add{
+  display:flex;align-items:center;gap:10px;width:100%;border:0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  background:rgba(255,255,255,.03);color:var(--gold2);padding:14px 16px;font-size:16px;font-weight:700;text-align:left
 }
-.drawer-label{
-  color:var(--label);font-size:11px;font-weight:800;
-  letter-spacing:1.3px;margin:20px 0 8px;
-}
-.nav-link{
-  display:flex;align-items:center;gap:12px;
-  padding:12px 13px;border-radius:12px;color:var(--label);
-  margin:3px 0;font-size:14px;font-weight:650;
-}
-.nav-link:hover,.nav-link.active{background:var(--hover);color:var(--gold)}
-.nav-icon{width:22px;text-align:center;font-size:17px}
-.drawer-footer{
-  margin-top:22px;padding-top:18px;border-top:1px solid var(--line)
-}
+.menu-add:hover{background:rgba(217,164,65,.1)}
+.menu-add svg{width:20px;height:20px;flex:none}
+.menu-list{max-height:330px;overflow-y:auto;padding:6px 0}
+.menu-list::-webkit-scrollbar{width:6px}
+.menu-list::-webkit-scrollbar-thumb{background:rgba(255,255,255,.14);border-radius:3px}
+.crypto-option{width:100%;border:0;background:transparent;color:#fff;min-height:56px;padding:9px 16px;display:flex;align-items:center;gap:12px;text-align:left}
+.crypto-option:hover,.crypto-option.active{background:rgba(217,164,65,.09)}
+.crypto-logo{width:30px;height:30px;object-fit:contain;flex:none}
+.crypto-details{min-width:0;flex:1}
+.crypto-symbol{font-size:14px;font-weight:800}
+.crypto-name{color:var(--muted);font-size:11px;margin-top:2px}
+.crypto-amount{text-align:right;font-size:13px;font-weight:700;color:var(--muted);overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
 
-/* Main layout */
-.page{
-  width:100%;max-width:1120px;margin:0 auto;padding:22px 16px;
-}
-.welcome{
-  display:flex;align-items:center;justify-content:space-between;
-  gap:12px;margin-bottom:20px;
-}
-.welcome h1{font-size:23px;letter-spacing:-.5px}
-.welcome p{font-size:13px;color:var(--label);margin-top:5px}
-.status-pill{
-  display:inline-flex;align-items:center;gap:6px;
-  border:1px solid var(--line);border-radius:999px;
-  padding:7px 10px;color:var(--label);font-size:11px;
-  white-space:nowrap;
-}
-.dot{width:7px;height:7px;border-radius:50%;background:var(--green)}
-.dashboard-grid{
-  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
-  gap:16px;align-items:start;
-}
-.card{
-  background:var(--card);border:1px solid var(--line);
-  border-radius:18px;padding:22px;box-shadow:var(--shadow);
-  min-width:0;
-}
-.main-card{grid-column:1/-1}
-.eyebrow{
-  color:var(--label);font-size:12px;font-weight:750;
-  letter-spacing:1.4px;text-transform:uppercase;
-}
-.balance-row{
-  display:flex;align-items:center;justify-content:space-between;gap:12px;
-}
-.balance-value{
-  font-size:clamp(28px,6vw,42px);font-weight:850;
-  letter-spacing:-1.5px;margin:8px 0 16px;
-  overflow-wrap:anywhere;
-}
-.gold{color:var(--gold2)}
-.balance-sub{font-size:12px;color:var(--label)}
-.balance-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
-.btn{
-  display:inline-flex;justify-content:center;align-items:center;gap:8px;
-  padding:12px 16px;border-radius:12px;font-size:13px;font-weight:800;
-  border:1px solid var(--line);background:var(--panel);color:var(--text);
-}
-.btn-primary{background:var(--gold);border-color:var(--gold);color:#07122c}
-.btn:hover{filter:brightness(1.08)}
-.btn-small{padding:9px 12px;font-size:12px}
+/* ---------- Security ---------- */
+.security-card{margin-top:18px;padding:17px;display:flex;align-items:center;justify-content:space-between;gap:14px;border:1px solid rgba(239,107,115,.38);border-radius:17px;background:rgba(239,107,115,.07);transition:background .2s,border-color .2s}
+.security-card.warning{border-color:rgba(239,107,115,.4);background:rgba(239,107,115,.07)}
+.security-card.enabled{border-color:rgba(50,196,141,.4);background:rgba(50,196,141,.07)}
+.security-card.checking{border-color:rgba(217,164,65,.35);background:rgba(217,164,65,.05)}
+.security-copy{min-width:0;flex:1}
+.security-heading{display:flex;align-items:center;gap:9px;font-size:14px;font-weight:800;line-height:1.5}
+.security-indicator{width:9px;height:9px;border-radius:50%;flex:none;background:var(--red);box-shadow:0 0 10px rgba(239,107,115,.35)}
+.security-card.enabled .security-indicator{background:var(--green);box-shadow:0 0 10px rgba(50,196,141,.35)}
+.security-card.checking .security-indicator{background:var(--gold);box-shadow:none}
+.security-message{margin-top:6px;color:var(--muted);font-size:11px;line-height:1.7}
+.security-action{flex:none;border:1px solid rgba(239,107,115,.4);border-radius:10px;padding:10px 12px;color:#fff;background:rgba(239,107,115,.14);font-size:11px;font-weight:800}
+.security-card.enabled .security-action{border-color:rgba(50,196,141,.4);background:rgba(50,196,141,.12)}
+.security-card.checking .security-action{border-color:rgba(217,164,65,.35);background:rgba(217,164,65,.1)}
+.security-action:hover{filter:brightness(1.15)}
 
-/* Coin picker */
-.coin-picker{position:relative;min-width:0}
-.coin-select{
-  width:100%;display:flex;align-items:center;gap:12px;
-  padding:13px;border-radius:14px;border:1px solid var(--line);
-  background:var(--panel);color:var(--text);text-align:left;
+/* ---------- Quick access ---------- */
+.section{margin-top:25px}
+.section-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+.section-title h2{font-size:16px;font-weight:750}
+.section-title span{color:var(--muted);font-size:11px}
+.quick-grid{display:flex;flex-direction:column;gap:12px}
+.quick-btn{width:100%;min-height:75px;border:1px solid var(--border);border-radius:16px;color:#fff;padding:15px 17px;display:flex;align-items:center;gap:14px;text-align:left;transition:transform .18s,filter .18s}
+.quick-btn:hover{filter:brightness(1.1);transform:translateY(-1px)}
+.quick-btn.market{background:linear-gradient(110deg,#173d68,#102746);border-color:rgba(91,141,239,.32)}
+.quick-btn.deposit{background:linear-gradient(110deg,#126b50,#104536);border-color:rgba(50,196,141,.32)}
+.quick-btn.withdraw{background:linear-gradient(110deg,#80591c,#4b3517);border-color:rgba(217,164,65,.32)}
+.quick-icon{width:43px;height:43px;flex:none;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:22px;background:rgba(255,255,255,.1)}
+.quick-text{min-width:0;flex:1}
+.quick-text strong{display:block;font-size:14px;font-weight:800}
+.quick-text small{display:block;font-size:11px;color:rgba(255,255,255,.72);margin-top:5px;line-height:1.5}
+.quick-arrow{font-size:21px;color:rgba(255,255,255,.75)}
+.info-note{margin-top:20px;padding:14px;border:1px solid var(--border);border-radius:13px;color:var(--muted);font-size:10px;line-height:1.8;background:rgba(255,255,255,.015)}
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:760px;min-height:70px;padding-bottom:env(safe-area-inset-bottom);background:rgba(8,18,31,.98);backdrop-filter:blur(18px);border-top:1px solid var(--border);z-index:120;display:grid;grid-template-columns:repeat(4,1fr)}
+.bottom-link{border:0;background:transparent;color:#7e8998;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;font-size:10px}
+.bottom-link.active{color:var(--gold2)}
+.bottom-icon{font-size:20px}
+.toast{position:fixed;left:50%;bottom:85px;transform:translateX(-50%) translateY(15px);background:#142337;border:1px solid var(--border);color:#fff;padding:12px 16px;border-radius:10px;font-size:12px;opacity:0;pointer-events:none;transition:.25s;z-index:500;width:max-content;max-width:90%;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(max-width:400px){
+  .security-card{padding:14px;gap:9px}
+  .security-action{padding:9px;font-size:10px}
+  .security-heading{font-size:12px}
+  .content{padding-left:14px;padding-right:14px}
+  .dash-card{padding:24px 16px 20px}
+  .dash-big{font-size:30px}
+  .timer-row{font-size:27px}
+  .row-value{font-size:25px}
+  .topbar .brand-name{font-size:15px}
+  .topbar .brand-mark{width:27px;height:27px}
 }
-.coin-selected-meta{flex:1;min-width:0}
-.coin-selected-code{font-weight:850;font-size:15px}
-.coin-selected-name{color:var(--label);font-size:12px;margin-top:3px}
-.coin-selected-amount{text-align:right;font-size:14px;font-weight:800}
-.coin-selected-usd{color:var(--label);font-size:11px;margin-top:4px}
-.coin-logo{
-  width:36px;height:36px;border-radius:50%;flex-shrink:0;
-  object-fit:contain;background:var(--panel);
-}
-.coin-logo-fallback{
-  display:grid;place-items:center;color:white;font-weight:900;
-  font-size:12px;
-}
-.coin-menu{
-  position:absolute;top:calc(100% + 8px);left:0;right:0;
-  z-index:40;background:var(--panel);border:1px solid var(--line);
-  border-radius:14px;overflow:hidden;box-shadow:var(--shadow);display:none;
-}
-.coin-menu.open{display:block}
-.coin-search{
-  width:100%;padding:13px;border:0;border-bottom:1px solid var(--line);
-  background:var(--card);color:var(--text);outline:none;
-}
-.coin-list{max-height:330px;overflow-y:auto;list-style:none}
-.coin-option{
-  width:100%;display:flex;align-items:center;gap:10px;
-  padding:11px 13px;border:0;background:transparent;color:var(--text);
-  text-align:left;
-}
-.coin-option:hover,.coin-option.selected{background:var(--hover)}
-.coin-option .coin-info{flex:1;min-width:0}
-.coin-option .coin-code{font-weight:800;font-size:13px}
-.coin-option .coin-name{color:var(--label);font-size:11px}
-.coin-option .coin-amount{font-size:12px;color:var(--label);text-align:right}
-
-/* Timer and partner count */
-.section-title{font-size:15px;font-weight:800;margin-bottom:14px}
-.timer-box{
-  display:flex;align-items:center;justify-content:space-between;
-  gap:12px;background:var(--panel);border:1px solid var(--line);
-  border-radius:14px;padding:15px;
-}
-.timer-value{
-  font-size:clamp(20px,4vw,29px);font-weight:850;
-  font-variant-numeric:tabular-nums;color:var(--gold);
-}
-.timer-caption{font-size:12px;color:var(--label);margin-top:5px}
-.timer-icon{font-size:28px;color:var(--gold)}
-.partner-count{
-  display:flex;align-items:center;gap:12px;margin-top:14px;
-  background:var(--panel);padding:14px;border-radius:14px;
-}
-.partner-count .number{font-size:25px;font-weight:850;color:var(--gold)}
-.partner-count .caption{font-size:12px;color:var(--label)}
-
-/* Stats */
-.stats-grid{
-  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;
-}
-.stat{
-  padding:16px;background:var(--panel);border:1px solid var(--line);
-  border-radius:14px;min-width:0;
-}
-.stat-label{font-size:12px;color:var(--label);line-height:1.5}
-.stat-value{
-  margin-top:9px;font-size:clamp(18px,3.7vw,25px);
-  font-weight:850;overflow-wrap:anywhere;
-}
-.stat-value.strong{color:var(--gold2)}
-.stat-icon{font-size:18px;margin-bottom:10px}
-.note{
-  margin-top:16px;font-size:11px;line-height:1.6;
-  color:var(--label);
-}
-.security-card{
-  display:flex;align-items:center;justify-content:space-between;
-  gap:12px;margin-top:16px;
-}
-.security-card p{font-size:12px;color:var(--label);margin-top:5px}
-.loading{opacity:.65}
-.error-banner{
-  display:none;margin-bottom:14px;padding:12px 14px;
-  border-radius:12px;border:1px solid var(--red);
-  color:var(--red);font-size:12px;line-height:1.5;
-}
-.bottom-nav{
-  position:fixed;bottom:0;left:0;right:0;z-index:45;
-  display:flex;justify-content:space-around;gap:4px;
-  padding:9px 6px calc(9px + env(safe-area-inset-bottom));
-  background:var(--card);border-top:1px solid var(--line);
-}
-.bottom-link{
-  display:flex;flex-direction:column;align-items:center;gap:4px;
-  min-width:0;padding:5px 7px;color:var(--label);font-size:10px;
-}
-.bottom-link span:first-child{font-size:19px}
-.bottom-link.active{color:var(--gold)}
-.toast{
-  position:fixed;left:50%;bottom:100px;transform:translateX(-50%);
-  z-index:100;background:var(--panel);border:1px solid var(--line);
-  padding:12px 16px;border-radius:12px;font-size:12px;
-  max-width:90vw;display:none;box-shadow:var(--shadow);
-}
-@media(min-width:760px){
-  body{padding-bottom:30px}
-  .page{padding:28px 24px}
-  .dashboard-grid{grid-template-columns:1.1fr .9fr}
-  .main-card{grid-column:auto}
-  .bottom-nav{display:none}
-  .stats-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
-}
-@media(max-width:430px){
-  .topbar{padding:0 12px}
-  .page{padding:16px 11px}
-  .card{padding:17px}
-  .welcome h1{font-size:20px}
-  .status-pill{font-size:10px;padding:6px 8px}
-  .balance-actions .btn{flex:1}
-  .stats-grid{gap:9px}
-  .stat{padding:13px}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
 }
 </style>
 </head>
-
 <body>
+<div id="loadingScreen" class="loading-screen">
+  <div class="loading-box">
+    <div class="brand-logo loading-logo">
+      <div class="brand-mark">A</div><div class="brand-name">AITI<span>VEST</span></div>
+    </div>
+    <div class="spinner"></div>
+  </div>
+</div>
 
+<div class="app">
 <header class="topbar">
-  <button class="icon-btn" id="leftMenuBtn" aria-label="Open navigation">☰</button>
-
-  <a class="brand" href="dashboard.html" aria-label="AITIVEST dashboard">
-    <span class="brand-icon">A</span>
-    <span>AITIVEST</span>
-  </a>
-
-  <div class="top-actions">
-    <button class="icon-btn" id="themeBtn" aria-label="Change theme">☼</button>
-    <button class="icon-btn" id="rightMenuBtn" aria-label="Open quick menu">⋮</button>
-    <div class="avatar" id="avatar">A</div>
+  <div class="topbar-inner">
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
+    <div class="brand-logo" aria-label="AITIVEST">
+      <div class="brand-mark">A</div><div class="brand-name">AITI<span>VEST</span></div>
+    </div>
+    <div class="profile-initial" id="profileInitial">AV</div>
   </div>
 </header>
 
-<div class="drawer-backdrop" id="drawerBackdrop"></div>
-
-<aside class="drawer left" id="leftDrawer" aria-label="Main navigation">
+<div class="overlay" id="overlay"></div>
+<aside class="drawer" id="drawer" aria-label="Main navigation">
   <div class="drawer-head">
-    <div class="brand"><span class="brand-icon">A</span><span>AITIVEST</span></div>
-    <button class="icon-btn closeDrawer" aria-label="Close menu">×</button>
-  </div>
-
-  <div class="drawer-label">MY ACCOUNT</div>
-  <a class="nav-link active" href="dashboard.html"><span class="nav-icon">▦</span>Portfolio</a>
-  <a class="nav-link" href="deposit.html"><span class="nav-icon">＋</span>Add Funds</a>
-  <a class="nav-link" href="withdraw.html"><span class="nav-icon">↗</span>Withdraw</a>
-  <a class="nav-link" href="transactions.html"><span class="nav-icon">↔</span>Transactions</a>
-
-  <div class="drawer-label">MARKETS</div>
-  <a class="nav-link" href="markets.html"><span class="nav-icon">◈</span>Markets</a>
-  <a class="nav-link" href="swap.html"><span class="nav-icon">⇄</span>Swap Assets</a>
-
-  <div class="drawer-label">GROW YOUR ACCOUNT</div>
-  <a class="nav-link" href="referrals.html"><span class="nav-icon">♧</span>Referrals</a>
-
-  <div class="drawer-label">ACCOUNT & HELP</div>
-  <a class="nav-link" href="profile.html"><span class="nav-icon">◎</span>Profile</a>
-  <a class="nav-link" href="security.html"><span class="nav-icon">♙</span>Security Settings</a>
-  <a class="nav-link" href="notifications.html"><span class="nav-icon">♧</span>Notifications</a>
-  <a class="nav-link" href="support.html"><span class="nav-icon">?</span>Support</a>
-
-  <div class="drawer-footer">
-    <button class="btn" id="logoutBtn" style="width:100%">↪ Sign out</button>
-  </div>
-</aside>
-
-<aside class="drawer right" id="rightDrawer" aria-label="Quick actions">
-  <div class="drawer-head">
-    <div><strong>Quick Actions</strong><div class="balance-sub" style="margin-top:5px">Manage your account</div></div>
-    <button class="icon-btn closeDrawer" aria-label="Close quick menu">×</button>
-  </div>
-
-  <a class="nav-link" href="deposit.html"><span class="nav-icon">＋</span>Add Funds</a>
-  <a class="nav-link" href="withdraw.html"><span class="nav-icon">↗</span>Withdraw</a>
-  <a class="nav-link" href="markets.html"><span class="nav-icon">◈</span>Explore Markets</a>
-  <a class="nav-link" href="transactions.html"><span class="nav-icon">↔</span>Transactions</a>
-  <a class="nav-link" href="referrals.html"><span class="nav-icon">♧</span>Referral Program</a>
-  <a class="nav-link" href="profile.html"><span class="nav-icon">◎</span>My Profile</a>
-  <a class="nav-link" href="security.html"><span class="nav-icon">♙</span>Security Settings</a>
-  <a class="nav-link" href="support.html"><span class="nav-icon">?</span>Contact Support</a>
-</aside>
-
-<main class="page">
-  <div class="welcome">
-    <div>
-      <h1 id="welcomeName">Welcome back</h1>
-      <p>Your AITIVEST portfolio overview</p>
+    <div class="brand-logo">
+      <div class="brand-mark">A</div><div class="brand-name">AITI<span>VEST</span></div>
     </div>
-    <div class="status-pill"><span class="dot"></span><span id="accountStatus">Checking account</span></div>
+    <button class="close-drawer" id="closeDrawer" aria-label="Close menu">×</button>
+  </div>
+  <nav class="drawer-nav">
+    <button class="drawer-link" onclick="go('dashboard.html')"><span class="drawer-icon">⌂</span>Portfolio</button>
+    <button class="drawer-link" onclick="go('deposit.html')"><span class="drawer-icon">＋</span>Deposit</button>
+    <button class="drawer-link" onclick="go('withdraw.html')"><span class="drawer-icon">↗</span>Withdraw</button>
+    <button class="drawer-link" onclick="go('transactions.html')"><span class="drawer-icon">≡</span>Transactions</button>
+    <button class="drawer-link" onclick="go('referrals.html')"><span class="drawer-icon">♧</span>Referrals</button>
+    <button class="drawer-link" onclick="go('profile.html')"><span class="drawer-icon">○</span>Profile</button>
+    <button class="drawer-link" onclick="go('security.html')"><span class="drawer-icon">♙</span>Security Settings</button>
+    <button class="drawer-link" onclick="go('support.html')"><span class="drawer-icon">?</span>Support</button>
+    <button class="drawer-link" onclick="go('notifications.html')"><span class="drawer-icon">♢</span>Notifications</button>
+    <button class="drawer-link logout" id="logoutBtn"><span class="drawer-icon">↪</span>Logout</button>
+  </nav>
+</aside>
+
+<main class="content">
+  <div class="greeting">
+    <div>
+      <small id="greetingText">Welcome back</small>
+      <h1 id="userName">Welcome</h1>
+    </div>
+    <div class="status" id="accountStatus"><span class="status-dot"></span><span>Loading...</span></div>
   </div>
 
-  <div class="error-banner" id="errorBanner" role="status"></div>
+  <!-- MAIN DASHBOARD CARD -->
+  <section class="dash-card" aria-label="Portfolio overview">
+    <div class="dash-title">FIAT</div>
+    <div class="dash-big fiat" id="portfolioValue">Loading...</div>
 
-  <div class="dashboard-grid">
-
-    <section class="card main-card">
-      <div class="balance-row">
-        <div class="eyebrow">FIAT VALUE</div>
-        <span class="status-pill">USD</span>
-      </div>
-
-      <div class="balance-value gold" id="fiatValue">Loading…</div>
-      <div class="balance-sub">Total value of confirmed deposits at current reference prices</div>
-
-      <div class="balance-actions">
-        <a class="btn btn-primary" href="deposit.html">＋ Add Funds</a>
-        <a class="btn" href="withdraw.html">↗ Withdraw</a>
-        <a class="btn" href="markets.html">◈ Markets</a>
-      </div>
-    </section>
-
-    <section class="card">
-      <div class="section-title">Crypto Portfolio</div>
-      <div class="coin-picker" id="coinPicker">
-        <button class="coin-select" id="coinSelectBtn" type="button"
-          aria-haspopup="listbox" aria-expanded="false">
-          <span class="coin-logo coin-logo-fallback" id="selectedLogo">₿</span>
-          <span class="coin-selected-meta">
-            <span class="coin-selected-code" id="selectedCode">BTC</span>
-            <span class="coin-selected-name" id="selectedName">Bitcoin</span>
-          </span>
-          <span class="coin-selected-amount">
-            <span id="selectedAmount">—</span>
-            <span class="coin-selected-usd" id="selectedUsd">Loading price…</span>
-          </span>
-          <span aria-hidden="true">⌄</span>
+    <div class="dash-title">CRYPTO</div>
+    <div class="dash-big crypto">
+      <div class="crypto-picker" id="cryptoPicker">
+        <button type="button" class="crypto-selected" id="cryptoSelected" aria-haspopup="listbox" aria-expanded="false" aria-controls="cryptoMenu">
+          <img id="selectedLogo" class="selected-logo" src="" alt="">
+          <span class="selected-amount" id="selectedAmount">0.0000</span>
+          <span class="selected-arrow" aria-hidden="true">&#9662;</span>
         </button>
-
-        <div class="coin-menu" id="coinMenu">
-          <input class="coin-search" id="coinSearch" type="search"
-            placeholder="Search coins…" aria-label="Search coins">
-          <ul class="coin-list" id="coinList" role="listbox"></ul>
+        <div class="crypto-menu" id="cryptoMenu">
+          <div class="menu-total"><img id="totalLogo" src="" alt=""><span id="totalAmount">0.0000</span></div>
+          <button type="button" class="menu-add" id="addFundsBtn">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="M12 7v10M7 12h10" stroke="#0b1829" stroke-width="2.4" stroke-linecap="round"/></svg>
+            Add funds
+          </button>
+          <div class="menu-list" id="cryptoList" role="listbox"></div>
         </div>
       </div>
+    </div>
 
-      <div class="note">Coin balances are read from your wallet records. USD values use available market prices when the price service responds.</div>
-    </section>
-
-    <section class="card">
-      <div class="section-title">Next Earnings Window</div>
-      <div class="timer-box">
-        <div>
-          <div class="timer-value" id="countdown">—:—:—</div>
-          <div class="timer-caption" id="timerCaption">Checking active deposits…</div>
-        </div>
-        <div class="timer-icon">◷</div>
+    <div class="timer-wrap">
+      <div class="dash-label">Time until the next calculation of profit</div>
+      <div class="dash-sub" id="countdownState">Checking active deposits...</div>
+      <div class="timer-row hidden" id="timerBox">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        <span id="timer">--:--:--</span>
       </div>
+    </div>
 
-      <div class="partner-count">
-        <div style="font-size:25px">♧</div>
-        <div>
-          <div class="number" id="partnerCount">—</div>
-          <div class="caption">Recorded referrals</div>
-        </div>
-      </div>
-    </section>
+    <div class="dash-title" style="letter-spacing:0">Partners</div>
+    <div class="partners-row">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 20v-1a5 5 0 0 1 5-5h2a5 5 0 0 1 5 5v1"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14a4 4 0 0 1 4 4v2"/></svg>
+      <span id="partnerCount">—</span>
+    </div>
 
-    <section class="card" style="grid-column:1/-1">
-      <div class="section-title">Account Summary</div>
-      <div class="stats-grid">
-        <div class="stat">
-          <div class="stat-icon">↙</div>
-          <div class="stat-label">Incoming Payments</div>
-          <div class="stat-value" id="incomingValue">Loading…</div>
-        </div>
-        <div class="stat">
-          <div class="stat-icon">↗</div>
-          <div class="stat-label">Outgoing Payments</div>
-          <div class="stat-value" id="outgoingValue">Loading…</div>
-        </div>
-        <div class="stat">
-          <div class="stat-icon">✳</div>
-          <div class="stat-label">All Accruals</div>
-          <div class="stat-value" id="allAccrualsValue">Loading…</div>
-        </div>
-        <div class="stat">
-          <div class="stat-icon">♧</div>
-          <div class="stat-label">Partners' Commissions</div>
-          <div class="stat-value" id="partnersValue">Loading…</div>
-        </div>
-        <div class="stat">
-          <div class="stat-icon">◈</div>
-          <div class="stat-label">Main Profit</div>
-          <div class="stat-value strong" id="mainProfitValue">Loading…</div>
-        </div>
-        <div class="stat">
-          <div class="stat-icon">✧</div>
-          <div class="stat-label">Partners' Profit</div>
-          <div class="stat-value strong" id="partnersProfitValue">Loading…</div>
-        </div>
-      </div>
+    <hr class="dash-hr">
 
-      <p class="note">
-        * USD equivalents are estimates using the market prices available when this dashboard refreshes.
-        Historical amounts may differ from their original conversion values.
-        The countdown is informational; earnings are credited only by the configured backend process.
-      </p>
-    </section>
+    <div class="row-label">Incoming payments</div>
+    <div class="row-value" id="incomingPayments">Loading...</div>
 
-    <section class="card" style="grid-column:1/-1">
-      <div class="security-card">
-        <div>
-          <strong>Account Security</strong>
-          <p id="mfaText">Checking two-factor authentication…</p>
-        </div>
-        <a class="btn btn-small" href="security.html">Security Settings →</a>
-      </div>
-    </section>
+    <div class="row-label">Outgoing payments</div>
+    <div class="row-value" id="outgoingPayments">Loading...</div>
 
-  </div>
+    <div class="row-label">All accruals <span class="star">&#10033;</span></div>
+    <div class="row-value" id="allAccruals">Loading...</div>
+
+    <div class="row-label">Partners <span class="star">&#10033;</span></div>
+    <div class="row-value" id="partnersAccrual">Loading...</div>
+
+    <div class="row-label">Main profit</div>
+    <div class="row-value strong" id="mainProfit">Loading...</div>
+
+    <div class="row-label">Partners profit</div>
+    <div class="row-value strong last" id="partnersProfit">Loading...</div>
+
+    <hr class="dash-hr" style="margin-bottom:0">
+    <p class="dash-note">* Income is taken into account in dollars at the exchange rate at the time of accrual of profit</p>
+    <div class="statistics-note" id="statisticsNote"></div>
+  </section>
+
+  <section class="security-card checking" id="securityCard" aria-live="polite">
+    <div class="security-copy">
+      <div class="security-heading"><span class="security-indicator" aria-hidden="true"></span><span id="securityTitle">Checking account security...</span></div>
+      <div class="security-message" id="securityMessage">Verifying your two-factor authentication status.</div>
+    </div>
+    <button type="button" class="security-action" id="securityAction" onclick="go('security.html')">Checking...</button>
+  </section>
+
+  <section class="section">
+    <div class="section-title"><h2>Quick Access</h2><span>Choose an action</span></div>
+    <div class="quick-grid">
+      <button class="quick-btn market" onclick="go('swap.html')"><span class="quick-icon">⇄</span><span class="quick-text"><strong>Market</strong><small>Explore asset exchange</small></span><span class="quick-arrow">›</span></button>
+      <button class="quick-btn deposit" onclick="go('deposit.html')"><span class="quick-icon">＋</span><span class="quick-text"><strong>Add Funds</strong><small>View deposit options</small></span><span class="quick-arrow">›</span></button>
+      <button class="quick-btn withdraw" onclick="go('withdraw.html')"><span class="quick-icon">↗</span><span class="quick-text"><strong>Withdraw</strong><small>Manage withdrawal requests</small></span><span class="quick-arrow">›</span></button>
+    </div>
+  </section>
+
+  <div class="info-note">FIAT displays the USD-equivalent value of confirmed deposits. Pending deposits are excluded. Cryptocurrency balances are displayed separately by asset. The countdown is a time indicator and does not itself credit earnings.</div>
 </main>
 
-<nav class="bottom-nav" aria-label="Quick navigation">
-  <a class="bottom-link active" href="dashboard.html"><span>▦</span><span>Portfolio</span></a>
-  <a class="bottom-link" href="swap.html"><span>◈</span><span>Markets</span></a>
-  <a class="bottom-link" href="deposit.html"><span>＋</span><span>Add Funds</span></a>
-  <a class="bottom-link" href="withdraw.html"><span>↗</span><span>Withdraw</span></a>
-  <a class="bottom-link" href="transactions.html"><span>↔</span><span>Activity</span></a>
+<nav class="bottom-nav" aria-label="Bottom navigation">
+  <button class="bottom-link active" onclick="go('dashboard.html')"><span class="bottom-icon">⌂</span><span>Portfolio</span></button>
+  <button class="bottom-link" onclick="go('deposit.html')"><span class="bottom-icon">＋</span><span>Deposit</span></button>
+  <button class="bottom-link" onclick="go('transactions.html')"><span class="bottom-icon">≡</span><span>History</span></button>
+  <button class="bottom-link" onclick="go('profile.html')"><span class="bottom-icon">○</span><span>Account</span></button>
 </nav>
+</div>
 
-<div class="toast" id="toast" role="status"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
-(function(){
-'use strict';
+"use strict";
 
-/* Existing AITIVEST Supabase project configuration */
-const SUPABASE_URL = 'https://rihvvwktvgytbqzazage.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad';
+/* SUPABASE */
+const SUPABASE_URL = "https://rihvvwktvgytbqzazage.supabase.co";
+const SUPABASE_KEY = "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
+const db = window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
-const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-const COINS = [
-  {code:'BTC',name:'Bitcoin',id:'bitcoin',glyph:'₿'},
-  {code:'ETH',name:'Ethereum',id:'ethereum',glyph:'Ξ'},
-  {code:'USDT',name:'Tether',id:'tether',glyph:'₮'},
-  {code:'USDC',name:'USD Coin',id:'usd-coin',glyph:'$'},
-  {code:'BNB',name:'BNB',id:'binancecoin',glyph:'◆'},
-  {code:'SOL',name:'Solana',id:'solana',glyph:'S'},
-  {code:'XRP',name:'XRP',id:'ripple',glyph:'X'},
-  {code:'TON',name:'Toncoin',id:'the-open-network',glyph:'T'},
-  {code:'DOGE',name:'Dogecoin',id:'dogecoin',glyph:'Ð'},
-  {code:'ADA',name:'Cardano',id:'cardano',glyph:'A'},
-  {code:'TRX',name:'TRON',id:'tron',glyph:'T'},
-  {code:'LTC',name:'Litecoin',id:'litecoin',glyph:'Ł'},
-  {code:'AVAX',name:'Avalanche',id:'avalanche-2',glyph:'A'},
-  {code:'DOT',name:'Polkadot',id:'polkadot',glyph:'●'},
-  {code:'LINK',name:'Chainlink',id:'chainlink',glyph:'⬡'},
-  {code:'POL',name:'POL',id:'polygon-ecosystem-token',glyph:'P'},
-  {code:'SHIB',name:'Shiba Inu',id:'shiba-inu',glyph:'S'},
-  {code:'BCH',name:'Bitcoin Cash',id:'bitcoin-cash',glyph:'₿'},
-  {code:'XLM',name:'Stellar',id:'stellar',glyph:'✳'},
-  {code:'ATOM',name:'Cosmos',id:'cosmos',glyph:'⚛'},
-  {code:'NEAR',name:'NEAR Protocol',id:'near',glyph:'N'},
-  {code:'APT',name:'Aptos',id:'aptos',glyph:'A'},
-  {code:'ARB',name:'Arbitrum',id:'arbitrum',glyph:'A'},
-  {code:'OP',name:'Optimism',id:'optimism',glyph:'O'}
+/* ASSETS */
+const LOGO_BASE = "https://cdn.jsdelivr.net/gh/madenix/Crypto-logo-cdn@main/Logos/";
+const logoFiles = {
+  BTC:"BTC.svg",ETH:"ETH.svg",USDT:"USDT.svg",USDC:"USDC.svg",
+  BNB:"BNB.svg",SOL:"SOL.svg",XRP:"XRP.svg",TON:"TON.svg",
+  DOGE:"DOGE.svg",ADA:"ADA.svg",TRX:"TRON.svg",LTC:"LTC.svg",
+  AVAX:"AVAX.svg",DOT:"DOT.svg",LINK:"LINK.svg",POL:"MATIC.svg",
+  SHIB:"SHIB.svg",BCH:"BCH.svg",XLM:"XLM.svg",ATOM:"ATOM.svg",
+  NEAR:"NEAR.svg",APT:"APT.svg",ARB:"ARB.svg",OP:"OP.svg"
+};
+const assets = [
+  ["BTC","Bitcoin"],["ETH","Ethereum"],["USDT","Tether"],["USDC","USD Coin"],
+  ["BNB","BNB"],["SOL","Solana"],["XRP","XRP"],["TON","Toncoin"],
+  ["DOGE","Dogecoin"],["ADA","Cardano"],["TRX","TRON"],["LTC","Litecoin"],
+  ["AVAX","Avalanche"],["DOT","Polkadot"],["LINK","Chainlink"],["POL","Polygon"],
+  ["SHIB","Shiba Inu"],["BCH","Bitcoin Cash"],["XLM","Stellar"],["ATOM","Cosmos"],
+  ["NEAR","NEAR Protocol"],["APT","Aptos"],["ARB","Arbitrum"],["OP","Optimism"]
 ];
 
-const ASSET_DECIMALS = {
-  BTC:8, ETH:8, USDT:6, USDC:6, BNB:8, SOL:8, XRP:6, TON:8,
-  DOGE:6, ADA:6, TRX:6, LTC:8, AVAX:8, DOT:6, LINK:6, POL:6,
-  SHIB:2, BCH:8, XLM:6, ATOM:6, NEAR:6, APT:6, ARB:6, OP:6
+const PLACEHOLDER = "0.0000"; /* shown until a wallet balance exists */
+
+let currentUser=null;
+let wallets=[];
+let activeDeposits=[];
+let selectedAsset="BTC";
+let countdownTarget=null;
+let countdownInterval=null;
+let refreshInProgress=false;
+let countdownRefreshTimer=null;
+
+const ASSET_DECIMALS={
+  BTC:8,ETH:8,USDT:2,USDC:2,BNB:8,SOL:8,XRP:6,TON:8,DOGE:8,
+  ADA:6,TRX:6,LTC:8,AVAX:8,DOT:8,LINK:8,POL:8,SHIB:8,BCH:8,
+  XLM:7,ATOM:6,NEAR:8,APT:8,ARB:8,OP:8
 };
 
-const $ = id => document.getElementById(id);
-const state = {
-  user:null,
-  wallets:[],
-  balances:{},
-  prices:{},
-  selected:'BTC',
-  timerTarget:null,
-  timerInterval:null,
-  priceTimestamp:0
-};
+const $=id=>document.getElementById(id);
+function go(page){window.location.href=page}
+function logoURL(symbol){return LOGO_BASE+(logoFiles[symbol]||"")}
 
-function number(v){
-  const n = Number(v);
-  return Number.isFinite(n) ? n : 0;
-}
-
-function fmtUSD(v){
-  if(!Number.isFinite(Number(v))) return 'Unavailable';
-  return '$' + Number(v).toLocaleString('en-US',{
-    minimumFractionDigits:2,maximumFractionDigits:2
+function formatNumber(value,asset="USDT"){
+  const number=Number(value??0);
+  const symbol=String(asset||"USDT").toUpperCase();
+  if(!Number.isFinite(number))return "—";
+  const decimals=ASSET_DECIMALS[symbol]??8;
+  return number.toLocaleString("en-US",{
+    minimumFractionDigits:decimals,maximumFractionDigits:decimals,useGrouping:true
   });
 }
 
-function fmtCoin(v,code){
-  const decimals = ASSET_DECIMALS[code] ?? 6;
-  return number(v).toLocaleString('en-US',{
-    minimumFractionDigits:0,maximumFractionDigits:decimals
-  });
+function formatMoney(value){
+  const number=Number(value);
+  if(!Number.isFinite(number))return "Unavailable";
+  return "$"+number.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
 }
+
+function initials(name){
+  const parts=String(name||"").trim().split(/\s+/).filter(Boolean);
+  if(!parts.length)return "AV";
+  if(parts.length===1)return parts[0].slice(0,2).toUpperCase();
+  return (parts[0][0]+parts[parts.length-1][0]).toUpperCase();
+}
+
+function setText(id,value){const element=$(id);if(element)element.textContent=value}
 
 function showToast(message){
-  const el = $('toast');
-  el.textContent = message;
-  el.style.display = 'block';
+  const toast=$("toast");
+  toast.textContent=message;
+  toast.classList.add("show");
   clearTimeout(showToast.timeout);
-  showToast.timeout = setTimeout(()=>el.style.display='none',3000);
+  showToast.timeout=setTimeout(()=>toast.classList.remove("show"),3000);
 }
 
-function showError(message){
-  const el = $('errorBanner');
-  el.textContent = message;
-  el.style.display = 'block';
+/* GREETING */
+function setGreeting(){
+  const hour=new Date().getHours();
+  setText("greetingText",hour<12?"Good morning":hour<18?"Good afternoon":"Good evening");
 }
 
-function hideError(){
-  $('errorBanner').style.display = 'none';
-}
-
-function setText(id,value){
-  $(id).textContent = value;
-}
-
-function coinLogoUrl(code){
-  return 'https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/' +
-    code.toLowerCase() + '.png';
-}
-
-function createCoinLogo(code){
-  const coin = COINS.find(c=>c.code===code);
-  const span = document.createElement('span');
-  span.className = 'coin-logo coin-logo-fallback';
-  span.textContent = coin ? coin.glyph : code.slice(0,1);
-  span.style.background = '#1a3270';
-
-  const img = document.createElement('img');
-  img.className = 'coin-logo';
-  img.alt = coin ? coin.name : code;
-  img.src = coinLogoUrl(code);
-  img.onerror = function(){
-    img.replaceWith(span);
-  };
-  return img;
-}
-
-/* Prices are for display valuation only, never used to credit money. */
-async function loadPrices(force){
-  if(!force && Date.now()-state.priceTimestamp < 60000 &&
-     Object.keys(state.prices).length) return;
-
-  const ids = COINS.map(c=>c.id).join(',');
-  const url = 'https://api.coingecko.com/api/v3/simple/price?ids=' +
-    encodeURIComponent(ids) + '&vs_currencies=usd';
-
-  const response = await fetch(url,{cache:'no-store'});
-  if(!response.ok) throw new Error('Price service returned HTTP '+response.status);
-
-  const data = await response.json();
-  const prices = {};
-
-  COINS.forEach(c=>{
-    const entry = data[c.id];
-    if(entry && Number.isFinite(Number(entry.usd))){
-      prices[c.code] = Number(entry.usd);
-    }
-  });
-
-  state.prices = prices;
-  state.priceTimestamp = Date.now();
-}
-
-function priceOf(code){
-  if(code==='USD') return 1;
-  const price = state.prices[code];
-  return Number.isFinite(price) ? price : null;
-}
-
-function usdValue(amount,code){
-  const p = priceOf(code);
-  return p===null ? null : number(amount)*p;
-}
-
-function totalUsd(rows,amountField,assetField){
-  let total = 0;
-  let missing = false;
-
-  rows.forEach(row=>{
-    const value = usdValue(row[amountField],row[assetField]);
-    if(value===null) missing = true;
-    else total += value;
-  });
-
-  return {total,missing};
-}
-
-/* Drawer controls */
-const leftDrawer = $('leftDrawer');
-const rightDrawer = $('rightDrawer');
-const backdrop = $('drawerBackdrop');
-
-function closeDrawers(){
-  leftDrawer.classList.remove('open');
-  rightDrawer.classList.remove('open');
-  backdrop.style.display = 'none';
-}
-
-function openDrawer(drawer){
-  closeDrawers();
-  drawer.classList.add('open');
-  backdrop.style.display = 'block';
-}
-
-$('leftMenuBtn').addEventListener('click',()=>openDrawer(leftDrawer));
-$('rightMenuBtn').addEventListener('click',()=>openDrawer(rightDrawer));
-backdrop.addEventListener('click',closeDrawers);
-document.querySelectorAll('.closeDrawer').forEach(btn=>
-  btn.addEventListener('click',closeDrawers)
-);
-document.addEventListener('keydown',e=>{
-  if(e.key==='Escape'){
-    closeDrawers();
-    closeCoinMenu();
-  }
+/* DRAWER */
+function openDrawer(){$("drawer").classList.add("open");$("overlay").classList.add("show")}
+function closeDrawer(){$("drawer").classList.remove("open");$("overlay").classList.remove("show")}
+$("menuBtn").addEventListener("click",openDrawer);
+$("closeDrawer").addEventListener("click",closeDrawer);
+$("overlay").addEventListener("click",closeDrawer);
+document.addEventListener("keydown",event=>{
+  if(event.key==="Escape"){closeDrawer();closeCryptoPicker()}
 });
 
-/* Theme switching */
-function applyTheme(theme){
-  document.documentElement.setAttribute('data-theme',theme);
-  $('themeBtn').textContent = theme==='light' ? '☾' : '☼';
-  $('themeBtn').setAttribute('aria-label',
-    theme==='light'?'Switch to dark theme':'Switch to light theme');
-  try{localStorage.setItem('aitivest-theme',theme)}catch(e){}
-}
-
-let savedTheme = 'dark';
-try{savedTheme=localStorage.getItem('aitivest-theme')||'dark'}catch(e){}
-applyTheme(savedTheme);
-
-$('themeBtn').addEventListener('click',()=>{
-  const current=document.documentElement.getAttribute('data-theme')||'dark';
-  applyTheme(current==='dark'?'light':'dark');
-});
-
-/* Coin picker */
-function renderCoinList(filter){
-  const list=$('coinList');
-  list.replaceChildren();
-  const q=(filter||'').trim().toLowerCase();
-
-  COINS.filter(c=>c.code.toLowerCase().includes(q)||
-    c.name.toLowerCase().includes(q)).forEach(c=>{
-    const li=document.createElement('li');
-    li.setAttribute('role','option');
-
-    const btn=document.createElement('button');
-    btn.type='button';
-    btn.className='coin-option'+(state.selected===c.code?' selected':'');
-    btn.setAttribute('aria-selected',String(state.selected===c.code));
-    btn.appendChild(createCoinLogo(c.code));
-
-    const info=document.createElement('span');
-    info.className='coin-info';
-
-    const code=document.createElement('div');
-    code.className='coin-code';
-    code.textContent=c.code;
-
-    const name=document.createElement('div');
-    name.className='coin-name';
-    name.textContent=c.name;
-
-    info.append(code,name);
-
-    const amount=document.createElement('span');
-    amount.className='coin-amount';
-    amount.textContent=fmtCoin(state.balances[c.code]||0,c.code);
-
-    btn.append(info,amount);
-    btn.addEventListener('click',()=>{
-      state.selected=c.code;
-      renderSelectedCoin();
-      renderCoinList($('coinSearch').value);
-      closeCoinMenu();
-    });
-
-    li.appendChild(btn);
-    list.appendChild(li);
-  });
-}
-
-function renderSelectedCoin(){
-  const c=COINS.find(x=>x.code===state.selected)||COINS[0];
-  const amount=number(state.balances[c.code]);
-  const value=usdValue(amount,c.code);
-
-  $('selectedLogo').replaceWith(createCoinLogo(c.code));
-  const newLogo=$('coinPicker').querySelector('.coin-select .coin-logo');
-  newLogo.id='selectedLogo';
-
-  setText('selectedCode',c.code);
-  setText('selectedName',c.name);
-  setText('selectedAmount',fmtCoin(amount,c.code));
-  setText('selectedUsd',value===null?'Price unavailable':fmtUSD(value));
-
-  $('coinList').querySelectorAll('.coin-option').forEach(btn=>{
-    const isSelected=btn.querySelector('.coin-code')?.textContent===c.code;
-    btn.classList.toggle('selected',isSelected);
-    btn.setAttribute('aria-selected',String(isSelected));
-  });
-}
-
-function openCoinMenu(){
-  $('coinMenu').classList.add('open');
-  $('coinSelectBtn').setAttribute('aria-expanded','true');
-  $('coinSearch').focus();
-}
-function closeCoinMenu(){
-  $('coinMenu').classList.remove('open');
-  $('coinSelectBtn').setAttribute('aria-expanded','false');
-}
-$('coinSelectBtn').addEventListener('click',()=>{
-  $('coinMenu').classList.contains('open')?closeCoinMenu():openCoinMenu();
-});
-$('coinSearch').addEventListener('input',e=>renderCoinList(e.target.value));
-document.addEventListener('click',e=>{
-  if(!$('coinPicker').contains(e.target))closeCoinMenu();
-});
-
-/* Authentication */
+/* AUTHENTICATION */
 async function checkAuth(){
   const {data,error}=await db.auth.getSession();
-
-  if(error) throw error;
-
-  const session=data.session;
-  if(!session){
-    window.location.replace('signin.html');
+  if(error){
+    console.error("Session verification failed:",error);
+    window.location.replace("signin.html");
     return false;
   }
-
-  state.user=session.user;
+  currentUser=data?.session?.user||null;
+  if(!currentUser){window.location.replace("signin.html");return false}
   return true;
 }
 
-/* User profile */
-async function loadProfile(){
-  const {data,error}=await db.from('profiles')
-    .select('id,full_name,email,account_status')
-    .eq('id',state.user.id)
-    .maybeSingle();
+/* TWO-FACTOR AUTHENTICATION STATUS */
+async function loadMfaStatus(){
+  const card=$("securityCard");
+  if(!card||!currentUser)return;
 
-  if(error) throw error;
+  card.classList.remove("warning","enabled");
+  card.classList.add("checking");
+  setText("securityTitle","Checking account security...");
+  setText("securityMessage","Verifying your two-factor authentication status.");
+  setText("securityAction","Checking...");
 
-  const name=data?.full_name || state.user.email?.split('@')[0] || 'AITIVEST User';
-  setText('welcomeName','Welcome, '+name);
-  setText('avatar',name.trim().charAt(0).toUpperCase()||'A');
-  setText('accountStatus',data?.account_status||'Account active');
-}
+  try{
+    const {data,error}=await db.auth.mfa.listFactors();
+    if(error)throw error;
 
-/* Wallet balances */
-async function loadWallets(){
-  const {data,error}=await db.from('wallets')
-    .select('id,asset,available_balance,locked_balance,principal_balance,profit_balance')
-    .eq('user_id',state.user.id);
-
-  if(error) throw error;
-
-  state.wallets=data||[];
-  state.balances={};
-
-  state.wallets.forEach(row=>{
-    const code=String(row.asset||'').toUpperCase();
-    if(!COINS.some(c=>c.code===code)) return;
-
-    /* Available balance is displayed; locked balance remains separate. */
-    state.balances[code]=(state.balances[code]||0)+number(row.available_balance);
-  });
-
-  renderCoinList($('coinSearch').value);
-  renderSelectedCoin();
-}
-
-/* Confirmed deposits: preserve the old dashboard's incoming-payment logic. */
-async function loadDeposits(){
-  const {data,error}=await db.from('deposits')
-    .select('asset,amount,credited_amount,status')
-    .eq('user_id',state.user.id)
-    .eq('status','CONFIRMED');
-
-  if(error) throw error;
-
-  return (data||[]).map(row=>({
-    asset:String(row.asset||'').toUpperCase(),
-    amount:number(row.credited_amount)>0
-      ? number(row.credited_amount)
-      : number(row.amount)
-  }));
-}
-
-/* Completed withdrawals */
-async function loadWithdrawals(){
-  const {data,error}=await db.from('withdrawals')
-    .select('asset,amount,net_amount,status')
-    .eq('user_id',state.user.id)
-    .eq('status','COMPLETED');
-
-  if(error) throw error;
-
-  return (data||[]).map(row=>({
-    asset:String(row.asset||'').toUpperCase(),
-    amount:number(row.net_amount)>0
-      ? number(row.net_amount)
-      : number(row.amount)
-  }));
-}
-
-/* Credited earnings */
-async function loadEarnings(){
-  const {data,error}=await db.from('earning_records')
-    .select('earning_amount,asset,status')
-    .eq('user_id',state.user.id)
-    .eq('status','CREDITED');
-
-  if(error) throw error;
-
-  return (data||[]).map(row=>({
-    asset:String(row.asset||'').toUpperCase(),
-    amount:number(row.earning_amount)
-  }));
-}
-
-/* Referral commissions: uses the known referrer_id field. */
-async function loadCommissions(){
-  const {data,error}=await db.from('referral_commission_records')
-    .select('commission_amount,asset,referrer_id')
-    .eq('referrer_id',state.user.id);
-
-  if(error) throw error;
-
-  return (data||[]).map(row=>({
-    asset:String(row.asset||'').toUpperCase(),
-    amount:number(row.commission_amount)
-  }));
-}
-
-async function loadReferralCount(){
-  const {count,error}=await db.from('referrals')
-    .select('*',{count:'exact',head:true})
-    .eq('referrer_id',state.user.id);
-
-  if(error) throw error;
-  setText('partnerCount',String(count||0));
-}
-
-/* Active deposit countdown; does not itself create or credit earnings. */
-async function loadCountdown(){
-  const {data,error}=await db.from('deposits')
-    .select('id,asset,network,earning_principal,earning_started_at,earning_ended_at,status')
-    .eq('user_id',state.user.id)
-    .eq('status','CONFIRMED')
-    .gt('earning_principal',0)
-    .not('earning_started_at','is',null)
-    .is('earning_ended_at',null);
-
-  if(error) throw error;
-
-  const now=Date.now();
-  const targets=(data||[])
-    .map(row=>{
-      const start=new Date(row.earning_started_at).getTime();
-      return Number.isFinite(start)?start+86400000:null;
-    })
-    .filter(t=>t!==null&&t>now)
-    .sort((a,b)=>a-b);
-
-  state.timerTarget=targets.length?targets[0]:null;
-  renderCountdown();
-}
-
-function renderCountdown(){
-  if(state.timerInterval)clearInterval(state.timerInterval);
-
-  function tick(){
-    if(!state.timerTarget){
-      setText('countdown','—:—:—');
-      setText('timerCaption','No active earning window found');
-      return;
-    }
-
-    const remaining=Math.max(0,Math.floor((state.timerTarget-Date.now())/1000));
-    const h=Math.floor(remaining/3600);
-    const m=Math.floor((remaining%3600)/60);
-    const s=remaining%60;
-
-    setText('countdown',
-      String(h).padStart(2,'0')+':'+
-      String(m).padStart(2,'0')+':'+
-      String(s).padStart(2,'0')
+    const verifiedTotp=(data?.totp||[]).some(factor=>
+      String(factor.status||"").toLowerCase()==="verified"
     );
 
-    setText('timerCaption',remaining===0
-      ?'Earning window reached; backend processing may be pending'
-      :'Time remaining in the next active earning window');
+    card.classList.remove("checking");
+    card.classList.toggle("enabled",verifiedTotp);
+    card.classList.toggle("warning",!verifiedTotp);
 
-    if(remaining===0){
-      clearInterval(state.timerInterval);
-      setTimeout(()=>refreshDashboard(false),1500);
+    if(verifiedTotp){
+      setText("securityTitle","Two-factor authentication enabled");
+      setText("securityMessage","Your authenticator app is verified. Keep your recovery information safe.");
+      setText("securityAction","Manage Security");
+    }else{
+      setText("securityTitle","Protect your account");
+      setText("securityMessage","Two-factor authentication is not enabled. Set it up to add another layer of protection.");
+      setText("securityAction","Enable 2FA");
     }
+  }catch(error){
+    console.error("MFA status check failed:",error);
+    card.classList.remove("checking","enabled");
+    card.classList.add("warning");
+    setText("securityTitle","Security status unavailable");
+    setText("securityMessage","We could not verify your 2FA status. Open Security Settings to check it.");
+    setText("securityAction","Check Security");
   }
-
-  tick();
-  state.timerInterval=setInterval(tick,1000);
 }
 
-/* Verified TOTP status */
-async function loadMfa(){
-  const {data,error}=await db.auth.mfa.listFactors();
+/* CRYPTO DROPDOWN */
+function getWallet(symbol){
+  return wallets.find(wallet=>String(wallet.asset||"").toUpperCase()===symbol)||null;
+}
+
+function amountFor(symbol){
+  const wallet=getWallet(symbol);
+  return wallet?formatNumber(wallet.available_balance??0,symbol):PLACEHOLDER;
+}
+
+function buildCryptoMenu(){
+  const list=$("cryptoList");
+  list.replaceChildren();
+
+  assets.forEach(([symbol,name])=>{
+    const button=document.createElement("button");
+    button.type="button";
+    button.className="crypto-option";
+    button.setAttribute("role","option");
+    button.dataset.asset=symbol;
+
+    const logo=document.createElement("img");
+    logo.className="crypto-logo";
+    logo.src=logoURL(symbol);
+    logo.alt="";
+    logo.loading="lazy";
+    logo.onerror=()=>{logo.style.visibility="hidden"};
+
+    const details=document.createElement("div");
+    details.className="crypto-details";
+
+    const symbolElement=document.createElement("div");
+    symbolElement.className="crypto-symbol";
+    symbolElement.textContent=symbol;
+
+    const nameElement=document.createElement("div");
+    nameElement.className="crypto-name";
+    nameElement.textContent=name;
+    details.append(symbolElement,nameElement);
+
+    const amount=document.createElement("div");
+    amount.className="crypto-amount";
+    amount.dataset.amountFor=symbol;
+    amount.textContent=PLACEHOLDER;
+
+    button.append(logo,details,amount);
+    button.addEventListener("click",()=>{
+      selectedAsset=symbol;
+      renderSelectedAsset();
+      closeCryptoPicker();
+      $("cryptoSelected").focus();
+    });
+    list.appendChild(button);
+  });
+
+  updateCryptoMenuBalances();
+  renderSelectedAsset();
+}
+
+function openCryptoPicker(){
+  $("cryptoPicker").classList.add("open");
+  $("cryptoSelected").setAttribute("aria-expanded","true");
+}
+
+function closeCryptoPicker(){
+  const picker=$("cryptoPicker");
+  if(!picker)return;
+  picker.classList.remove("open");
+  $("cryptoSelected").setAttribute("aria-expanded","false");
+}
+
+$("cryptoSelected").addEventListener("click",event=>{
+  event.stopPropagation();
+  $("cryptoPicker").classList.contains("open")?closeCryptoPicker():openCryptoPicker();
+});
+$("cryptoMenu").addEventListener("click",event=>event.stopPropagation());
+$("addFundsBtn").addEventListener("click",()=>go("deposit.html"));
+document.addEventListener("click",event=>{
+  if(!event.target.closest("#cryptoPicker"))closeCryptoPicker();
+});
+
+function updateCryptoMenuBalances(){
+  document.querySelectorAll("[data-amount-for]").forEach(element=>{
+    element.textContent=amountFor(element.dataset.amountFor);
+  });
+}
+
+function showLogo(img,symbol){
+  img.style.visibility="visible";
+  img.onerror=()=>{img.style.visibility="hidden"};
+  img.src=logoURL(symbol);
+}
+
+function renderSelectedAsset(){
+  const amount=amountFor(selectedAsset);
+  showLogo($("selectedLogo"),selectedAsset);
+  showLogo($("totalLogo"),selectedAsset);
+  setText("selectedAmount",amount);
+  setText("totalAmount",amount);
+  document.querySelectorAll(".crypto-option").forEach(button=>{
+    button.classList.toggle("active",button.dataset.asset===selectedAsset);
+    button.setAttribute("aria-selected",button.dataset.asset===selectedAsset?"true":"false");
+  });
+}
+
+/* LIVE CRYPTOCURRENCY USD PRICES */
+const COIN_IDS={
+  BTC:"bitcoin",ETH:"ethereum",USDT:"tether",USDC:"usd-coin",BNB:"binancecoin",
+  SOL:"solana",XRP:"ripple",TON:"the-open-network",DOGE:"dogecoin",ADA:"cardano",
+  TRX:"tron",LTC:"litecoin",AVAX:"avalanche-2",DOT:"polkadot",LINK:"chainlink",
+  POL:"polygon-ecosystem-token",SHIB:"shiba-inu",BCH:"bitcoin-cash",XLM:"stellar",
+  ATOM:"cosmos",NEAR:"near",APT:"aptos",ARB:"arbitrum",OP:"optimism"
+};
+
+let cryptoUsdPrices={};
+let pricesUpdatedAt=0;
+let priceRefreshPromise=null;
+const PRICE_CACHE_DURATION=60*1000;
+
+async function loadCryptoUsdPrices(force=false){
+  if(!force&&Date.now()-pricesUpdatedAt<PRICE_CACHE_DURATION&&Object.keys(cryptoUsdPrices).length){
+    return cryptoUsdPrices;
+  }
+  if(priceRefreshPromise)return priceRefreshPromise;
+
+  priceRefreshPromise=(async()=>{
+    const ids=[...new Set(Object.values(COIN_IDS))];
+    const url="https://api.coingecko.com/api/v3/simple/price?ids="+encodeURIComponent(ids.join(","))+"&vs_currencies=usd";
+
+    try{
+      const response=await fetch(url,{
+        method:"GET",headers:{Accept:"application/json"},cache:"no-store",
+        signal:AbortSignal.timeout(12000)
+      });
+      if(!response.ok)throw new Error("Price provider returned HTTP "+response.status);
+
+      const data=await response.json();
+      const nextPrices={};
+
+      for(const [symbol,coinId] of Object.entries(COIN_IDS)){
+        const price=Number(data?.[coinId]?.usd);
+        if(Number.isFinite(price)&&price>0)nextPrices[symbol]=price;
+      }
+
+      if(!Object.keys(nextPrices).length)throw new Error("No valid cryptocurrency prices returned.");
+      cryptoUsdPrices=nextPrices;
+      pricesUpdatedAt=Date.now();
+      return cryptoUsdPrices;
+    }catch(error){
+      console.error("Cryptocurrency price loading failed:",error);
+      return cryptoUsdPrices;
+    }finally{
+      priceRefreshPromise=null;
+    }
+  })();
+
+  return priceRefreshPromise;
+}
+
+function cryptoAmountToUsd(amount,symbol){
+  const quantity=Number(amount);
+  const asset=String(symbol||"").toUpperCase();
+  if(!Number.isFinite(quantity)||quantity<0)return null;
+  const price=cryptoUsdPrices[asset];
+  if(!Number.isFinite(price)||price<=0)return null;
+  return quantity*price;
+}
+
+/* PROFILE */
+async function loadProfile(){
+  const {data,error}=await db.from("profiles")
+    .select("id,full_name,email,account_status")
+    .eq("id",currentUser.id)
+    .maybeSingle();
+
+  if(error){console.error("Profile loading error:",error);return}
+
+  const name=data?.full_name||currentUser.user_metadata?.full_name||"Welcome";
+  setText("userName",name);
+  setText("profileInitial",initials(name));
+
+  const status=String(data?.account_status||"PENDING").toUpperCase();
+  const color=status==="ACTIVE"?"var(--green)":status==="SUSPENDED"?"var(--red)":"var(--gold)";
+  const container=$("accountStatus");
+  container.replaceChildren();
+
+  const dot=document.createElement("span");
+  dot.className="status-dot";
+  dot.style.background=color;
+
+  const label=document.createElement("span");
+  label.textContent=status;
+  container.append(dot,label);
+}
+
+/* WALLETS */
+async function loadWallets(){
+  const {data,error}=await db.from("wallets")
+    .select("id,asset,available_balance,locked_balance,principal_balance,profit_balance")
+    .eq("user_id",currentUser.id);
 
   if(error){
-    setText('mfaText','Unable to verify two-factor status. Open Security Settings.');
+    console.error("Wallet loading error:",error);
+    showToast("Unable to load wallet balances.");
+    return false;
+  }
+
+  wallets=data||[];
+  updateCryptoMenuBalances();
+  renderSelectedAsset();
+  return true;
+}
+
+/* FIAT PORTFOLIO */
+async function renderPortfolio(){
+  const {data,error}=await db.from("deposits")
+    .select("asset,amount,credited_amount,status")
+    .eq("user_id",currentUser.id)
+    .eq("status","CONFIRMED");
+
+  if(error){
+    console.error("Portfolio loading error:",error);
+    setText("portfolioValue","Unavailable");
+    return null;
+  }
+
+  await loadCryptoUsdPrices();
+
+  let totalUsd=0;
+  const missingPrices=[];
+
+  for(const deposit of data||[]){
+    const asset=String(deposit.asset||"").toUpperCase();
+    const credited=Number(deposit.credited_amount);
+    const submitted=Number(deposit.amount);
+    const quantity=Number.isFinite(credited)&&credited>0?credited:submitted;
+
+    if(!Number.isFinite(quantity)||quantity<=0)continue;
+    const usdValue=cryptoAmountToUsd(quantity,asset);
+
+    if(usdValue===null){
+      if(!missingPrices.includes(asset))missingPrices.push(asset);
+      continue;
+    }
+    totalUsd+=usdValue;
+  }
+
+  if(missingPrices.length){
+    setText("portfolioValue",formatMoney(totalUsd)+" +");
+    setText("statisticsNote","Some deposit valuations are unavailable because market prices could not be retrieved for: "+missingPrices.join(", ")+". Displayed totals exclude those deposits.");
+    return totalUsd;
+  }
+
+  setText("portfolioValue",formatMoney(totalUsd));
+  return totalUsd;
+}
+
+/* ACTIVE CONFIRMED DEPOSITS */
+async function loadActiveDeposits(){
+  const {data,error}=await db.from("deposits")
+    .select("id,asset,network,earning_principal,earning_started_at,earning_ended_at,status")
+    .eq("user_id",currentUser.id)
+    .eq("status","CONFIRMED")
+    .gt("earning_principal",0)
+    .not("earning_started_at","is",null)
+    .is("earning_ended_at",null);
+
+  if(error){
+    console.error("Active deposit verification error:",error);
+    activeDeposits=[];
+    setText("countdownState","Unable to verify active deposits.");
+    $("timerBox").classList.add("hidden");
+    stopCountdown();
+    return false;
+  }
+
+  activeDeposits=data||[];
+  setupCountdown();
+  return true;
+}
+
+function getNextCalculationTime(startedAt,nowMs){
+  const start=new Date(startedAt).getTime();
+  if(!Number.isFinite(start))return null;
+  const cycle=24*60*60*1000;
+  if(nowMs<start)return start;
+  return start+(Math.floor((nowMs-start)/cycle)+1)*cycle;
+}
+
+function setupCountdown(){
+  stopCountdown();
+
+  if(!activeDeposits.length){
+    setText("countdownState","Awaiting confirmed active deposit");
+    setText("timer","--:--:--");
+    $("timerBox").classList.add("hidden");
     return;
   }
 
-  const verified=(data?.totp||[]).some(f=>f.status==='verified');
-  setText('mfaText',verified
-    ?'Two-factor authentication is enabled.'
-    :'Two-factor authentication is not currently verified.');
-}
+  const now=Date.now();
+  const prepared=activeDeposits.map(deposit=>({
+    ...deposit,target:getNextCalculationTime(deposit.earning_started_at,now)
+  })).filter(item=>Number.isFinite(item.target));
 
-/* Statistics */
-function renderStatistics(deposits,withdrawals,earnings,commissions){
-  const incoming=totalUsd(deposits,'amount','asset');
-  const outgoing=totalUsd(withdrawals,'amount','asset');
-  const main=totalUsd(earnings,'amount','asset');
-  const partners=totalUsd(commissions,'amount','asset');
-
-  setText('fiatValue',incoming.missing?'Partial price data':fmtUSD(incoming.total));
-  setText('incomingValue',incoming.missing?'Partial price data':fmtUSD(incoming.total));
-  setText('outgoingValue',outgoing.missing?'Partial price data':fmtUSD(outgoing.total));
-  setText('mainProfitValue',main.missing?'Partial price data':fmtUSD(main.total));
-  setText('partnersValue',partners.missing?'Partial price data':fmtUSD(partners.total));
-
-  if(main.missing||partners.missing){
-    setText('allAccrualsValue','Partial price data');
-    setText('partnersProfitValue','Partial price data');
-  }else{
-    setText('allAccrualsValue',fmtUSD(main.total+partners.total));
-    setText('partnersProfitValue',fmtUSD(partners.total));
+  if(!prepared.length){
+    setText("countdownState","No valid calculation time is available.");
+    $("timerBox").classList.add("hidden");
+    return;
   }
+
+  prepared.sort((a,b)=>a.target-b.target);
+  countdownTarget=prepared[0].target;
+
+  setText("countdownState","");
+  $("timerBox").classList.remove("hidden");
+  updateCountdown();
+  countdownInterval=setInterval(updateCountdown,1000);
 }
 
-async function refreshDashboard(showMessage){
-  try{
-    hideError();
+function updateCountdown(){
+  if(!countdownTarget)return;
+  const remaining=Math.max(0,countdownTarget-Date.now());
 
-    /* Fetch prices first; if the public price API is unavailable,
-       retain existing cached prices and continue loading backend data. */
-    try{
-      await loadPrices(false);
-    }catch(priceError){
-      console.warn('Coin price service unavailable:',priceError);
+  if(remaining<=0){
+    setText("timer","00:00:00");
+    stopCountdown();
+    setText("countdownState","Calculation time reached. Checking account records...");
+    clearTimeout(countdownRefreshTimer);
+    countdownRefreshTimer=setTimeout(()=>refreshDashboardData(),1500);
+    return;
+  }
+
+  const seconds=Math.floor(remaining/1000);
+  const hours=Math.floor(seconds/3600);
+  const minutes=Math.floor((seconds%3600)/60);
+  const secs=seconds%60;
+
+  setText("timer",String(hours).padStart(2,"0")+":"+String(minutes).padStart(2,"0")+":"+String(secs).padStart(2,"0"));
+}
+
+function stopCountdown(){
+  if(countdownInterval){clearInterval(countdownInterval);countdownInterval=null}
+  countdownTarget=null;
+}
+
+/* PARTNERS */
+async function loadPartnerStatistics(){
+  const {count,error}=await db.from("referrals")
+    .select("*",{count:"exact",head:true})
+    .eq("referrer_id",currentUser.id);
+
+  if(error){
+    console.error("Referral statistics error:",error);
+    setText("partnerCount","Unavailable");
+    return;
+  }
+  setText("partnerCount",String(count??0));
+}
+
+/* PAYMENT STATISTICS */
+async function loadPaymentStatistics(){
+  const depositsResult=await db.from("deposits")
+    .select("asset,amount,credited_amount,status")
+    .eq("user_id",currentUser.id)
+    .eq("status","CONFIRMED");
+
+  if(depositsResult.error){
+    console.error("Incoming payment statistics error:",depositsResult.error);
+    setText("incomingPayments","Unavailable");
+  }else{
+    await loadCryptoUsdPrices();
+    let incomingUsd=0;
+    const missingIncomingAssets=[];
+
+    for(const deposit of depositsResult.data||[]){
+      const asset=String(deposit.asset||"").toUpperCase();
+      const credited=Number(deposit.credited_amount);
+      const submitted=Number(deposit.amount);
+      const quantity=Number.isFinite(credited)&&credited>0?credited:submitted;
+      if(!Number.isFinite(quantity)||quantity<=0)continue;
+
+      const usdValue=cryptoAmountToUsd(quantity,asset);
+      if(usdValue===null){
+        if(!missingIncomingAssets.includes(asset))missingIncomingAssets.push(asset);
+        continue;
+      }
+      incomingUsd+=usdValue;
     }
 
-    await loadWallets();
+    setText("incomingPayments",missingIncomingAssets.length?formatMoney(incomingUsd)+" +":formatMoney(incomingUsd));
+  }
 
-    const results=await Promise.all([
-      loadDeposits(),
-      loadWithdrawals(),
-      loadEarnings(),
-      loadCommissions(),
-      loadReferralCount(),
-      loadCountdown()
-    ]);
+  const withdrawalsResult=await db.from("withdrawals")
+    .select("asset,amount,net_amount,status")
+    .eq("user_id",currentUser.id)
+    .eq("status","COMPLETED");
 
-    renderStatistics(results[0],results[1],results[2],results[3]);
-    renderSelectedCoin();
+  if(withdrawalsResult.error){
+    console.error("Outgoing payment statistics error:",withdrawalsResult.error);
+    setText("outgoingPayments","Unavailable");
+    return;
+  }
 
-    if(showMessage)showToast('Dashboard refreshed');
-  }catch(error){
-    console.error('Dashboard refresh failed:',error);
-    showError('Some dashboard information could not be loaded. Check your connection and Supabase table permissions, then refresh.');
+  await loadCryptoUsdPrices();
+  let outgoingUsd=0;
+  const missingOutgoingAssets=[];
+
+  for(const withdrawal of withdrawalsResult.data||[]){
+    const asset=String(withdrawal.asset||"").toUpperCase();
+    const netAmount=Number(withdrawal.net_amount);
+    const requestedAmount=Number(withdrawal.amount);
+    const quantity=Number.isFinite(netAmount)&&netAmount>0?netAmount:requestedAmount;
+    if(!Number.isFinite(quantity)||quantity<=0)continue;
+
+    const usdValue=cryptoAmountToUsd(quantity,asset);
+    if(usdValue===null){
+      if(!missingOutgoingAssets.includes(asset))missingOutgoingAssets.push(asset);
+      continue;
+    }
+    outgoingUsd+=usdValue;
+  }
+
+  setText("outgoingPayments",missingOutgoingAssets.length?formatMoney(outgoingUsd)+" +":formatMoney(outgoingUsd));
+}
+
+/* EARNINGS STATISTICS — USD VALUE ACROSS SUPPORTED ASSETS */
+async function loadEarningsStatistics(){
+  await loadCryptoUsdPrices();
+
+  let mainProfitUsd=0;
+  let partnersProfitUsd=0;
+  let mainProfitIncomplete=false;
+  let partnersProfitIncomplete=false;
+
+  const earningsResult=await db.from("earning_records")
+    .select("earning_amount,asset,status")
+    .eq("user_id",currentUser.id)
+    .eq("status","CREDITED");
+
+  if(earningsResult.error){
+    console.error("Earnings statistics error:",earningsResult.error);
+    mainProfitIncomplete=true;
+  }else{
+    for(const record of earningsResult.data||[]){
+      const amount=Number(record.earning_amount);
+      const asset=String(record.asset||"").toUpperCase();
+      if(!Number.isFinite(amount)||amount<=0)continue;
+
+      const usdValue=cryptoAmountToUsd(amount,asset);
+      if(usdValue===null){mainProfitIncomplete=true;continue}
+      mainProfitUsd+=usdValue;
+    }
+  }
+
+  const commissionsResult=await db.from("referral_commission_records")
+    .select("commission_amount,asset,referrer_id")
+    .eq("referrer_id",currentUser.id);
+
+  if(commissionsResult.error){
+    console.error("Referral commission statistics error:",commissionsResult.error);
+    partnersProfitIncomplete=true;
+  }else{
+    for(const record of commissionsResult.data||[]){
+      const amount=Number(record.commission_amount);
+      const asset=String(record.asset||"").toUpperCase();
+      if(!Number.isFinite(amount)||amount<=0)continue;
+
+      const usdValue=cryptoAmountToUsd(amount,asset);
+      if(usdValue===null){partnersProfitIncomplete=true;continue}
+      partnersProfitUsd+=usdValue;
+    }
+  }
+
+  const mainText=formatMoney(mainProfitUsd)+(mainProfitIncomplete?" +":"");
+  const partnersText=formatMoney(partnersProfitUsd)+(partnersProfitIncomplete?" +":"");
+  const incomplete=mainProfitIncomplete||partnersProfitIncomplete;
+
+  setText("mainProfit",mainText);
+  setText("partnersProfit",partnersText);
+  setText("partnersAccrual",partnersText);
+  setText("allAccruals",formatMoney(mainProfitUsd+partnersProfitUsd)+(incomplete?" +":""));
+
+  if(incomplete){
+    setText("statisticsNote","A trailing + means some records could not be valued or verified. USD values use available market prices and can change.");
+  }else if($("statisticsNote").textContent.indexOf("trailing +")!==-1){
+    setText("statisticsNote","");
   }
 }
 
-/* Logout */
-$('logoutBtn').addEventListener('click',async()=>{
-  $('logoutBtn').disabled=true;
+/* REFRESH */
+async function refreshDashboardData(){
+  if(!currentUser||refreshInProgress)return;
+  refreshInProgress=true;
+
+  try{
+    await Promise.all([
+      loadProfile(),loadWallets(),renderPortfolio(),loadActiveDeposits(),
+      loadPartnerStatistics(),loadPaymentStatistics(),loadEarningsStatistics(),loadMfaStatus()
+    ]);
+  }catch(error){
+    console.error("Dashboard refresh error:",error);
+    showToast("Some dashboard information could not be loaded.");
+  }finally{
+    refreshInProgress=false;
+  }
+}
+
+/* LOGOUT */
+$("logoutBtn").addEventListener("click",async()=>{
+  const button=$("logoutBtn");
+  button.disabled=true;
   const {error}=await db.auth.signOut();
 
   if(error){
-    $('logoutBtn').disabled=false;
-    showToast('Could not sign out. Please try again.');
+    console.error("Logout error:",error);
+    showToast("Unable to log out. Please try again.");
+    button.disabled=false;
     return;
   }
-
-  window.location.replace('signin.html');
+  window.location.replace("signin.html");
 });
 
-/* Initialization */
-async function init(){
+/* REFRESH WHEN RETURNING TO PAGE */
+document.addEventListener("visibilitychange",()=>{
+  if(document.visibilityState==="visible")refreshDashboardData();
+});
+
+setInterval(()=>{
+  if(document.visibilityState==="visible")refreshDashboardData();
+},30000);
+
+/* INITIALIZATION */
+(async function init(){
   try{
+    setGreeting();
+    buildCryptoMenu();
     const authenticated=await checkAuth();
     if(!authenticated)return;
-
-    await loadProfile();
-    await loadMfa();
-    await refreshDashboard(false);
-
-    /* Refresh backend values periodically. */
-    setInterval(()=>refreshDashboard(false),30000);
-
-    document.addEventListener('visibilitychange',()=>{
-      if(!document.hidden)refreshDashboard(false);
-    });
-
+    await refreshDashboardData();
   }catch(error){
-    console.error('Dashboard initialization failed:',error);
-    showError('Dashboard could not initialize. Verify your Supabase connection and sign-in session.');
+    console.error("Dashboard initialization error:",error);
+    showToast("Unable to load dashboard. Please refresh.");
+  }finally{
+    setTimeout(()=>{$("loadingScreen").style.display="none"},300);
   }
-}
-
-renderCoinList('');
-renderSelectedCoin();
-init();
-
 })();
 </script>
-
 </body>
 </html>
