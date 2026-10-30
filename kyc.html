@@ -3,659 +3,224 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#050914">
-<title>Identity Verification — AITIVEST</title>
-
+<meta name="theme-color" content="#07111f">
+<title>AITIVEST — Identity Verification</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <style>
 :root{
-  --bg:#050914;
-  --bg2:#091426;
-  --card:#0d1b2d;
-  --card2:#101f34;
-  --gold:#d6b15e;
-  --gold2:#f0d58d;
-  --text:#f5f7fb;
-  --muted:#9ba8bd;
-  --border:rgba(214,177,94,.18);
-  --green:#42d6a0;
-  --red:#ff727d;
-  --blue:#78a9ff;
+  --bg:#07111f;--card:#0d1b2d;--card2:#112238;
+  --border:rgba(255,255,255,.08);--text:#f5f7fa;--muted:#9aa7b8;--hint:#6b7a90;
+  --gold:#d9a441;--gold2:#f0c866;--green:#32c48d;--red:#ef6b73;--blue:#5b8def;
+  --shadow:0 18px 50px rgba(0,0,0,.25);
 }
-
-*{box-sizing:border-box}
-
+*{box-sizing:border-box;margin:0;padding:0}
 body{
-  margin:0;
-  background:var(--bg);
-  color:var(--text);
-  font-family:Arial,Helvetica,sans-serif;
-  font-size:14px;
-  line-height:1.5;
+  min-height:100vh;
+  background:radial-gradient(circle at 90% 0%,rgba(217,164,65,.09),transparent 30%),linear-gradient(180deg,#07111f,#050c15);
+  color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
 }
-
-button,input,select{font:inherit}
+button,input,select{font:inherit;color:inherit}
 button{cursor:pointer}
 a{color:inherit;text-decoration:none}
-
-.topbar{
-  height:68px;
-  position:sticky;
-  top:0;
-  z-index:20;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 16px;
-  background:rgba(5,9,20,.96);
-  border-bottom:1px solid var(--border);
-  backdrop-filter:blur(14px);
-}
-
-.icon-btn{
-  width:40px;
-  height:40px;
-  border:1px solid var(--border);
-  border-radius:12px;
-  color:var(--gold);
-  background:var(--card);
-  display:grid;
-  place-items:center;
-  font-size:21px;
-}
-
-.brand{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  font-size:19px;
-  font-weight:900;
-  letter-spacing:1.1px;
-}
-
-.brand-mark{
-  width:31px;
-  height:31px;
-  border:2px solid var(--gold);
-  border-radius:9px 9px 9px 3px;
-  display:grid;
-  place-items:center;
-  color:var(--gold);
-  font-weight:900;
-  font-size:19px;
-  transform:rotate(0deg);
-}
-
-.brand .aiti{color:#fff}
-.brand .vest{color:var(--gold)}
-
-.avatar{
-  width:38px;
-  height:38px;
-  border-radius:50%;
-  display:grid;
-  place-items:center;
-  color:var(--gold2);
-  background:#17243a;
-  border:1px solid var(--border);
-  font-weight:800;
-}
-
-.page{
-  width:100%;
-  max-width:760px;
-  margin:auto;
-  padding:24px 16px 110px;
-}
-
-.back-link{
-  display:inline-flex;
-  gap:7px;
-  align-items:center;
-  color:var(--muted);
-  margin-bottom:20px;
-}
-
-.back-link:hover{color:var(--gold)}
-
-.page-heading{margin-bottom:22px}
-
-.eyebrow{
-  color:var(--gold);
-  text-transform:uppercase;
-  letter-spacing:2px;
-  font-size:11px;
-  font-weight:800;
-}
-
-h1{
-  font-size:27px;
-  line-height:1.2;
-  margin:7px 0 10px;
-}
-
-.subtitle{
-  color:var(--muted);
-  margin:0;
-  max-width:580px;
-}
-
-.card{
-  background:linear-gradient(145deg,var(--card),#091426);
-  border:1px solid var(--border);
-  border-radius:18px;
-  padding:20px;
-  margin-bottom:17px;
-}
-
-.card-title{
-  font-size:16px;
-  font-weight:800;
-  margin:0 0 5px;
-}
-
-.card-subtitle{
-  color:var(--muted);
-  font-size:12px;
-  margin:0 0 18px;
-}
-
-.status-row{
-  display:flex;
-  align-items:center;
-  gap:14px;
-}
-
-.status-icon{
-  width:47px;
-  height:47px;
-  flex-shrink:0;
-  border-radius:14px;
-  display:grid;
-  place-items:center;
-  background:rgba(214,177,94,.12);
-  color:var(--gold);
-  font-size:22px;
-}
-
-.status-label{
-  font-weight:800;
-  font-size:15px;
-}
-
-.status-description{
-  color:var(--muted);
-  font-size:12px;
-  margin-top:3px;
-}
-
-.badge{
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-  padding:5px 10px;
-  border-radius:20px;
-  font-size:10px;
-  font-weight:800;
-  letter-spacing:.6px;
-  margin-top:8px;
-  text-transform:uppercase;
-}
-
-.badge.pending{
-  color:var(--gold2);
-  background:rgba(214,177,94,.12);
-}
-
-.badge.approved{
-  color:var(--green);
-  background:rgba(66,214,160,.12);
-}
-
-.badge.rejected{
-  color:var(--red);
-  background:rgba(255,114,125,.12);
-}
-
-.badge.unknown{
-  color:var(--muted);
-  background:rgba(155,168,189,.12);
-}
-
-.notice{
-  padding:14px 15px;
-  border-radius:12px;
-  display:flex;
-  gap:11px;
-  align-items:flex-start;
-  margin-bottom:18px;
-  border:1px solid rgba(120,169,255,.18);
-  background:rgba(120,169,255,.07);
-  color:#c8d8f5;
-  font-size:12px;
-}
-
-.notice.warning{
-  background:rgba(214,177,94,.07);
-  border-color:var(--border);
-  color:var(--gold2);
-}
-
-.notice.error{
-  background:rgba(255,114,125,.07);
-  border-color:rgba(255,114,125,.2);
-  color:#ffb4bb;
-}
-
-.notice.success{
-  background:rgba(66,214,160,.07);
-  border-color:rgba(66,214,160,.2);
-  color:#a3f0d2;
-}
-
-.notice-icon{
-  font-size:17px;
-  line-height:1.1;
-}
-
-.form-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:16px;
-}
-
-.field{min-width:0}
-.field.full{grid-column:1/-1}
-
-label{
-  display:block;
-  color:#dce4f2;
-  font-size:12px;
-  font-weight:700;
-  margin-bottom:8px;
-}
-
-input,select{
-  width:100%;
-  min-height:47px;
-  background:#071120;
-  color:var(--text);
-  border:1px solid #26364d;
-  border-radius:11px;
-  padding:12px;
-  outline:none;
-}
-
-input:focus,select:focus{
-  border-color:var(--gold);
-  box-shadow:0 0 0 3px rgba(214,177,94,.08);
-}
-
-input::placeholder{color:#65748b}
-select option{background:#0d1b2d}
-
-.help{
-  font-size:11px;
-  color:var(--muted);
-  margin-top:7px;
-}
-
-.upload-box{
-  min-height:145px;
-  border:1px dashed #43516a;
-  border-radius:14px;
-  background:rgba(7,17,32,.65);
-  padding:18px 12px;
-  text-align:center;
-  position:relative;
-  transition:.2s;
-}
-
-.upload-box:hover{
-  border-color:var(--gold);
-}
-
-.upload-icon{
-  font-size:25px;
-  color:var(--gold);
-  margin-bottom:7px;
-}
-
-.upload-title{
-  font-size:12px;
-  font-weight:800;
-  margin-bottom:5px;
-}
-
-.upload-description{
-  font-size:11px;
-  color:var(--muted);
-}
-
-.upload-box input[type=file]{
-  margin-top:12px;
-  min-height:auto;
-  padding:8px;
-  font-size:10px;
-  border:0;
-  background:transparent;
-}
-
-.file-name{
-  color:var(--green);
-  font-size:11px;
-  margin-top:8px;
-  overflow-wrap:anywhere;
-}
-
-.check-row{
-  display:flex;
-  gap:10px;
-  align-items:flex-start;
-  margin:19px 0;
-  color:var(--muted);
-  font-size:12px;
-}
-
-.check-row input{
-  width:17px;
-  min-height:17px;
-  margin:2px 0 0;
-  accent-color:var(--gold);
-  flex-shrink:0;
-}
-
-.primary-btn{
-  width:100%;
-  min-height:49px;
-  border:0;
-  border-radius:12px;
-  background:linear-gradient(110deg,#c39a43,#f0d58d);
-  color:#101522;
-  font-weight:900;
-  letter-spacing:.3px;
-  transition:.2s;
-}
-
-.primary-btn:hover{filter:brightness(1.05)}
-.primary-btn:disabled{
-  opacity:.5;
-  cursor:not-allowed;
-}
-
-.secondary-btn{
-  width:100%;
-  min-height:45px;
-  border:1px solid var(--border);
-  border-radius:12px;
-  background:transparent;
-  color:var(--gold2);
-  font-weight:800;
-  margin-top:10px;
-}
-
+button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
+.app{width:100%;max-width:760px;min-height:100vh;margin:auto;padding-bottom:95px}
 .hidden{display:none!important}
 
-.rejection-box{
-  margin-top:15px;
-  padding:13px;
-  border-radius:11px;
-  background:rgba(255,114,125,.07);
-  border:1px solid rgba(255,114,125,.2);
-  color:#ffb4bb;
-  font-size:12px;
-  overflow-wrap:anywhere;
+/* ---------- Shared shell (same as dashboard / withdraw) ---------- */
+.loading-screen{position:fixed;inset:0;background:#07111f;display:flex;align-items:center;justify-content:center;z-index:9999}
+.loading-box{text-align:center}
+.brand-logo{display:flex;align-items:center;justify-content:center;gap:10px}
+.brand-mark{width:38px;height:38px;border:2px solid var(--gold);border-radius:12px 12px 12px 3px;display:flex;align-items:center;justify-content:center;color:var(--gold2);font-size:20px;font-weight:900;transform:rotate(-3deg)}
+.brand-name{font-size:22px;font-weight:900;letter-spacing:2px;white-space:nowrap}
+.brand-name span{color:var(--gold)}
+.loading-logo .brand-name{font-size:29px}
+.spinner{width:28px;height:28px;border:3px solid rgba(217,164,65,.18);border-top-color:var(--gold);border-radius:50%;margin:20px auto 0;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.topbar{height:68px;position:sticky;top:0;z-index:100;background:rgba(7,17,31,.96);backdrop-filter:blur(18px);border-bottom:1px solid var(--border)}
+.topbar-inner{height:100%;padding:0 18px;display:flex;align-items:center;justify-content:space-between;position:relative}
+.menu-btn{width:42px;height:42px;border:0;background:transparent;color:#fff;font-size:25px}
+.topbar .brand-logo{position:absolute;left:50%;transform:translateX(-50%)}
+.topbar .brand-mark{width:31px;height:31px;border-radius:9px 9px 9px 2px;font-size:16px}
+.topbar .brand-name{font-size:18px;letter-spacing:1.5px}
+.profile-initial{width:38px;height:38px;border-radius:50%;background:linear-gradient(145deg,#efc25e,#987021);color:#07111f;font-size:12px;font-weight:850;display:flex;align-items:center;justify-content:center}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:190;display:none}
+.overlay.show{display:block}
+.drawer{position:fixed;left:-320px;top:0;width:290px;max-width:86%;height:100vh;height:100dvh;background:#091625;border-right:1px solid var(--border);z-index:200;transition:left .25s ease;padding:22px 15px;overflow-y:auto}
+.drawer.open{left:0}
+.drawer-head{display:flex;align-items:center;justify-content:space-between;padding:8px 7px 25px;border-bottom:1px solid var(--border)}
+.drawer-head .brand-name{font-size:19px}
+.close-drawer{border:0;background:none;color:#fff;font-size:27px}
+.drawer-nav{padding-top:18px}
+.drawer-link{width:100%;border:0;background:transparent;color:#d7dce4;padding:14px 13px;border-radius:11px;display:flex;align-items:center;gap:13px;text-align:left;margin-bottom:4px}
+.drawer-link:hover,.drawer-link.active{background:rgba(217,164,65,.08);color:var(--gold2)}
+.drawer-icon{width:22px;text-align:center;color:var(--gold)}
+.drawer-link.logout{margin-top:15px;color:#ef8990}
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:760px;min-height:70px;padding-bottom:env(safe-area-inset-bottom);background:rgba(8,18,31,.98);backdrop-filter:blur(18px);border-top:1px solid var(--border);z-index:120;display:grid;grid-template-columns:repeat(4,1fr)}
+.bottom-link{border:0;background:transparent;color:#7e8998;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;font-size:10px}
+.bottom-link.active{color:var(--gold2)}
+.bottom-icon{font-size:20px}
+.toast{position:fixed;left:50%;bottom:85px;transform:translateX(-50%) translateY(15px);background:#142337;border:1px solid var(--border);color:#fff;padding:12px 16px;border-radius:10px;font-size:12px;opacity:0;pointer-events:none;transition:.25s;z-index:500;width:max-content;max-width:90%;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ---------- Page ---------- */
+.content{padding:23px 18px 0}
+.page-head{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.back-btn{width:38px;height:38px;border:1px solid var(--border);border-radius:11px;background:var(--card);color:#fff;font-size:18px;display:flex;align-items:center;justify-content:center;flex:none}
+.page-head h1{font-size:24px;font-weight:760}
+.subtitle{color:var(--muted);font-size:13px;line-height:1.7;margin-bottom:20px}
+
+.card{
+  background:radial-gradient(circle at top right,rgba(217,164,65,.12),transparent 42%),linear-gradient(145deg,#102238,#0b1829);
+  border:1px solid rgba(217,164,65,.18);border-radius:20px;padding:20px;margin-bottom:17px;box-shadow:var(--shadow)
 }
+.card-title{font-size:16px;font-weight:750;margin-bottom:5px}
+.card-subtitle{color:var(--muted);font-size:12px;margin-bottom:18px;line-height:1.6}
 
-.footer-note{
-  text-align:center;
-  color:var(--muted);
-  font-size:11px;
-  padding:15px 8px 0;
-}
+.status-row{display:flex;align-items:center;gap:14px}
+.status-icon{width:47px;height:47px;flex-shrink:0;border-radius:14px;display:grid;place-items:center;background:rgba(217,164,65,.12);color:var(--gold2);font-size:22px}
+.status-label{font-weight:800;font-size:15px}
+.status-description{color:var(--muted);font-size:12px;margin-top:3px;line-height:1.6}
+.badge{display:inline-flex;align-items:center;padding:5px 10px;border-radius:20px;font-size:10px;font-weight:800;letter-spacing:.6px;margin-top:8px;text-transform:uppercase}
+.badge.pending{color:var(--gold2);background:rgba(217,164,65,.14)}
+.badge.approved{color:var(--green);background:rgba(50,196,141,.14)}
+.badge.rejected{color:var(--red);background:rgba(239,107,115,.14)}
+.badge.unknown{color:var(--muted);background:rgba(155,168,189,.14)}
+.rejection-box{margin-top:15px;padding:13px;border-radius:12px;background:rgba(239,107,115,.07);border:1px solid rgba(239,107,115,.25);color:#ffb4bb;font-size:12px;line-height:1.6;overflow-wrap:anywhere}
 
-.bottom-nav{
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  z-index:15;
-  display:flex;
-  justify-content:center;
-  background:rgba(5,9,20,.97);
-  border-top:1px solid var(--border);
-  backdrop-filter:blur(14px);
-  padding:9px 8px calc(9px + env(safe-area-inset-bottom));
-}
+.notice{padding:14px;border-radius:14px;display:flex;gap:11px;align-items:flex-start;margin-bottom:17px;border:1px solid rgba(217,164,65,.28);background:rgba(217,164,65,.07);color:var(--muted);font-size:12px;line-height:1.7}
+.notice strong{color:var(--gold2)}
+.notice.error{background:rgba(239,107,115,.07);border-color:rgba(239,107,115,.3);color:#ffb4bb}
+.notice-icon{font-size:17px;line-height:1.2;color:var(--gold2)}
+.notice.error .notice-icon{color:#ffb4bb}
 
-.bottom-inner{
-  width:100%;
-  max-width:760px;
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:5px;
-}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.field{min-width:0}
+.field.full{grid-column:1/-1}
+label{display:block;color:#dce4f2;font-size:12px;font-weight:700;margin-bottom:8px}
+input,select{width:100%;min-height:50px;background:var(--card);color:var(--text);border:1px solid rgba(255,255,255,.1);border-radius:13px;padding:12px 13px;outline:none;font-size:15px}
+input:focus,select:focus{border-color:rgba(217,164,65,.55)}
+input::placeholder{color:var(--hint)}
+select{appearance:none;-webkit-appearance:none;cursor:pointer}
+select option{background:#0d1b2d;color:#fff}
+input:disabled,select:disabled{opacity:.6;cursor:not-allowed}
+.help{font-size:11px;color:var(--muted);margin-top:7px}
 
-.nav-item{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:4px;
-  color:var(--muted);
-  font-size:10px;
-  padding:5px 2px;
-}
+.upload-box{min-height:145px;border:1px dashed rgba(255,255,255,.22);border-radius:14px;background:rgba(13,27,45,.6);padding:18px 12px;text-align:center;transition:border-color .2s}
+.upload-box:hover{border-color:var(--gold)}
+.upload-icon{font-size:25px;color:var(--gold2);margin-bottom:7px}
+.upload-title{font-size:13px;font-weight:800;margin-bottom:5px}
+.upload-description{font-size:11px;color:var(--muted)}
+.upload-box input[type=file]{margin-top:12px;min-height:auto;padding:8px;font-size:11px;border:0;background:transparent}
+.file-name{color:var(--green);font-size:11px;margin-top:8px;overflow-wrap:anywhere}
 
-.nav-item span:first-child{font-size:19px}
-.nav-item.active{color:var(--gold)}
+.check-row{display:flex;gap:10px;align-items:flex-start;margin:19px 0;color:var(--muted);font-size:12px;line-height:1.7}
+.check-row input{width:17px;min-height:17px;margin:3px 0 0;accent-color:var(--gold);flex-shrink:0;padding:0}
+.check-row label{margin:0;font-weight:400;color:var(--muted)}
 
-.drawer-backdrop{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.65);
-  z-index:29;
-  display:none;
-}
-
-.drawer{
-  position:fixed;
-  top:0;
-  bottom:0;
-  left:0;
-  width:min(290px,85vw);
-  background:#091426;
-  border-right:1px solid var(--border);
-  z-index:30;
-  padding:20px 15px;
-  transform:translateX(-105%);
-  transition:transform .25s ease;
-  overflow-y:auto;
-}
-
-.drawer.open{transform:translateX(0)}
-.drawer-backdrop.open{display:block}
-
-.drawer-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding-bottom:22px;
-  border-bottom:1px solid var(--border);
-  margin-bottom:15px;
-}
-
-.drawer-links{
-  display:flex;
-  flex-direction:column;
-  gap:6px;
-}
-
-.drawer-links a,.drawer-links button{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:13px;
-  border:1px solid transparent;
-  border-radius:11px;
-  color:#d4deed;
-  background:transparent;
-  text-align:left;
-  font-size:13px;
-}
-
-.drawer-links a:hover,.drawer-links button:hover{
-  border-color:var(--border);
-  background:rgba(214,177,94,.06);
-  color:var(--gold2);
-}
-
-.drawer-links button{
-  width:100%;
-  font-family:inherit;
-}
-
-#toast{
-  position:fixed;
-  z-index:60;
-  left:50%;
-  bottom:88px;
-  transform:translate(-50%,15px);
-  opacity:0;
-  pointer-events:none;
-  width:max-content;
-  max-width:calc(100% - 30px);
-  padding:13px 17px;
-  border-radius:12px;
-  background:#17243a;
-  border:1px solid var(--border);
-  color:var(--text);
-  font-size:12px;
-  box-shadow:0 10px 35px #0005;
-  transition:.2s;
-}
-
-#toast.show{
-  opacity:1;
-  transform:translate(-50%,0);
-}
+.primary-btn{width:100%;min-height:52px;border:0;border-radius:14px;background:var(--gold);color:#07111f;font-size:16px;font-weight:800;transition:filter .2s}
+.primary-btn:hover{filter:brightness(1.08)}
+.primary-btn:disabled{opacity:.55;cursor:not-allowed}
+.secondary-btn{width:100%;min-height:46px;border:1px solid rgba(217,164,65,.35);border-radius:14px;background:transparent;color:var(--gold2);font-weight:800;margin-top:10px}
+.secondary-btn:disabled{opacity:.6;cursor:wait}
+.footer-note{text-align:center;color:var(--muted);font-size:11px;line-height:1.7;padding:15px 8px 0}
 
 @media(max-width:520px){
-  .page{padding:20px 13px 105px}
+  .content{padding-left:14px;padding-right:14px}
   .card{padding:16px}
-  h1{font-size:24px}
   .form-grid{grid-template-columns:1fr}
   .field.full{grid-column:auto}
-  .brand{font-size:17px}
+  .page-head h1{font-size:22px}
+  .topbar .brand-name{font-size:15px}
+  .topbar .brand-mark{width:27px;height:27px}
   .upload-box{min-height:130px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
 }
 </style>
 </head>
-
 <body>
 
+<div id="loadingScreen" class="loading-screen">
+  <div class="loading-box">
+    <div class="brand-logo loading-logo"><div class="brand-mark">A</div><div class="brand-name">AITI<span>VEST</span></div></div>
+    <div class="spinner"></div>
+  </div>
+</div>
+
+<div class="app">
 <header class="topbar">
-  <button class="icon-btn" id="menuBtn" aria-label="Open menu">☰</button>
-
-  <a class="brand" href="dashboard.html" aria-label="AITIVEST home">
-    <span class="brand-mark">A</span>
-    <span><span class="aiti">AITI</span><span class="vest">VEST</span></span>
-  </a>
-
-  <div class="avatar" id="avatar">A</div>
+  <div class="topbar-inner">
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
+    <div class="brand-logo" aria-label="AITIVEST"><div class="brand-mark">A</div><div class="brand-name">AITI<span>VEST</span></div></div>
+    <div class="profile-initial" id="avatar">AV</div>
+  </div>
 </header>
 
-<div class="drawer-backdrop" id="drawerBackdrop"></div>
-
-<aside class="drawer" id="drawer">
+<div class="overlay" id="overlay"></div>
+<aside class="drawer" id="drawer" aria-label="Main navigation">
   <div class="drawer-head">
-    <a class="brand" href="dashboard.html">
-      <span class="brand-mark">A</span>
-      <span><span class="aiti">AITI</span><span class="vest">VEST</span></span>
-    </a>
-    <button class="icon-btn" id="closeDrawer" aria-label="Close menu">×</button>
+    <div class="brand-logo"><div class="brand-mark">A</div><div class="brand-name">AITI<span>VEST</span></div></div>
+    <button class="close-drawer" id="closeDrawer" aria-label="Close menu">×</button>
   </div>
-
-  <nav class="drawer-links">
-    <a href="dashboard.html">◈ &nbsp; Portfolio</a>
-    <a href="deposit.html">＋ &nbsp; Deposit</a>
-    <a href="withdraw.html">↗ &nbsp; Withdraw</a>
-    <a href="transactions.html">↻ &nbsp; Transactions</a>
-    <a href="referrals.html">♧ &nbsp; Referrals</a>
-    <a href="profile.html">♙ &nbsp; My Profile</a>
-    <a href="kyc.html">▣ &nbsp; Identity Verification</a>
-    <a href="notifications.html">♢ &nbsp; Notifications</a>
-    <a href="support.html">✉ &nbsp; Support</a>
-    <button type="button" id="logoutBtn">⇥ &nbsp; Sign Out</button>
+  <nav class="drawer-nav">
+    <button class="drawer-link" onclick="go('dashboard.html')"><span class="drawer-icon">⌂</span>Portfolio</button>
+    <button class="drawer-link" onclick="go('deposit.html')"><span class="drawer-icon">＋</span>Deposit</button>
+    <button class="drawer-link" onclick="go('withdraw.html')"><span class="drawer-icon">↗</span>Withdraw</button>
+    <button class="drawer-link" onclick="go('transactions.html')"><span class="drawer-icon">≡</span>Transactions</button>
+    <button class="drawer-link" onclick="go('referrals.html')"><span class="drawer-icon">♧</span>Referrals</button>
+    <button class="drawer-link" onclick="go('profile.html')"><span class="drawer-icon">○</span>Profile</button>
+    <button class="drawer-link active" onclick="go('kyc.html')"><span class="drawer-icon">▣</span>Identity Verification</button>
+    <button class="drawer-link" onclick="go('security.html')"><span class="drawer-icon">♙</span>Security Settings</button>
+    <button class="drawer-link" onclick="go('support.html')"><span class="drawer-icon">?</span>Support</button>
+    <button class="drawer-link" onclick="go('notifications.html')"><span class="drawer-icon">♢</span>Notifications</button>
+    <button class="drawer-link logout" id="logoutBtn"><span class="drawer-icon">↪</span>Logout</button>
   </nav>
 </aside>
 
-<main class="page">
+<main class="content">
 
-  <a class="back-link" href="profile.html">← Back to profile</a>
-
-  <section class="page-heading">
-    <div class="eyebrow">Account security</div>
+  <div class="page-head">
+    <button class="back-btn" onclick="go('profile.html')" aria-label="Back to profile">←</button>
     <h1>Identity Verification</h1>
-    <p class="subtitle">
-      Verify your identity to help protect your account and meet applicable
-      verification requirements.
-    </p>
-  </section>
+  </div>
+  <p class="subtitle">Verify your identity to help protect your account and meet applicable verification requirements.</p>
 
   <section class="card">
     <div class="status-row">
       <div class="status-icon" id="statusIcon">◈</div>
       <div style="flex:1;min-width:0">
         <div class="status-label" id="statusTitle">Checking verification status…</div>
-        <div class="status-description" id="statusDescription">
-          Please wait while we check your account.
-        </div>
+        <div class="status-description" id="statusDescription">Please wait while we check your account.</div>
         <span class="badge unknown" id="statusBadge">Checking</span>
       </div>
     </div>
-
     <div id="rejectionBox" class="rejection-box hidden"></div>
   </section>
 
-  <div class="notice warning" id="privacyNotice">
+  <div class="notice" id="privacyNotice">
     <span class="notice-icon">ⓘ</span>
     <div>
       <strong>Before you continue</strong><br>
-      Enter your legal details accurately. Upload genuine documents that belong
-      to you. Your information should only be accessible to authorized systems
-      and reviewers.
+      Enter your legal details accurately. Upload genuine documents that belong to you. Your information should only be accessible to authorized systems and reviewers.
     </div>
   </div>
 
   <div class="notice error hidden" id="schemaNotice">
     <span class="notice-icon">!</span>
-    <div id="schemaNoticeText">
-      Verification information could not be loaded. Please try again later.
-    </div>
+    <div id="schemaNoticeText">Verification information could not be loaded. Please try again later.</div>
   </div>
 
   <section class="card" id="formCard">
     <h2 class="card-title">Personal Information</h2>
-    <p class="card-subtitle">
-      Use the same details shown on your identity document.
-    </p>
+    <p class="card-subtitle">Use the same details shown on your identity document.</p>
 
     <form id="kycForm">
       <div class="form-grid">
 
         <div class="field full">
           <label for="fullName">Full Legal Name</label>
-          <input
-            id="fullName"
-            name="fullName"
-            type="text"
-            placeholder="Enter your name as shown on your ID"
-            autocomplete="name"
-            minlength="3"
-            maxlength="120"
-            required
-          >
+          <input id="fullName" name="fullName" type="text" placeholder="Enter your name as shown on your ID" autocomplete="name" minlength="3" maxlength="120" required>
         </div>
 
         <div class="field">
@@ -693,16 +258,7 @@ select option{background:#0d1b2d}
 
         <div class="field">
           <label for="idNumber">Document Number</label>
-          <input
-            id="idNumber"
-            name="idNumber"
-            type="text"
-            placeholder="Enter document number"
-            minlength="3"
-            maxlength="60"
-            autocomplete="off"
-            required
-          >
+          <input id="idNumber" name="idNumber" type="text" placeholder="Enter document number" minlength="3" maxlength="60" autocomplete="off" required>
         </div>
 
         <div class="field full">
@@ -710,16 +266,8 @@ select option{background:#0d1b2d}
           <div class="upload-box">
             <div class="upload-icon">▧</div>
             <div class="upload-title">Upload your identity document</div>
-            <div class="upload-description">
-              JPEG, PNG or PDF · Maximum 10 MB
-            </div>
-            <input
-              id="idFile"
-              name="idFile"
-              type="file"
-              accept=".jpg,.jpeg,.png,.pdf,image/jpeg,image/png,application/pdf"
-              required
-            >
+            <div class="upload-description">JPEG, PNG or PDF · Maximum 10 MB</div>
+            <input id="idFile" name="idFile" type="file" accept=".jpg,.jpeg,.png,.pdf,image/jpeg,image/png,application/pdf" required>
             <div class="file-name" id="idFileName"></div>
           </div>
         </div>
@@ -729,16 +277,8 @@ select option{background:#0d1b2d}
           <div class="upload-box">
             <div class="upload-icon">◎</div>
             <div class="upload-title">Upload a clear selfie</div>
-            <div class="upload-description">
-              JPEG or PNG · Maximum 10 MB
-            </div>
-            <input
-              id="selfieFile"
-              name="selfieFile"
-              type="file"
-              accept=".jpg,.jpeg,.png,image/jpeg,image/png"
-              required
-            >
+            <div class="upload-description">JPEG or PNG · Maximum 10 MB</div>
+            <input id="selfieFile" name="selfieFile" type="file" accept=".jpg,.jpeg,.png,image/jpeg,image/png" required>
             <div class="file-name" id="selfieFileName"></div>
           </div>
         </div>
@@ -747,64 +287,38 @@ select option{background:#0d1b2d}
 
       <div class="check-row">
         <input type="checkbox" id="declaration" required>
-        <label for="declaration" style="margin:0;font-weight:400">
-          I confirm that the information provided is accurate, the documents
-          belong to me, and I consent to their processing for identity
-          verification in accordance with the applicable privacy policy.
-        </label>
+        <label for="declaration">I confirm that the information provided is accurate, the documents belong to me, and I consent to their processing for identity verification in accordance with the applicable privacy policy.</label>
       </div>
 
-      <button type="submit" class="primary-btn" id="submitBtn">
-        Submit for Verification
-      </button>
-
-      <button type="button" class="secondary-btn" id="retryBtn">
-        Refresh Verification Status
-      </button>
+      <button type="submit" class="primary-btn" id="submitBtn">Submit for Verification</button>
+      <button type="button" class="secondary-btn" id="retryBtn">Refresh Verification Status</button>
     </form>
   </section>
 
   <section class="card hidden" id="approvedCard">
     <div class="status-row">
-      <div class="status-icon" style="color:var(--green)">✓</div>
+      <div class="status-icon" style="color:var(--green);background:rgba(50,196,141,.12)">✓</div>
       <div>
         <h2 class="card-title">Identity Verified</h2>
-        <p class="card-subtitle" style="margin:4px 0 0">
-          Your identity verification has been marked as approved.
-        </p>
+        <p class="card-subtitle" style="margin:4px 0 0">Your identity verification has been marked as approved.</p>
       </div>
     </div>
-    <a class="primary-btn" href="profile.html"
-       style="display:grid;place-items:center;margin-top:18px">
-      Return to Profile
-    </a>
+    <a class="primary-btn" href="profile.html" style="display:grid;place-items:center;margin-top:18px">Return to Profile</a>
   </section>
 
-  <div class="footer-note">
-    AITIVEST · Protect your account information. Never share your password
-    or authentication codes with anyone.
-  </div>
+  <div class="footer-note">AITIVEST · Protect your account information. Never share your password or authentication codes with anyone.</div>
 
 </main>
 
-<nav class="bottom-nav">
-  <div class="bottom-inner">
-    <a class="nav-item" href="dashboard.html">
-      <span>◈</span><span>Portfolio</span>
-    </a>
-    <a class="nav-item" href="deposit.html">
-      <span>＋</span><span>Deposit</span>
-    </a>
-    <a class="nav-item" href="transactions.html">
-      <span>↻</span><span>History</span>
-    </a>
-    <a class="nav-item active" href="profile.html">
-      <span>♙</span><span>Account</span>
-    </a>
-  </div>
+<nav class="bottom-nav" aria-label="Bottom navigation">
+  <button class="bottom-link" onclick="go('dashboard.html')"><span class="bottom-icon">⌂</span><span>Portfolio</span></button>
+  <button class="bottom-link" onclick="go('deposit.html')"><span class="bottom-icon">＋</span><span>Deposit</span></button>
+  <button class="bottom-link" onclick="go('transactions.html')"><span class="bottom-icon">≡</span><span>History</span></button>
+  <button class="bottom-link active" onclick="go('profile.html')"><span class="bottom-icon">○</span><span>Account</span></button>
 </nav>
+</div>
 
-<div id="toast" role="status" aria-live="polite"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
 /* ==========================================================
@@ -822,10 +336,7 @@ const KYC_TABLE = "kyc_submissions";
 const KYC_BUCKET = "kyc-documents";
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
 
-const db = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let currentUser = null;
 let existingKyc = null;
@@ -833,6 +344,7 @@ let kycTableAvailable = true;
 let submitting = false;
 
 const $ = id => document.getElementById(id);
+function go(page){ window.location.href = page; }
 
 function toast(message) {
   const el = $("toast");
@@ -1038,11 +550,6 @@ function validateFile(file, kind) {
 async function loadKyc() {
   hideSchemaError();
 
-  /*
-   * Start with the common fields. If the table or columns are not
-   * configured, show an explicit error instead of pretending no
-   * KYC submission exists.
-   */
   let result = await db
     .from(KYC_TABLE)
     .select("id,user_id,status,rejection_reason")
@@ -1050,9 +557,7 @@ async function loadKyc() {
     .order("created_at", { ascending: false })
     .limit(1);
 
-  /*
-   * Some installations may not have created_at. Try without ordering.
-   */
+  /* Some installations may not have created_at. Try without ordering. */
   if (result.error) {
     result = await db
       .from(KYC_TABLE)
@@ -1098,10 +603,7 @@ async function loadKyc() {
   const record = rows[0] || null;
   renderStatus(record);
 
-  /*
-   * Load previously saved form fields only if those columns exist.
-   * This is separate so a missing optional column does not break status.
-   */
+  /* Load previously saved form fields only if those columns exist. */
   if (record) {
     const details = await db
       .from(KYC_TABLE)
@@ -1153,7 +655,7 @@ async function cleanupUploads(paths) {
   try {
     await db.storage.from(KYC_BUCKET).remove(paths);
   } catch (e) {
-    // Best-effort cleanup only. Storage policies must permit it.
+    /* Best-effort cleanup only. Storage policies must permit it. */
   }
 }
 
@@ -1232,11 +734,8 @@ async function submitKyc(event) {
   const uploadedPaths = [];
 
   try {
-    /*
-     * Re-check status immediately before uploading to reduce the
-     * chance of submitting over an already-approved record.
-     * Server-side policies must still enforce this securely.
-     */
+    /* Re-check status immediately before uploading. Server-side
+       policies must still enforce this securely. */
     const check = await db
       .from(KYC_TABLE)
       .select("id,user_id,status")
@@ -1298,10 +797,8 @@ async function submitKyc(event) {
     let saveResult;
 
     if (freshRecord && freshStatus === "REJECTED") {
-      /*
-       * Update only the rejected record belonging to this user.
-       * RLS must also prevent changing approval status from the browser.
-       */
+      /* Update only the rejected record belonging to this user.
+         RLS must also prevent changing approval status from the browser. */
       saveResult = await db
         .from(KYC_TABLE)
         .update(submission)
@@ -1361,38 +858,42 @@ async function submitKyc(event) {
 }
 
 async function init() {
-  const { data, error } = await db.auth.getSession();
+  try {
+    const { data, error } = await db.auth.getSession();
 
-  if (error || !data.session) {
-    window.location.replace("signin.html");
-    return;
+    if (error || !data.session) {
+      window.location.replace("signin.html");
+      return;
+    }
+
+    currentUser = data.session.user;
+
+    const initials = (
+      currentUser.user_metadata?.full_name ||
+      currentUser.email ||
+      "A"
+    ).trim().charAt(0).toUpperCase();
+
+    $("avatar").textContent = initials;
+
+    /* Prefill the name from profiles when available. */
+    const profile = await db
+      .from("profiles")
+      .select("id,full_name")
+      .eq("id", currentUser.id)
+      .maybeSingle();
+
+    if (!profile.error && profile.data?.full_name) {
+      $("fullName").value = profile.data.full_name;
+    }
+
+    await loadKyc();
+  } catch (err) {
+    console.error("KYC page initialization error:", err);
+    toast("Unable to load this page. Please refresh.");
+  } finally {
+    setTimeout(() => { $("loadingScreen").style.display = "none"; }, 300);
   }
-
-  currentUser = data.session.user;
-
-  const initials = (
-    currentUser.user_metadata?.full_name ||
-    currentUser.email ||
-    "A"
-  ).trim().charAt(0).toUpperCase();
-
-  $("avatar").textContent = initials;
-
-  /*
-   * Prefill the name from profiles when available.
-   * This does not assume optional profile columns exist.
-   */
-  const profile = await db
-    .from("profiles")
-    .select("id,full_name")
-    .eq("id", currentUser.id)
-    .maybeSingle();
-
-  if (!profile.error && profile.data?.full_name) {
-    $("fullName").value = profile.data.full_name;
-  }
-
-  await loadKyc();
 }
 
 $("kycForm").addEventListener("submit", submitKyc);
@@ -1420,20 +921,20 @@ $("selfieFile").addEventListener("change", () => {
     $("selfieFile").files[0]?.name || "";
 });
 
-/* Mobile drawer */
+/* Side drawer (same behavior as dashboard and withdraw) */
 function openDrawer() {
   $("drawer").classList.add("open");
-  $("drawerBackdrop").classList.add("open");
+  $("overlay").classList.add("show");
 }
 
 function closeDrawer() {
   $("drawer").classList.remove("open");
-  $("drawerBackdrop").classList.remove("open");
+  $("overlay").classList.remove("show");
 }
 
 $("menuBtn").addEventListener("click", openDrawer);
 $("closeDrawer").addEventListener("click", closeDrawer);
-$("drawerBackdrop").addEventListener("click", closeDrawer);
+$("overlay").addEventListener("click", closeDrawer);
 
 document.addEventListener("keydown", event => {
   if (event.key === "Escape") closeDrawer();
