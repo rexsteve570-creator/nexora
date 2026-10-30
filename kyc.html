@@ -170,8 +170,6 @@ input:disabled,select:disabled{opacity:.6;cursor:not-allowed}
     <button class="drawer-link" onclick="go('transactions.html')"><span class="drawer-icon">≡</span>Transactions</button>
     <button class="drawer-link" onclick="go('referrals.html')"><span class="drawer-icon">♧</span>Referrals</button>
     <button class="drawer-link" onclick="go('profile.html')"><span class="drawer-icon">○</span>Profile</button>
-    <button class="drawer-link active" onclick="go('kyc.html')"><span class="drawer-icon">▣</span>Identity Verification</button>
-    <button class="drawer-link" onclick="go('security.html')"><span class="drawer-icon">♙</span>Security Settings</button>
     <button class="drawer-link" onclick="go('support.html')"><span class="drawer-icon">?</span>Support</button>
     <button class="drawer-link" onclick="go('notifications.html')"><span class="drawer-icon">♢</span>Notifications</button>
     <button class="drawer-link logout" id="logoutBtn"><span class="drawer-icon">↪</span>Logout</button>
@@ -550,6 +548,11 @@ function validateFile(file, kind) {
 async function loadKyc() {
   hideSchemaError();
 
+  /*
+   * Start with the common fields. If the table or columns are not
+   * configured, show an explicit error instead of pretending no
+   * KYC submission exists.
+   */
   let result = await db
     .from(KYC_TABLE)
     .select("id,user_id,status,rejection_reason")
@@ -557,7 +560,9 @@ async function loadKyc() {
     .order("created_at", { ascending: false })
     .limit(1);
 
-  /* Some installations may not have created_at. Try without ordering. */
+  /*
+   * Some installations may not have created_at. Try without ordering.
+   */
   if (result.error) {
     result = await db
       .from(KYC_TABLE)
@@ -603,7 +608,10 @@ async function loadKyc() {
   const record = rows[0] || null;
   renderStatus(record);
 
-  /* Load previously saved form fields only if those columns exist. */
+  /*
+   * Load previously saved form fields only if those columns exist.
+   * This is separate so a missing optional column does not break status.
+   */
   if (record) {
     const details = await db
       .from(KYC_TABLE)
@@ -655,7 +663,7 @@ async function cleanupUploads(paths) {
   try {
     await db.storage.from(KYC_BUCKET).remove(paths);
   } catch (e) {
-    /* Best-effort cleanup only. Storage policies must permit it. */
+    // Best-effort cleanup only. Storage policies must permit it.
   }
 }
 
@@ -734,8 +742,11 @@ async function submitKyc(event) {
   const uploadedPaths = [];
 
   try {
-    /* Re-check status immediately before uploading. Server-side
-       policies must still enforce this securely. */
+    /*
+     * Re-check status immediately before uploading to reduce the
+     * chance of submitting over an already-approved record.
+     * Server-side policies must still enforce this securely.
+     */
     const check = await db
       .from(KYC_TABLE)
       .select("id,user_id,status")
@@ -797,8 +808,10 @@ async function submitKyc(event) {
     let saveResult;
 
     if (freshRecord && freshStatus === "REJECTED") {
-      /* Update only the rejected record belonging to this user.
-         RLS must also prevent changing approval status from the browser. */
+      /*
+       * Update only the rejected record belonging to this user.
+       * RLS must also prevent changing approval status from the browser.
+       */
       saveResult = await db
         .from(KYC_TABLE)
         .update(submission)
@@ -876,7 +889,10 @@ async function init() {
 
     $("avatar").textContent = initials;
 
-    /* Prefill the name from profiles when available. */
+    /*
+     * Prefill the name from profiles when available.
+     * This does not assume optional profile columns exist.
+     */
     const profile = await db
       .from("profiles")
       .select("id,full_name")
