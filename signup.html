@@ -1,15 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#07111f">
-<meta name="description" content="Create your AITIVEST account securely.">
-
-<title>Create Account — AITIVEST</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<style>
+<meta name="description" content="Create your AITIVEST account securely."><title>Create Account — AITIVEST</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><style>
 :root {
     --bar:#0a1628;
     --bg:#07111f;
@@ -229,7 +224,6 @@ input:focus{
     min-height:0;
 }
 
-/* CAPTCHA — MATCHING DARK NAVY AND GOLD THEME */
 .captcha{
     display:flex;
     align-items:center;
@@ -373,6 +367,49 @@ input:focus{
     color:var(--success);
 }
 
+.email-notice{
+    display:none;
+    padding:17px;
+    margin-bottom:19px;
+    border:1px solid rgba(216,177,90,.35);
+    border-radius:5px;
+    background:rgba(216,177,90,.07);
+    color:#e9edf5;
+    font-size:13px;
+    line-height:1.75;
+}
+
+.email-notice.visible{display:block}
+
+.email-notice .notice-icon{
+    font-size:30px;
+    margin-bottom:8px;
+}
+
+.email-notice h2{
+    color:var(--gold);
+    font-size:19px;
+    margin:0 0 10px;
+}
+
+.email-notice p{margin:9px 0}
+
+.email-notice strong{color:#fff}
+
+.email-notice .spam-tip{
+    padding:11px;
+    margin-top:12px;
+    background:rgba(216,177,90,.08);
+    border-left:3px solid var(--gold);
+    border-radius:3px;
+}
+
+.email-notice .notice-footer{
+    color:var(--muted);
+    font-size:11px;
+    margin-top:13px;
+}
+
 .bottom{
     margin-top:23px;
     text-align:center;
@@ -417,159 +454,187 @@ input:focus{
     .brand{font-size:18px}
     .header{padding:0 12px}
 }
-</style>
-</head>
-
-<body>
-
-<nav class="topbar" aria-label="Account navigation">
+</style></head><body><nav class="topbar" aria-label="Account navigation">
     <a href="signin.html">Sign In</a>
     <a href="signup.html" class="active">Registration</a>
-</nav>
-
-<header class="header">
+</nav><header class="header">
     <div class="header-inner">
         <a href="index.html" class="brand" aria-label="AITIVEST home">
             <span class="brand-mark">A</span>
             <span><span class="brand-aiti">AITI</span><span class="brand-vest">VEST</span></span>
-        </a>
-
-        <div class="header-actions">
-            <select class="language" aria-label="Language">
-                <option value="en">EN</option>
-            </select>
-            <button class="menu" id="menuButton" type="button"
-                    aria-label="Go to homepage">☰</button>
-        </div>
+        </a>    <div class="header-actions">
+        <select class="language" aria-label="Language">
+            <option value="en">EN</option>
+        </select>
+        <button class="menu" id="menuButton" type="button"
+                aria-label="Go to homepage">☰</button>
     </div>
-</header>
+</div>
 
-<main>
+</header><main>
     <div class="card">
-        <h1>Create Your Account</h1>
+        <h1>Create Your Account</h1>    <p class="subtitle">
+        Register for your AITIVEST account using your email address.
+    </p>
 
-        <p class="subtitle">
-            Register for your AITIVEST account using your email address.
+    <div class="divider"></div>
+
+    <div id="message" class="message" role="status" aria-live="polite"></div>
+
+    <!-- EMAIL CONFIRMATION NOTICE -->
+    <div id="emailNotice" class="email-notice"
+         role="status" aria-live="polite">
+
+        <div class="notice-icon">📩</div>
+
+        <h2>Check Your Email!</h2>
+
+        <p>
+            Your AITIVEST registration was successful and a
+            verification email has been requested.
         </p>
 
-        <div class="divider"></div>
+        <p>
+            Please open your email application and check your
+            <strong>Inbox</strong> for the AITIVEST confirmation email.
+        </p>
 
-        <div id="message" class="message" role="status" aria-live="polite"></div>
-
-        <form id="signupForm" novalidate>
-            <div class="field">
-                <label for="fullName">Full Name</label>
-                <input type="text" id="fullName"
-                       placeholder="Enter your full name"
-                       autocomplete="name" minlength="2"
-                       maxlength="100" required>
-                <div class="error" id="nameError"></div>
-            </div>
-
-            <div class="field">
-                <label for="email">Email Address</label>
-                <input type="email" id="email"
-                       placeholder="Enter your email address"
-                       autocomplete="email" maxlength="254" required>
-                <div class="error" id="emailError"></div>
-            </div>
-
-            <div class="field">
-                <label for="password">Password</label>
-                <div class="input-wrap">
-                    <input type="password" id="password"
-                           class="password-input"
-                           placeholder="Create a password"
-                           autocomplete="new-password"
-                           minlength="8" maxlength="128" required>
-                    <button type="button" class="toggle"
-                            id="togglePassword">Show</button>
-                </div>
-
-                <div class="strength">
-                    <div id="strengthBar" class="strength-bar"></div>
-                </div>
-
-                <div id="strengthText" class="strength-text">
-                    Use at least 8 characters.
-                </div>
-                <div class="error" id="passwordError"></div>
-            </div>
-
-            <div class="field">
-                <label for="confirmPassword">Confirm Password</label>
-                <div class="input-wrap">
-                    <input type="password" id="confirmPassword"
-                           class="password-input"
-                           placeholder="Confirm your password"
-                           autocomplete="new-password"
-                           maxlength="128" required>
-                    <button type="button" class="toggle"
-                            id="toggleConfirm">Show</button>
-                </div>
-                <div class="error" id="confirmError"></div>
-            </div>
-
-            <div class="field">
-                <label for="captchaInput">Security Check</label>
-
-                <div class="captcha">
-                    <div id="captchaCode" class="captcha-code"
-                         role="img" aria-label="Visual security code"></div>
-
-                    <button type="button" id="refreshCaptcha"
-                            class="refresh-btn"
-                            aria-label="Refresh security code">↻</button>
-                </div>
-
-                <input type="text" id="captchaInput"
-                       class="captcha-input"
-                       placeholder="code"
-                       inputmode="numeric"
-                       pattern="[0-9]{3}"
-                       maxlength="3"
-                       autocomplete="off" required>
-
-                <p class="captcha-help">
-                    Enter the three digits shown above. Tap ↻ to generate a new code.
-                </p>
-                <div class="error" id="captchaError"></div>
-            </div>
-
-            <div class="terms">
-                <input type="checkbox" id="terms" required>
-                <label for="terms">
-                    I agree to the
-                    <a href="index.html#terms">Terms</a>,
-                    <a href="index.html#privacy">Privacy Policy</a>
-                    and
-                    <a href="index.html#risk">Risk Disclosure</a>.
-                </label>
-            </div>
-
-            <div class="error" id="termsError"></div>
-
-            <button type="submit" class="submit" id="submitBtn">
-                Create Account
-            </button>
-        </form>
-
-        <div class="bottom">
-            Already have an account?
-            <a href="signin.html">Sign In</a>
+        <div class="spam-tip">
+            <strong>⚠️ Can't find the email?</strong><br>
+            Please check your <strong>Spam or Junk folder</strong>
+            too. Sometimes email providers mistakenly place
+            verification messages there.
         </div>
 
-        <div class="back">
-            <a href="index.html">← Back to AITIVEST</a>
-        </div>
+        <p>
+            If you find the AITIVEST email in Spam, select
+            <strong>"Report not spam"</strong> or move it to your
+            Inbox.
+        </p>
+
+        <p>
+            Click the <strong>CONFIRM MY EMAIL</strong> button
+            inside the email to complete your registration.
+        </p>
+
+        <p class="notice-footer">
+            Didn't receive the email? Check that your email address
+            was entered correctly and allow a few minutes for delivery.
+        </p>
+
     </div>
-</main>
 
-<footer class="footer">
+    <form id="signupForm" novalidate>
+        <div class="field">
+            <label for="fullName">Full Name</label>
+            <input type="text" id="fullName"
+                   placeholder="Enter your full name"
+                   autocomplete="name" minlength="2"
+                   maxlength="100" required>
+            <div class="error" id="nameError"></div>
+        </div>
+
+        <div class="field">
+            <label for="email">Email Address</label>
+            <input type="email" id="email"
+                   placeholder="Enter your email address"
+                   autocomplete="email" maxlength="254" required>
+            <div class="error" id="emailError"></div>
+        </div>
+
+        <div class="field">
+            <label for="password">Password</label>
+            <div class="input-wrap">
+                <input type="password" id="password"
+                       class="password-input"
+                       placeholder="Create a password"
+                       autocomplete="new-password"
+                       minlength="8" maxlength="128" required>
+                <button type="button" class="toggle"
+                        id="togglePassword">Show</button>
+            </div>
+
+            <div class="strength">
+                <div id="strengthBar" class="strength-bar"></div>
+            </div>
+
+            <div id="strengthText" class="strength-text">
+                Use at least 8 characters.
+            </div>
+            <div class="error" id="passwordError"></div>
+        </div>
+
+        <div class="field">
+            <label for="confirmPassword">Confirm Password</label>
+            <div class="input-wrap">
+                <input type="password" id="confirmPassword"
+                       class="password-input"
+                       placeholder="Confirm your password"
+                       autocomplete="new-password"
+                       maxlength="128" required>
+                <button type="button" class="toggle"
+                        id="toggleConfirm">Show</button>
+            </div>
+            <div class="error" id="confirmError"></div>
+        </div>
+
+        <div class="field">
+            <label for="captchaInput">Security Check</label>
+
+            <div class="captcha">
+                <div id="captchaCode" class="captcha-code"
+                     role="img" aria-label="Visual security code"></div>
+
+                <button type="button" id="refreshCaptcha"
+                        class="refresh-btn"
+                        aria-label="Refresh security code">↻</button>
+            </div>
+
+            <input type="text" id="captchaInput"
+                   class="captcha-input"
+                   placeholder="code"
+                   inputmode="numeric"
+                   pattern="[0-9]{3}"
+                   maxlength="3"
+                   autocomplete="off" required>
+
+            <p class="captcha-help">
+                Enter the three digits shown above. Tap ↻ to generate a new code.
+            </p>
+            <div class="error" id="captchaError"></div>
+        </div>
+
+        <div class="terms">
+            <input type="checkbox" id="terms" required>
+            <label for="terms">
+                I agree to the
+                <a href="index.html#terms">Terms</a>,
+                <a href="index.html#privacy">Privacy Policy</a>
+                and
+                <a href="index.html#risk">Risk Disclosure</a>.
+            </label>
+        </div>
+
+        <div class="error" id="termsError"></div>
+
+        <button type="submit" class="submit" id="submitBtn">
+            Create Account
+        </button>
+    </form>
+
+    <div class="bottom">
+        Already have an account?
+        <a href="signin.html">Sign In</a>
+    </div>
+
+    <div class="back">
+        <a href="index.html">← Back to AITIVEST</a>
+    </div>
+</div>
+
+</main><footer class="footer">
     AITIVEST · Secure Account Registration
-</footer>
-
-<script>
+</footer><script>
 "use strict";
 
 const SUPABASE_URL =
@@ -599,6 +664,7 @@ const captchaInput = document.getElementById("captchaInput");
 const captchaCode = document.getElementById("captchaCode");
 const submitBtn = document.getElementById("submitBtn");
 const message = document.getElementById("message");
+const emailNotice = document.getElementById("emailNotice");
 const terms = document.getElementById("terms");
 const strengthBar = document.getElementById("strengthBar");
 const strengthText = document.getElementById("strengthText");
@@ -639,6 +705,18 @@ function showMessage(text,type){
 function clearMessage(){
     message.className = "message";
     message.textContent = "";
+}
+
+function showEmailNotice(){
+    message.className = "message";
+    message.textContent = "";
+
+    emailNotice.classList.add("visible");
+
+    emailNotice.scrollIntoView({
+        behavior:"smooth",
+        block:"center"
+    });
 }
 
 function setError(id,text){
@@ -783,6 +861,7 @@ form.addEventListener("submit",async function(event){
 
     clearMessage();
     clearErrors();
+    emailNotice.classList.remove("visible");
 
     const name = fullName.value.trim();
     const emailValue = email.value.trim().toLowerCase();
@@ -862,10 +941,7 @@ form.addEventListener("submit",async function(event){
 
             setTimeout(()=>location.replace("dashboard.html"),1200);
         }else{
-            showMessage(
-                "Your registration was accepted. Please check your email and confirm your address before signing in.",
-                "success"
-            );
+            showEmailNotice();
 
             form.reset();
             generateCaptcha();
@@ -902,7 +978,5 @@ form.addEventListener("submit",async function(event){
 
 document.getElementById("menuButton")
 .addEventListener("click",()=>location.href="index.html");
-</script>
-
-</body>
+</script></body>
 </html>
