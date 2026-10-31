@@ -867,19 +867,7 @@ modal.querySelectorAll(".modal-tabs button").forEach(b => b.addEventListener("cl
 $("docClose").addEventListener("click", closeDoc);
 $("docOk").addEventListener("click", closeDoc);
 modal.addEventListener("click", e => { if (e.target === modal) closeDoc(); });
-document.addEventListener("keydown", e => { if (e.key === "Escape" && modal.classList.contains("open")) closeDoc(); });
-
-/* ---------- Platform activity (simple numbers, no database) ----------
-   Type your REAL figures below and save. They are shown exactly as written.
-   Leave everything at 0 and the section stays hidden.
-   Only publish numbers that are true: made-up user or payout figures on an
-   investment site can mislead people and cause legal trouble. */
-const STATS = {
-  users_today: 560+,
-  users_week: 3000+,
-  profit_paid: $10,000,       // in US dollars
-  profit_returned: $6500,   // in US dollars
-  updated: ""           // e.g. "October 30, 2026" (optional)
+document.addEventListener("keydown", e => { if (e.key === "Escape" && modal.classList.contains("open")) closeDoc(); }
 };
 
 (function showStats() {
