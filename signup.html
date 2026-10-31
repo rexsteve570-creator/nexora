@@ -1,982 +1,1056 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#07111f">
-<meta name="description" content="Create your AITIVEST account securely."><title>Create Account — AITIVEST</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><style>
+<title>AITIVEST — Create Account</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
 :root {
-    --bar:#0a1628;
-    --bg:#07111f;
-    --card:#0d1b2c;
-    --text:#f5f7fb;
-    --muted:#93a1b5;
-    --gold:#d8b15a;
-    --border:#26384e;
-    --input:#081522;
-    --error:#ff9292;
-    --success:#8be6aa;
+    --bg: #07111f;
+    --panel: #0d1b2e;
+    --panel2: #10223a;
+    --gold: #d9a441;
+    --gold-light: #f2cf78;
+    --text: #f4f7fb;
+    --muted: #a6b4c8;
+    --border: rgba(255,255,255,.10);
+    --green: #32c48d;
+    --red: #ef6b73;
 }
 
-*{box-sizing:border-box}
-
-body{
-    margin:0;
-    min-height:100vh;
-    font-family:Arial,Helvetica,sans-serif;
-    background:var(--bg);
-    color:var(--text);
+* {
+    box-sizing: border-box;
 }
 
-a{text-decoration:none}
-
-.topbar{
-    min-height:43px;
-    background:#050b15;
-    border-bottom:1px solid rgba(216,177,90,.15);
-    display:flex;
-    align-items:center;
-    gap:24px;
-    padding:10px max(16px,calc((100% - 760px)/2));
+body {
+    margin: 0;
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at top, rgba(217,164,65,.09), transparent 38%),
+        var(--bg);
+    color: var(--text);
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 20px 14px 35px;
 }
 
-.topbar a{font-size:13px;color:#aeb9c9}
-.topbar a.active,.topbar a:hover{color:var(--gold)}
-
-.header{
-    height:68px;
-    padding:0 18px;
-    background:var(--bar);
-    border-bottom:1px solid rgba(216,177,90,.15);
+a {
+    color: var(--gold-light);
+    text-decoration: none;
 }
 
-.header-inner{
-    width:100%;
-    max-width:760px;
-    height:100%;
-    margin:auto;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:12px;
+a:hover {
+    text-decoration: underline;
 }
 
-.brand{
-    display:inline-flex;
-    align-items:center;
-    gap:9px;
-    font-size:21px;
-    font-weight:900;
-    letter-spacing:2px;
+.topbar {
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
 }
 
-.brand-mark{
-    width:32px;
-    height:32px;
-    display:inline-flex;
-    justify-content:center;
-    align-items:center;
-    color:var(--gold);
-    border:1.5px solid var(--gold);
-    clip-path:polygon(50% 0,100% 100%,0 100%);
-    font-size:18px;
-    padding-top:6px;
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 19px;
+    font-weight: 800;
+    letter-spacing: 1px;
 }
 
-.brand-aiti{color:#fff}
-.brand-vest{color:var(--gold)}
-
-.header-actions{
-    display:flex;
-    align-items:center;
-    gap:13px;
+.brand-mark {
+    width: 39px;
+    height: 39px;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    color: #07111f;
+    background: linear-gradient(135deg, var(--gold-light), var(--gold));
+    font-size: 22px;
+    font-weight: 900;
 }
 
-.language{
-    color:#e7edf6;
-    background:#0b192b;
-    border:1px solid var(--border);
-    border-radius:5px;
-    padding:8px 9px;
-    font-size:12px;
-    outline:none;
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-.menu{
-    width:38px;
-    height:38px;
-    border:1px solid var(--border);
-    border-radius:6px;
-    background:#0b192b;
-    color:var(--gold);
-    font-size:22px;
-    cursor:pointer;
+.language,
+.menu {
+    border: 1px solid var(--border);
+    background: var(--panel);
+    color: var(--text);
+    border-radius: 9px;
+    min-height: 38px;
+    padding: 8px 10px;
 }
 
-main{
-    min-height:calc(100vh - 111px);
-    padding:38px 16px 32px;
-    display:flex;
-    justify-content:center;
-    align-items:flex-start;
+.menu {
+    cursor: pointer;
+    font-size: 18px;
 }
 
-.card{
-    width:100%;
-    max-width:440px;
-    padding:27px 24px 25px;
-    background:var(--card);
-    border:1px solid rgba(216,177,90,.22);
-    border-radius:5px;
-    box-shadow:0 18px 55px rgba(0,0,0,.22);
+.card {
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+    background: linear-gradient(160deg, var(--panel), #091626);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 26px 21px;
+    box-shadow: 0 18px 55px rgba(0,0,0,.22);
 }
 
-h1{margin:0 0 9px;font-size:25px;font-weight:700}
-
-.subtitle{
-    margin:0 0 24px;
-    font-size:13px;
-    line-height:1.6;
-    color:var(--muted);
+h1 {
+    margin: 0 0 10px;
+    font-size: 27px;
+    line-height: 1.25;
+    letter-spacing: -.5px;
 }
 
-.divider{
-    height:1px;
-    background:var(--border);
-    margin-bottom:22px;
+.subtitle {
+    margin: 0;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.7;
 }
 
-.field{margin-bottom:14px}
-
-label{
-    display:block;
-    font-size:13px;
-    color:#cbd5e1;
-    margin:0 0 7px;
+.divider {
+    height: 1px;
+    background: var(--border);
+    margin: 22px 0;
 }
 
-.input-wrap{position:relative}
+.message {
+    display: none;
+    padding: 12px 13px;
+    margin-bottom: 16px;
+    border-radius: 10px;
+    font-size: 13px;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+.message.error-message {
+    display: block;
+    color: #ffd5d8;
+    background: rgba(239,107,115,.10);
+    border: 1px solid rgba(239,107,115,.30);
+}
+
+.message.success-message {
+    display: block;
+    color: #c5ffe8;
+    background: rgba(50,196,141,.10);
+    border: 1px solid rgba(50,196,141,.30);
+}
+
+.field {
+    margin-bottom: 17px;
+}
+
+.field label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 13px;
+    font-weight: 700;
+}
 
 input[type="text"],
 input[type="email"],
-input[type="password"]{
-    display:block;
-    width:100%;
-    height:47px;
-    padding:0 13px;
-    font-size:14px;
-    border:1px solid var(--border);
-    border-radius:4px;
-    background:var(--input);
-    color:#fff;
-    outline:none;
+input[type="password"] {
+    width: 100%;
+    min-width: 0;
+    padding: 13px 14px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,.13);
+    outline: none;
+    background: #081423;
+    color: var(--text);
+    font-size: 14px;
 }
 
-input::placeholder{color:#637286}
-
-input:focus{
-    border-color:var(--gold);
-    box-shadow:0 0 0 2px rgba(216,177,90,.08);
+input:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(217,164,65,.10);
 }
 
-.password-input{padding-right:65px!important}
-
-.toggle{
-    position:absolute;
-    right:11px;
-    top:50%;
-    transform:translateY(-50%);
-    background:none;
-    border:0;
-    color:var(--gold);
-    font-size:12px;
-    font-weight:700;
-    cursor:pointer;
+input::placeholder {
+    color: #718197;
 }
 
-.strength{
-    height:4px;
-    width:100%;
-    background:#172536;
-    border-radius:10px;
-    margin-top:8px;
-    overflow:hidden;
+.input-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-right: 10px;
+    background: #081423;
+    border: 1px solid rgba(255,255,255,.13);
+    border-radius: 10px;
 }
 
-.strength-bar{
-    height:100%;
-    width:0;
-    background:var(--gold);
-    transition:width .2s,background .2s;
+.input-wrap:focus-within {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(217,164,65,.10);
 }
 
-.strength-text{
-    font-size:11px;
-    color:#7f8da0;
-    margin-top:6px;
+.input-wrap input {
+    border: 0;
+    box-shadow: none;
+    background: transparent;
+    flex: 1;
+    width: 0;
 }
 
-.error{
-    color:var(--error);
-    font-size:11px;
-    text-align:right;
-    margin-top:4px;
-    min-height:0;
+.input-wrap input:focus {
+    box-shadow: none;
 }
 
-.captcha{
-    display:flex;
-    align-items:center;
-    gap:10px;
+.toggle {
+    border: 0;
+    background: transparent;
+    color: var(--gold-light);
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 8px 2px;
 }
 
-.captcha-code{
-    position:relative;
-    isolation:isolate;
-    overflow:hidden;
-    flex:1;
-    height:44px;
-    border:1px solid #26384e;
-    border-radius:4px;
-    background:#081522;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    gap:10px;
-    user-select:none;
+.strength {
+    width: 100%;
+    height: 5px;
+    border-radius: 10px;
+    margin-top: 10px;
+    overflow: hidden;
+    background: #24344a;
 }
 
-.captcha-digit{
-    position:relative;
-    z-index:2;
-    color:#d8b15a;
-    font-family:Georgia,serif;
-    font-size:25px;
-    font-weight:900;
-    text-shadow:0 0 8px rgba(216,177,90,.22);
+.strength-bar {
+    width: 0;
+    height: 100%;
+    background: var(--red);
+    transition: width .2s, background .2s;
 }
 
-.captcha-noise{
-    position:absolute;
-    inset:0;
-    z-index:1;
-    pointer-events:none;
+.strength-text {
+    margin-top: 6px;
+    color: var(--muted);
+    font-size: 11px;
 }
 
-.captcha-line{
-    position:absolute;
-    height:1px;
-    background:rgba(216,177,90,.42);
+.error {
+    color: #ff9da4;
+    font-size: 12px;
+    margin-top: 6px;
+    line-height: 1.5;
 }
 
-.captcha-dot{
-    position:absolute;
-    width:3px;
-    height:3px;
-    border-radius:50%;
-    background:#d8b15a;
-    opacity:.5;
+.terms {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    margin: 19px 0 8px;
 }
 
-.refresh-btn{
-    width:44px;
-    height:44px;
-    flex-shrink:0;
-    border-radius:4px;
-    border:1px solid #26384e;
-    background:#081522;
-    color:#d8b15a;
-    font-size:22px;
-    cursor:pointer;
+.terms input {
+    margin-top: 4px;
+    accent-color: var(--gold);
+    flex-shrink: 0;
 }
 
-.refresh-btn:hover{background:#14253a}
-
-.captcha-input{margin-top:9px}
-
-.captcha-help{
-    color:#7f8da0;
-    font-size:11px;
-    line-height:1.5;
-    margin-top:6px;
+.terms label {
+    font-size: 12px;
+    line-height: 1.7;
+    color: var(--muted);
 }
 
-.terms{
-    display:flex;
-    align-items:flex-start;
-    gap:9px;
-    margin:17px 0;
+.submit {
+    display: block;
+    width: 100%;
+    border: 0;
+    border-radius: 11px;
+    padding: 15px;
+    margin-top: 18px;
+    background: linear-gradient(135deg, var(--gold-light), var(--gold));
+    color: #101725;
+    font-size: 14px;
+    font-weight: 900;
+    letter-spacing: .5px;
+    cursor: pointer;
 }
 
-.terms input{
-    width:16px;
-    height:16px;
-    margin-top:2px;
-    flex-shrink:0;
-    accent-color:var(--gold);
+.submit:hover {
+    filter: brightness(1.05);
 }
 
-.terms label{
-    margin:0;
-    font-size:12px;
-    line-height:1.6;
-    color:#8998aa;
+.submit:disabled {
+    opacity: .65;
+    cursor: not-allowed;
 }
 
-.terms a{color:var(--gold)}
-
-.submit{
-    width:100%;
-    min-height:48px;
-    margin-top:5px;
-    padding:12px;
-    border:0;
-    border-radius:4px;
-    background:var(--gold);
-    color:#07111f;
-    font-size:14px;
-    font-weight:800;
-    cursor:pointer;
+.bottom {
+    margin-top: 23px;
+    text-align: center;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.8;
 }
 
-.submit:hover{background:#edc96f}
-.submit:disabled{opacity:.6;cursor:not-allowed}
-
-.message{
-    display:none;
-    padding:11px;
-    border-radius:4px;
-    margin-bottom:17px;
-    font-size:12px;
-    line-height:1.6;
-    overflow-wrap:anywhere;
+.bottom a {
+    font-weight: 800;
 }
 
-.message.error{
-    display:block;
-    background:rgba(220,38,38,.08);
-    border:1px solid rgba(255,146,146,.25);
-    color:var(--error);
-    text-align:left;
+.back {
+    margin-top: 18px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--muted);
 }
 
-.message.success{
-    display:block;
-    background:rgba(34,197,94,.08);
-    border:1px solid rgba(139,230,170,.25);
-    color:var(--success);
+.captcha {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 11px;
 }
 
-.email-notice{
-    display:none;
-    padding:17px;
-    margin-bottom:19px;
-    border:1px solid rgba(216,177,90,.35);
-    border-radius:5px;
-    background:rgba(216,177,90,.07);
-    color:#e9edf5;
-    font-size:13px;
-    line-height:1.75;
+.captcha-code {
+    min-width: 125px;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(217,164,65,.35);
+    border-radius: 10px;
+    background:
+        repeating-linear-gradient(
+            -25deg,
+            transparent,
+            transparent 8px,
+            rgba(217,164,65,.08) 9px,
+            transparent 11px
+        ),
+        #081423;
+    color: var(--gold-light);
+    font-size: 24px;
+    font-weight: 900;
+    letter-spacing: 9px;
+    padding-left: 9px;
+    user-select: none;
 }
 
-.email-notice.visible{display:block}
-
-.email-notice .notice-icon{
-    font-size:30px;
-    margin-bottom:8px;
+.refresh-btn {
+    height: 42px;
+    width: 42px;
+    border-radius: 9px;
+    border: 1px solid var(--border);
+    color: var(--gold-light);
+    background: var(--panel2);
+    font-size: 23px;
+    cursor: pointer;
 }
 
-.email-notice h2{
-    color:var(--gold);
-    font-size:19px;
-    margin:0 0 10px;
+.captcha-input {
+    letter-spacing: 5px;
+    text-align: center;
+    font-weight: 800;
 }
 
-.email-notice p{margin:9px 0}
-
-.email-notice strong{color:#fff}
-
-.email-notice .spam-tip{
-    padding:11px;
-    margin-top:12px;
-    background:rgba(216,177,90,.08);
-    border-left:3px solid var(--gold);
-    border-radius:3px;
+.captcha-help {
+    margin: 8px 0 0;
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.6;
 }
 
-.email-notice .notice-footer{
-    color:var(--muted);
-    font-size:11px;
-    margin-top:13px;
+/* EMAIL CONFIRMATION SCREEN */
+
+.email-notice {
+    text-align: center;
 }
 
-.bottom{
-    margin-top:23px;
-    text-align:center;
-    color:var(--muted);
-    font-size:12px;
-    line-height:1.8;
+.email-notice[hidden] {
+    display: none !important;
 }
 
-.bottom a{color:var(--gold);font-weight:700}
-
-.back{margin-top:18px;text-align:center}
-.back a{color:#8391a5;font-size:12px}
-
-.footer{
-    padding:15px 16px 24px;
-    text-align:center;
-    color:#627187;
-    font-size:11px;
+.notice-icon {
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
+    margin: 4px auto 19px;
+    display: grid;
+    place-items: center;
+    font-size: 34px;
+    background: rgba(217,164,65,.12);
+    border: 1px solid rgba(217,164,65,.30);
 }
 
-.loading{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    gap:8px;
+.email-notice h2 {
+    color: var(--gold-light);
+    font-size: 27px;
+    margin: 0 0 17px;
 }
 
-.spinner{
-    width:14px;
-    height:14px;
-    border:2px solid rgba(7,17,31,.3);
-    border-top-color:#07111f;
-    border-radius:50%;
-    animation:spin .7s linear infinite;
+.email-notice p {
+    color: #c2cede;
+    font-size: 14px;
+    line-height: 1.85;
+    margin: 14px 0;
 }
 
-@keyframes spin{to{transform:rotate(360deg)}}
-
-@media(max-width:380px){
-    .card{padding:23px 17px}
-    h1{font-size:23px}
-    .brand{font-size:18px}
-    .header{padding:0 12px}
+.email-notice strong {
+    color: #fff;
 }
-</style></head><body><nav class="topbar" aria-label="Account navigation">
-    <a href="signin.html">Sign In</a>
-    <a href="signup.html" class="active">Registration</a>
-</nav><header class="header">
-    <div class="header-inner">
-        <a href="index.html" class="brand" aria-label="AITIVEST home">
-            <span class="brand-mark">A</span>
-            <span><span class="brand-aiti">AITI</span><span class="brand-vest">VEST</span></span>
-        </a>    <div class="header-actions">
+
+.spam-tip {
+    text-align: left;
+    padding: 15px;
+    margin: 19px 0;
+    border: 1px solid rgba(217,164,65,.30);
+    background: rgba(217,164,65,.08);
+    border-radius: 12px;
+    color: #d6deea;
+    font-size: 13px;
+    line-height: 1.9;
+}
+
+.spam-tip strong:first-child {
+    color: var(--gold-light);
+}
+
+.notice-footer {
+    margin-top: 18px;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+.confirmation-actions {
+    border-top: 1px solid var(--border);
+    margin-top: 24px;
+    padding-top: 20px;
+}
+
+.confirmation-actions p {
+    margin: 0 0 13px;
+    font-size: 13px;
+}
+
+.signin-link {
+    display: block;
+    width: 100%;
+    padding: 15px 12px;
+    border-radius: 11px;
+    background: linear-gradient(135deg, var(--gold-light), var(--gold));
+    color: #101725;
+    font-size: 14px;
+    font-weight: 900;
+    text-align: center;
+    letter-spacing: .2px;
+}
+
+.signin-link:hover {
+    text-decoration: none;
+    filter: brightness(1.06);
+}
+
+.confirmation-back {
+    margin-top: 20px;
+    font-size: 12px;
+}
+
+.footer {
+    max-width: 480px;
+    margin: 25px auto 0;
+    text-align: center;
+    font-size: 11px;
+    color: #77869b;
+    letter-spacing: .3px;
+}
+
+@media (max-width: 380px) {
+    .card {
+        padding: 22px 16px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    .brand {
+        font-size: 17px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+    <a class="brand" href="index.html" aria-label="AITIVEST homepage">
+        <span class="brand-mark">A</span>
+        <span>AITIVEST</span>
+    </a>
+
+    <div class="header-actions">
         <select class="language" aria-label="Language">
             <option value="en">EN</option>
         </select>
+
         <button class="menu" id="menuButton" type="button"
                 aria-label="Go to homepage">☰</button>
     </div>
-</div>
+</header>
 
-</header><main>
-    <div class="card">
-        <h1>Create Your Account</h1>    <p class="subtitle">
-        Register for your AITIVEST account using your email address.
-    </p>
+<main class="card">
 
-    <div class="divider"></div>
+    <section id="registrationSection">
+        <h1>Create Your Account</h1>
 
-    <div id="message" class="message" role="status" aria-live="polite"></div>
+        <p class="subtitle">
+            Register for your AITIVEST account using your email address.
+        </p>
 
-    <!-- EMAIL CONFIRMATION NOTICE -->
-    <div id="emailNotice" class="email-notice"
-         role="status" aria-live="polite">
+        <div class="divider"></div>
+
+        <div id="message" class="message"
+             role="status" aria-live="polite"></div>
+
+        <form id="signupForm" novalidate>
+
+            <div class="field">
+                <label for="fullName">Full Name</label>
+
+                <input type="text" id="fullName"
+                       placeholder="Enter your full name"
+                       autocomplete="name"
+                       minlength="2" maxlength="100" required>
+
+                <div class="error" id="nameError"></div>
+            </div>
+
+            <div class="field">
+                <label for="email">Email Address</label>
+
+                <input type="email" id="email"
+                       placeholder="Enter your email address"
+                       autocomplete="email"
+                       maxlength="254" required>
+
+                <div class="error" id="emailError"></div>
+            </div>
+
+            <div class="field">
+                <label for="password">Password</label>
+
+                <div class="input-wrap">
+                    <input type="password" id="password"
+                           placeholder="Create a password"
+                           autocomplete="new-password"
+                           minlength="8" maxlength="128" required>
+
+                    <button type="button" class="toggle"
+                            id="togglePassword">Show</button>
+                </div>
+
+                <div class="strength">
+                    <div id="strengthBar" class="strength-bar"></div>
+                </div>
+
+                <div id="strengthText" class="strength-text">
+                    Use at least 8 characters.
+                </div>
+
+                <div class="error" id="passwordError"></div>
+            </div>
+
+            <div class="field">
+                <label for="confirmPassword">Confirm Password</label>
+
+                <div class="input-wrap">
+                    <input type="password" id="confirmPassword"
+                           placeholder="Confirm your password"
+                           autocomplete="new-password"
+                           maxlength="128" required>
+
+                    <button type="button" class="toggle"
+                            id="toggleConfirm">Show</button>
+                </div>
+
+                <div class="error" id="confirmError"></div>
+            </div>
+
+            <div class="field">
+                <label for="captchaInput">Security Check</label>
+
+                <div class="captcha">
+                    <div id="captchaCode" class="captcha-code"
+                         role="img" aria-label="Visual security code"></div>
+
+                    <button type="button" id="refreshCaptcha"
+                            class="refresh-btn"
+                            aria-label="Refresh security code">↻</button>
+                </div>
+
+                <input type="text" id="captchaInput"
+                       class="captcha-input"
+                       placeholder="Enter code"
+                       inputmode="numeric"
+                       pattern="[0-9]{3}"
+                       maxlength="3"
+                       autocomplete="off" required>
+
+                <p class="captcha-help">
+                    Enter the three digits shown above.
+                    Tap ↻ to generate a new code.
+                </p>
+
+                <div class="error" id="captchaError"></div>
+            </div>
+
+            <div class="terms">
+                <input type="checkbox" id="terms" required>
+
+                <label for="terms">
+                    I agree to the
+                    <a href="index.html#terms">Terms</a>,
+                    <a href="index.html#privacy">Privacy Policy</a>
+                    and
+                    <a href="index.html#risk">Risk Disclosure</a>.
+                </label>
+            </div>
+
+            <div class="error" id="termsError"></div>
+
+            <button type="submit" class="submit" id="submitBtn">
+                Create Account
+            </button>
+
+        </form>
+
+        <div class="bottom">
+            Already have an account?
+            <a href="signin.html">Sign In</a>
+        </div>
+
+        <div class="back">
+            <a href="index.html">← Back to AITIVEST</a>
+        </div>
+    </section>
+
+    <!-- ONLY THIS SECTION WILL BE VISIBLE AFTER SUCCESSFUL SIGNUP -->
+
+    <section id="emailNotice" class="email-notice" hidden
+             aria-live="polite">
 
         <div class="notice-icon">📩</div>
 
         <h2>Check Your Email!</h2>
 
         <p>
-            Your AITIVEST registration was successful and a
-            verification email has been requested.
+            Your AITIVEST registration was successful.
+            Please check your email to confirm your account.
         </p>
 
         <p>
-            Please open your email application and check your
+            Open your email application and check your
             <strong>Inbox</strong> for the AITIVEST confirmation email.
         </p>
 
         <div class="spam-tip">
             <strong>⚠️ Can't find the email?</strong><br>
-            Please check your <strong>Spam or Junk folder</strong>
-            too. Sometimes email providers mistakenly place
-            verification messages there.
+            Please check your <strong>Spam or Junk folder</strong>.
+            Sometimes email providers mistakenly place confirmation
+            messages there.
         </div>
 
         <p>
             If you find the AITIVEST email in Spam, select
-            <strong>"Report not spam"</strong> or move it to your
-            Inbox.
+            <strong>"Report not spam"</strong> or move it to your Inbox.
         </p>
 
         <p>
-            Click the <strong>CONFIRM MY EMAIL</strong> button
-            inside the email to complete your registration.
+            Open the email and click
+            <strong>CONFIRM MY EMAIL</strong> to complete your registration.
         </p>
 
-        <p class="notice-footer">
-            Didn't receive the email? Check that your email address
-            was entered correctly and allow a few minutes for delivery.
-        </p>
-
-    </div>
-
-    <form id="signupForm" novalidate>
-        <div class="field">
-            <label for="fullName">Full Name</label>
-            <input type="text" id="fullName"
-                   placeholder="Enter your full name"
-                   autocomplete="name" minlength="2"
-                   maxlength="100" required>
-            <div class="error" id="nameError"></div>
+        <div class="notice-footer">
+            If the email has not arrived, check that you entered the
+            correct email address and allow a few minutes for delivery.
         </div>
 
-        <div class="field">
-            <label for="email">Email Address</label>
-            <input type="email" id="email"
-                   placeholder="Enter your email address"
-                   autocomplete="email" maxlength="254" required>
-            <div class="error" id="emailError"></div>
+        <div class="confirmation-actions">
+            <p>Already confirmed your email?</p>
+
+            <a href="signin.html" class="signin-link">
+                Click Here to Sign In →
+            </a>
         </div>
 
-        <div class="field">
-            <label for="password">Password</label>
-            <div class="input-wrap">
-                <input type="password" id="password"
-                       class="password-input"
-                       placeholder="Create a password"
-                       autocomplete="new-password"
-                       minlength="8" maxlength="128" required>
-                <button type="button" class="toggle"
-                        id="togglePassword">Show</button>
-            </div>
-
-            <div class="strength">
-                <div id="strengthBar" class="strength-bar"></div>
-            </div>
-
-            <div id="strengthText" class="strength-text">
-                Use at least 8 characters.
-            </div>
-            <div class="error" id="passwordError"></div>
+        <div class="confirmation-back">
+            <a href="index.html">← Back to AITIVEST</a>
         </div>
 
-        <div class="field">
-            <label for="confirmPassword">Confirm Password</label>
-            <div class="input-wrap">
-                <input type="password" id="confirmPassword"
-                       class="password-input"
-                       placeholder="Confirm your password"
-                       autocomplete="new-password"
-                       maxlength="128" required>
-                <button type="button" class="toggle"
-                        id="toggleConfirm">Show</button>
-            </div>
-            <div class="error" id="confirmError"></div>
-        </div>
+    </section>
 
-        <div class="field">
-            <label for="captchaInput">Security Check</label>
+</main>
 
-            <div class="captcha">
-                <div id="captchaCode" class="captcha-code"
-                     role="img" aria-label="Visual security code"></div>
-
-                <button type="button" id="refreshCaptcha"
-                        class="refresh-btn"
-                        aria-label="Refresh security code">↻</button>
-            </div>
-
-            <input type="text" id="captchaInput"
-                   class="captcha-input"
-                   placeholder="code"
-                   inputmode="numeric"
-                   pattern="[0-9]{3}"
-                   maxlength="3"
-                   autocomplete="off" required>
-
-            <p class="captcha-help">
-                Enter the three digits shown above. Tap ↻ to generate a new code.
-            </p>
-            <div class="error" id="captchaError"></div>
-        </div>
-
-        <div class="terms">
-            <input type="checkbox" id="terms" required>
-            <label for="terms">
-                I agree to the
-                <a href="index.html#terms">Terms</a>,
-                <a href="index.html#privacy">Privacy Policy</a>
-                and
-                <a href="index.html#risk">Risk Disclosure</a>.
-            </label>
-        </div>
-
-        <div class="error" id="termsError"></div>
-
-        <button type="submit" class="submit" id="submitBtn">
-            Create Account
-        </button>
-    </form>
-
-    <div class="bottom">
-        Already have an account?
-        <a href="signin.html">Sign In</a>
-    </div>
-
-    <div class="back">
-        <a href="index.html">← Back to AITIVEST</a>
-    </div>
-</div>
-
-</main><footer class="footer">
+<footer class="footer">
     AITIVEST · Secure Account Registration
-</footer><script>
+</footer>
+
+<script>
 "use strict";
+
+/* SUPABASE CONFIGURATION */
 
 const SUPABASE_URL =
     "https://rihvvwktvgytbqzazage.supabase.co";
 
-const SUPABASE_PUBLISHABLE_KEY =
+const SUPABASE_ANON_KEY =
     "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
 
-const db = window.supabase.createClient(
+const supabaseClient = window.supabase.createClient(
     SUPABASE_URL,
-    SUPABASE_PUBLISHABLE_KEY,
+    SUPABASE_ANON_KEY,
     {
-        auth:{
-            autoRefreshToken:true,
-            persistSession:true,
-            detectSessionInUrl:true
+        auth: {
+            autoRefreshToken: true,
+            persistSession: true,
+            detectSessionInUrl: true
         }
     }
 );
 
-const form = document.getElementById("signupForm");
-const fullName = document.getElementById("fullName");
-const email = document.getElementById("email");
-const password = document.getElementById("password");
-const confirmPassword = document.getElementById("confirmPassword");
+/* ELEMENTS */
+
+const registrationSection =
+    document.getElementById("registrationSection");
+
+const signupForm = document.getElementById("signupForm");
+const emailNotice = document.getElementById("emailNotice");
+const message = document.getElementById("message");
+
+const fullNameInput = document.getElementById("fullName");
+const emailInput = document.getElementById("email");
+const passwordInput = document.getElementById("password");
+const confirmPasswordInput =
+    document.getElementById("confirmPassword");
+
 const captchaInput = document.getElementById("captchaInput");
 const captchaCode = document.getElementById("captchaCode");
+const termsInput = document.getElementById("terms");
+
 const submitBtn = document.getElementById("submitBtn");
-const message = document.getElementById("message");
-const emailNotice = document.getElementById("emailNotice");
-const terms = document.getElementById("terms");
-const strengthBar = document.getElementById("strengthBar");
-const strengthText = document.getElementById("strengthText");
 
-let captchaValue = "";
-let signupInProgress = false;
+let currentCaptcha = "";
 
-const REFERRAL_KEY = "aitivest_signup_referral";
+/* MESSAGE HELPERS */
 
-function getReferralCode(){
-    const params = new URLSearchParams(location.search);
-    const incoming = params.get("ref");
-
-    if(incoming){
-        const cleaned = incoming.trim().toUpperCase();
-
-        if(/^[A-Z0-9_-]{3,64}$/.test(cleaned)){
-            try{sessionStorage.setItem(REFERRAL_KEY,cleaned)}catch(_){}
-            return cleaned;
-        }
-    }
-
-    try{
-        const saved = sessionStorage.getItem(REFERRAL_KEY);
-        if(saved && /^[A-Z0-9_-]{3,64}$/.test(saved)) return saved;
-    }catch(_){}
-
-    return "";
-}
-
-const referralCode = getReferralCode();
-
-function showMessage(text,type){
-    message.className = "message " + type;
+function showMessage(text, type) {
     message.textContent = text;
+    message.className = "message " +
+        (type === "success" ? "success-message" : "error-message");
 }
 
-function clearMessage(){
-    message.className = "message";
+function clearMessage() {
     message.textContent = "";
-}
-
-function showEmailNotice(){
     message.className = "message";
-    message.textContent = "";
-
-    emailNotice.classList.add("visible");
-
-    emailNotice.scrollIntoView({
-        behavior:"smooth",
-        block:"center"
-    });
 }
 
-function setError(id,text){
+function setError(id, text) {
     document.getElementById(id).textContent = text || "";
 }
 
-function clearErrors(){
+function clearErrors() {
     [
-        "nameError","emailError","passwordError",
-        "confirmError","captchaError","termsError"
-    ].forEach(id=>setError(id,""));
+        "nameError",
+        "emailError",
+        "passwordError",
+        "confirmError",
+        "captchaError",
+        "termsError"
+    ].forEach(function(id) {
+        setError(id, "");
+    });
 }
 
-/* CAPTCHA GENERATOR */
-function generateCaptcha(){
-    captchaValue = String(Math.floor(100 + Math.random()*900));
-    captchaCode.replaceChildren();
+/* SHOW ONLY THE CONFIRMATION SCREEN */
 
-    const noise = document.createElement("div");
-    noise.className = "captcha-noise";
-    noise.setAttribute("aria-hidden","true");
+function showEmailConfirmation() {
+    registrationSection.hidden = true;
+    registrationSection.style.display = "none";
 
-    for(let i=0;i<8;i++){
-        const line = document.createElement("span");
-        line.className = "captcha-line";
-        line.style.width = (20+Math.random()*60)+"px";
-        line.style.left = (Math.random()*90)+"%";
-        line.style.top = (Math.random()*100)+"%";
-        line.style.transform =
-            "rotate("+(Math.random()*150-75)+"deg)";
-        noise.appendChild(line);
+    emailNotice.hidden = false;
+    emailNotice.style.display = "block";
+
+    document.title = "Check Your Email — AITIVEST";
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+/* MENU BUTTON */
+
+document.getElementById("menuButton").addEventListener("click", function() {
+    window.location.href = "index.html";
+});
+
+/* PASSWORD VISIBILITY */
+
+function setupPasswordToggle(buttonId, input) {
+    document.getElementById(buttonId).addEventListener("click", function() {
+        const visible = input.type === "text";
+
+        input.type = visible ? "password" : "text";
+        this.textContent = visible ? "Show" : "Hide";
+    });
+}
+
+setupPasswordToggle("togglePassword", passwordInput);
+setupPasswordToggle("toggleConfirm", confirmPasswordInput);
+
+/* PASSWORD STRENGTH */
+
+function updatePasswordStrength() {
+    const value = passwordInput.value;
+    const bar = document.getElementById("strengthBar");
+    const text = document.getElementById("strengthText");
+
+    let score = 0;
+
+    if (value.length >= 8) score++;
+    if (/[a-z]/.test(value) && /[A-Z]/.test(value)) score++;
+    if (/[0-9]/.test(value)) score++;
+    if (/[^A-Za-z0-9]/.test(value)) score++;
+
+    const widths = ["0%", "25%", "50%", "75%", "100%"];
+    const labels = [
+        "Use at least 8 characters.",
+        "Weak password",
+        "Fair password",
+        "Good password",
+        "Strong password"
+    ];
+
+    bar.style.width = widths[score];
+    text.textContent = labels[score];
+
+    if (score <= 1) {
+        bar.style.background = "#ef6b73";
+    } else if (score <= 2) {
+        bar.style.background = "#e6a23c";
+    } else {
+        bar.style.background = "#32c48d";
     }
+}
 
-    for(let i=0;i<25;i++){
-        const dot = document.createElement("span");
-        dot.className = "captcha-dot";
-        dot.style.left = (Math.random()*97)+"%";
-        dot.style.top = (Math.random()*95)+"%";
-        noise.appendChild(dot);
-    }
+passwordInput.addEventListener("input", updatePasswordStrength);
 
-    captchaCode.appendChild(noise);
+/* CAPTCHA */
 
-    for(const digit of captchaValue){
-        const character = document.createElement("span");
-        character.className = "captcha-digit";
-        character.textContent = digit;
-        character.style.transform =
-            "rotate("+(Math.random()*36-18)+"deg)";
-        captchaCode.appendChild(character);
-    }
+function generateCaptcha() {
+    currentCaptcha = String(
+        Math.floor(100 + Math.random() * 900)
+    );
 
+    captchaCode.textContent = currentCaptcha;
     captchaInput.value = "";
 }
 
-document.getElementById("refreshCaptcha")
-    .addEventListener("click",generateCaptcha);
+document.getElementById("refreshCaptcha").addEventListener(
+    "click",
+    generateCaptcha
+);
 
 generateCaptcha();
 
-/* PASSWORD VISIBILITY */
-document.getElementById("togglePassword")
-.addEventListener("click",function(){
-    const showing = password.type === "password";
-    password.type = showing ? "text" : "password";
-    this.textContent = showing ? "Hide" : "Show";
-});
+/* REFERRAL CODE */
 
-document.getElementById("toggleConfirm")
-.addEventListener("click",function(){
-    const showing = confirmPassword.type === "password";
-    confirmPassword.type = showing ? "text" : "password";
-    this.textContent = showing ? "Hide" : "Show";
-});
+const params = new URLSearchParams(window.location.search);
+const urlReferralCode = params.get("ref");
 
-/* PASSWORD STRENGTH */
-password.addEventListener("input",function(){
-    const value = this.value;
-    let score = 0;
-
-    if(value.length>=8) score++;
-    if(/[a-z]/.test(value)) score++;
-    if(/[A-Z]/.test(value)) score++;
-    if(/[0-9]/.test(value)) score++;
-    if(/[^A-Za-z0-9]/.test(value)) score++;
-
-    const levels = [
-        ["0%","#172536","Use at least 8 characters."],
-        ["20%","#ef6b73","Very weak password."],
-        ["40%","#ef6b73","Weak password."],
-        ["60%","#d8b15a","Moderate password."],
-        ["80%","#32c48d","Strong password."],
-        ["100%","#32c48d","Very strong password."]
-    ];
-
-    const level = value.length===0 ? levels[0] : levels[score];
-
-    strengthBar.style.width = level[0];
-    strengthBar.style.background = level[1];
-    strengthText.textContent = level[2];
-
-    if(confirmPassword.value){
-        setError(
-            "confirmError",
-            confirmPassword.value===value ? "" : "Passwords do not match."
-        );
-    }
-});
-
-fullName.addEventListener("input",()=>setError("nameError",""));
-email.addEventListener("input",()=>setError("emailError",""));
-password.addEventListener("input",()=>setError("passwordError",""));
-
-confirmPassword.addEventListener("input",()=>{
-    setError(
-        "confirmError",
-        confirmPassword.value===password.value ? "" : "Passwords do not match."
+if (urlReferralCode && urlReferralCode.trim()) {
+    sessionStorage.setItem(
+        "aitivest_referral_code",
+        urlReferralCode.trim()
     );
-});
-
-captchaInput.addEventListener("input",()=>{
-    captchaInput.value=captchaInput.value.replace(/\D/g,"").slice(0,3);
-    setError("captchaError","");
-});
-
-terms.addEventListener("change",()=>setError("termsError",""));
-
-function setLoading(loading){
-    signupInProgress = loading;
-    submitBtn.disabled = loading;
-
-    submitBtn.innerHTML = loading
-        ? '<span class="loading"><span class="spinner"></span>Creating Account...</span>'
-        : "Create Account";
 }
 
-/* REGISTRATION */
-form.addEventListener("submit",async function(event){
-    event.preventDefault();
+const referralCode =
+    sessionStorage.getItem("aitivest_referral_code") || null;
 
-    if(signupInProgress) return;
+/* FORM VALIDATION */
 
-    clearMessage();
+function validateForm() {
     clearErrors();
-    emailNotice.classList.remove("visible");
-
-    const name = fullName.value.trim();
-    const emailValue = email.value.trim().toLowerCase();
-    const passwordValue = password.value;
-    const confirmValue = confirmPassword.value;
-    const codeValue = captchaInput.value.trim();
 
     let valid = true;
 
-    if(name.length<2){
-        setError("nameError","Enter your full name.");
-        valid=false;
+    const name = fullNameInput.value.trim();
+    const email = emailInput.value.trim();
+    const password = passwordInput.value;
+    const confirmPassword = confirmPasswordInput.value;
+
+    if (name.length < 2) {
+        setError("nameError", "Please enter your full name.");
+        valid = false;
     }
 
-    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)){
-        setError("emailError","Enter a valid email address.");
-        valid=false;
+    if (
+        !email ||
+        !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+    ) {
+        setError("emailError", "Please enter a valid email address.");
+        valid = false;
     }
 
-    if(passwordValue.length<8){
-        setError("passwordError","Password must be at least 8 characters.");
-        valid=false;
+    if (password.length < 8) {
+        setError(
+            "passwordError",
+            "Your password must contain at least 8 characters."
+        );
+        valid = false;
     }
 
-    if(confirmValue!==passwordValue){
-        setError("confirmError","Passwords do not match.");
-        valid=false;
+    if (password !== confirmPassword) {
+        setError("confirmError", "Your passwords do not match.");
+        valid = false;
     }
 
-    if(codeValue!==captchaValue){
-        setError("captchaError","Incorrect code. Please try again.");
+    if (captchaInput.value.trim() !== currentCaptcha) {
+        setError("captchaError", "Incorrect security code. Try again.");
+        valid = false;
         generateCaptcha();
-        valid=false;
     }
 
-    if(!terms.checked){
-        setError("termsError","Please accept the terms to continue.");
-        valid=false;
+    if (!termsInput.checked) {
+        setError(
+            "termsError",
+            "Please agree to the Terms, Privacy Policy and Risk Disclosure."
+        );
+        valid = false;
     }
 
-    if(!valid) return;
+    return valid;
+}
 
-    setLoading(true);
+/* SIGNUP */
 
-    try{
-        const metadata = {full_name:name};
+signupForm.addEventListener("submit", async function(event) {
+    event.preventDefault();
 
-        if(referralCode){
+    clearMessage();
+    clearErrors();
+
+    if (!validateForm()) {
+        return;
+    }
+
+    const fullName = fullNameInput.value.trim();
+    const email = emailInput.value.trim();
+    const password = passwordInput.value;
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Creating Account...";
+
+    try {
+        const redirectUrl = new URL(
+            "signin.html",
+            window.location.href
+        ).href;
+
+        const metadata = {
+            full_name: fullName
+        };
+
+        if (referralCode) {
             metadata.referral_code = referralCode;
         }
 
-        const {data,error} = await db.auth.signUp({
-            email:emailValue,
-            password:passwordValue,
-            options:{
-                data:metadata,
-                emailRedirectTo:new URL(
-                    "dashboard.html",
-                    location.href
-                ).href
+        const { data, error } = await supabaseClient.auth.signUp({
+            email: email,
+            password: password,
+            options: {
+                data: metadata,
+                emailRedirectTo: redirectUrl
             }
         });
 
-        if(error) throw error;
-
-        if(!data || !data.user){
-            throw new Error("Registration could not be completed.");
+        if (error) {
+            throw error;
         }
 
-        if(data.session){
-            showMessage(
-                "Your account has been created successfully. Redirecting to your dashboard...",
-                "success"
-            );
+        /*
+         * With email confirmation enabled, Supabase normally returns
+         * a user without an active session. Show the confirmation screen.
+         *
+         * If a session is returned, email confirmation may be disabled
+         * in Supabase. In that case, continue to the sign-in page.
+         */
 
-            try{sessionStorage.removeItem(REFERRAL_KEY)}catch(_){}
-
-            setTimeout(()=>location.replace("dashboard.html"),1200);
-        }else{
-            showEmailNotice();
-
-            form.reset();
-            generateCaptcha();
-            strengthBar.style.width="0%";
-            strengthText.textContent="Use at least 8 characters.";
+        if (data && data.session) {
+            window.location.replace("signin.html");
+            return;
         }
 
-    }catch(error){
-        console.error("AITIVEST registration error:",error);
-
-        const detail = String(error?.message || "").toLowerCase();
-        let friendly = "Unable to create your account. Please try again.";
-
-        if(
-            detail.includes("user already registered") ||
-            detail.includes("already been registered")
-        ){
-            friendly =
-                "An account with this email may already exist. Try signing in or resetting your password.";
-        }else if(detail.includes("failed to fetch") || detail.includes("network")){
-            friendly =
-                "Network error. Check your internet connection and try again.";
-        }else if(error?.message){
-            friendly=error.message;
+        if (data && data.user) {
+            showEmailConfirmation();
+            return;
         }
 
-        showMessage(friendly,"error");
+        throw new Error(
+            "We could not verify the registration response. Please try again."
+        );
+
+    } catch (error) {
+        console.error("AITIVEST signup error:", error);
+
+        let errorText = error.message ||
+            "Registration failed. Please try again.";
+
+        if (
+            errorText.toLowerCase().includes("already registered") ||
+            errorText.toLowerCase().includes("already exists")
+        ) {
+            errorText =
+                "An account may already exist with this email. " +
+                "Please try signing in or use the password recovery option.";
+        } else if (
+            errorText.toLowerCase().includes("password")
+        ) {
+            errorText =
+                "Please check your password and try again. " + errorText;
+        } else if (
+            errorText.toLowerCase().includes("fetch")
+        ) {
+            errorText =
+                "We could not connect to the registration service. " +
+                "Please check your internet connection and try again.";
+        }
+
+        showMessage(errorText, "error");
+
         generateCaptcha();
 
-    }finally{
-        setLoading(false);
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Create Account";
     }
 });
+</script>
 
-document.getElementById("menuButton")
-.addEventListener("click",()=>location.href="index.html");
-</script></body>
+</body>
 </html>
