@@ -183,6 +183,73 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
 }
+  /* WELCOME POPUP */
+.welcome-modal{
+  position:fixed;
+  inset:0;
+  z-index:10000;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:rgba(0,0,0,.78);
+  backdrop-filter:blur(8px);
+}
+.welcome-modal.show{display:flex}
+.welcome-box{
+  width:100%;
+  max-width:420px;
+  max-height:85vh;
+  overflow-y:auto;
+  padding:27px 22px;
+  border:1px solid rgba(217,164,65,.35);
+  border-radius:22px;
+  background:radial-gradient(circle at top right,rgba(217,164,65,.15),transparent 45%),#0d1b2d;
+  box-shadow:0 25px 80px rgba(0,0,0,.6);
+  text-align:center;
+  animation:welcomeIn .3s ease;
+}
+@keyframes welcomeIn{
+  from{opacity:0;transform:translateY(18px) scale(.97)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+.welcome-icon{
+  width:65px;height:65px;margin:0 auto 17px;
+  border-radius:20px;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(217,164,65,.12);
+  border:1px solid rgba(217,164,65,.3);
+  color:var(--gold2);font-size:31px;
+}
+.welcome-box h2{
+  color:var(--gold2);font-size:23px;margin-bottom:10px;
+}
+.welcome-box p{
+  color:#b4bfce;font-size:13px;line-height:1.8;margin-bottom:14px;
+}
+.welcome-box .welcome-highlight{
+  padding:14px;
+  border-radius:12px;
+  background:rgba(255,255,255,.035);
+  border:1px solid var(--border);
+  text-align:left;
+}
+.welcome-box .welcome-highlight strong{
+  display:block;color:var(--cream);margin-bottom:6px;
+}
+.welcome-primary{
+  width:100%;border:0;border-radius:12px;
+  padding:14px;background:linear-gradient(110deg,#d9a441,#f0c766);
+  color:#101010;font-size:13px;font-weight:850;margin-top:12px;
+}
+.welcome-secondary{
+  width:100%;border:1px solid var(--border);border-radius:12px;
+  padding:13px;background:transparent;color:#b4bfce;
+  font-size:12px;margin-top:9px;
+}
+.welcome-disclaimer{
+  color:#7f8da0!important;font-size:10px!important;margin:14px 0 0!important;
+}
 </style>
 </head>
 <body>
