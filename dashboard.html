@@ -1171,6 +1171,8 @@ async function loadEarningsStatistics(){
 
 /* REFRESH */
 async function refreshDashboardData(){
+  await refreshDashboardData();
+await checkWelcomeNotification();
   if(!currentUser||refreshInProgress)return;
   refreshInProgress=true;
 
