@@ -759,7 +759,95 @@ function cryptoAmountToUsd(amount,symbol){
   if(!Number.isFinite(price)||price<=0)return null;
   return quantity*price;
 }
+  
+/* FIRST-TIME WELCOME NOTIFICATION */
 
+let welcomeNotification = null;
+let welcomeActionInProgress = false;
+
+async function checkWelcomeNotification(){
+  if(!currentUser)return;
+
+  try{
+    const {data,error}=await db
+      .from("notifications")
+      .select("id,title,message")
+      .eq("user_id",currentUser.id)
+      .eq("type","WELCOME")
+      .eq("is_read",false)
+      .order("created_at",{ascending:true})
+      .limit(1);
+
+    if(error)throw error;
+
+    if(!data || !data.length)return;
+
+    welcomeNotification=data[0];
+
+    $("welcomeModal").classList.add("show");
+
+    $("welcomeLater").focus();
+
+  }catch(error){
+    console.error("Welcome notification check failed:",error);
+  }
+}
+
+async function closeWelcomeNotification(destination){
+  if(welcomeActionInProgress)return;
+
+  if(!welcomeNotification){
+    $("welcomeModal").classList.remove("show");
+    if(destination)go(destination);
+    return;
+  }
+
+  welcomeActionInProgress=true;
+
+  $("welcomeLater").disabled=true;
+  $("welcomeDeposit").disabled=true;
+
+  try{
+    const {data,error}=await db
+      .from("notifications")
+      .update({is_read:true})
+      .eq("id",welcomeNotification.id)
+      .eq("user_id",currentUser.id)
+      .eq("is_read",false)
+      .select("id");
+
+    if(error)throw error;
+
+    if(!data || !data.length){
+      throw new Error("Welcome notification could not be updated.");
+    }
+
+    $("welcomeModal").classList.remove("show");
+    welcomeNotification=null;
+
+    if(destination){
+      go(destination);
+    }
+
+  }catch(error){
+    console.error("Welcome notification update failed:",error);
+    showToast("Unable to save your welcome message. Please try again.");
+
+    $("welcomeLater").disabled=false;
+    $("welcomeDeposit").disabled=false;
+
+  }finally{
+    welcomeActionInProgress=false;
+  }
+}
+
+$("welcomeLater").addEventListener("click",()=>{
+  closeWelcomeNotification(null);
+});
+
+$("welcomeDeposit").addEventListener("click",()=>{
+  closeWelcomeNotification("deposit.html");
+});
 /* PROFILE */
 async function loadProfile(){
   const {data,error}=await db.from("profiles")
