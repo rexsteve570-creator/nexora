@@ -397,7 +397,49 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
 </div>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  
+<div class="welcome-modal" id="welcomeModal" role="dialog"
+     aria-modal="true" aria-labelledby="welcomeTitle">
 
+  <div class="welcome-box">
+    <div class="welcome-icon">✦</div>
+
+    <h2 id="welcomeTitle">Welcome to AITIVEST!</h2>
+
+    <p>
+      Your account is ready. We're glad to have you here.
+      Explore your dashboard and discover the available
+      digital asset services.
+    </p>
+
+    <div class="welcome-highlight">
+      <strong>How does it work?</strong>
+      <p>
+        Select a supported cryptocurrency and network on the
+        Deposit page. Send your deposit and submit its transaction
+        hash for verification.
+      </p>
+      <p>
+        Once your deposit is confirmed and approved, it may
+        qualify for an applicable earning programme, subject
+        to the programme's published rates, schedule and terms.
+      </p>
+    </div>
+
+    <button class="welcome-primary" id="welcomeDeposit">
+      Explore Deposit Options →
+    </button>
+
+    <button class="welcome-secondary" id="welcomeLater">
+      Maybe Later
+    </button>
+
+    <p class="welcome-disclaimer">
+      Digital assets involve risk. Earnings are not guaranteed.
+      Always review the applicable programme terms before depositing.
+    </p>
+  </div>
+</div>
 <script>
 "use strict";
 
