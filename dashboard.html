@@ -1168,18 +1168,21 @@ async function loadEarningsStatistics(){
     setText("statisticsNote","");
   }
 }
-
-/* REFRESH */
+  /* REFRESH */
 async function refreshDashboardData(){
-  await refreshDashboardData();
-await checkWelcomeNotification();
   if(!currentUser||refreshInProgress)return;
   refreshInProgress=true;
 
   try{
     await Promise.all([
-      loadProfile(),loadWallets(),renderPortfolio(),loadActiveDeposits(),
-      loadPartnerStatistics(),loadPaymentStatistics(),loadEarningsStatistics(),loadMfaStatus()
+      loadProfile(),
+      loadWallets(),
+      renderPortfolio(),
+      loadActiveDeposits(),
+      loadPartnerStatistics(),
+      loadPaymentStatistics(),
+      loadEarningsStatistics(),
+      loadMfaStatus()
     ]);
   }catch(error){
     console.error("Dashboard refresh error:",error);
@@ -1188,7 +1191,6 @@ await checkWelcomeNotification();
     refreshInProgress=false;
   }
 }
-
 /* LOGOUT */
 $("logoutBtn").addEventListener("click",async()=>{
   const button=$("logoutBtn");
