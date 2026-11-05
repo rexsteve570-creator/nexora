@@ -1223,6 +1223,7 @@ setInterval(()=>{
     const authenticated=await checkAuth();
     if(!authenticated)return;
     await refreshDashboardData();
+await checkWelcomeNotification();
   }catch(error){
     console.error("Dashboard initialization error:",error);
     showToast("Unable to load dashboard. Please refresh.");
