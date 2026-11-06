@@ -3,335 +3,219 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#07111f">
+<meta name="theme-color" content="#050b1a">
 <title>AITIVEST — Profile</title>
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <style>
 :root{
-  --bg:#07111f;
-  --card:#0d1b2e;
-  --card2:#101f33;
-  --border:rgba(255,255,255,.08);
-  --text:#f5f7fa;
-  --muted:#8e9aac;
-  --gold:#d9ad4c;
-  --gold2:#f1cc6b;
-  --green:#22c55e;
-  --red:#ef4444;
+  --bg:#050b1a;--card:#0b1733;--line:#1c2c52;
+  --text:#e8edf7;--muted:#9aa7c0;
+  --gold:#f2b84b;--gold2:#ffd982;--gold3:#c98f1d;
+  --green:#22d37a;--red:#ef6b73;--blue:#2f8cff;
 }
-*{box-sizing:border-box;margin:0;padding:0}
-body{
-  min-height:100vh;background:var(--bg);color:var(--text);
-  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  padding-bottom:90px
-}
-button,input{font:inherit}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{min-height:100vh;background:#02050d;color:var(--text);font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;display:flex;justify-content:center}
+button,input{font:inherit;color:inherit}
 button{cursor:pointer}
 button:disabled{opacity:.55;cursor:not-allowed}
 a{color:inherit;text-decoration:none}
-button:focus-visible,a:focus-visible,input:focus-visible{
-  outline:2px solid var(--gold2);outline-offset:3px
-}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
 
-/* Logo */
-.brand{display:flex;align-items:center;justify-content:center;gap:9px}
-.brand-mark{
-  width:31px;height:31px;flex:none;border:2px solid var(--gold);
-  border-radius:9px 9px 9px 2px;position:relative;
-  display:flex;align-items:center;justify-content:center;
-  color:var(--gold2);font-size:18px;font-weight:900;
-  transform:rotate(0deg)
-}
-.brand-mark::after{
-  content:"";position:absolute;right:4px;bottom:4px;
-  width:6px;height:6px;background:var(--gold);border-radius:2px
-}
-.brand-name{font-size:19px;font-weight:900;letter-spacing:1.5px;white-space:nowrap}
-.brand-name span{color:var(--gold)}
-.topbar{
-  height:68px;position:sticky;top:0;z-index:100;
-  background:rgba(7,17,31,.97);backdrop-filter:blur(16px);
-  border-bottom:1px solid var(--border)
-}
-.topbar-inner{
-  max-width:760px;height:100%;margin:auto;padding:0 18px;
-  display:grid;grid-template-columns:44px 1fr 44px;align-items:center
-}
-.menu-btn,.profile-btn{
-  width:40px;height:40px;border:0;background:transparent;color:var(--text);
-  display:flex;align-items:center;justify-content:center;border-radius:12px
-}
-.menu-btn{font-size:25px}
-.menu-btn:hover{background:rgba(255,255,255,.05)}
-.topbar-brand{justify-self:center}
-.profile-btn{
-  background:linear-gradient(135deg,var(--gold2),var(--gold));
-  color:#111827;font-size:12px;font-weight:900;width:36px;height:36px;
-  justify-self:end;border-radius:50%
-}
+/* Loading */
+.loading-screen{position:fixed;inset:0;background:#050b1a;display:flex;align-items:center;justify-content:center;z-index:9999}
+.loading-content{text-align:center}
+.spinner{width:28px;height:28px;border:3px solid rgba(242,184,75,.18);border-top-color:var(--gold);border-radius:50%;margin:20px auto 0;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
 
-/* Page */
-.page{width:100%;max-width:760px;margin:auto;padding:22px 18px 30px}
-.page-title{margin-bottom:18px}
-.page-title h1{font-size:25px;margin-bottom:6px}
-.page-title p{color:var(--muted);font-size:13px;line-height:1.6}
-.card{
-  background:linear-gradient(145deg,rgba(16,31,51,.98),rgba(10,24,41,.98));
-  border:1px solid var(--border);border-radius:18px;margin-bottom:16px;overflow:hidden
-}
-.section-card{padding:20px}
+/* Brand */
+.brand-logo{display:flex;align-items:center;gap:9px}
+.brand-mark{width:30px;height:30px;border:2px solid var(--gold);border-radius:9px 9px 9px 2px;display:flex;align-items:center;justify-content:center;color:var(--gold2);font-size:16px;font-weight:900;transform:rotate(-3deg)}
+.brand-name{font-size:24px;font-weight:700;letter-spacing:2px;background:linear-gradient(180deg,#ffd982,#d89a24);-webkit-background-clip:text;background-clip:text;color:transparent}
+.loading-content .brand-logo{justify-content:center}
+.loading-content .brand-name{font-size:29px}
 
-/* Profile hero */
-.profile-hero{padding:22px;display:flex;align-items:center;gap:16px}
-.avatar{
-  width:64px;height:64px;flex:none;border-radius:50%;
-  background:linear-gradient(135deg,var(--gold2),var(--gold));
-  color:#121212;display:flex;align-items:center;justify-content:center;
-  font-size:20px;font-weight:900
-}
+.app{width:100%;max-width:480px;min-height:100vh;background:radial-gradient(120% 60% at 50% 0%,#0f2350 0%,var(--bg) 60%);padding:18px 16px 100px;position:relative}
+
+/* Header */
+.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
+.top-actions{display:flex;gap:14px;align-items:center}
+.bell{background:none;border:0;color:var(--gold);display:flex}
+.avatar-mini{width:36px;height:36px;border-radius:50%;background:#16264d;border:2px solid var(--gold3);display:flex;align-items:center;justify-content:center;color:var(--gold2);font-size:12px;font-weight:800;cursor:pointer;overflow:hidden;padding:0;box-shadow:0 0 10px rgba(242,184,75,.35)}
+.avatar-mini img,.avatar img{width:100%;height:100%;object-fit:cover;display:block}
+.page-head{margin-bottom:16px}
+.page-head small{font-size:15px;color:#cfd8ec;display:block}
+.page-head h1{font-size:26px;font-weight:700;color:var(--gold)}
+
+/* Cards */
+.card{background:linear-gradient(180deg,rgba(18,34,72,.75),rgba(9,20,45,.9));border:1px solid var(--line);border-radius:16px;margin-bottom:14px;overflow:hidden}
+.section-card{padding:16px}
+.section-head{margin-bottom:14px}
+.section-head h3{font-size:15px;font-weight:700;margin-bottom:4px}
+.section-head p{color:var(--muted);font-size:12px;line-height:1.6}
+
+/* Hero */
+.profile-hero{padding:18px;display:flex;align-items:center;gap:16px;border-color:var(--gold3);box-shadow:0 0 14px rgba(242,184,75,.12)}
+.avatar-wrap{position:relative;flex:none}
+.avatar{width:76px;height:76px;border-radius:50%;background:linear-gradient(135deg,var(--gold2),var(--gold3));color:#121212;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800;overflow:hidden;border:2px solid var(--gold3)}
+.avatar-edit{position:absolute;right:-4px;bottom:-4px;width:30px;height:30px;border-radius:50%;border:2px solid var(--bg);background:linear-gradient(180deg,#f7c75a,#cf9420);color:#1a1200;display:flex;align-items:center;justify-content:center}
+.avatar-edit:active{transform:scale(.94)}
+.avatar-uploading::after{content:"";position:absolute;inset:0;border-radius:50%;background:rgba(5,11,26,.65) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='9' fill='none' stroke='%23f2b84b' stroke-width='3' stroke-dasharray='28 28'%3E%3CanimateTransform attributeName='transform' type='rotate' from='0 12 12' to='360 12 12' dur='.8s' repeatCount='indefinite'/%3E%3C/circle%3E%3C/svg%3E") center/26px no-repeat}
 .hero-info{min-width:0;flex:1}
 .hero-info h2{font-size:19px;margin-bottom:4px;overflow-wrap:anywhere}
 .hero-info p{color:var(--muted);font-size:13px;overflow-wrap:anywhere}
-.status-pill{
-  display:inline-flex;margin-top:9px;padding:6px 10px;
-  border-radius:999px;font-size:11px;font-weight:800
-}
-.status-pill.active{background:rgba(34,197,94,.12);color:#5ee58a}
-.status-pill.pending{background:rgba(217,173,76,.12);color:var(--gold2)}
-.status-pill.suspended,.status-pill.closed,.status-pill.error{
-  background:rgba(239,68,68,.12);color:#ff7777
-}
+.status-pill{display:inline-flex;margin-top:9px;padding:6px 10px;border-radius:999px;font-size:11px;font-weight:700}
+.status-pill.active{background:rgba(34,211,122,.12);color:#5ee58a}
+.status-pill.pending{background:rgba(242,184,75,.13);color:var(--gold2)}
+.status-pill.suspended,.status-pill.closed,.status-pill.error{background:rgba(239,107,115,.12);color:#ff8f96}
+.photo-actions{display:flex;gap:10px;align-items:center;margin-top:10px;flex-wrap:wrap}
+.link-btn{background:none;border:0;padding:0;font-size:11.5px;font-weight:700;color:var(--gold)}
+.link-btn.danger{color:#ff8f96}
+.photo-hint{color:var(--muted);font-size:10.5px;margin-top:6px}
 
-/* Sections */
-.section-head{margin-bottom:17px}
-.section-head h3{font-size:16px;margin-bottom:4px}
-.section-head p{color:var(--muted);font-size:12px;line-height:1.6}
-.info-row{
-  min-height:54px;display:flex;align-items:center;justify-content:space-between;
-  gap:15px;border-bottom:1px solid var(--border)
-}
+/* Info rows */
+.info-row{min-height:50px;display:flex;align-items:center;justify-content:space-between;gap:15px;border-bottom:1px solid var(--line)}
 .info-row:last-child{border-bottom:0}
 .info-label{color:var(--muted);font-size:12px}
-.info-value{
-  color:var(--text);font-size:12px;font-weight:600;text-align:right;
-  max-width:60%;overflow-wrap:anywhere
-}
+.info-value{font-size:12px;font-weight:600;text-align:right;max-width:60%;overflow-wrap:anywhere}
 
 /* KYC */
-.kyc-card{
-  border-color:rgba(217,173,76,.22);
-  background:linear-gradient(145deg,rgba(217,173,76,.06),rgba(13,27,46,.98))
-}
+.kyc-card{border-color:var(--blue);background:linear-gradient(135deg,rgba(18,60,130,.55),rgba(8,22,56,.9));box-shadow:0 0 16px rgba(47,140,255,.15)}
 .kyc-head{display:flex;align-items:flex-start;gap:13px}
-.kyc-icon{
-  width:42px;height:42px;flex:none;border-radius:13px;
-  background:rgba(217,173,76,.12);color:var(--gold2);
-  display:flex;align-items:center;justify-content:center;font-size:20px
-}
+.kyc-icon{width:42px;height:42px;flex:none;border-radius:50%;border:2px solid var(--blue);color:var(--blue);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700}
 .kyc-title{flex:1}
-.kyc-title h3{font-size:16px;margin-bottom:5px}
-.kyc-title p{color:var(--muted);font-size:12px;line-height:1.6}
-.kyc-status{
-  margin-top:18px;padding:13px 14px;border-radius:12px;
-  background:rgba(255,255,255,.035);border:1px solid var(--border);
-  display:flex;justify-content:space-between;gap:12px
-}
+.kyc-title h3{font-size:15px;margin-bottom:5px}
+.kyc-title p{color:#c3d3f0;font-size:12px;line-height:1.6}
+.kyc-status{margin-top:16px;padding:12px 14px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid var(--line);display:flex;justify-content:space-between;gap:12px}
 .kyc-status-label{color:var(--muted);font-size:12px}
-.kyc-status-value{font-size:12px;font-weight:800;text-align:right}
-.kyc-message{
-  margin-top:12px;padding:12px;border-radius:11px;
-  background:rgba(217,173,76,.08);border:1px solid rgba(217,173,76,.18);
-  color:#f0d58e;font-size:12px;line-height:1.6
-}
-.kyc-action{margin-top:15px;display:flex;justify-content:flex-end}
-.primary-btn{
-  border:0;border-radius:12px;
-  background:linear-gradient(135deg,var(--gold2),var(--gold));
-  color:#111827;font-weight:800;padding:12px 17px;font-size:13px;min-height:44px
-}
+.kyc-status-value{font-size:12px;font-weight:700;text-align:right;color:#3d97ff}
+.kyc-message{margin-top:12px;padding:12px;border-radius:11px;background:rgba(242,184,75,.07);border:1px solid rgba(242,184,75,.22);color:#f0d58e;font-size:12px;line-height:1.6}
+.kyc-action{margin-top:14px}
+
+/* Buttons */
+.primary-btn{width:100%;height:50px;border:0;border-radius:14px;background:linear-gradient(180deg,#f7c75a,#cf9420);color:#1a1200;font-size:15px;font-weight:700;box-shadow:0 4px 16px rgba(242,184,75,.3);transition:transform .1s}
+.primary-btn:active{transform:scale(.98)}
 
 /* Form */
 .form-group{margin-bottom:15px}
-.form-group label{display:block;color:var(--muted);font-size:12px;margin-bottom:7px}
-.input{
-  width:100%;height:46px;border-radius:12px;border:1px solid var(--border);
-  outline:none;background:#091525;color:var(--text);padding:0 13px
-}
-.input:focus{border-color:rgba(217,173,76,.55)}
+.form-group label{display:block;color:#dfe6f0;font-size:12px;font-weight:700;margin-bottom:8px}
+.input{width:100%;height:48px;border-radius:12px;border:1px solid var(--line);outline:none;background:rgba(5,11,26,.8);padding:0 13px;font-size:13px}
+.input:focus{border-color:var(--gold3);box-shadow:0 0 0 3px rgba(242,184,75,.1)}
 
-/* Settings */
+/* Settings list */
 .action-list{display:flex;flex-direction:column}
-.action-item{
-  width:100%;min-height:58px;border:0;border-bottom:1px solid var(--border);
-  background:transparent;color:var(--text);display:flex;align-items:center;
-  gap:13px;text-align:left;padding:8px 0
-}
+.action-item{width:100%;min-height:58px;border:0;border-bottom:1px solid var(--line);background:transparent;display:flex;align-items:center;gap:13px;text-align:left;padding:8px 0}
 .action-item:last-child{border-bottom:0}
-.action-icon{
-  width:38px;height:38px;border-radius:11px;background:rgba(255,255,255,.045);
-  display:flex;align-items:center;justify-content:center;color:var(--gold2);flex:none
-}
+.action-icon{width:38px;height:38px;border-radius:50%;background:rgba(242,184,75,.1);border:1px solid rgba(242,184,75,.25);display:flex;align-items:center;justify-content:center;color:var(--gold);flex:none}
 .action-info{flex:1}
 .action-info strong{display:block;font-size:13px;margin-bottom:3px}
 .action-info span{display:block;color:var(--muted);font-size:11px;line-height:1.5}
-.action-arrow{color:var(--muted);font-size:18px}
-.danger-item .action-icon{color:#ff7777;background:rgba(239,68,68,.08)}
-.danger-item .action-info strong{color:#ff8585}
+.action-arrow{color:var(--gold);font-size:18px}
+.danger-item .action-icon{color:#ff8f96;background:rgba(239,107,115,.08);border-color:rgba(239,107,115,.25)}
+.danger-item .action-info strong{color:#ff9aa0}
 
 /* Messages */
-.page-message{
-  display:none;margin-bottom:16px;padding:13px 14px;border-radius:12px;
-  font-size:12px;line-height:1.6;overflow-wrap:anywhere
-}
+.page-message{display:none;margin-bottom:14px;padding:13px 14px;border-radius:12px;font-size:12px;line-height:1.6;overflow-wrap:anywhere}
 .page-message.show{display:block}
-.page-message.error{background:rgba(239,68,68,.09);border:1px solid rgba(239,68,68,.25);color:#ffb0b0}
-.page-message.success{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.22);color:#9af0b6}
-
-/* Drawer */
-.drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:190;display:none}
-.drawer-overlay.show{display:block}
-.drawer{
-  position:fixed;top:0;left:0;bottom:0;width:min(310px,86vw);
-  background:#081423;border-right:1px solid var(--border);z-index:200;
-  transform:translateX(-100%);transition:transform .25s ease;overflow-y:auto
-}
-.drawer.show{transform:translateX(0)}
-.drawer-head{
-  min-height:75px;display:flex;align-items:center;justify-content:space-between;
-  padding:0 18px;border-bottom:1px solid var(--border)
-}
-.drawer-close{width:38px;height:38px;border:0;background:transparent;color:var(--text);font-size:25px}
-.drawer-links{padding:14px 10px}
-.drawer-link{
-  width:100%;min-height:49px;border:0;background:transparent;color:var(--text);
-  display:flex;align-items:center;gap:13px;padding:0 13px;border-radius:12px;
-  text-align:left;margin-bottom:4px;font-size:13px
-}
-.drawer-link.active,.drawer-link:hover{background:rgba(217,173,76,.09);color:var(--gold2)}
-.drawer-link-icon{width:25px;text-align:center;color:var(--muted);font-size:17px}
-.drawer-divider{height:1px;background:var(--border);margin:10px 13px}
+.page-message.error{background:rgba(239,107,115,.09);border:1px solid rgba(239,107,115,.28);color:#ffb5ba}
+.page-message.success{background:rgba(34,211,122,.09);border:1px solid rgba(34,211,122,.28);color:#9cf0ce}
 
 /* Bottom nav */
-.bottom-nav{
-  position:fixed;left:0;right:0;bottom:0;height:70px;
-  padding-bottom:env(safe-area-inset-bottom);
-  background:rgba(7,17,31,.97);backdrop-filter:blur(16px);
-  border-top:1px solid var(--border);z-index:120
-}
-.bottom-nav-inner{
-  max-width:760px;height:100%;margin:auto;display:grid;grid-template-columns:repeat(4,1fr)
-}
-.bottom-link{
-  border:0;background:transparent;color:var(--muted);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:4px;font-size:10px;font-weight:600
-}
-.bottom-link-icon{font-size:20px;line-height:1}
-.bottom-link.active{color:var(--gold2)}
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;min-height:72px;padding-bottom:env(safe-area-inset-bottom);background:rgba(6,13,30,.96);backdrop-filter:blur(10px);border-top:1px solid var(--line);z-index:120;display:grid;grid-template-columns:repeat(5,1fr)}
+.bottom-link{background:none;border:0;color:#aab5cc;font-size:11px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px}
 
-.loading-screen{
-  position:fixed;inset:0;background:var(--bg);z-index:999;
-  display:flex;align-items:center;justify-content:center
-}
-.loading-content{text-align:center}
-.spinner{
-  width:28px;height:28px;border:3px solid rgba(217,173,76,.2);
-  border-top-color:var(--gold);border-radius:50%;margin:18px auto 0;
-  animation:spin .8s linear infinite
-}
-@keyframes spin{to{transform:rotate(360deg)}}
+/* Drawer */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:190;display:none}
+.overlay.show{display:block}
+.drawer{position:fixed;left:-320px;top:0;width:290px;max-width:86%;height:100vh;height:100dvh;background:#081225;border-right:1px solid var(--line);z-index:200;transition:left .25s ease;padding:22px 15px;overflow-y:auto}
+.drawer.open{left:0}
+.drawer-head{display:flex;align-items:center;justify-content:space-between;padding:8px 7px 25px;border-bottom:1px solid var(--line)}
+.drawer-head .brand-name{font-size:19px}
+.close-drawer{border:0;background:none;color:#fff;font-size:27px}
+.drawer-nav{padding-top:18px}
+.drawer-link{width:100%;border:0;background:transparent;color:#d7dce4;padding:14px 13px;border-radius:11px;display:flex;align-items:center;gap:13px;text-align:left;margin-bottom:4px}
+.drawer-link:hover,.drawer-link.active{background:rgba(242,184,75,.08);color:var(--gold2)}
+.drawer-icon{width:22px;text-align:center;color:var(--gold)}
+.drawer-link.logout{margin-top:15px;color:#ef8990}
 
-@media(max-width:480px){
-  .page{padding-left:14px;padding-right:14px}
-  .profile-hero{padding:18px}
-  .section-card{padding:17px}
-  .info-value{max-width:55%}
-  .brand-name{font-size:17px}
-}
-@media(prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation:none!important;transition:none!important}
-}
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%) translateY(15px);background:#12244c;border:1px solid var(--gold3);color:#fff;padding:12px 16px;border-radius:12px;font-size:12px;opacity:0;pointer-events:none;transition:.25s;z-index:500;width:max-content;max-width:90%;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 </head>
-
 <body>
 
 <div class="loading-screen" id="loadingScreen">
   <div class="loading-content">
-    <div class="brand">
-      <span class="brand-mark" aria-hidden="true">A</span>
-      <span class="brand-name">AITI<span>VEST</span></span>
-    </div>
+    <div class="brand-logo"><div class="brand-mark">A</div><div class="brand-name">AITIVEST</div></div>
     <div class="spinner"></div>
   </div>
 </div>
 
-<header class="topbar">
-  <div class="topbar-inner">
-    <button class="menu-btn" id="menuBtn" type="button"
-      aria-label="Open navigation" aria-expanded="false">☰</button>
-
-    <a href="dashboard.html" class="brand topbar-brand" aria-label="AITIVEST home">
-      <span class="brand-mark" aria-hidden="true">A</span>
-      <span class="brand-name">AITI<span>VEST</span></span>
-    </a>
-
-    <button class="profile-btn" id="profileInitials" type="button"
-      aria-label="Your profile">A</button>
-  </div>
-</header>
-
-<div class="drawer-overlay" id="drawerOverlay"></div>
-
-<aside class="drawer" id="drawer" aria-hidden="true" aria-label="Main navigation">
+<div class="overlay" id="overlay"></div>
+<aside class="drawer" id="drawer" aria-label="Main navigation" aria-hidden="true">
   <div class="drawer-head">
-    <a href="dashboard.html" class="brand" aria-label="AITIVEST home">
-      <span class="brand-mark" aria-hidden="true">A</span>
-      <span class="brand-name">AITI<span>VEST</span></span>
-    </a>
-    <button class="drawer-close" id="drawerClose" type="button"
-      aria-label="Close navigation">×</button>
+    <div class="brand-logo"><div class="brand-mark">A</div><div class="brand-name">AITIVEST</div></div>
+    <button class="close-drawer" id="drawerClose" type="button" aria-label="Close menu">×</button>
   </div>
-
-  <nav class="drawer-links">
-    <a class="drawer-link" href="dashboard.html"><span class="drawer-link-icon">⌂</span>Portfolio</a>
-    <a class="drawer-link" href="deposit.html"><span class="drawer-link-icon">＋</span>Deposit</a>
-    <a class="drawer-link" href="withdraw.html"><span class="drawer-link-icon">↗</span>Withdraw</a>
-    <a class="drawer-link" href="transactions.html"><span class="drawer-link-icon">≡</span>Transactions</a>
-    <a class="drawer-link" href="referrals.html"><span class="drawer-link-icon">♧</span>Referrals</a>
-    <a class="drawer-link active" href="profile.html" aria-current="page"><span class="drawer-link-icon">○</span>Profile</a>
-    <a class="drawer-link" href="support.html"><span class="drawer-link-icon">?</span>Support</a>
-    <a class="drawer-link" href="notifications.html"><span class="drawer-link-icon">◌</span>Notifications</a>
-    <div class="drawer-divider"></div>
-    <button class="drawer-link" id="drawerLogout" type="button"><span class="drawer-link-icon">↪</span>Logout</button>
+  <nav class="drawer-nav">
+    <button class="drawer-link" onclick="location.href='dashboard.html'"><span class="drawer-icon">⌂</span>Portfolio</button>
+    <button class="drawer-link" onclick="location.href='deposit.html'"><span class="drawer-icon">＋</span>Deposit</button>
+    <button class="drawer-link" onclick="location.href='withdraw.html'"><span class="drawer-icon">↗</span>Withdraw</button>
+    <button class="drawer-link" onclick="location.href='transactions.html'"><span class="drawer-icon">≡</span>Transactions</button>
+    <button class="drawer-link" onclick="location.href='referrals.html'"><span class="drawer-icon">♧</span>Referrals</button>
+    <button class="drawer-link active" aria-current="page"><span class="drawer-icon">○</span>Profile</button>
+    <button class="drawer-link" onclick="location.href='security.html'"><span class="drawer-icon">♙</span>Security Settings</button>
+    <button class="drawer-link" onclick="location.href='support.html'"><span class="drawer-icon">?</span>Support</button>
+    <button class="drawer-link" onclick="location.href='notifications.html'"><span class="drawer-icon">♢</span>Notifications</button>
+    <button class="drawer-link logout" id="drawerLogout" type="button"><span class="drawer-icon">↪</span>Logout</button>
   </nav>
 </aside>
 
-<main class="page">
-  <div class="page-title">
+<div class="app">
+  <header class="top">
+    <a href="dashboard.html" class="brand-logo" aria-label="AITIVEST home"><div class="brand-mark">A</div><div class="brand-name">AITIVEST</div></a>
+    <div class="top-actions">
+      <button class="bell" aria-label="Notifications" type="button" onclick="location.href='notifications.html'">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+      </button>
+      <button class="avatar-mini" id="profileInitials" type="button" aria-label="Your profile">A</button>
+    </div>
+  </header>
+
+  <div class="page-head">
+    <small>Account</small>
     <h1>My Profile</h1>
-    <p>Manage your AITIVEST account and verification details.</p>
   </div>
 
   <div class="page-message" id="pageMessage" role="status" aria-live="polite"></div>
 
+  <!-- Hero with photo upload -->
   <section class="card profile-hero">
-    <div class="avatar" id="avatar">A</div>
+    <div class="avatar-wrap" id="avatarWrap">
+      <div class="avatar" id="avatar">A</div>
+      <button class="avatar-edit" id="avatarEditBtn" type="button" aria-label="Change profile photo">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+      </button>
+      <input type="file" id="avatarInput" accept="image/jpeg,image/png,image/webp" hidden>
+    </div>
     <div class="hero-info">
       <h2 id="heroName">Loading profile…</h2>
       <p id="heroEmail">Loading email…</p>
       <div class="status-pill pending" id="accountStatus">Checking account status…</div>
+      <div class="photo-actions">
+        <button class="link-btn" id="changePhotoBtn" type="button">Change photo</button>
+        <button class="link-btn danger" id="removePhotoBtn" type="button" hidden>Remove</button>
+      </div>
     </div>
   </section>
+  <div class="photo-hint" style="margin:-6px 4px 14px">JPG, PNG or WebP. Photos are cropped to a square and compressed automatically.</div>
 
   <section class="card section-card">
     <div class="section-head">
       <h3>Account Information</h3>
       <p>Your registered AITIVEST account details.</p>
     </div>
-
     <div class="info-row"><span class="info-label">Full name</span><span class="info-value" id="fullName">—</span></div>
     <div class="info-row"><span class="info-label">Email address</span><span class="info-value" id="email">—</span></div>
     <div class="info-row"><span class="info-label">Account status</span><span class="info-value" id="accountStatusInfo">—</span></div>
@@ -347,16 +231,11 @@ button:focus-visible,a:focus-visible,input:focus-visible{
         <p>View your verification status or continue to the existing verification page.</p>
       </div>
     </div>
-
     <div class="kyc-status">
       <span class="kyc-status-label">Verification status</span>
       <span class="kyc-status-value" id="kycStatusValue">Checking…</span>
     </div>
-
-    <div class="kyc-message" id="kycMessage">
-      Your verification status will appear here.
-    </div>
-
+    <div class="kyc-message" id="kycMessage">Your verification status will appear here.</div>
     <div class="kyc-action">
       <button class="primary-btn" id="kycButton" type="button">Verify Identity</button>
     </div>
@@ -367,15 +246,11 @@ button:focus-visible,a:focus-visible,input:focus-visible{
       <h3>Edit Profile</h3>
       <p>Update the name associated with your account.</p>
     </div>
-
     <form id="profileForm">
       <div class="form-group">
         <label for="editName">Full name</label>
-        <input class="input" type="text" id="editName"
-          placeholder="Enter your full name" autocomplete="name"
-          minlength="2" maxlength="100" required>
+        <input class="input" type="text" id="editName" placeholder="Enter your full name" autocomplete="name" minlength="2" maxlength="100" required>
       </div>
-
       <button class="primary-btn" id="saveProfileBtn" type="submit">Save Changes</button>
     </form>
   </section>
@@ -385,50 +260,70 @@ button:focus-visible,a:focus-visible,input:focus-visible{
       <h3>Account Settings</h3>
       <p>Security and account management.</p>
     </div>
-
     <div class="action-list">
+      <a class="action-item" href="security.html">
+        <span class="action-icon">♙</span>
+        <span class="action-info"><strong>Security Settings</strong><span>Manage two-factor authentication.</span></span>
+        <span class="action-arrow">›</span>
+      </a>
       <a class="action-item" href="reset-password.html">
         <span class="action-icon">🔒</span>
         <span class="action-info"><strong>Change Password</strong><span>Update your account password.</span></span>
         <span class="action-arrow">›</span>
       </a>
-
       <a class="action-item" href="support.html">
         <span class="action-icon">?</span>
         <span class="action-info"><strong>Support</strong><span>Get help with your AITIVEST account.</span></span>
         <span class="action-arrow">›</span>
       </a>
-
-      <button class="action-item" id="logoutBtn" type="button">
+      <button class="action-item danger-item" id="logoutBtn" type="button">
         <span class="action-icon">↪</span>
         <span class="action-info"><strong>Logout</strong><span>Sign out of this account.</span></span>
         <span class="action-arrow">›</span>
       </button>
     </div>
   </section>
-</main>
+</div>
 
 <nav class="bottom-nav" aria-label="Bottom navigation">
-  <div class="bottom-nav-inner">
-    <a class="bottom-link" href="dashboard.html"><span class="bottom-link-icon">⌂</span><span>Portfolio</span></a>
-    <a class="bottom-link" href="deposit.html"><span class="bottom-link-icon">＋</span><span>Deposit</span></a>
-    <a class="bottom-link" href="transactions.html"><span class="bottom-link-icon">≡</span><span>History</span></a>
-    <a class="bottom-link active" href="profile.html" aria-current="page"><span class="bottom-link-icon">○</span><span>Account</span></a>
-  </div>
+  <button class="bottom-link" onclick="location.href='dashboard.html'">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l9 8h-3v9h-5v-6h-2v6H6v-9H3z"/></svg>Home
+  </button>
+  <button class="bottom-link" onclick="location.href='transactions.html'">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 13h18"/></svg>Portfolio
+  </button>
+  <button class="bottom-link" onclick="location.href='deposit.html'">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="5"/><path d="M12 6v6M9.5 9h5"/><path d="M4 20c2-2 5-3 8-3s6 1 8 3"/></svg>Deposit
+  </button>
+  <button class="bottom-link" onclick="location.href='withdraw.html'">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h13l-3-3M20 16H7l3 3"/></svg>Withdraw
+  </button>
+  <button class="bottom-link" id="menuBtn" type="button" aria-label="Open navigation" aria-expanded="false">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>More
+  </button>
 </nav>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
 "use strict";
 
 const SUPABASE_URL = "https://rihvvwktvgytbqzazage.supabase.co";
 const SUPABASE_KEY = "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
-
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+/* Storage bucket used for profile photos (see setup SQL) */
+const AVATAR_BUCKET = "avatars";
+const AVATAR_MAX_INPUT_BYTES = 8 * 1024 * 1024; /* reject originals above 8 MB */
+const AVATAR_SIZE = 512;                          /* output px (square) */
+const AVATAR_TYPES = ["image/jpeg", "image/png", "image/webp"];
 
 let currentUser = null;
 let profileRecord = null;
 let kycRecord = null;
 let authListenerReady = false;
+let avatarUrl = null;
+let avatarUploading = false;
 
 const $ = id => document.getElementById(id);
 
@@ -436,39 +331,61 @@ function showMessage(message, type = "error") {
   const box = $("pageMessage");
   box.textContent = message;
   box.className = "page-message show " + type;
+  box.scrollIntoView({ behavior: "smooth", block: "nearest" });
 }
-
 function hideMessage() {
   $("pageMessage").className = "page-message";
   $("pageMessage").textContent = "";
+}
+function toast(message) {
+  const el = $("toast");
+  el.textContent = message;
+  el.classList.add("show");
+  clearTimeout(toast.t);
+  toast.t = setTimeout(() => el.classList.remove("show"), 2600);
 }
 
 function getInitials(name, email) {
   const source = String(name || "").trim() || String(email || "").trim();
   if (!source) return "A";
-
   const parts = source.split(/\s+/).filter(Boolean);
-
-  if (parts.length >= 2) {
-    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
-  }
-
+  if (parts.length >= 2) return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
   return source.slice(0, 2).toUpperCase();
 }
 
 function formatDate(value) {
   if (!value) return "—";
-
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return "—";
-
-  return date.toLocaleDateString(undefined, {
-    year: "numeric",
-    month: "long",
-    day: "numeric"
-  });
+  return date.toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" });
 }
 
+/* ---------- AVATAR DISPLAY ---------- */
+function paintAvatar(el, initials) {
+  el.replaceChildren();
+  if (avatarUrl) {
+    const img = document.createElement("img");
+    img.alt = "";
+    img.src = avatarUrl;
+    img.onerror = () => { el.replaceChildren(document.createTextNode(initials)); };
+    el.appendChild(img);
+  } else {
+    el.textContent = initials;
+  }
+}
+
+function renderAvatars() {
+  const initials = getInitials(
+    profileRecord?.full_name || currentUser?.user_metadata?.full_name,
+    profileRecord?.email || currentUser?.email
+  );
+  paintAvatar($("avatar"), initials);
+  paintAvatar($("profileInitials"), initials);
+  $("removePhotoBtn").hidden = !avatarUrl;
+  $("changePhotoBtn").textContent = avatarUrl ? "Change photo" : "Upload photo";
+}
+
+/* ---------- STATUS ---------- */
 function setAccountStatus(status) {
   if (!status) {
     $("accountStatus").textContent = "Status unavailable";
@@ -476,17 +393,11 @@ function setAccountStatus(status) {
     $("accountStatusInfo").textContent = "Unavailable";
     return;
   }
-
   const normalized = String(status).trim().toUpperCase();
   const label = normalized.replace(/_/g, " ");
-
   $("accountStatus").textContent = "Account status: " + label;
   $("accountStatusInfo").textContent = label;
-
-  const className = ["ACTIVE", "PENDING", "SUSPENDED", "CLOSED"].includes(normalized)
-    ? normalized.toLowerCase()
-    : "pending";
-
+  const className = ["ACTIVE", "PENDING", "SUSPENDED", "CLOSED"].includes(normalized) ? normalized.toLowerCase() : "pending";
   $("accountStatus").className = "status-pill " + className;
 }
 
@@ -494,18 +405,15 @@ function setKycStatus(status, rejectionReason = "", queryFailed = false) {
   if (queryFailed) {
     $("kycStatusValue").textContent = "UNAVAILABLE";
     $("kycStatusInfo").textContent = "Unavailable";
-    $("kycMessage").textContent =
-      "We couldn't confirm your verification status. Please try again later or contact support.";
+    $("kycMessage").textContent = "We couldn't confirm your verification status. Please try again later or contact support.";
     $("kycButton").textContent = "Open Verification";
     $("kycButton").disabled = false;
     return;
   }
-
   if (!status) {
     $("kycStatusValue").textContent = "NOT STARTED";
     $("kycStatusInfo").textContent = "Not started";
-    $("kycMessage").textContent =
-      "No verification status is recorded. You can open the verification page to continue.";
+    $("kycMessage").textContent = "No verification status is recorded. You can open the verification page to continue.";
     $("kycButton").textContent = "Verify Identity";
     $("kycButton").disabled = false;
     return;
@@ -518,32 +426,28 @@ function setKycStatus(status, rejectionReason = "", queryFailed = false) {
   if (normalized === "APPROVED") {
     $("kycMessage").textContent = "Your verification is marked as approved.";
     $("kycButton").textContent = "View Verification";
-    $("kycButton").disabled = false;
   } else if (normalized === "PENDING" || normalized === "UNDER_REVIEW") {
     $("kycMessage").textContent = "Your verification is awaiting review.";
     $("kycButton").textContent = "View Verification";
-    $("kycButton").disabled = false;
   } else if (normalized === "REJECTED") {
     $("kycMessage").textContent = rejectionReason
       ? "Verification was rejected. Reason: " + rejectionReason
       : "Verification was rejected. Open the verification page for next steps.";
     $("kycButton").textContent = "Review Verification";
-    $("kycButton").disabled = false;
   } else {
-    $("kycMessage").textContent =
-      "Your verification has not been completed. Open the verification page to continue.";
+    $("kycMessage").textContent = "Your verification has not been completed. Open the verification page to continue.";
     $("kycButton").textContent = "Verify Identity";
-    $("kycButton").disabled = false;
   }
+  $("kycButton").disabled = false;
 }
 
+/* ---------- LOAD PROFILE ---------- */
 async function loadProfile() {
   hideMessage();
 
   try {
     const { data: sessionData, error: sessionError } = await db.auth.getSession();
     if (sessionError) throw sessionError;
-
     if (!sessionData?.session) {
       window.location.replace("signin.html");
       return;
@@ -563,14 +467,10 @@ async function loadProfile() {
       .select("id,full_name,email,account_status,kyc_status,created_at,updated_at")
       .eq("id", currentUser.id)
       .maybeSingle();
-
     if (profileError) throw profileError;
 
     if (!profile) {
-      showMessage(
-        "Your profile record could not be found. Please contact support if this continues.",
-        "error"
-      );
+      showMessage("Your profile record could not be found. Please contact support if this continues.", "error");
       $("heroName").textContent = "Profile unavailable";
       $("heroEmail").textContent = currentUser.email || "—";
       setAccountStatus(null);
@@ -580,33 +480,30 @@ async function loadProfile() {
 
     profileRecord = profile;
 
-    const fullName =
-      profile.full_name ||
-      currentUser.user_metadata?.full_name ||
-      currentUser.user_metadata?.name ||
-      "";
+    /* avatar_url is read separately so the page still works if the column is not added yet */
+    try {
+      const { data: av, error: avError } = await db
+        .from("profiles")
+        .select("avatar_url")
+        .eq("id", currentUser.id)
+        .maybeSingle();
+      avatarUrl = !avError && av?.avatar_url ? av.avatar_url : null;
+    } catch (_) { avatarUrl = null; }
 
+    const fullName = profile.full_name || currentUser.user_metadata?.full_name || currentUser.user_metadata?.name || "";
     const email = profile.email || currentUser.email || "—";
-    const initials = getInitials(fullName, email);
 
-    $("avatar").textContent = initials;
-    $("profileInitials").textContent = initials;
     $("heroName").textContent = fullName || "AITIVEST User";
     $("heroEmail").textContent = email;
     $("fullName").textContent = fullName || "—";
     $("email").textContent = email;
-    $("memberSince").textContent = formatDate(
-      profile.created_at || currentUser.created_at
-    );
+    $("memberSince").textContent = formatDate(profile.created_at || currentUser.created_at);
     $("editName").value = fullName;
 
+    renderAvatars();
     setAccountStatus(profile.account_status);
 
-    /*
-      The kyc_submissions query below follows the table and column names
-      used by your existing code. If the schema differs, the page reports
-      the status as unavailable rather than assuming approval.
-    */
+    /* kyc_submissions follows the table/column names used by your existing code */
     const { data: kyc, error: kycError } = await db
       .from("kyc_submissions")
       .select("status,rejection_reason")
@@ -619,24 +516,156 @@ async function loadProfile() {
       setKycStatus(null, "", true);
     } else {
       kycRecord = kyc;
-      setKycStatus(
-        kyc?.status || profile.kyc_status || null,
-        kyc?.rejection_reason || ""
-      );
+      setKycStatus(kyc?.status || profile.kyc_status || null, kyc?.rejection_reason || "");
     }
-
   } catch (error) {
     console.error("Profile loading failed:", error);
-    showMessage(
-      "Unable to load your profile. Please refresh the page. " +
-      (error?.message || ""),
-      "error"
-    );
+    showMessage("Unable to load your profile. Please refresh the page. " + (error?.message || ""), "error");
   } finally {
     $("loadingScreen").style.display = "none";
   }
 }
 
+/* ---------- PROFILE PHOTO ---------- */
+function loadImage(file) {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => { URL.revokeObjectURL(url); resolve(img); };
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error("This file could not be read as an image.")); };
+    img.src = url;
+  });
+}
+
+/* Center-crop to a square, resize, and re-encode as JPEG (also strips metadata) */
+async function prepareAvatar(file) {
+  const img = await loadImage(file);
+  const side = Math.min(img.naturalWidth, img.naturalHeight);
+  if (!side) throw new Error("This image appears to be empty.");
+
+  const sx = (img.naturalWidth - side) / 2;
+  const sy = (img.naturalHeight - side) / 2;
+
+  const canvas = document.createElement("canvas");
+  canvas.width = AVATAR_SIZE;
+  canvas.height = AVATAR_SIZE;
+  const ctx = canvas.getContext("2d");
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0, 0, AVATAR_SIZE, AVATAR_SIZE);
+  ctx.drawImage(img, sx, sy, side, side, 0, 0, AVATAR_SIZE, AVATAR_SIZE);
+
+  const blob = await new Promise(resolve => canvas.toBlob(resolve, "image/jpeg", 0.88));
+  if (!blob) throw new Error("Unable to process this image.");
+  return blob;
+}
+
+function setAvatarBusy(busy) {
+  avatarUploading = busy;
+  $("avatarWrap").classList.toggle("avatar-uploading", busy);
+  $("avatarEditBtn").disabled = busy;
+  $("changePhotoBtn").disabled = busy;
+  $("removePhotoBtn").disabled = busy;
+}
+
+async function uploadAvatar(file) {
+  if (!currentUser || avatarUploading) return;
+  hideMessage();
+
+  if (!AVATAR_TYPES.includes(file.type)) {
+    showMessage("Please choose a JPG, PNG or WebP image.");
+    return;
+  }
+  if (file.size > AVATAR_MAX_INPUT_BYTES) {
+    showMessage("That image is too large. Please choose one under 8 MB.");
+    return;
+  }
+
+  setAvatarBusy(true);
+
+  try {
+    const blob = await prepareAvatar(file);
+    const path = currentUser.id + "/avatar.jpg";
+
+    const { error: uploadError } = await db.storage
+      .from(AVATAR_BUCKET)
+      .upload(path, blob, { upsert: true, contentType: "image/jpeg", cacheControl: "3600" });
+    if (uploadError) throw uploadError;
+
+    const { data: urlData } = db.storage.from(AVATAR_BUCKET).getPublicUrl(path);
+    const publicUrl = urlData?.publicUrl;
+    if (!publicUrl) throw new Error("Could not get the photo address.");
+
+    /* cache-buster so the new photo shows immediately */
+    const versionedUrl = publicUrl + "?v=" + Date.now();
+
+    const { data, error: updateError } = await db
+      .from("profiles")
+      .update({ avatar_url: versionedUrl, updated_at: new Date().toISOString() })
+      .eq("id", currentUser.id)
+      .select("id")
+      .maybeSingle();
+    if (updateError) throw updateError;
+    if (!data) throw new Error("The photo was uploaded but your profile could not be updated.");
+
+    avatarUrl = versionedUrl;
+    renderAvatars();
+    toast("Profile photo updated.");
+  } catch (error) {
+    console.error("Avatar upload failed:", error);
+    const msg = String(error?.message || "");
+    if (/bucket/i.test(msg) && /not found/i.test(msg)) {
+      showMessage("Photo storage is not set up yet. Create the 'avatars' bucket in Supabase (see setup SQL).");
+    } else if (/avatar_url/i.test(msg)) {
+      showMessage("The profiles table needs an 'avatar_url' column (see setup SQL).");
+    } else if (/row-level security|policy|permission/i.test(msg)) {
+      showMessage("Photo upload was blocked by storage permissions. Check the storage policies (see setup SQL).");
+    } else {
+      showMessage("Unable to update your photo. " + msg);
+    }
+  } finally {
+    setAvatarBusy(false);
+    $("avatarInput").value = "";
+  }
+}
+
+async function removeAvatar() {
+  if (!currentUser || avatarUploading || !avatarUrl) return;
+  hideMessage();
+  setAvatarBusy(true);
+
+  try {
+    const { data, error } = await db
+      .from("profiles")
+      .update({ avatar_url: null, updated_at: new Date().toISOString() })
+      .eq("id", currentUser.id)
+      .select("id")
+      .maybeSingle();
+    if (error) throw error;
+    if (!data) throw new Error("Your profile could not be updated.");
+
+    /* best effort: delete the stored file; the profile no longer points at it either way */
+    await db.storage.from(AVATAR_BUCKET).remove([currentUser.id + "/avatar.jpg"]);
+
+    avatarUrl = null;
+    renderAvatars();
+    toast("Profile photo removed.");
+  } catch (error) {
+    console.error("Avatar removal failed:", error);
+    showMessage("Unable to remove your photo. " + (error?.message || "Please try again."));
+  } finally {
+    setAvatarBusy(false);
+  }
+}
+
+$("avatarEditBtn").addEventListener("click", () => $("avatarInput").click());
+$("changePhotoBtn").addEventListener("click", () => $("avatarInput").click());
+$("removePhotoBtn").addEventListener("click", removeAvatar);
+$("avatarInput").addEventListener("change", event => {
+  const file = event.target.files && event.target.files[0];
+  if (file) uploadAvatar(file);
+});
+
+/* ---------- SAVE NAME ---------- */
 $("profileForm").addEventListener("submit", async event => {
   event.preventDefault();
   hideMessage();
@@ -647,7 +676,6 @@ $("profileForm").addEventListener("submit", async event => {
   }
 
   const name = $("editName").value.trim();
-
   if (name.length < 2) {
     showMessage("Please enter your full name.");
     return;
@@ -658,55 +686,34 @@ $("profileForm").addEventListener("submit", async event => {
   button.textContent = "Saving…";
 
   try {
-    /*
-      Supabase RLS must restrict this update to the authenticated user's
-      own profile. The browser must never be trusted to enforce ownership.
-    */
+    /* Supabase RLS must restrict this update to the user's own profile. */
     const { data, error } = await db
       .from("profiles")
-      .update({
-        full_name: name,
-        updated_at: new Date().toISOString()
-      })
+      .update({ full_name: name, updated_at: new Date().toISOString() })
       .eq("id", currentUser.id)
       .select("id,full_name")
       .maybeSingle();
-
     if (error) throw error;
+    if (!data) throw new Error("No profile was updated. Check your profile record and Supabase permissions.");
 
-    if (!data) {
-      throw new Error(
-        "No profile was updated. Check your profile record and Supabase permissions."
-      );
-    }
-
-    const { error: metadataError } = await db.auth.updateUser({
-      data: { full_name: name }
-    });
-
-    if (metadataError) {
-      console.warn("Auth metadata was not updated:", metadataError);
-    }
+    const { error: metadataError } = await db.auth.updateUser({ data: { full_name: name } });
+    if (metadataError) console.warn("Auth metadata was not updated:", metadataError);
 
     showMessage("Your profile has been updated successfully.", "success");
     await loadProfile();
-
   } catch (error) {
     console.error("Profile update failed:", error);
-    showMessage(
-      "Unable to save your profile. " + (error?.message || "Please try again."),
-      "error"
-    );
+    showMessage("Unable to save your profile. " + (error?.message || "Please try again."), "error");
   } finally {
     button.disabled = false;
     button.textContent = "Save Changes";
   }
 });
 
-$("kycButton").addEventListener("click", () => {
-  window.location.href = "kyc.html";
-});
+$("kycButton").addEventListener("click", () => { window.location.href = "kyc.html"; });
+$("profileInitials").addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
 
+/* ---------- LOGOUT ---------- */
 async function logout() {
   $("logoutBtn").disabled = true;
   $("drawerLogout").disabled = true;
@@ -714,7 +721,6 @@ async function logout() {
   try {
     const { error } = await db.auth.signOut();
     if (error) throw error;
-
     window.location.replace("signin.html");
   } catch (error) {
     console.error("Logout failed:", error);
@@ -723,50 +729,38 @@ async function logout() {
     $("drawerLogout").disabled = false;
   }
 }
-
 $("logoutBtn").addEventListener("click", logout);
 $("drawerLogout").addEventListener("click", logout);
 
+/* ---------- DRAWER ---------- */
 const drawer = $("drawer");
-const drawerOverlay = $("drawerOverlay");
+const overlay = $("overlay");
 
 function openDrawer() {
-  drawer.classList.add("show");
-  drawerOverlay.classList.add("show");
+  drawer.classList.add("open");
+  overlay.classList.add("show");
   drawer.setAttribute("aria-hidden", "false");
   $("menuBtn").setAttribute("aria-expanded", "true");
-  document.body.style.overflow = "hidden";
-  $("drawerClose").focus();
 }
-
 function closeDrawer() {
-  drawer.classList.remove("show");
-  drawerOverlay.classList.remove("show");
+  drawer.classList.remove("open");
+  overlay.classList.remove("show");
   drawer.setAttribute("aria-hidden", "true");
   $("menuBtn").setAttribute("aria-expanded", "false");
-  document.body.style.overflow = "";
 }
-
 $("menuBtn").addEventListener("click", openDrawer);
 $("drawerClose").addEventListener("click", closeDrawer);
-drawerOverlay.addEventListener("click", closeDrawer);
-
-document.addEventListener("keydown", event => {
-  if (event.key === "Escape") closeDrawer();
-});
+overlay.addEventListener("click", closeDrawer);
+document.addEventListener("keydown", event => { if (event.key === "Escape") closeDrawer(); });
 
 if (!authListenerReady) {
   authListenerReady = true;
-
   db.auth.onAuthStateChange((event, session) => {
-    if (event === "SIGNED_OUT" || !session) {
-      window.location.replace("signin.html");
-    }
+    if (event === "SIGNED_OUT" || !session) window.location.replace("signin.html");
   });
 }
 
 loadProfile();
 </script>
-
 </body>
 </html>
