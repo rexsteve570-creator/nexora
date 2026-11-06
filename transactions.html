@@ -1,1437 +1,636 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#07111f">
-  <title>Transaction History | AITIVEST</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-  <style>
-    :root {
-      --bg: #07111f;
-      --header: #091626;
-      --card: #0d1b2d;
-      --card2: #112238;
-      --gold: #d9a441;
-      --gold2: #f0c866;
-      --text: #f5f7fa;
-      --muted: #9aa7b8;
-      --border: rgba(255,255,255,.08);
-      --green: #51d6a0;
-      --red: #ff7c86;
-      --blue: #81b7ff;
-      --shadow: 0 16px 40px rgba(0,0,0,.18);
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--text);
-      font-family: "DM Sans", sans-serif;
-      font-size: 14px;
-      min-height: 100vh;
-      padding-bottom: 96px;
-    }
-
-    button, input, select {
-      font: inherit;
-    }
-
-    button {
-      cursor: pointer;
-    }
-
-    button:focus-visible,
-    a:focus-visible {
-      outline: 2px solid var(--gold2);
-      outline-offset: 3px;
-    }
-
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      height: 68px;
-      background: rgba(7,17,31,.96);
-      backdrop-filter: blur(18px);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .topbar-inner {
-      width: min(100%, 760px);
-      height: 100%;
-      margin: auto;
-      padding: 0 18px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .icon-btn {
-      width: 40px;
-      height: 40px;
-      display: grid;
-      place-items: center;
-      border: 1px solid var(--border);
-      background: var(--card);
-      border-radius: 12px;
-      color: var(--text);
-      font-size: 21px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 9px;
-      text-decoration: none;
-      color: var(--text);
-    }
-
-    .brand-mark {
-      width: 31px;
-      height: 31px;
-      border: 1.5px solid var(--gold);
-      border-radius: 9px 9px 9px 2px;
-      display: grid;
-      place-items: center;
-      color: var(--gold2);
-      font-family: "Manrope", sans-serif;
-      font-size: 17px;
-      font-weight: 800;
-    }
-
-    .brand-name {
-      font-family: "Manrope", sans-serif;
-      font-size: 17px;
-      font-weight: 800;
-      letter-spacing: 1.3px;
-    }
-
-    .brand-name span {
-      color: var(--gold2);
-    }
-
-    .avatar {
-      width: 39px;
-      height: 39px;
-      border: 1px solid rgba(217,164,65,.5);
-      background: linear-gradient(135deg, #26364b, #132239);
-      color: var(--gold2);
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      font-weight: 800;
-      text-decoration: none;
-      overflow: hidden;
-    }
-
-    .page {
-      width: min(100%, 760px);
-      margin: auto;
-      padding: 26px 18px 30px;
-    }
-
-    .eyebrow {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--gold2);
-      text-transform: uppercase;
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: 2px;
-      margin-bottom: 9px;
-    }
-
-    .eyebrow::before {
-      content: "";
-      width: 19px;
-      height: 2px;
-      background: var(--gold);
-      border-radius: 5px;
-    }
-
-    h1 {
-      margin: 0;
-      font-family: "Manrope", sans-serif;
-      font-size: clamp(25px, 5vw, 32px);
-      line-height: 1.2;
-      letter-spacing: -.9px;
-    }
-
-    .subtitle {
-      color: var(--muted);
-      line-height: 1.7;
-      margin: 10px 0 23px;
-      max-width: 490px;
-    }
-
-    .summary-card {
-      border: 1px solid rgba(217,164,65,.2);
-      background:
-        radial-gradient(circle at 100% 0%, rgba(217,164,65,.12), transparent 45%),
-        linear-gradient(135deg, #102038, #0c192a);
-      border-radius: 19px;
-      padding: 20px;
-      margin-bottom: 25px;
-      box-shadow: var(--shadow);
-    }
-
-    .summary-label {
-      color: var(--muted);
-      font-size: 12px;
-      margin-bottom: 7px;
-    }
-
-    .summary-amount {
-      font-family: "Manrope", sans-serif;
-      font-size: 30px;
-      font-weight: 800;
-      letter-spacing: -.8px;
-      overflow-wrap: anywhere;
-    }
-
-    .summary-foot {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      color: var(--muted);
-      font-size: 11px;
-      margin-top: 9px;
-    }
-
-    .status-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--green);
-      flex-shrink: 0;
-    }
-
-    .section-heading {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin: 0 0 15px;
-    }
-
-    .section-heading h2 {
-      font-family: "Manrope", sans-serif;
-      font-size: 17px;
-      margin: 0;
-      font-weight: 800;
-    }
-
-    .count-pill {
-      padding: 5px 9px;
-      border-radius: 20px;
-      background: rgba(217,164,65,.1);
-      color: var(--gold2);
-      font-size: 11px;
-      font-weight: 800;
-      white-space: nowrap;
-    }
-
-    .filters {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      padding: 2px 0 15px;
-      scrollbar-width: none;
-    }
-
-    .filters::-webkit-scrollbar {
-      display: none;
-    }
-
-    .filter-btn {
-      border: 1px solid var(--border);
-      color: var(--muted);
-      background: var(--card);
-      border-radius: 10px;
-      padding: 10px 15px;
-      font-size: 12px;
-      font-weight: 700;
-      white-space: nowrap;
-      transition: .2s ease;
-    }
-
-    .filter-btn.active {
-      color: #17120a;
-      border-color: var(--gold);
-      background: linear-gradient(135deg, var(--gold2), var(--gold));
-    }
-
-    .toolbar {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 15px;
-    }
-
-    .search-wrap {
-      flex: 1;
-      min-width: 0;
-      position: relative;
-    }
-
-    .search-wrap span {
-      position: absolute;
-      left: 13px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--muted);
-      font-size: 17px;
-      pointer-events: none;
-    }
-
-    .search-input {
-      width: 100%;
-      min-height: 43px;
-      background: var(--card);
-      color: var(--text);
-      border: 1px solid var(--border);
-      border-radius: 11px;
-      padding: 0 12px 0 38px;
-      outline: none;
-    }
-
-    .search-input:focus {
-      border-color: rgba(217,164,65,.65);
-    }
-
-    .refresh-btn {
-      min-width: 44px;
-      min-height: 43px;
-      border: 1px solid var(--border);
-      border-radius: 11px;
-      color: var(--gold2);
-      background: var(--card);
-      font-size: 19px;
-    }
-
-    .refresh-btn:disabled {
-      opacity: .5;
-      cursor: wait;
-    }
-
-    .transaction-list {
-      display: grid;
-      gap: 11px;
-    }
-
-    .transaction {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 15px;
-      padding: 15px;
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      transition: border-color .2s ease, transform .2s ease;
-    }
-
-    .transaction:hover {
-      border-color: rgba(217,164,65,.3);
-      transform: translateY(-1px);
-    }
-
-    .coin-icon {
-      width: 43px;
-      height: 43px;
-      border-radius: 13px;
-      background: var(--card2);
-      border: 1px solid var(--border);
-      display: grid;
-      place-items: center;
-      flex-shrink: 0;
-      overflow: hidden;
-    }
-
-    .coin-icon img {
-      display: block;
-      width: 29px;
-      height: 29px;
-      object-fit: contain;
-    }
-
-    .coin-fallback {
-      display: none;
-      font-size: 11px;
-      font-weight: 800;
-      color: var(--gold2);
-    }
-
-    .transaction-main {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .transaction-title-row {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    .transaction-title {
-      font-size: 13px;
-      font-weight: 800;
-      line-height: 1.5;
-      overflow-wrap: anywhere;
-    }
-
-    .transaction-amount {
-      font-family: "Manrope", sans-serif;
-      font-size: 13px;
-      font-weight: 800;
-      white-space: nowrap;
-      text-align: right;
-    }
-
-    .amount-positive {
-      color: var(--green);
-    }
-
-    .amount-negative {
-      color: var(--red);
-    }
-
-    .transaction-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px 10px;
-      margin-top: 7px;
-      color: var(--muted);
-      font-size: 11px;
-      line-height: 1.6;
-    }
-
-    .status {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      border-radius: 20px;
-      padding: 4px 8px;
-      font-size: 10px;
-      font-weight: 800;
-      text-transform: capitalize;
-      background: rgba(255,255,255,.06);
-      color: var(--muted);
-    }
-
-    .status::before {
-      content: "";
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: currentColor;
-    }
-
-    .status.completed,
-    .status.success,
-    .status.confirmed,
-    .status.approved,
-    .status.paid {
-      background: rgba(81,214,160,.1);
-      color: var(--green);
-    }
-
-    .status.pending,
-    .status.processing,
-    .status.under-review,
-    .status.quote-pending {
-      background: rgba(217,164,65,.11);
-      color: var(--gold2);
-    }
-
-    .status.rejected,
-    .status.failed,
-    .status.cancelled,
-    .status.expired {
-      background: rgba(255,124,134,.1);
-      color: var(--red);
-    }
-
-    .status.unknown {
-      background: rgba(129,183,255,.1);
-      color: var(--blue);
-    }
-
-    .transaction-id {
-      display: block;
-      margin-top: 7px;
-      color: #718199;
-      font-size: 10px;
-      overflow-wrap: anywhere;
-    }
-
-    .state-box {
-      padding: 35px 18px;
-      text-align: center;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-    }
-
-    .state-icon {
-      width: 48px;
-      height: 48px;
-      display: grid;
-      place-items: center;
-      margin: 0 auto 13px;
-      border-radius: 15px;
-      background: var(--card2);
-      color: var(--gold2);
-      font-size: 22px;
-    }
-
-    .state-box h3 {
-      margin: 0 0 7px;
-      font-family: "Manrope", sans-serif;
-      font-size: 15px;
-    }
-
-    .state-box p {
-      color: var(--muted);
-      line-height: 1.7;
-      margin: 0;
-      font-size: 12px;
-    }
-
-    .retry-btn {
-      margin-top: 15px;
-      padding: 10px 15px;
-      border: 1px solid rgba(217,164,65,.4);
-      border-radius: 10px;
-      color: var(--gold2);
-      background: rgba(217,164,65,.08);
-      font-weight: 700;
-    }
-
-    .notice {
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,.025);
-      border-radius: 12px;
-      padding: 12px 14px;
-      color: var(--muted);
-      font-size: 11px;
-      line-height: 1.7;
-      margin-top: 20px;
-    }
-
-    .notice strong {
-      color: var(--text);
-    }
-
-    .drawer-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,.62);
-      z-index: 90;
-      opacity: 0;
-      visibility: hidden;
-      transition: .25s;
-    }
-
-    .drawer-backdrop.open {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .drawer {
-      position: fixed;
-      z-index: 100;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      width: min(290px, 86vw);
-      padding: 22px 17px;
-      background: #091626;
-      border-right: 1px solid var(--border);
-      transform: translateX(-105%);
-      transition: transform .25s ease;
-      overflow-y: auto;
-    }
-
-    .drawer.open {
-      transform: translateX(0);
-    }
-
-    .drawer-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 28px;
-    }
-
-    .drawer-close {
-      width: 34px;
-      height: 34px;
-      border: 1px solid var(--border);
-      background: var(--card);
-      color: var(--text);
-      border-radius: 10px;
-      font-size: 19px;
-    }
-
-    .drawer-label {
-      color: #728199;
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 1.7px;
-      font-weight: 800;
-      margin: 22px 10px 10px;
-    }
-
-    .drawer-link {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      width: 100%;
-      padding: 13px 12px;
-      margin-bottom: 5px;
-      border: 1px solid transparent;
-      border-radius: 11px;
-      background: transparent;
-      color: #bdc7d6;
-      text-align: left;
-      text-decoration: none;
-      font-size: 13px;
-      font-weight: 700;
-    }
-
-    .drawer-link:hover,
-    .drawer-link.active {
-      color: var(--gold2);
-      background: rgba(217,164,65,.08);
-      border-color: rgba(217,164,65,.14);
-    }
-
-    .drawer-symbol {
-      width: 22px;
-      text-align: center;
-      font-size: 17px;
-    }
-
-    .drawer-link.logout {
-      color: var(--red);
-      margin-top: 18px;
-    }
-
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 45;
-      width: min(100%, 760px);
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      padding: 9px 7px calc(9px + env(safe-area-inset-bottom));
-      background: rgba(9,22,38,.97);
-      backdrop-filter: blur(18px);
-      border: 1px solid var(--border);
-      border-bottom: 0;
-      border-radius: 18px 18px 0 0;
-    }
-
-    .bottom-link {
-      min-height: 52px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-      border: 0;
-      background: transparent;
-      color: #8593a8;
-      font-size: 10px;
-      font-weight: 700;
-    }
-
-    .bottom-link.active {
-      color: var(--gold2);
-    }
-
-    .bottom-icon {
-      font-size: 20px;
-      line-height: 1.1;
-    }
-
-    .toast {
-      position: fixed;
-      z-index: 150;
-      bottom: 86px;
-      left: 50%;
-      transform: translate(-50%, 12px);
-      width: max-content;
-      max-width: calc(100% - 32px);
-      padding: 12px 16px;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      background: #14243a;
-      color: var(--text);
-      box-shadow: var(--shadow);
-      opacity: 0;
-      visibility: hidden;
-      transition: .2s;
-      font-size: 12px;
-      line-height: 1.5;
-    }
-
-    .toast.show {
-      opacity: 1;
-      visibility: visible;
-      transform: translate(-50%, 0);
-    }
-
-    .toast.error {
-      border-color: rgba(255,124,134,.35);
-    }
-
-    @media (max-width: 420px) {
-      .page {
-        padding: 22px 13px;
-      }
-
-      .topbar-inner {
-        padding: 0 13px;
-      }
-
-      .transaction {
-        padding: 12px;
-        gap: 10px;
-      }
-
-      .coin-icon {
-        width: 39px;
-        height: 39px;
-      }
-
-      .transaction-title-row {
-        flex-direction: column;
-        gap: 5px;
-      }
-
-      .transaction-amount {
-        text-align: left;
-      }
-
-      .summary-amount {
-        font-size: 27px;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        scroll-behavior: auto !important;
-        transition: none !important;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#050b1a">
+<title>Transaction History | AITIVEST</title>
+<style>
+:root{
+  --bg:#050b1a;--card:#0b1733;--line:#1c2c52;
+  --text:#e8edf7;--muted:#9aa7c0;
+  --gold:#f2b84b;--gold2:#ffd982;--gold3:#c98f1d;
+  --green:#22d37a;--red:#ef6b73;--blue:#2f8cff;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{min-height:100vh;background:#02050d;color:var(--text);font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;font-size:14px;display:flex;justify-content:center}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+a{color:inherit;text-decoration:none}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
+
+/* Brand */
+.brand-logo{display:flex;align-items:center;gap:9px}
+.brand-mark{width:30px;height:30px;border:2px solid var(--gold);border-radius:9px 9px 9px 2px;display:flex;align-items:center;justify-content:center;color:var(--gold2);font-size:16px;font-weight:900;transform:rotate(-3deg)}
+.brand-name{font-size:24px;font-weight:700;letter-spacing:2px;background:linear-gradient(180deg,#ffd982,#d89a24);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+.app{width:100%;max-width:480px;min-height:100vh;background:radial-gradient(120% 60% at 50% 0%,#0f2350 0%,var(--bg) 60%);padding:18px 16px 100px;position:relative}
+
+/* Header */
+.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
+.top-actions{display:flex;gap:14px;align-items:center}
+.bell{background:none;border:0;color:var(--gold);display:flex}
+.avatar{width:36px;height:36px;border-radius:50%;background:#16264d;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--gold2);font-size:12px;font-weight:800;cursor:pointer;overflow:hidden}
+.avatar img{width:100%;height:100%;object-fit:cover;display:block}
+.page-head{margin-bottom:6px}
+.page-head small{font-size:15px;color:#cfd8ec;display:block}
+.page-head h1{font-size:26px;font-weight:700;color:var(--gold)}
+.subtitle{color:var(--muted);font-size:12.5px;line-height:1.7;margin:6px 0 16px}
+
+/* Summary */
+.summary-card{border-color:#1fbf6f;background:linear-gradient(135deg,rgba(14,70,56,.75),rgba(8,26,40,.9));box-shadow:0 0 18px rgba(34,211,122,.18),inset 0 0 18px rgba(34,211,122,.06);border:1px solid #1fbf6f;border-radius:16px;padding:14px;margin-bottom:18px;display:flex;align-items:center;gap:14px}
+.sum-ic{width:52px;height:52px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#2fa36b,#0f5a3d);display:flex;align-items:center;justify-content:center;flex:none;box-shadow:0 0 14px rgba(34,211,122,.4)}
+.summary-label{font-size:12.5px;letter-spacing:.6px;color:#d6e6df}
+.summary-amount{font-size:28px;font-weight:700;color:var(--green);line-height:1.2;overflow-wrap:anywhere}
+.summary-foot{font-size:11px;color:#b7d4c8;margin-top:2px}
+
+/* Section */
+.section-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.section-heading h2{font-size:15px;font-weight:700}
+.count-pill{padding:5px 10px;border-radius:20px;background:rgba(242,184,75,.12);color:var(--gold);font-size:11px;font-weight:700;white-space:nowrap}
+
+/* Filters */
+.filters{display:flex;gap:8px;overflow-x:auto;padding:2px 0 14px;scrollbar-width:none}
+.filters::-webkit-scrollbar{display:none}
+.filter-btn{border:1px solid var(--line);color:var(--muted);background:rgba(255,255,255,.04);border-radius:12px;padding:10px 15px;font-size:12px;font-weight:700;white-space:nowrap;transition:.2s}
+.filter-btn.active{color:#1a1200;border-color:transparent;background:linear-gradient(180deg,#f7c75a,#cf9420);box-shadow:0 4px 14px rgba(242,184,75,.25)}
+
+/* Toolbar */
+.toolbar{display:flex;gap:10px;margin-bottom:14px}
+.search-wrap{flex:1;min-width:0;position:relative;display:block}
+.search-wrap span{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:17px;pointer-events:none}
+.search-input{width:100%;min-height:46px;background:rgba(5,11,26,.8);border:1px solid var(--line);border-radius:12px;padding:0 12px 0 38px;outline:none;font-size:13px}
+.search-input:focus{border-color:var(--gold3);box-shadow:0 0 0 3px rgba(242,184,75,.1)}
+.search-input::placeholder{color:#74839a}
+.refresh-btn{min-width:46px;min-height:46px;border:1.5px solid var(--gold3);border-radius:12px;color:var(--gold);background:transparent;font-size:19px}
+.refresh-btn:disabled{opacity:.5;cursor:wait}
+
+/* Transactions */
+.transaction-list{display:grid;gap:12px}
+.transaction{background:linear-gradient(180deg,rgba(18,34,72,.75),rgba(9,20,45,.9));border:1px solid var(--line);border-radius:16px;padding:14px;display:flex;align-items:flex-start;gap:12px;transition:border-color .15s}
+.transaction:hover{border-color:var(--gold3)}
+.coin-icon{width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid var(--line);display:grid;place-items:center;flex:none;overflow:hidden}
+.coin-icon img{display:block;width:28px;height:28px;object-fit:contain}
+.coin-fallback{display:none;font-size:11px;font-weight:800;color:var(--gold2)}
+.transaction-main{flex:1;min-width:0}
+.transaction-title-row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.transaction-title{font-size:13px;font-weight:700;line-height:1.5;overflow-wrap:anywhere}
+.transaction-amount{font-size:13px;font-weight:700;white-space:nowrap;text-align:right}
+.amount-negative{color:#ff8f96}
+.transaction-meta{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin-top:7px;color:var(--muted);font-size:11px;line-height:1.6}
+.status{display:inline-flex;align-items:center;gap:5px;border-radius:20px;padding:4px 9px;font-size:10px;font-weight:700;text-transform:capitalize;background:rgba(255,255,255,.07);color:var(--muted)}
+.status::before{content:"";width:5px;height:5px;border-radius:50%;background:currentColor}
+.status.completed,.status.success,.status.confirmed,.status.approved,.status.paid{background:rgba(34,211,122,.12);color:#8be7c0}
+.status.pending,.status.processing,.status.under-review,.status.quote-pending,.status.approved-pending,.status.awaiting-confirmation{background:rgba(242,184,75,.13);color:#f3d18b}
+.status.rejected,.status.failed,.status.cancelled,.status.expired{background:rgba(239,107,115,.12);color:#ffabb0}
+.status.unknown{background:rgba(47,140,255,.12);color:#9cc4ff}
+.transaction-id{display:block;margin-top:7px;color:#718199;font-size:10px;overflow-wrap:anywhere}
+
+/* States */
+.state-box{padding:34px 18px;text-align:center;background:linear-gradient(180deg,rgba(18,34,72,.75),rgba(9,20,45,.9));border:1px solid var(--line);border-radius:16px}
+.state-icon{width:52px;height:52px;display:grid;place-items:center;margin:0 auto 13px;border-radius:50%;background:rgba(242,184,75,.12);border:1px solid rgba(242,184,75,.3);color:var(--gold);font-size:22px}
+.state-box h3{margin-bottom:7px;font-size:15px}
+.state-box p{color:var(--muted);line-height:1.7;font-size:12px;overflow-wrap:anywhere}
+.retry-btn{margin-top:15px;height:44px;padding:0 20px;border:0;border-radius:14px;background:linear-gradient(180deg,#f7c75a,#cf9420);color:#1a1200;font-size:13px;font-weight:700}
+
+.notice{border:1px solid rgba(242,184,75,.22);background:rgba(242,184,75,.06);border-radius:14px;padding:13px;color:#d7c9a8;font-size:11.5px;line-height:1.8;margin-top:18px}
+.notice strong{color:var(--gold2)}
+
+/* Bottom nav */
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;min-height:72px;padding-bottom:env(safe-area-inset-bottom);background:rgba(6,13,30,.96);backdrop-filter:blur(10px);border-top:1px solid var(--line);z-index:120;display:grid;grid-template-columns:repeat(5,1fr)}
+.bottom-link{background:none;border:0;color:#aab5cc;font-size:11px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px}
+.bottom-link.active{color:var(--gold);background:linear-gradient(180deg,rgba(242,184,75,.16),transparent)}
+.bottom-link.active svg{filter:drop-shadow(0 0 6px rgba(242,184,75,.7))}
+
+/* Drawer */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:190;display:none}
+.overlay.show{display:block}
+.drawer{position:fixed;left:-320px;top:0;width:290px;max-width:86%;height:100vh;height:100dvh;background:#081225;border-right:1px solid var(--line);z-index:200;transition:left .25s ease;padding:22px 15px;overflow-y:auto}
+.drawer.open{left:0}
+.drawer-head{display:flex;align-items:center;justify-content:space-between;padding:8px 7px 25px;border-bottom:1px solid var(--line)}
+.drawer-head .brand-name{font-size:19px}
+.close-drawer{border:0;background:none;color:#fff;font-size:27px}
+.drawer-nav{padding-top:18px}
+.drawer-link{width:100%;border:0;background:transparent;color:#d7dce4;padding:14px 13px;border-radius:11px;display:flex;align-items:center;gap:13px;text-align:left;margin-bottom:4px}
+.drawer-link:hover,.drawer-link.active{background:rgba(242,184,75,.08);color:var(--gold2)}
+.drawer-icon{width:22px;text-align:center;color:var(--gold)}
+.drawer-link.logout{margin-top:15px;color:#ef8990}
+
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%) translateY(15px);background:#12244c;border:1px solid var(--gold3);color:#fff;padding:12px 16px;border-radius:12px;font-size:12px;opacity:0;pointer-events:none;transition:.25s;z-index:500;width:max-content;max-width:90%;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.error{border-color:rgba(239,107,115,.6)}
+
+@media(max-width:420px){
+  .transaction-title-row{flex-direction:column;gap:4px}
+  .transaction-amount{text-align:left}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important}}
+</style>
 </head>
-
 <body>
-  <header class="topbar">
-    <div class="topbar-inner">
-      <button class="icon-btn" id="menuButton" type="button"
-        aria-label="Open navigation menu" aria-expanded="false">☰</button>
 
-      <a class="brand" href="dashboard.html" aria-label="AITIVEST home">
-        <span class="brand-mark">A</span>
-        <span class="brand-name">AITI<span>VEST</span></span>
-      </a>
+<div class="overlay" id="overlay"></div>
+<aside class="drawer" id="drawer" aria-label="Main navigation" aria-hidden="true">
+  <div class="drawer-head">
+    <div class="brand-logo"><div class="brand-mark">A</div><div class="brand-name">AITIVEST</div></div>
+    <button class="close-drawer" id="closeDrawer" type="button" aria-label="Close navigation menu">×</button>
+  </div>
+  <nav class="drawer-nav">
+    <button class="drawer-link" onclick="go('dashboard.html')"><span class="drawer-icon">⌂</span>Portfolio</button>
+    <button class="drawer-link" onclick="go('deposit.html')"><span class="drawer-icon">＋</span>Deposit</button>
+    <button class="drawer-link" onclick="go('withdraw.html')"><span class="drawer-icon">↗</span>Withdraw</button>
+    <button class="drawer-link active" aria-current="page"><span class="drawer-icon">≡</span>Transactions</button>
+    <button class="drawer-link" onclick="go('referrals.html')"><span class="drawer-icon">♧</span>Referrals</button>
+    <button class="drawer-link" onclick="go('profile.html')"><span class="drawer-icon">○</span>Profile</button>
+    <button class="drawer-link" onclick="go('security.html')"><span class="drawer-icon">♙</span>Security Settings</button>
+    <button class="drawer-link" onclick="go('support.html')"><span class="drawer-icon">?</span>Support</button>
+    <button class="drawer-link" onclick="go('notifications.html')"><span class="drawer-icon">♢</span>Notifications</button>
+    <button class="drawer-link logout" id="logoutButton" type="button"><span class="drawer-icon">↪</span>Logout</button>
+  </nav>
+</aside>
 
-      <a class="avatar" id="profileAvatar" href="profile.html"
-        aria-label="Open profile">A</a>
+<div class="app">
+  <header class="top">
+    <a href="dashboard.html" class="brand-logo" aria-label="AITIVEST home"><div class="brand-mark">A</div><div class="brand-name">AITIVEST</div></a>
+    <div class="top-actions">
+      <button class="bell" aria-label="Notifications" type="button" onclick="go('notifications.html')">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+      </button>
+      <a class="avatar" id="profileAvatar" href="profile.html" aria-label="Open profile">A</a>
     </div>
   </header>
 
-  <div class="drawer-backdrop" id="drawerBackdrop"></div>
-
-  <aside class="drawer" id="drawer" aria-label="Main navigation"
-    aria-hidden="true">
-    <div class="drawer-head">
-      <a class="brand" href="dashboard.html">
-        <span class="brand-mark">A</span>
-        <span class="brand-name">AITI<span>VEST</span></span>
-      </a>
-      <button class="drawer-close" id="closeDrawer" type="button"
-        aria-label="Close navigation menu">×</button>
-    </div>
-
-    <div class="drawer-label">Main menu</div>
-
-    <a class="drawer-link" href="dashboard.html">
-      <span class="drawer-symbol">⌂</span> Portfolio
-    </a>
-    <a class="drawer-link" href="deposit.html">
-      <span class="drawer-symbol">＋</span> Deposit
-    </a>
-    <a class="drawer-link" href="withdraw.html">
-      <span class="drawer-symbol">↗</span> Withdraw
-    </a>
-    <a class="drawer-link active" href="transactions.html" aria-current="page">
-      <span class="drawer-symbol">≡</span> Transactions
-    </a>
-    <a class="drawer-link" href="referrals.html">
-      <span class="drawer-symbol">♧</span> Referrals
-    </a>
-
-    <div class="drawer-label">Account</div>
-
-    <a class="drawer-link" href="profile.html">
-      <span class="drawer-symbol">○</span> Profile
-    </a>
-    <a class="drawer-link" href="notifications.html">
-      <span class="drawer-symbol">♧</span> Notifications
-    </a>
-    <a class="drawer-link" href="support.html">
-      <span class="drawer-symbol">?</span> Support
-    </a>
-
-    <button class="drawer-link logout" id="logoutButton" type="button">
-      <span class="drawer-symbol">⇥</span> Sign out
-    </button>
-  </aside>
-
-  <main class="page">
-    <div class="eyebrow">Your account activity</div>
+  <div class="page-head">
+    <small>Your account activity</small>
     <h1>Transaction History</h1>
-    <p class="subtitle">
-      Review your withdrawal requests, transaction statuses and activity
-      recorded on your AITIVEST account.
-    </p>
+  </div>
+  <p class="subtitle">Review your withdrawal requests, transaction statuses and activity recorded on your AITIVEST account.</p>
 
-    <section class="summary-card" aria-label="Transaction summary">
-      <div class="summary-label">Withdrawal requests recorded</div>
-      <div class="summary-amount" id="totalCount">—</div>
-      <div class="summary-foot">
-        <span class="status-dot"></span>
-        <span id="summaryCaption">Loading your account activity…</span>
-      </div>
-    </section>
-
-    <section aria-labelledby="historyHeading">
-      <div class="section-heading">
-        <h2 id="historyHeading">Recent activity</h2>
-        <span class="count-pill" id="resultCount">Loading</span>
-      </div>
-
-      <div class="filters" role="group" aria-label="Filter transactions">
-        <button class="filter-btn active" type="button"
-          data-filter="ALL" aria-pressed="true">All activity</button>
-        <button class="filter-btn" type="button"
-          data-filter="WITHDRAWALS" aria-pressed="false">Withdrawals</button>
-        <button class="filter-btn" type="button"
-          data-filter="PENDING" aria-pressed="false">Pending</button>
-        <button class="filter-btn" type="button"
-          data-filter="COMPLETED" aria-pressed="false">Completed</button>
-        <button class="filter-btn" type="button"
-          data-filter="FAILED" aria-pressed="false">Failed / Rejected</button>
-      </div>
-
-      <div class="toolbar">
-        <label class="search-wrap">
-          <span aria-hidden="true">⌕</span>
-          <input class="search-input" id="searchInput" type="search"
-            placeholder="Search asset, status or ID" autocomplete="off"
-            aria-label="Search transactions">
-        </label>
-        <button class="refresh-btn" id="refreshButton" type="button"
-          aria-label="Refresh transaction history" title="Refresh">↻</button>
-      </div>
-
-      <div class="transaction-list" id="transactionList" aria-live="polite">
-        <div class="state-box">
-          <div class="state-icon">↻</div>
-          <h3>Loading activity</h3>
-          <p>Please wait while we retrieve your transaction history.</p>
-        </div>
-      </div>
-    </section>
-
-    <div class="notice">
-      <strong>Important:</strong> A displayed status reflects the status
-      stored in the database. A pending request is not a completed payment.
-      If a transaction looks incorrect, contact support before submitting
-      another request.
+  <section class="summary-card" aria-label="Transaction summary">
+    <div class="sum-ic">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#bff5d8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V9"/><path d="M7 13l5-5 5 5"/><path d="M5 4h14"/></svg>
     </div>
-  </main>
+    <div>
+      <div class="summary-label">WITHDRAWAL REQUESTS</div>
+      <div class="summary-amount" id="totalCount">—</div>
+      <div class="summary-foot" id="summaryCaption">Loading your account activity…</div>
+    </div>
+  </section>
 
-  <nav class="bottom-nav" aria-label="Bottom navigation">
-    <button class="bottom-link" type="button" onclick="go('dashboard.html')">
-      <span class="bottom-icon">⌂</span><span>Portfolio</span>
-    </button>
-    <button class="bottom-link" type="button" onclick="go('deposit.html')">
-      <span class="bottom-icon">＋</span><span>Deposit</span>
-    </button>
-    <button class="bottom-link active" type="button"
-      onclick="go('transactions.html')" aria-current="page">
-      <span class="bottom-icon">≡</span><span>History</span>
-    </button>
-    <button class="bottom-link" type="button" onclick="go('profile.html')">
-      <span class="bottom-icon">○</span><span>Account</span>
-    </button>
-  </nav>
+  <section aria-labelledby="historyHeading">
+    <div class="section-heading">
+      <h2 id="historyHeading">Recent activity</h2>
+      <span class="count-pill" id="resultCount">Loading</span>
+    </div>
 
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <div class="filters" role="group" aria-label="Filter transactions">
+      <button class="filter-btn active" type="button" data-filter="ALL" aria-pressed="true">All activity</button>
+      <button class="filter-btn" type="button" data-filter="WITHDRAWALS" aria-pressed="false">Withdrawals</button>
+      <button class="filter-btn" type="button" data-filter="PENDING" aria-pressed="false">Pending</button>
+      <button class="filter-btn" type="button" data-filter="COMPLETED" aria-pressed="false">Completed</button>
+      <button class="filter-btn" type="button" data-filter="FAILED" aria-pressed="false">Failed / Rejected</button>
+    </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <div class="toolbar">
+      <label class="search-wrap">
+        <span aria-hidden="true">⌕</span>
+        <input class="search-input" id="searchInput" type="search" placeholder="Search asset, status or ID" autocomplete="off" aria-label="Search transactions">
+      </label>
+      <button class="refresh-btn" id="refreshButton" type="button" aria-label="Refresh transaction history" title="Refresh">↻</button>
+    </div>
 
-  <script>
-    "use strict";
+    <div class="transaction-list" id="transactionList" aria-live="polite">
+      <div class="state-box">
+        <div class="state-icon">↻</div>
+        <h3>Loading activity</h3>
+        <p>Please wait while we retrieve your transaction history.</p>
+      </div>
+    </div>
+  </section>
 
-    const SUPABASE_URL = "https://rihvvwktvgytbqzazage.supabase.co";
-    const SUPABASE_ANON_KEY =
-      "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
+  <div class="notice">
+    <strong>Important:</strong> A displayed status reflects the status stored in the database. A pending request is not a completed payment. If a transaction looks incorrect, contact support before submitting another request.
+  </div>
+</div>
 
-    const db = window.supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_ANON_KEY
+<nav class="bottom-nav" aria-label="Bottom navigation">
+  <button class="bottom-link" type="button" onclick="go('dashboard.html')">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l9 8h-3v9h-5v-6h-2v6H6v-9H3z"/></svg>Home
+  </button>
+  <button class="bottom-link active" type="button" aria-current="page">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 13h18"/></svg>Portfolio
+  </button>
+  <button class="bottom-link" type="button" onclick="go('deposit.html')">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="5"/><path d="M12 6v6M9.5 9h5"/><path d="M4 20c2-2 5-3 8-3s6 1 8 3"/></svg>Deposit
+  </button>
+  <button class="bottom-link" type="button" onclick="go('withdraw.html')">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h13l-3-3M20 16H7l3 3"/></svg>Withdraw
+  </button>
+  <button class="bottom-link" id="menuButton" type="button" aria-label="Open navigation menu" aria-expanded="false">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>More
+  </button>
+</nav>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+"use strict";
+
+const SUPABASE_URL = "https://rihvvwktvgytbqzazage.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
+
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+const $ = (id) => document.getElementById(id);
+
+let currentUser = null;
+let allTransactions = [];
+let activeFilter = "ALL";
+let searchTerm = "";
+let loading = false;
+let toastTimer = null;
+
+const logoBase = "https://cdn.jsdelivr.net/gh/madenix/Crypto-logo-cdn@main/Logos/";
+
+const logoFiles = {
+  BTC: "BTC.svg", ETH: "ETH.svg", USDT: "USDT.svg", USDC: "USDC.svg",
+  BNB: "BNB.svg", SOL: "SOL.svg", XRP: "XRP.svg", TON: "TON.svg",
+  DOGE: "DOGE.svg", ADA: "ADA.svg", TRX: "TRON.svg", LTC: "LTC.svg",
+  AVAX: "AVAX.svg", DOT: "DOT.svg", LINK: "LINK.svg", POL: "MATIC.svg",
+  SHIB: "SHIB.svg", BCH: "BCH.svg", XLM: "XLM.svg", ATOM: "ATOM.svg",
+  NEAR: "NEAR.svg", APT: "APT.svg", ARB: "ARB.svg", OP: "OP.svg"
+};
+
+const assetNames = {
+  BTC: "Bitcoin", ETH: "Ethereum", USDT: "Tether", USDC: "USD Coin",
+  BNB: "BNB", SOL: "Solana", XRP: "XRP", TON: "Toncoin",
+  DOGE: "Dogecoin", ADA: "Cardano", TRX: "TRON", LTC: "Litecoin",
+  AVAX: "Avalanche", DOT: "Polkadot", LINK: "Chainlink", POL: "Polygon",
+  SHIB: "Shiba Inu", BCH: "Bitcoin Cash", XLM: "Stellar", ATOM: "Cosmos",
+  NEAR: "NEAR Protocol", APT: "Aptos", ARB: "Arbitrum", OP: "Optimism"
+};
+
+function go(page) { window.location.href = page; }
+
+function showToast(message, isError = false) {
+  const toast = $("toast");
+  toast.textContent = message;
+  toast.classList.toggle("error", isError);
+  toast.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove("show"), 3500);
+}
+
+/* Drawer */
+function openDrawer() {
+  $("drawer").classList.add("open");
+  $("overlay").classList.add("show");
+  $("drawer").setAttribute("aria-hidden", "false");
+  $("menuButton").setAttribute("aria-expanded", "true");
+}
+function closeDrawer() {
+  $("drawer").classList.remove("open");
+  $("overlay").classList.remove("show");
+  $("drawer").setAttribute("aria-hidden", "true");
+  $("menuButton").setAttribute("aria-expanded", "false");
+}
+$("menuButton").addEventListener("click", openDrawer);
+$("closeDrawer").addEventListener("click", closeDrawer);
+$("overlay").addEventListener("click", closeDrawer);
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && $("drawer").classList.contains("open")) closeDrawer();
+});
+
+/* Header avatar (profile photo if set, otherwise initials) */
+function getInitials(name) {
+  const cleaned = String(name || "").trim();
+  if (!cleaned) return "A";
+  const parts = cleaned.split(/\s+/).filter(Boolean);
+  if (parts.length >= 2) return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  return cleaned.slice(0, 2).toUpperCase();
+}
+
+async function loadProfileInitials() {
+  if (!currentUser) return;
+
+  let name = currentUser.user_metadata?.full_name || currentUser.user_metadata?.name || "";
+  let photo = null;
+
+  try {
+    const { data, error } = await db.from("profiles").select("full_name,avatar_url").eq("id", currentUser.id).maybeSingle();
+    if (!error && data) {
+      if (data.full_name) name = data.full_name;
+      photo = data.avatar_url || null;
+    } else if (error) {
+      /* avatar_url column may not exist yet: fall back to the name only */
+      const { data: basic } = await db.from("profiles").select("full_name").eq("id", currentUser.id).maybeSingle();
+      if (basic?.full_name) name = basic.full_name;
+    }
+  } catch (_) {}
+
+  if (!name) name = currentUser.email || "AITIVEST";
+
+  const el = $("profileAvatar");
+  const text = getInitials(name);
+  el.replaceChildren();
+  if (photo) {
+    const img = document.createElement("img");
+    img.alt = "";
+    img.src = photo;
+    img.onerror = () => { el.replaceChildren(document.createTextNode(text)); };
+    el.appendChild(img);
+  } else {
+    el.textContent = text;
+  }
+  el.title = name;
+  el.setAttribute("aria-label", "Profile: " + name);
+}
+
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, (char) => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+  })[char]);
+}
+
+function normalizeStatus(status) {
+  return String(status || "UNKNOWN").trim().toUpperCase().replace(/[\s_]+/g, "-");
+}
+
+function statusClass(status) {
+  const value = normalizeStatus(status);
+
+  if (["COMPLETED", "SUCCESS", "CONFIRMED", "APPROVED", "PAID"].includes(value)) return "completed";
+
+  if (["PENDING", "PROCESSING", "UNDER-REVIEW", "QUOTE-PENDING", "APPROVED-PENDING", "AWAITING-CONFIRMATION"].includes(value)) {
+    return value.toLowerCase();
+  }
+
+  if (["REJECTED", "FAILED", "CANCELLED", "EXPIRED"].includes(value)) return value.toLowerCase();
+
+  return "unknown";
+}
+
+function readableStatus(status) {
+  return String(status || "Unknown")
+    .trim()
+    .replace(/[_-]+/g, " ")
+    .toLowerCase()
+    .replace(/\b\w/g, (letter) => letter.toUpperCase());
+}
+
+function formatDate(value) {
+  if (!value) return "Date unavailable";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "Date unavailable";
+
+  return new Intl.DateTimeFormat(undefined, {
+    day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit"
+  }).format(date);
+}
+
+function formatAmount(value) {
+  if (value === null || value === undefined || value === "") return "—";
+  const amount = Number(value);
+  if (!Number.isFinite(amount)) return "—";
+  return amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 8 });
+}
+
+function getAsset(item) { return String(item.asset || item.currency || "USDT").trim().toUpperCase(); }
+function getAmount(item) { return item.amount ?? item.withdrawal_amount ?? item.requested_amount; }
+function getStatus(item) { return item.status || "UNKNOWN"; }
+function getRecordId(item) { return item.id === null || item.id === undefined ? "" : String(item.id); }
+
+function coinIconHTML(asset) {
+  const symbol = escapeHTML(asset);
+  const file = logoFiles[asset];
+
+  if (!file) {
+    return `<div class="coin-icon"><span class="coin-fallback" style="display:block">${symbol.slice(0, 4)}</span></div>`;
+  }
+
+  const imageURL = logoBase + encodeURIComponent(file);
+
+  return `<div class="coin-icon">
+    <img src="${imageURL}" alt="${symbol} logo" loading="lazy"
+      onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+    <span class="coin-fallback">${symbol.slice(0, 4)}</span>
+  </div>`;
+}
+
+function stateHTML(icon, title, message, withRetry = false) {
+  return `<div class="state-box">
+    <div class="state-icon">${escapeHTML(icon)}</div>
+    <h3>${escapeHTML(title)}</h3>
+    <p>${escapeHTML(message)}</p>
+    ${withRetry ? '<button class="retry-btn" type="button" id="retryButton">Try again</button>' : ""}
+  </div>`;
+}
+
+function renderTransaction(item) {
+  const asset = getAsset(item);
+  const amount = getAmount(item);
+  const status = getStatus(item);
+  const date = item.created_at || item.updated_at;
+  const source = item.withdrawal_source || item.source || "";
+  const network = item.network || "";
+  const address = item.address || "";
+  const id = getRecordId(item);
+
+  const title = "Withdrawal · " + (assetNames[asset] || asset);
+  const safeAddress = address
+    ? escapeHTML(address.length > 20 ? address.slice(0, 10) + "…" + address.slice(-7) : address)
+    : "";
+
+  return `<article class="transaction">
+    ${coinIconHTML(asset)}
+    <div class="transaction-main">
+      <div class="transaction-title-row">
+        <div class="transaction-title">${escapeHTML(title)}</div>
+        <div class="transaction-amount amount-negative">− ${formatAmount(amount)} ${escapeHTML(asset)}</div>
+      </div>
+
+      <div class="transaction-meta">
+        <span>${escapeHTML(formatDate(date))}</span>
+        ${network ? `<span>Network: ${escapeHTML(network)}</span>` : ""}
+        ${source ? `<span>Source: ${escapeHTML(source)}</span>` : ""}
+      </div>
+
+      <div class="transaction-meta">
+        <span class="status ${escapeHTML(statusClass(status))}">${escapeHTML(readableStatus(status))}</span>
+        ${safeAddress ? `<span>To: ${safeAddress}</span>` : ""}
+      </div>
+
+      ${id ? `<span class="transaction-id">Request ID: ${escapeHTML(id)}</span>` : ""}
+    </div>
+  </article>`;
+}
+
+function isPending(status) {
+  return ["PENDING", "PROCESSING", "UNDER-REVIEW", "APPROVED-PENDING", "QUOTE-PENDING", "AWAITING-CONFIRMATION"].includes(normalizeStatus(status));
+}
+function isCompleted(status) {
+  return ["COMPLETED", "SUCCESS", "CONFIRMED", "APPROVED", "PAID"].includes(normalizeStatus(status));
+}
+function isFailed(status) {
+  return ["FAILED", "REJECTED", "CANCELLED", "EXPIRED"].includes(normalizeStatus(status));
+}
+
+function applyFilters() {
+  let filtered = [...allTransactions];
+
+  if (activeFilter === "PENDING") {
+    filtered = filtered.filter(item => isPending(getStatus(item)));
+  } else if (activeFilter === "COMPLETED") {
+    filtered = filtered.filter(item => isCompleted(getStatus(item)));
+  } else if (activeFilter === "FAILED") {
+    filtered = filtered.filter(item => isFailed(getStatus(item)));
+  }
+
+  if (searchTerm) {
+    const needle = searchTerm.toLowerCase();
+
+    filtered = filtered.filter(item => {
+      const searchable = [
+        getAsset(item),
+        assetNames[getAsset(item)] || "",
+        getStatus(item),
+        item.id,
+        item.network,
+        item.address,
+        item.withdrawal_source,
+        item.source,
+        getAmount(item)
+      ].join(" ").toLowerCase();
+
+      return searchable.includes(needle);
+    });
+  }
+
+  $("resultCount").textContent = filtered.length + (filtered.length === 1 ? " record" : " records");
+
+  if (!filtered.length) {
+    $("transactionList").innerHTML = stateHTML(
+      "≡",
+      "No matching transactions",
+      allTransactions.length
+        ? "Try a different filter or search term."
+        : "No withdrawal requests are available for this account yet."
+    );
+    return;
+  }
+
+  $("transactionList").innerHTML = filtered.map(renderTransaction).join("");
+}
+
+async function loadTransactions() {
+  if (loading) return;
+  loading = true;
+
+  $("refreshButton").disabled = true;
+  $("refreshButton").textContent = "…";
+
+  $("transactionList").innerHTML = stateHTML("↻", "Loading activity", "Retrieving your latest withdrawal requests.");
+
+  try {
+    const { data, error } = await db
+      .from("withdrawals")
+      .select("*")
+      .eq("user_id", currentUser.id)
+      .order("created_at", { ascending: false })
+      .limit(100);
+
+    if (error) throw error;
+
+    allTransactions = Array.isArray(data) ? data : [];
+
+    $("totalCount").textContent = String(allTransactions.length);
+    $("summaryCaption").textContent =
+      allTransactions.length === 1
+        ? "1 withdrawal request recorded"
+        : allTransactions.length + " withdrawal requests recorded";
+
+    applyFilters();
+  } catch (error) {
+    console.error("Could not load transaction history:", error);
+
+    $("totalCount").textContent = "—";
+    $("resultCount").textContent = "Unavailable";
+    $("summaryCaption").textContent = "Could not load account activity";
+
+    $("transactionList").innerHTML = stateHTML(
+      "!",
+      "Unable to load history",
+      error?.message ? "Supabase returned an error: " + error.message : "Check your connection and try again.",
+      true
     );
 
-    const $ = (id) => document.getElementById(id);
+    const retry = $("retryButton");
+    if (retry) retry.addEventListener("click", loadTransactions);
+  } finally {
+    loading = false;
+    $("refreshButton").disabled = false;
+    $("refreshButton").textContent = "↻";
+  }
+}
 
-    let currentUser = null;
-    let allTransactions = [];
-    let activeFilter = "ALL";
-    let searchTerm = "";
-    let loading = false;
-    let toastTimer = null;
+document.querySelectorAll(".filter-btn").forEach(button => {
+  button.addEventListener("click", () => {
+    activeFilter = button.dataset.filter;
 
-    const logoBase =
-      "https://cdn.jsdelivr.net/gh/madenix/Crypto-logo-cdn@main/Logos/";
-
-    const logoFiles = {
-      BTC: "BTC.svg",
-      ETH: "ETH.svg",
-      USDT: "USDT.svg",
-      USDC: "USDC.svg",
-      BNB: "BNB.svg",
-      SOL: "SOL.svg",
-      XRP: "XRP.svg",
-      TON: "TON.svg",
-      DOGE: "DOGE.svg",
-      ADA: "ADA.svg",
-      TRX: "TRON.svg",
-      LTC: "LTC.svg",
-      AVAX: "AVAX.svg",
-      DOT: "DOT.svg",
-      LINK: "LINK.svg",
-      POL: "MATIC.svg",
-      SHIB: "SHIB.svg",
-      BCH: "BCH.svg",
-      XLM: "XLM.svg",
-      ATOM: "ATOM.svg",
-      NEAR: "NEAR.svg",
-      APT: "APT.svg",
-      ARB: "ARB.svg",
-      OP: "OP.svg"
-    };
-
-    const assetNames = {
-      BTC: "Bitcoin",
-      ETH: "Ethereum",
-      USDT: "Tether",
-      USDC: "USD Coin",
-      BNB: "BNB",
-      SOL: "Solana",
-      XRP: "XRP",
-      TON: "Toncoin",
-      DOGE: "Dogecoin",
-      ADA: "Cardano",
-      TRX: "TRON",
-      LTC: "Litecoin",
-      AVAX: "Avalanche",
-      DOT: "Polkadot",
-      LINK: "Chainlink",
-      POL: "Polygon",
-      SHIB: "Shiba Inu",
-      BCH: "Bitcoin Cash",
-      XLM: "Stellar",
-      ATOM: "Cosmos",
-      NEAR: "NEAR Protocol",
-      APT: "Aptos",
-      ARB: "Arbitrum",
-      OP: "Optimism"
-    };
-
-    function go(page) {
-      window.location.href = page;
-    }
-
-    function showToast(message, isError = false) {
-      const toast = $("toast");
-      toast.textContent = message;
-      toast.classList.toggle("error", isError);
-      toast.classList.add("show");
-
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => {
-        toast.classList.remove("show");
-      }, 3500);
-    }
-
-    function openDrawer() {
-      $("drawer").classList.add("open");
-      $("drawerBackdrop").classList.add("open");
-      $("drawer").setAttribute("aria-hidden", "false");
-      $("menuButton").setAttribute("aria-expanded", "true");
-      document.body.style.overflow = "hidden";
-      $("closeDrawer").focus();
-    }
-
-    function closeDrawer() {
-      $("drawer").classList.remove("open");
-      $("drawerBackdrop").classList.remove("open");
-      $("drawer").setAttribute("aria-hidden", "true");
-      $("menuButton").setAttribute("aria-expanded", "false");
-      document.body.style.overflow = "";
-      $("menuButton").focus();
-    }
-
-    $("menuButton").addEventListener("click", openDrawer);
-    $("closeDrawer").addEventListener("click", closeDrawer);
-    $("drawerBackdrop").addEventListener("click", closeDrawer);
-
-    document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape" && $("drawer").classList.contains("open")) {
-        closeDrawer();
-      }
+    document.querySelectorAll(".filter-btn").forEach(item => {
+      const active = item === button;
+      item.classList.toggle("active", active);
+      item.setAttribute("aria-pressed", String(active));
     });
 
-    function getInitials(name) {
-      const cleaned = String(name || "").trim();
+    applyFilters();
+  });
+});
 
-      if (!cleaned) return "A";
+$("searchInput").addEventListener("input", event => {
+  searchTerm = event.target.value.trim();
+  applyFilters();
+});
 
-      const parts = cleaned.split(/\s+/).filter(Boolean);
+$("refreshButton").addEventListener("click", loadTransactions);
 
-      if (parts.length >= 2) {
-        return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
-      }
+$("logoutButton").addEventListener("click", async () => {
+  $("logoutButton").disabled = true;
 
-      return cleaned.slice(0, 2).toUpperCase();
-    }
+  const { error } = await db.auth.signOut();
 
-    async function loadProfileInitials() {
-      if (!currentUser) return;
+  if (error) {
+    console.error("Sign out failed:", error);
+    showToast("Could not sign out. Please try again.", true);
+    $("logoutButton").disabled = false;
+    return;
+  }
 
-      let name =
-        currentUser.user_metadata?.full_name ||
-        currentUser.user_metadata?.name ||
-        "";
+  window.location.replace("signin.html");
+});
 
-      const { data, error } = await db
-        .from("profiles")
-        .select("full_name")
-        .eq("id", currentUser.id)
-        .maybeSingle();
+async function init() {
+  const { data, error } = await db.auth.getSession();
 
-      if (!error && data?.full_name) {
-        name = data.full_name;
-      }
+  if (error) console.error("Could not verify session:", error);
 
-      if (!name) {
-        name = currentUser.email || "AITIVEST";
-      }
+  currentUser = data?.session?.user || null;
 
-      $("profileAvatar").textContent = getInitials(name);
-      $("profileAvatar").title = name;
-      $("profileAvatar").setAttribute("aria-label", "Profile: " + name);
-    }
+  if (!currentUser) {
+    window.location.replace("signin.html");
+    return;
+  }
 
-    function escapeHTML(value) {
-      return String(value ?? "").replace(/[&<>"']/g, (char) => ({
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#39;"
-      })[char]);
-    }
+  loadProfileInitials();
+  await loadTransactions();
+}
 
-    function normalizeStatus(status) {
-      return String(status || "UNKNOWN")
-        .trim()
-        .toUpperCase()
-        .replace(/[\s_]+/g, "-");
-    }
+db.auth.onAuthStateChange((event, session) => {
+  if (event === "SIGNED_OUT" || !session) window.location.replace("signin.html");
+});
 
-    function statusClass(status) {
-      const value = normalizeStatus(status);
-
-      if ([
-        "COMPLETED", "SUCCESS", "CONFIRMED", "APPROVED", "PAID"
-      ].includes(value)) {
-        return "completed";
-      }
-
-      if ([
-        "PENDING", "PROCESSING", "UNDER-REVIEW", "QUOTE-PENDING",
-        "APPROVED-PENDING", "AWAITING-CONFIRMATION"
-      ].includes(value)) {
-        return value.toLowerCase();
-      }
-
-      if ([
-        "REJECTED", "FAILED", "CANCELLED", "EXPIRED"
-      ].includes(value)) {
-        return value.toLowerCase();
-      }
-
-      return "unknown";
-    }
-
-    function readableStatus(status) {
-      return String(status || "Unknown")
-        .trim()
-        .replace(/[_-]+/g, " ")
-        .toLowerCase()
-        .replace(/\b\w/g, (letter) => letter.toUpperCase());
-    }
-
-    function formatDate(value) {
-      if (!value) return "Date unavailable";
-
-      const date = new Date(value);
-
-      if (Number.isNaN(date.getTime())) {
-        return "Date unavailable";
-      }
-
-      return new Intl.DateTimeFormat(undefined, {
-        day: "numeric",
-        month: "short",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit"
-      }).format(date);
-    }
-
-    function formatAmount(value) {
-      if (value === null || value === undefined || value === "") {
-        return "—";
-      }
-
-      const amount = Number(value);
-
-      if (!Number.isFinite(amount)) {
-        return "—";
-      }
-
-      return amount.toLocaleString(undefined, {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 8
-      });
-    }
-
-    function getAsset(item) {
-      return String(item.asset || item.currency || "USDT")
-        .trim()
-        .toUpperCase();
-    }
-
-    function getAmount(item) {
-      return item.amount ?? item.withdrawal_amount ?? item.requested_amount;
-    }
-
-    function getStatus(item) {
-      return item.status || "UNKNOWN";
-    }
-
-    function getRecordId(item) {
-      return item.id === null || item.id === undefined
-        ? ""
-        : String(item.id);
-    }
-
-    function coinIconHTML(asset) {
-      const symbol = escapeHTML(asset);
-      const file = logoFiles[asset];
-
-      if (!file) {
-        return `<div class="coin-icon">
-          <span class="coin-fallback" style="display:block">${symbol.slice(0, 4)}</span>
-        </div>`;
-      }
-
-      const imageURL = logoBase + encodeURIComponent(file);
-
-      return `<div class="coin-icon">
-        <img src="${imageURL}"
-          alt="${symbol} logo"
-          loading="lazy"
-          onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-        <span class="coin-fallback">${symbol.slice(0, 4)}</span>
-      </div>`;
-    }
-
-    function stateHTML(icon, title, message, withRetry = false) {
-      return `<div class="state-box">
-        <div class="state-icon">${escapeHTML(icon)}</div>
-        <h3>${escapeHTML(title)}</h3>
-        <p>${escapeHTML(message)}</p>
-        ${withRetry
-          ? '<button class="retry-btn" type="button" id="retryButton">Try again</button>'
-          : ""}
-      </div>`;
-    }
-
-    function renderTransaction(item) {
-      const asset = getAsset(item);
-      const amount = getAmount(item);
-      const status = getStatus(item);
-      const normalized = normalizeStatus(status);
-      const date = item.created_at || item.updated_at;
-      const source = item.withdrawal_source || item.source || "";
-      const network = item.network || "";
-      const address = item.address || "";
-      const id = getRecordId(item);
-
-      const amountText = formatAmount(amount);
-      const amountClass = ["COMPLETED", "SUCCESS", "CONFIRMED", "APPROVED", "PAID"]
-        .includes(normalized)
-        ? "amount-negative"
-        : "amount-negative";
-
-      const title = "Withdrawal · " + (assetNames[asset] || asset);
-      const safeAddress = address
-        ? escapeHTML(address.length > 20
-          ? address.slice(0, 10) + "…" + address.slice(-7)
-          : address)
-        : "";
-
-      return `<article class="transaction">
-        ${coinIconHTML(asset)}
-        <div class="transaction-main">
-          <div class="transaction-title-row">
-            <div class="transaction-title">${escapeHTML(title)}</div>
-            <div class="transaction-amount ${amountClass}">
-              − ${amountText} ${escapeHTML(asset)}
-            </div>
-          </div>
-
-          <div class="transaction-meta">
-            <span>${escapeHTML(formatDate(date))}</span>
-            ${network ? `<span>Network: ${escapeHTML(network)}</span>` : ""}
-            ${source ? `<span>Source: ${escapeHTML(source)}</span>` : ""}
-          </div>
-
-          <div class="transaction-meta">
-            <span class="status ${escapeHTML(statusClass(status))}">
-              ${escapeHTML(readableStatus(status))}
-            </span>
-            ${safeAddress ? `<span>To: ${safeAddress}</span>` : ""}
-          </div>
-
-          ${id ? `<span class="transaction-id">Request ID: ${escapeHTML(id)}</span>` : ""}
-        </div>
-      </article>`;
-    }
-
-    function isPending(status) {
-      return [
-        "PENDING", "PROCESSING", "UNDER-REVIEW", "APPROVED-PENDING",
-        "QUOTE-PENDING", "AWAITING-CONFIRMATION"
-      ].includes(normalizeStatus(status));
-    }
-
-    function isCompleted(status) {
-      return [
-        "COMPLETED", "SUCCESS", "CONFIRMED", "APPROVED", "PAID"
-      ].includes(normalizeStatus(status));
-    }
-
-    function isFailed(status) {
-      return [
-        "FAILED", "REJECTED", "CANCELLED", "EXPIRED"
-      ].includes(normalizeStatus(status));
-    }
-
-    function applyFilters() {
-      let filtered = [...allTransactions];
-
-      if (activeFilter === "PENDING") {
-        filtered = filtered.filter(item => isPending(getStatus(item)));
-      } else if (activeFilter === "COMPLETED") {
-        filtered = filtered.filter(item => isCompleted(getStatus(item)));
-      } else if (activeFilter === "FAILED") {
-        filtered = filtered.filter(item => isFailed(getStatus(item)));
-      }
-
-      if (searchTerm) {
-        const needle = searchTerm.toLowerCase();
-
-        filtered = filtered.filter(item => {
-          const searchable = [
-            getAsset(item),
-            assetNames[getAsset(item)] || "",
-            getStatus(item),
-            item.id,
-            item.network,
-            item.address,
-            item.withdrawal_source,
-            item.source,
-            getAmount(item)
-          ].join(" ").toLowerCase();
-
-          return searchable.includes(needle);
-        });
-      }
-
-      $("resultCount").textContent =
-        filtered.length + (filtered.length === 1 ? " record" : " records");
-
-      if (!filtered.length) {
-        $("transactionList").innerHTML = stateHTML(
-          "≡",
-          "No matching transactions",
-          allTransactions.length
-            ? "Try a different filter or search term."
-            : "No withdrawal requests are available for this account yet."
-        );
-        return;
-      }
-
-      $("transactionList").innerHTML =
-        filtered.map(renderTransaction).join("");
-    }
-
-    async function loadTransactions() {
-      if (loading) return;
-      loading = true;
-
-      $("refreshButton").disabled = true;
-      $("refreshButton").textContent = "…";
-
-      $("transactionList").innerHTML = stateHTML(
-        "↻",
-        "Loading activity",
-        "Retrieving your latest withdrawal requests."
-      );
-
-      try {
-        const { data, error } = await db
-          .from("withdrawals")
-          .select("*")
-          .eq("user_id", currentUser.id)
-          .order("created_at", { ascending: false })
-          .limit(100);
-
-        if (error) throw error;
-
-        allTransactions = Array.isArray(data) ? data : [];
-
-        $("totalCount").textContent = String(allTransactions.length);
-        $("summaryCaption").textContent =
-          allTransactions.length === 1
-            ? "1 withdrawal request recorded"
-            : allTransactions.length + " withdrawal requests recorded";
-
-        applyFilters();
-      } catch (error) {
-        console.error("Could not load transaction history:", error);
-
-        $("totalCount").textContent = "—";
-        $("resultCount").textContent = "Unavailable";
-        $("summaryCaption").textContent = "Could not load account activity";
-
-        $("transactionList").innerHTML = stateHTML(
-          "!",
-          "Unable to load history",
-          error?.message
-            ? "Supabase returned an error: " + error.message
-            : "Check your connection and try again.",
-          true
-        );
-
-        const retry = $("retryButton");
-        if (retry) retry.addEventListener("click", loadTransactions);
-      } finally {
-        loading = false;
-        $("refreshButton").disabled = false;
-        $("refreshButton").textContent = "↻";
-      }
-    }
-
-    document.querySelectorAll(".filter-btn").forEach(button => {
-      button.addEventListener("click", () => {
-        activeFilter = button.dataset.filter;
-
-        document.querySelectorAll(".filter-btn").forEach(item => {
-          const active = item === button;
-          item.classList.toggle("active", active);
-          item.setAttribute("aria-pressed", String(active));
-        });
-
-        applyFilters();
-      });
-    });
-
-    $("searchInput").addEventListener("input", event => {
-      searchTerm = event.target.value.trim();
-      applyFilters();
-    });
-
-    $("refreshButton").addEventListener("click", loadTransactions);
-
-    $("logoutButton").addEventListener("click", async () => {
-      $("logoutButton").disabled = true;
-      $("logoutButton").style.opacity = ".6";
-
-      const { error } = await db.auth.signOut();
-
-      if (error) {
-        console.error("Sign out failed:", error);
-        showToast("Could not sign out. Please try again.", true);
-        $("logoutButton").disabled = false;
-        $("logoutButton").style.opacity = "1";
-        return;
-      }
-
-      window.location.replace("signin.html");
-    });
-
-    async function init() {
-      const { data, error } = await db.auth.getSession();
-
-      if (error) {
-        console.error("Could not verify session:", error);
-      }
-
-      currentUser = data?.session?.user || null;
-
-      if (!currentUser) {
-        window.location.replace("signin.html");
-        return;
-      }
-
-      await loadProfileInitials();
-      await loadTransactions();
-    }
-
-    db.auth.onAuthStateChange((event, session) => {
-      if (event === "SIGNED_OUT" || !session) {
-        window.location.replace("signin.html");
-      }
-    });
-
-    init();
-  </script>
+init();
+</script>
 </body>
 </html>
