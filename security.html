@@ -1,971 +1,714 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#050b18">
-  <title>Security Settings | AITIVEST</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#050b1a">
+<title>Security Settings | AITIVEST</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{
+  --bg:#050b1a;--card:#0b1733;--line:#1c2c52;
+  --text:#e8edf7;--muted:#9aa7c0;
+  --gold:#f2b84b;--gold2:#ffd982;--gold3:#c98f1d;
+  --green:#22d37a;--red:#ef6b73;--blue:#2f8cff;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{min-height:100vh;background:#02050d;color:var(--text);font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;display:flex;justify-content:center}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+button:disabled{opacity:.55;cursor:not-allowed}
+a{color:inherit;text-decoration:none}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
+.hidden{display:none!important}
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Instrument+Serif&display=swap" rel="stylesheet">
+/* Loading */
+.loading-screen{position:fixed;inset:0;background:#050b1a;display:flex;align-items:center;justify-content:center;z-index:9999}
+.loading-box{text-align:center}
+.spinner{width:28px;height:28px;border:3px solid rgba(242,184,75,.18);border-top-color:var(--gold);border-radius:50%;margin:20px auto 0;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+/* Brand */
+.brand-logo{display:flex;align-items:center;gap:9px}
+.brand-mark{width:30px;height:30px;border:2px solid var(--gold);border-radius:9px 9px 9px 2px;display:flex;align-items:center;justify-content:center;color:var(--gold2);font-size:16px;font-weight:900;transform:rotate(-3deg)}
+.brand-name{font-size:24px;font-weight:700;letter-spacing:2px;background:linear-gradient(180deg,#ffd982,#d89a24);-webkit-background-clip:text;background-clip:text;color:transparent}
+.loading-box .brand-logo{justify-content:center}
+.loading-box .brand-name{font-size:29px}
 
-  <style>
-    :root {
-      --navy: #050b18;
-      --navy2: #091426;
-      --navy3: #0d1b31;
-      --card: #101d38;
-      --gold: #d6ad55;
-      --gold2: #f0cf7a;
-      --text: #f5f7fb;
-      --muted: #9da8ba;
-      --green: #53d6a0;
-      --red: #ff777f;
-      --border: rgba(214,173,85,.19);
-      --shadow: 0 20px 60px rgba(0,0,0,.24);
-    }
+.app{width:100%;max-width:480px;min-height:100vh;background:radial-gradient(120% 60% at 50% 0%,#0f2350 0%,var(--bg) 60%);padding:18px 16px 100px;position:relative}
 
-    * { box-sizing: border-box; }
+/* Header */
+.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
+.top-actions{display:flex;gap:14px;align-items:center}
+.bell{background:none;border:0;color:var(--gold);display:flex}
+.avatar{width:36px;height:36px;border-radius:50%;background:#16264d;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--gold2);font-size:12px;font-weight:800;cursor:pointer;overflow:hidden}
+.avatar img{width:100%;height:100%;object-fit:cover;display:block}
+.page-head{margin-bottom:16px}
+.page-head small{font-size:15px;color:#cfd8ec;display:block}
+.page-head h1{font-size:26px;font-weight:700;color:var(--gold)}
+.intro{color:var(--muted);font-size:12.5px;line-height:1.7;margin:8px 0 18px}
 
-    body {
-      margin: 0;
-      min-height: 100vh;
-      color: var(--text);
-      background:
-        radial-gradient(ellipse at top right, rgba(214,173,85,.09), transparent 34%),
-        var(--navy);
-      font-family: Manrope, Arial, sans-serif;
-    }
+/* Cards */
+.card{background:linear-gradient(180deg,rgba(18,34,72,.75),rgba(9,20,45,.9));border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px}
+.status-card.on{border-color:#1fbf6f;background:linear-gradient(135deg,rgba(14,70,56,.75),rgba(8,26,40,.9));box-shadow:0 0 18px rgba(34,211,122,.18)}
+.status-card.off{border-color:rgba(239,107,115,.45)}
+.status-row{display:flex;align-items:center;gap:14px}
+.status-icon{width:48px;height:48px;display:grid;place-items:center;border-radius:50%;background:rgba(239,107,115,.12);border:1px solid rgba(239,107,115,.35);color:#ff8f96;font-size:20px;font-weight:700;flex:none}
+.status-icon.active{color:var(--green);background:rgba(34,211,122,.12);border-color:rgba(34,211,122,.4)}
+.status-text{flex:1;min-width:0}
+h2{font-size:15px;font-weight:700;margin-bottom:6px}
+.section-title{font-size:15px;font-weight:700;margin-bottom:9px}
+.muted{color:var(--muted);font-size:12px;line-height:1.7}
+.pill{display:inline-flex;align-items:center;padding:6px 10px;border-radius:999px;font-size:10px;font-weight:800;letter-spacing:.6px;white-space:nowrap;background:rgba(239,107,115,.12);color:#ff8f96;border:1px solid rgba(239,107,115,.3);flex:none}
+.pill.active{background:rgba(34,211,122,.12);color:#8be7c0;border-color:rgba(34,211,122,.35)}
 
-    button, input { font: inherit; }
-    button { cursor: pointer; }
+.steps{padding-left:20px;margin:16px 0 0;color:var(--muted);font-size:12.5px;line-height:2}
+.steps li{padding-left:4px}
+.steps strong{color:var(--text)}
 
-    .topbar {
-      height: 72px;
-      padding: 0 5%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid var(--border);
-      background: rgba(5,11,24,.92);
-    }
+/* Buttons */
+.btn{height:50px;border-radius:14px;padding:0 18px;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;transition:transform .1s;border:0}
+.btn:active:not(:disabled){transform:scale(.98)}
+.btn-primary{background:linear-gradient(180deg,#f7c75a,#cf9420);color:#1a1200;box-shadow:0 4px 16px rgba(242,184,75,.3)}
+.btn-secondary{background:transparent;color:var(--gold);border:1.5px solid var(--gold3)}
+.btn-danger{background:rgba(239,107,115,.1);color:#ff8f96;border:1.5px solid rgba(239,107,115,.4)}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.actions .btn{flex:1;min-width:150px}
 
-    .brand {
-      font-size: 20px;
-      font-weight: 800;
-      letter-spacing: 2px;
-      color: var(--gold2);
-      text-decoration: none;
-    }
+.loader{width:15px;height:15px;display:inline-block;border:2px solid rgba(26,18,0,.3);border-top-color:#1a1200;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle}
+.btn-secondary .loader,.btn-danger .loader{border-color:rgba(255,255,255,.25);border-top-color:currentColor}
 
-    .back {
-      color: var(--text);
-      text-decoration: none;
-      border: 1px solid var(--border);
-      padding: 10px 14px;
-      border-radius: 10px;
-      font-size: 12px;
-      font-weight: 700;
-    }
+/* QR & key */
+.qr-wrap{display:grid;place-items:center;margin:18px 0;padding:16px;background:#fff;border-radius:14px;min-height:190px}
+.qr-wrap img{display:block;max-width:220px;width:100%;height:auto}
+.manual-key{background:rgba(5,11,26,.8);border:1px solid rgba(242,184,75,.28);padding:14px;border-radius:12px;margin-top:14px;overflow-wrap:anywhere}
+.manual-key small{display:block;color:var(--muted);font-size:10px;font-weight:700;letter-spacing:1px;margin-bottom:9px}
+#secretText{color:var(--gold2);font-size:13px;font-weight:700;letter-spacing:1px;user-select:all}
 
-    .back:hover { border-color: var(--gold); }
+/* Fields */
+.field{margin-top:18px}
+.field label{display:block;font-size:12px;font-weight:700;margin-bottom:9px;color:#dfe6f0}
+.field input{width:100%;padding:14px;border-radius:12px;outline:none;background:rgba(5,11,26,.8);border:1px solid var(--line);letter-spacing:6px;font-size:20px;text-align:center}
+.field input:focus{border-color:var(--gold3);box-shadow:0 0 0 3px rgba(242,184,75,.1)}
 
-    main {
-      width: min(760px, 92%);
-      margin: 42px auto 70px;
-    }
+.notice{padding:13px;border-radius:12px;font-size:11.5px;line-height:1.8;margin-top:16px;background:rgba(242,184,75,.06);border:1px solid rgba(242,184,75,.22);color:#d7c9a8}
+.notice strong{color:var(--gold2)}
+.message{display:none;padding:13px;border-radius:12px;font-size:12px;line-height:1.7;margin-top:14px;overflow-wrap:anywhere}
+.message.show{display:block}
+.message.error{color:#ffb5ba;background:rgba(239,107,115,.09);border:1px solid rgba(239,107,115,.28)}
+.message.success{color:#9cf0ce;background:rgba(34,211,122,.09);border:1px solid rgba(34,211,122,.28)}
 
-    .eyebrow {
-      color: var(--gold2);
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      margin-bottom: 10px;
-    }
+/* Bottom nav */
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;min-height:72px;padding-bottom:env(safe-area-inset-bottom);background:rgba(6,13,30,.96);backdrop-filter:blur(10px);border-top:1px solid var(--line);z-index:120;display:grid;grid-template-columns:repeat(5,1fr)}
+.bottom-link{background:none;border:0;color:#aab5cc;font-size:11px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px}
 
-    h1 {
-      font-family: "Instrument Serif", Georgia, serif;
-      font-size: clamp(36px, 7vw, 49px);
-      font-weight: 400;
-      margin: 0 0 12px;
-    }
+/* Drawer */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:190;display:none}
+.overlay.show{display:block}
+.drawer{position:fixed;left:-320px;top:0;width:290px;max-width:86%;height:100vh;height:100dvh;background:#081225;border-right:1px solid var(--line);z-index:200;transition:left .25s ease;padding:22px 15px;overflow-y:auto}
+.drawer.open{left:0}
+.drawer-head{display:flex;align-items:center;justify-content:space-between;padding:8px 7px 25px;border-bottom:1px solid var(--line)}
+.drawer-head .brand-name{font-size:19px}
+.close-drawer{border:0;background:none;color:#fff;font-size:27px}
+.drawer-nav{padding-top:18px}
+.drawer-link{width:100%;border:0;background:transparent;color:#d7dce4;padding:14px 13px;border-radius:11px;display:flex;align-items:center;gap:13px;text-align:left;margin-bottom:4px}
+.drawer-link:hover,.drawer-link.active{background:rgba(242,184,75,.08);color:var(--gold2)}
+.drawer-icon{width:22px;text-align:center;color:var(--gold)}
+.drawer-link.logout{margin-top:15px;color:#ef8990}
 
-    .intro {
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.8;
-      margin: 0 0 28px;
-    }
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%) translateY(15px);background:#12244c;border:1px solid var(--gold3);color:#fff;padding:12px 16px;border-radius:12px;font-size:12px;opacity:0;pointer-events:none;transition:.25s;z-index:500;width:max-content;max-width:90%;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
-    .card {
-      background: linear-gradient(145deg, rgba(16,29,56,.98), rgba(9,20,38,.98));
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 24px;
-      margin-bottom: 20px;
-      box-shadow: var(--shadow);
-    }
-
-    .status-row {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .status-icon {
-      width: 48px;
-      height: 48px;
-      display: grid;
-      place-items: center;
-      border-radius: 15px;
-      background: rgba(214,173,85,.12);
-      color: var(--gold2);
-      font-size: 22px;
-      flex-shrink: 0;
-    }
-
-    .status-icon.active {
-      color: var(--green);
-      background: rgba(83,214,160,.1);
-    }
-
-    h2 {
-      font-size: 17px;
-      margin: 0 0 7px;
-    }
-
-    .muted {
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.7;
-    }
-
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 7px 10px;
-      border-radius: 999px;
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: .6px;
-      white-space: nowrap;
-      background: rgba(255,119,127,.1);
-      color: var(--red);
-      border: 1px solid rgba(255,119,127,.25);
-    }
-
-    .pill.active {
-      background: rgba(83,214,160,.1);
-      color: var(--green);
-      border-color: rgba(83,214,160,.25);
-    }
-
-    .section-title {
-      font-size: 15px;
-      margin: 0 0 9px;
-    }
-
-    .steps {
-      padding-left: 20px;
-      margin: 17px 0 0;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 2;
-    }
-
-    .steps li { padding-left: 4px; }
-    .steps strong { color: var(--text); }
-
-    .btn {
-      border: 0;
-      border-radius: 11px;
-      padding: 13px 17px;
-      font-size: 12px;
-      font-weight: 800;
-      transition: .2s;
-    }
-
-    .btn:disabled {
-      opacity: .55;
-      cursor: not-allowed;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--gold2), var(--gold));
-      color: #17120a;
-    }
-
-    .btn-primary:hover:not(:disabled) {
-      transform: translateY(-1px);
-      filter: brightness(1.05);
-    }
-
-    .btn-secondary {
-      color: var(--text);
-      border: 1px solid var(--border);
-      background: transparent;
-    }
-
-    .btn-danger {
-      color: var(--red);
-      border: 1px solid rgba(255,119,127,.3);
-      background: rgba(255,119,127,.08);
-    }
-
-    .actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 20px;
-    }
-
-    .hidden { display: none !important; }
-
-    .qr-wrap {
-      display: grid;
-      place-items: center;
-      margin: 20px 0;
-      padding: 18px;
-      border: 1px solid var(--border);
-      background: #fff;
-      border-radius: 16px;
-      min-height: 190px;
-    }
-
-    .qr-wrap img {
-      display: block;
-      max-width: 230px;
-      width: 100%;
-      height: auto;
-    }
-
-    .manual-key {
-      background: rgba(5,11,24,.75);
-      border: 1px solid var(--border);
-      padding: 14px;
-      border-radius: 12px;
-      margin-top: 15px;
-      overflow-wrap: anywhere;
-    }
-
-    .manual-key small {
-      display: block;
-      color: var(--muted);
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: 1px;
-      margin-bottom: 9px;
-    }
-
-    #secretText {
-      color: var(--gold2);
-      font-size: 13px;
-      font-weight: 800;
-      letter-spacing: 1px;
-      user-select: all;
-    }
-
-    .field { margin-top: 18px; }
-
-    .field label {
-      display: block;
-      font-size: 12px;
-      font-weight: 800;
-      margin-bottom: 9px;
-    }
-
-    .field input {
-      width: 100%;
-      padding: 15px;
-      border-radius: 11px;
-      outline: none;
-      color: var(--text);
-      background: rgba(5,11,24,.8);
-      border: 1px solid var(--border);
-      letter-spacing: 4px;
-      font-size: 19px;
-    }
-
-    .field input:focus { border-color: var(--gold); }
-
-    .notice {
-      padding: 13px 15px;
-      border-radius: 11px;
-      font-size: 12px;
-      line-height: 1.7;
-      margin-top: 16px;
-      background: rgba(214,173,85,.08);
-      border: 1px solid var(--border);
-      color: var(--muted);
-    }
-
-    .message {
-      display: none;
-      padding: 13px 15px;
-      border-radius: 10px;
-      font-size: 12px;
-      line-height: 1.7;
-      margin: 16px 0;
-      overflow-wrap: anywhere;
-    }
-
-    .message.show { display: block; }
-    .message.error {
-      color: var(--red);
-      background: rgba(255,119,127,.08);
-      border: 1px solid rgba(255,119,127,.22);
-    }
-
-    .message.success {
-      color: var(--green);
-      background: rgba(83,214,160,.08);
-      border: 1px solid rgba(83,214,160,.22);
-    }
-
-    .loader {
-      width: 15px;
-      height: 15px;
-      display: inline-block;
-      border: 2px solid rgba(23,18,10,.3);
-      border-top-color: #17120a;
-      border-radius: 50%;
-      animation: spin .7s linear infinite;
-      vertical-align: middle;
-      margin-right: 7px;
-    }
-
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    footer {
-      text-align: center;
-      color: var(--muted);
-      font-size: 10px;
-      padding: 20px;
-    }
-
-    @media (max-width: 520px) {
-      main { margin-top: 28px; }
-      .card { padding: 19px; border-radius: 16px; }
-      .status-row { align-items: flex-start; flex-wrap: wrap; }
-      .status-row .pill { margin-left: 62px; margin-top: -8px; }
-      .actions .btn { width: 100%; }
-    }
-  </style>
+@media(max-width:380px){.actions .btn{min-width:100%}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
 </head>
-
 <body>
-  <header class="topbar">
-    <a class="brand" href="dashboard.html">AITIVEST</a>
-    <a class="back" href="dashboard.html">← Back to dashboard</a>
+
+<div id="loadingScreen" class="loading-screen">
+  <div class="loading-box">
+    <div class="brand-logo"><div class="brand-mark">A</div><div class="brand-name">AITIVEST</div></div>
+    <div class="spinner"></div>
+  </div>
+</div>
+
+<div class="overlay" id="overlay"></div>
+<aside class="drawer" id="drawer" aria-label="Main navigation" aria-hidden="true">
+  <div class="drawer-head">
+    <div class="brand-logo"><div class="brand-mark">A</div><div class="brand-name">AITIVEST</div></div>
+    <button class="close-drawer" id="closeDrawer" type="button" aria-label="Close menu">×</button>
+  </div>
+  <nav class="drawer-nav">
+    <button class="drawer-link" onclick="go('dashboard.html')"><span class="drawer-icon">⌂</span>Portfolio</button>
+    <button class="drawer-link" onclick="go('deposit.html')"><span class="drawer-icon">＋</span>Deposit</button>
+    <button class="drawer-link" onclick="go('withdraw.html')"><span class="drawer-icon">↗</span>Withdraw</button>
+    <button class="drawer-link" onclick="go('transactions.html')"><span class="drawer-icon">≡</span>Transactions</button>
+    <button class="drawer-link" onclick="go('referrals.html')"><span class="drawer-icon">♧</span>Referrals</button>
+    <button class="drawer-link" onclick="go('profile.html')"><span class="drawer-icon">○</span>Profile</button>
+    <button class="drawer-link active" aria-current="page"><span class="drawer-icon">♙</span>Security Settings</button>
+    <button class="drawer-link" onclick="go('support.html')"><span class="drawer-icon">?</span>Support</button>
+    <button class="drawer-link" onclick="go('notifications.html')"><span class="drawer-icon">♢</span>Notifications</button>
+    <button class="drawer-link logout" id="logoutBtn" type="button"><span class="drawer-icon">↪</span>Logout</button>
+  </nav>
+</aside>
+
+<div class="app">
+  <header class="top">
+    <a href="dashboard.html" class="brand-logo" aria-label="AITIVEST home"><div class="brand-mark">A</div><div class="brand-name">AITIVEST</div></a>
+    <div class="top-actions">
+      <button class="bell" aria-label="Notifications" type="button" onclick="go('notifications.html')">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+      </button>
+      <a class="avatar" id="profileInitial" href="profile.html" aria-label="Open profile">A</a>
+    </div>
   </header>
 
-  <main>
-    <div class="eyebrow">Account protection</div>
+  <div class="page-head">
+    <small>Account protection</small>
     <h1>Security Settings</h1>
-    <p class="intro">
-      Protect your AITIVEST account with two-factor authentication.
-      Once enabled, signing in will require your password and a temporary
-      code from your authenticator app.
-    </p>
+  </div>
+  <p class="intro">Protect your AITIVEST account with two-factor authentication. Once enabled, signing in will require your password and a temporary code from your authenticator app.</p>
 
-    <section class="card">
-      <div class="status-row">
-        <div id="statusIcon" class="status-icon">♧</div>
-        <div style="flex:1;min-width:170px">
-          <h2>Authenticator app</h2>
-          <div id="statusDescription" class="muted">Checking your security status…</div>
-        </div>
-        <span id="statusPill" class="pill">CHECKING</span>
+  <section class="card status-card off" id="statusCard">
+    <div class="status-row">
+      <div id="statusIcon" class="status-icon">!</div>
+      <div class="status-text">
+        <h2>Authenticator app</h2>
+        <div id="statusDescription" class="muted">Checking your security status…</div>
       </div>
+      <span id="statusPill" class="pill">CHECKING</span>
+    </div>
+    <div id="pageMessage" class="message" role="status" aria-live="polite"></div>
+  </section>
 
-      <div id="pageMessage" class="message" role="status" aria-live="polite"></div>
-    </section>
+  <section id="notSupportedCard" class="card hidden">
+    <h2 class="section-title">Security service unavailable</h2>
+    <p class="muted">Two-factor authentication could not be loaded. Refresh this page and sign in again. If the problem continues, check your Supabase Auth configuration and project availability.</p>
+  </section>
 
-    <section id="notSupportedCard" class="card hidden">
-      <h2 class="section-title">Security service unavailable</h2>
-      <p class="muted">
-        Two-factor authentication could not be loaded. Refresh this page and
-        sign in again. If the problem continues, check your Supabase Auth
-        configuration and project availability.
-      </p>
-    </section>
+  <section id="setupCard" class="card hidden">
+    <h2 class="section-title">Enable two-factor authentication</h2>
+    <p class="muted">You will need an authenticator app such as Google Authenticator, Microsoft Authenticator, or another compatible TOTP app.</p>
+    <ol class="steps">
+      <li>Open your authenticator app on your phone.</li>
+      <li>Choose <strong>Add account</strong> or tap the plus button.</li>
+      <li>Scan the QR code below, or enter the setup key manually.</li>
+      <li>Enter the six-digit code displayed in the app to verify setup.</li>
+    </ol>
+    <div class="actions">
+      <button id="startSetupBtn" class="btn btn-primary" type="button">Set up authenticator</button>
+    </div>
+  </section>
 
-    <section id="setupCard" class="card hidden">
-      <h2 class="section-title">Enable two-factor authentication</h2>
-      <p class="muted">
-        You will need an authenticator app such as Google Authenticator,
-        Microsoft Authenticator, or another compatible TOTP app.
-      </p>
+  <section id="enrollmentCard" class="card hidden">
+    <h2 class="section-title">Connect your authenticator</h2>
+    <p class="muted">Scan this QR code using your authenticator app. If you cannot scan it, use the manual setup key below.</p>
 
-      <ol class="steps">
-        <li>Open your authenticator app on your phone.</li>
-        <li>Choose <strong>Add account</strong> or tap the plus button.</li>
-        <li>Scan the QR code below, or enter the setup key manually.</li>
-        <li>Enter the six-digit code displayed in the app to verify setup.</li>
-      </ol>
+    <div id="qrWrap" class="qr-wrap">
+      <p class="muted" style="color:#333;text-align:center">Your setup QR code will appear here.</p>
+    </div>
 
-      <div class="actions">
-        <button id="startSetupBtn" class="btn btn-primary" type="button">
-          Set up authenticator
-        </button>
+    <div class="manual-key">
+      <small>MANUAL SETUP KEY — KEEP IT PRIVATE</small>
+      <div id="secretText">Preparing your setup key…</div>
+      <div class="actions" style="margin-top:12px">
+        <button id="copySecretBtn" class="btn btn-secondary" type="button" style="height:44px">Copy setup key</button>
       </div>
-    </section>
+    </div>
 
-    <section id="enrollmentCard" class="card hidden">
-      <h2 class="section-title">Connect your authenticator</h2>
-      <p class="muted">
-        Scan this QR code using your authenticator app. If you cannot scan it,
-        use the manual setup key below.
-      </p>
+    <div class="field">
+      <label for="enrollmentCode">Six-digit authenticator code</label>
+      <input id="enrollmentCode" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]{6}" placeholder="000000" aria-describedby="enrollmentHelp">
+      <div id="enrollmentHelp" class="muted" style="margin-top:8px">Codes refresh every 30 seconds. Use the current code shown in your app.</div>
+    </div>
 
-      <div id="qrWrap" class="qr-wrap">
-        <p class="muted" style="color:#333;text-align:center">
-          Your setup QR code will appear here.
-        </p>
-      </div>
+    <div id="enrollmentMessage" class="message" role="status" aria-live="polite"></div>
 
-      <div class="manual-key">
-        <small>MANUAL SETUP KEY — KEEP IT PRIVATE</small>
-        <div id="secretText">Preparing your setup key…</div>
-        <div class="actions">
-          <button id="copySecretBtn" class="btn btn-secondary" type="button">
-            Copy setup key
-          </button>
-        </div>
-      </div>
+    <div class="actions">
+      <button id="verifyEnrollmentBtn" class="btn btn-primary" type="button">Verify and enable 2FA</button>
+      <button id="cancelSetupBtn" class="btn btn-secondary" type="button">Cancel setup</button>
+    </div>
 
-      <div class="field">
-        <label for="enrollmentCode">Six-digit authenticator code</label>
-        <input
-          id="enrollmentCode"
-          type="text"
-          inputmode="numeric"
-          autocomplete="one-time-code"
-          maxlength="6"
-          pattern="[0-9]{6}"
-          placeholder="000000"
-          aria-describedby="enrollmentHelp"
-        >
-        <div id="enrollmentHelp" class="muted" style="margin-top:8px">
-          Codes refresh every 30 seconds. Use the current code shown in your app.
-        </div>
-      </div>
+    <div class="notice"><strong>Important:</strong> Save your authenticator access securely. Never share your QR code, setup key, password, or verification codes with anyone.</div>
+  </section>
 
-      <div id="enrollmentMessage" class="message" role="status" aria-live="polite"></div>
+  <section id="enabledCard" class="card hidden">
+    <h2 class="section-title">Two-factor authentication is enabled</h2>
+    <p class="muted">Your account has a verified authenticator factor. Your sign-in page must also enforce the additional verification challenge before allowing access to protected pages.</p>
+    <div class="notice">Keep your authenticator app available when signing in. Removing the factor can reduce your account's protection.</div>
+    <div class="actions">
+      <button id="showDisableBtn" class="btn btn-danger" type="button">Disable authenticator</button>
+    </div>
+  </section>
 
-      <div class="actions">
-        <button id="verifyEnrollmentBtn" class="btn btn-primary" type="button">
-          Verify and enable 2FA
-        </button>
-        <button id="cancelSetupBtn" class="btn btn-secondary" type="button">
-          Cancel setup
-        </button>
-      </div>
+  <section id="disableCard" class="card hidden">
+    <h2 class="section-title">Disable two-factor authentication?</h2>
+    <p class="muted">This removes the selected verified authenticator from your account. You will need to confirm your current six-digit code before it can be removed.</p>
 
-      <div class="notice">
-        <strong>Important:</strong> Save your authenticator access securely.
-        Never share your QR code, setup key, password, or verification codes
-        with anyone.
-      </div>
-    </section>
+    <div class="field">
+      <label for="disableCode">Current six-digit authenticator code</label>
+      <input id="disableCode" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="000000">
+    </div>
 
-    <section id="enabledCard" class="card hidden">
-      <h2 class="section-title">Two-factor authentication is enabled</h2>
-      <p class="muted">
-        Your account has a verified authenticator factor. Your sign-in page
-        must also enforce the additional verification challenge before allowing
-        access to protected pages.
-      </p>
+    <div id="disableMessage" class="message" role="status" aria-live="polite"></div>
 
-      <div class="notice">
-        Keep your authenticator app available when signing in. Removing the
-        factor can reduce your account's protection.
-      </div>
+    <div class="actions">
+      <button id="confirmDisableBtn" class="btn btn-danger" type="button">Verify and disable</button>
+      <button id="cancelDisableBtn" class="btn btn-secondary" type="button">Keep 2FA enabled</button>
+    </div>
+  </section>
+</div>
 
-      <div class="actions">
-        <button id="showDisableBtn" class="btn btn-danger" type="button">
-          Disable authenticator
-        </button>
-      </div>
-    </section>
+<nav class="bottom-nav" aria-label="Bottom navigation">
+  <button class="bottom-link" type="button" onclick="go('dashboard.html')">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l9 8h-3v9h-5v-6h-2v6H6v-9H3z"/></svg>Home
+  </button>
+  <button class="bottom-link" type="button" onclick="go('transactions.html')">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 13h18"/></svg>Portfolio
+  </button>
+  <button class="bottom-link" type="button" onclick="go('deposit.html')">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="5"/><path d="M12 6v6M9.5 9h5"/><path d="M4 20c2-2 5-3 8-3s6 1 8 3"/></svg>Deposit
+  </button>
+  <button class="bottom-link" type="button" onclick="go('withdraw.html')">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h13l-3-3M20 16H7l3 3"/></svg>Withdraw
+  </button>
+  <button class="bottom-link" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>More
+  </button>
+</nav>
 
-    <section id="disableCard" class="card hidden">
-      <h2 class="section-title">Disable two-factor authentication?</h2>
-      <p class="muted">
-        This removes the selected verified authenticator from your account.
-        You will need to confirm your current six-digit code before it can be
-        removed.
-      </p>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-      <div class="field">
-        <label for="disableCode">Current six-digit authenticator code</label>
-        <input
-          id="disableCode"
-          type="text"
-          inputmode="numeric"
-          autocomplete="one-time-code"
-          maxlength="6"
-          placeholder="000000"
-        >
-      </div>
+<script>
+/*
+  These values must match the public Supabase project configuration used by
+  your other pages. Never place a Supabase service-role key in browser code.
+*/
+const SUPABASE_URL = "https://rihvvwktvgytbqzazage.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
 
-      <div id="disableMessage" class="message" role="status" aria-live="polite"></div>
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-      <div class="actions">
-        <button id="confirmDisableBtn" class="btn btn-danger" type="button">
-          Verify and disable
-        </button>
-        <button id="cancelDisableBtn" class="btn btn-secondary" type="button">
-          Keep 2FA enabled
-        </button>
-      </div>
-    </section>
-  </main>
+const $ = (id) => document.getElementById(id);
 
-  <footer>AITIVEST · Account Security</footer>
+let currentUser = null;
+let pendingFactorId = null;
+let pendingChallengeId = null;
+let verifiedFactorId = null;
+let busy = false;
+let toastTimer = null;
 
-  <script>
-    /*
-      These values must match the public Supabase project configuration
-      used by your existing sign-in and dashboard pages.
-      Never place a Supabase service-role key in browser code.
-    */
-    const SUPABASE_URL = "https://rihvvwktvgytbqzazage.supabase.co";
-    const SUPABASE_ANON_KEY = "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
+function go(page) { window.location.href = page; }
 
-    const db = window.supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_ANON_KEY
+function showToast(message) {
+  const toast = $("toast");
+  toast.textContent = message;
+  toast.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove("show"), 2800);
+}
+
+/* Drawer */
+function openDrawer() {
+  $("drawer").classList.add("open");
+  $("overlay").classList.add("show");
+  $("drawer").setAttribute("aria-hidden", "false");
+  $("menuBtn").setAttribute("aria-expanded", "true");
+}
+function closeDrawer() {
+  $("drawer").classList.remove("open");
+  $("overlay").classList.remove("show");
+  $("drawer").setAttribute("aria-hidden", "true");
+  $("menuBtn").setAttribute("aria-expanded", "false");
+}
+$("menuBtn").addEventListener("click", openDrawer);
+$("closeDrawer").addEventListener("click", closeDrawer);
+$("overlay").addEventListener("click", closeDrawer);
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeDrawer(); });
+
+$("logoutBtn").addEventListener("click", async () => {
+  $("logoutBtn").disabled = true;
+  try {
+    const { error } = await db.auth.signOut();
+    if (error) throw error;
+    window.location.replace("signin.html");
+  } catch (error) {
+    console.error("Logout failed:", error);
+    showToast("Unable to log out. Please try again.");
+    $("logoutBtn").disabled = false;
+  }
+});
+
+/* Header avatar (profile photo if set, otherwise initials) */
+function initials(name) {
+  const parts = String(name || "").trim().split(/\s+/).filter(Boolean);
+  if (!parts.length) return "A";
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+
+async function loadHeaderAvatar() {
+  if (!currentUser) return;
+  let name = currentUser.user_metadata?.full_name || currentUser.email || "";
+  let photo = null;
+
+  try {
+    const { data, error } = await db.from("profiles").select("full_name,avatar_url").eq("id", currentUser.id).maybeSingle();
+    if (!error && data) {
+      if (data.full_name) name = data.full_name;
+      photo = data.avatar_url || null;
+    } else if (error) {
+      /* avatar_url column may not exist yet: fall back to the name only */
+      const { data: basic } = await db.from("profiles").select("full_name").eq("id", currentUser.id).maybeSingle();
+      if (basic?.full_name) name = basic.full_name;
+    }
+  } catch (_) {}
+
+  const el = $("profileInitial");
+  const text = initials(name);
+  el.replaceChildren();
+  if (photo) {
+    const img = document.createElement("img");
+    img.alt = "";
+    img.src = photo;
+    img.onerror = () => { el.replaceChildren(document.createTextNode(text)); };
+    el.appendChild(img);
+  } else {
+    el.textContent = text;
+  }
+}
+
+/* Messages */
+function showMessage(id, text, type = "error") {
+  const box = $(id);
+  box.textContent = text;
+  box.className = "message show " + type;
+}
+
+function clearMessage(id) {
+  const box = $(id);
+  box.textContent = "";
+  box.className = "message";
+}
+
+function hideAllWorkflowCards() {
+  ["setupCard", "enrollmentCard", "enabledCard", "disableCard", "notSupportedCard"]
+    .forEach(id => $(id).classList.add("hidden"));
+}
+
+function setBusy(buttonId, value, label) {
+  const button = $(buttonId);
+  button.disabled = value;
+
+  if (value) {
+    button.dataset.originalText = button.textContent;
+    button.innerHTML = '<span class="loader"></span>' + label;
+  } else {
+    button.textContent = button.dataset.originalText || label;
+  }
+}
+
+function updateStatus(enabled, description) {
+  $("statusIcon").classList.toggle("active", enabled);
+  $("statusIcon").textContent = enabled ? "✓" : "!";
+  $("statusDescription").textContent = description;
+  $("statusPill").textContent = enabled ? "ENABLED" : "NOT ENABLED";
+  $("statusPill").classList.toggle("active", enabled);
+  $("statusCard").classList.toggle("on", enabled);
+  $("statusCard").classList.toggle("off", !enabled);
+}
+
+async function getSessionAndUser() {
+  const { data, error } = await db.auth.getSession();
+  if (error) throw error;
+
+  if (!data.session) {
+    window.location.replace("signin.html?next=security.html");
+    return null;
+  }
+
+  const { data: userData, error: userError } = await db.auth.getUser();
+  if (userError) throw userError;
+  if (!userData.user) {
+    window.location.replace("signin.html?next=security.html");
+    return null;
+  }
+
+  currentUser = userData.user;
+  return currentUser;
+}
+
+async function refreshSecurityStatus() {
+  const user = await getSessionAndUser();
+  if (!user) return;
+
+  const { data, error } = await db.auth.mfa.listFactors();
+  if (error) throw error;
+
+  const factors = data?.totp || [];
+  const verified = factors.find(factor => factor.status === "verified");
+
+  hideAllWorkflowCards();
+  clearMessage("pageMessage");
+
+  if (verified) {
+    verifiedFactorId = verified.id;
+    updateStatus(true, "Your account has a verified authenticator app.");
+    $("enabledCard").classList.remove("hidden");
+  } else {
+    verifiedFactorId = null;
+    updateStatus(false, "Add an authenticator app to strengthen account protection.");
+    $("setupCard").classList.remove("hidden");
+  }
+}
+
+async function startEnrollment() {
+  if (busy) return;
+  busy = true;
+  setBusy("startSetupBtn", true, "Preparing setup…");
+  clearMessage("pageMessage");
+
+  try {
+    const user = await getSessionAndUser();
+    if (!user) return;
+
+    /* Check for any existing verified TOTP factor before enrollment. */
+    const { data: factorData, error: factorError } = await db.auth.mfa.listFactors();
+    if (factorError) throw factorError;
+
+    const existingVerified = (factorData?.totp || []).find(factor => factor.status === "verified");
+
+    if (existingVerified) {
+      await refreshSecurityStatus();
+      showMessage("pageMessage", "An authenticator is already enabled for this account.", "success");
+      return;
+    }
+
+    /* Clean up abandoned unverified TOTP factors, if present. */
+    const unverifiedFactors = (factorData?.all || []).filter(factor =>
+      factor.factor_type === "totp" && factor.status !== "verified"
     );
 
-    const $ = (id) => document.getElementById(id);
-
-    let currentUser = null;
-    let pendingFactorId = null;
-    let pendingChallengeId = null;
-    let verifiedFactorId = null;
-    let busy = false;
-
-    function showMessage(id, text, type = "error") {
-      const box = $(id);
-      box.textContent = text;
-      box.className = "message show " + type;
-    }
-
-    function clearMessage(id) {
-      const box = $(id);
-      box.textContent = "";
-      box.className = "message";
-    }
-
-    function hideAllWorkflowCards() {
-      [
-        "setupCard",
-        "enrollmentCard",
-        "enabledCard",
-        "disableCard",
-        "notSupportedCard"
-      ].forEach(id => $(id).classList.add("hidden"));
-    }
-
-    function setBusy(buttonId, value, label) {
-      const button = $(buttonId);
-      button.disabled = value;
-
-      if (value) {
-        button.dataset.originalText = button.textContent;
-        button.innerHTML = '<span class="loader"></span>' + label;
-      } else {
-        button.textContent = button.dataset.originalText || label;
-      }
-    }
-
-    function updateStatus(enabled, description) {
-      $("statusIcon").classList.toggle("active", enabled);
-      $("statusIcon").textContent = enabled ? "✓" : "!";
-      $("statusDescription").textContent = description;
-      $("statusPill").textContent = enabled ? "ENABLED" : "NOT ENABLED";
-      $("statusPill").classList.toggle("active", enabled);
-    }
-
-    async function getSessionAndUser() {
-      const { data, error } = await db.auth.getSession();
-
-      if (error) throw error;
-
-      if (!data.session) {
-        window.location.replace("signin.html?next=security.html");
-        return null;
-      }
-
-      const { data: userData, error: userError } = await db.auth.getUser();
-
-      if (userError) throw userError;
-      if (!userData.user) {
-        window.location.replace("signin.html?next=security.html");
-        return null;
-      }
-
-      currentUser = userData.user;
-      return currentUser;
-    }
-
-    async function refreshSecurityStatus() {
-      const user = await getSessionAndUser();
-      if (!user) return;
-
-      const { data, error } = await db.auth.mfa.listFactors();
-
-      if (error) throw error;
-
-      const factors = data?.totp || [];
-      const verified = factors.find(factor => factor.status === "verified");
-
-      hideAllWorkflowCards();
-      clearMessage("pageMessage");
-
-      if (verified) {
-        verifiedFactorId = verified.id;
-        updateStatus(
-          true,
-          "Your account has a verified authenticator app."
-        );
-        $("enabledCard").classList.remove("hidden");
-      } else {
-        verifiedFactorId = null;
-        updateStatus(
-          false,
-          "Add an authenticator app to strengthen account protection."
-        );
-        $("setupCard").classList.remove("hidden");
-      }
-    }
-
-    async function startEnrollment() {
-      if (busy) return;
-      busy = true;
-      setBusy("startSetupBtn", true, "Preparing setup…");
-      clearMessage("pageMessage");
-
+    for (const factor of unverifiedFactors) {
       try {
-        const user = await getSessionAndUser();
-        if (!user) return;
-
-        // Check for any existing verified TOTP factor before enrollment.
-        const { data: factorData, error: factorError } =
-          await db.auth.mfa.listFactors();
-
-        if (factorError) throw factorError;
-
-        const existingVerified = (factorData?.totp || [])
-          .find(factor => factor.status === "verified");
-
-        if (existingVerified) {
-          await refreshSecurityStatus();
-          showMessage(
-            "pageMessage",
-            "An authenticator is already enabled for this account.",
-            "success"
-          );
-          return;
-        }
-
-        // Clean up abandoned unverified TOTP factors, if present.
-        const unverifiedFactors = (factorData?.all || [])
-          .filter(factor =>
-            factor.factor_type === "totp" &&
-            factor.status !== "verified"
-          );
-
-        for (const factor of unverifiedFactors) {
-          try {
-            await db.auth.mfa.unenroll({ factorId: factor.id });
-          } catch (_) {
-            // Continue; a fresh enrollment will report any real conflict.
-          }
-        }
-
-        const { data, error } = await db.auth.mfa.enroll({
-          factorType: "totp",
-          friendlyName: "AITIVEST Authenticator"
-        });
-
-        if (error) throw error;
-
-        pendingFactorId = data.id;
-
-        if (!data.totp?.qr_code || !data.totp?.secret) {
-          throw new Error(
-            "Supabase did not return the authenticator QR code and setup key."
-          );
-        }
-
-        const qr = $("qrWrap");
-        qr.replaceChildren();
-
-        // Supabase returns the QR as SVG markup. Render it as an image source
-        // instead of inserting SVG markup directly into the document.
-        const qrImage = document.createElement("img");
-        qrImage.alt = "AITIVEST authenticator setup QR code";
-        qrImage.src = "data:image/svg+xml;charset=utf-8," +
-          encodeURIComponent(data.totp.qr_code);
-        qr.appendChild(qrImage);
-
-        $("secretText").textContent = data.totp.secret;
-        $("enrollmentCode").value = "";
-        clearMessage("enrollmentMessage");
-        hideAllWorkflowCards();
-        $("enrollmentCard").classList.remove("hidden");
-      } catch (error) {
-        console.error("2FA enrollment error:", error);
-        showMessage(
-          "pageMessage",
-          error.message || "Unable to start authenticator setup. Please try again."
-        );
-      } finally {
-        busy = false;
-        setBusy("startSetupBtn", false, "Set up authenticator");
-      }
-    }
-
-    async function verifyEnrollment() {
-      if (busy) return;
-      const code = $("enrollmentCode").value.replace(/\D/g, "");
-
-      if (!pendingFactorId) {
-        showMessage(
-          "enrollmentMessage",
-          "Your setup session has expired. Cancel and start setup again."
-        );
-        return;
-      }
-
-      if (!/^\d{6}$/.test(code)) {
-        showMessage(
-          "enrollmentMessage",
-          "Enter the six-digit code from your authenticator app."
-        );
-        return;
-      }
-
-      busy = true;
-      setBusy("verifyEnrollmentBtn", true, "Verifying…");
-      clearMessage("enrollmentMessage");
-
-      try {
-        const { data: challengeData, error: challengeError } =
-          await db.auth.mfa.challenge({ factorId: pendingFactorId });
-
-        if (challengeError) throw challengeError;
-
-        pendingChallengeId = challengeData.id;
-
-        const { error: verifyError } = await db.auth.mfa.verify({
-          factorId: pendingFactorId,
-          challengeId: pendingChallengeId,
-          code
-        });
-
-        if (verifyError) throw verifyError;
-
-        pendingFactorId = null;
-        pendingChallengeId = null;
-        $("enrollmentCode").value = "";
-
-        showMessage(
-          "pageMessage",
-          "Two-factor authentication has been enabled successfully.",
-          "success"
-        );
-
-        await refreshSecurityStatus();
-        showMessage(
-          "pageMessage",
-          "Two-factor authentication is enabled. Your account now has a verified authenticator.",
-          "success"
-        );
-      } catch (error) {
-        console.error("2FA verification error:", error);
-        showMessage(
-          "enrollmentMessage",
-          error.message || "Verification failed. Check the current code and try again."
-        );
-      } finally {
-        busy = false;
-        setBusy("verifyEnrollmentBtn", false, "Verify and enable 2FA");
-      }
-    }
-
-    async function cancelEnrollment() {
-      if (busy) return;
-
-      if (pendingFactorId) {
-        busy = true;
-        setBusy("cancelSetupBtn", true, "Cancelling…");
-
-        try {
-          const { error } = await db.auth.mfa.unenroll({
-            factorId: pendingFactorId
-          });
-
-          if (error) throw error;
-        } catch (error) {
-          console.error("Enrollment cancellation error:", error);
-          showMessage(
-            "enrollmentMessage",
-            "The pending setup could not be cancelled automatically. You can try again or refresh the page."
-          );
-          busy = false;
-          setBusy("cancelSetupBtn", false, "Cancel setup");
-          return;
-        } finally {
-          busy = false;
-          setBusy("cancelSetupBtn", false, "Cancel setup");
-        }
-      }
-
-      pendingFactorId = null;
-      pendingChallengeId = null;
-      $("secretText").textContent = "";
-      $("enrollmentCode").value = "";
-      await refreshSecurityStatus();
-    }
-
-    function openDisableConfirmation() {
-      $("disableCode").value = "";
-      clearMessage("disableMessage");
-      $("enabledCard").classList.add("hidden");
-      $("disableCard").classList.remove("hidden");
-    }
-
-    function cancelDisable() {
-      $("disableCode").value = "";
-      clearMessage("disableMessage");
-      $("disableCard").classList.add("hidden");
-      $("enabledCard").classList.remove("hidden");
-    }
-
-    async function disableAuthenticator() {
-      if (busy) return;
-
-      const code = $("disableCode").value.replace(/\D/g, "");
-
-      if (!/^\d{6}$/.test(code)) {
-        showMessage(
-          "disableMessage",
-          "Enter the current six-digit code from your authenticator app."
-        );
-        return;
-      }
-
-      if (!verifiedFactorId) {
-        showMessage(
-          "disableMessage",
-          "No verified authenticator was found. Refresh this page and try again."
-        );
-        return;
-      }
-
-      busy = true;
-      setBusy("confirmDisableBtn", true, "Verifying…");
-      clearMessage("disableMessage");
-
-      try {
-        const { data: challengeData, error: challengeError } =
-          await db.auth.mfa.challenge({ factorId: verifiedFactorId });
-
-        if (challengeError) throw challengeError;
-
-        const { error: verifyError } = await db.auth.mfa.verify({
-          factorId: verifiedFactorId,
-          challengeId: challengeData.id,
-          code
-        });
-
-        if (verifyError) throw verifyError;
-
-        const { error: unenrollError } = await db.auth.mfa.unenroll({
-          factorId: verifiedFactorId
-        });
-
-        if (unenrollError) throw unenrollError;
-
-        verifiedFactorId = null;
-        $("disableCode").value = "";
-
-        await refreshSecurityStatus();
-
-        showMessage(
-          "pageMessage",
-          "The authenticator has been removed from your account.",
-          "success"
-        );
-      } catch (error) {
-        console.error("2FA disable error:", error);
-        showMessage(
-          "disableMessage",
-          error.message || "Unable to disable 2FA. Check your code and try again."
-        );
-      } finally {
-        busy = false;
-        setBusy("confirmDisableBtn", false, "Verify and disable");
-      }
-    }
-
-    $("startSetupBtn").addEventListener("click", startEnrollment);
-    $("verifyEnrollmentBtn").addEventListener("click", verifyEnrollment);
-    $("cancelSetupBtn").addEventListener("click", cancelEnrollment);
-    $("showDisableBtn").addEventListener("click", openDisableConfirmation);
-    $("cancelDisableBtn").addEventListener("click", cancelDisable);
-    $("confirmDisableBtn").addEventListener("click", disableAuthenticator);
-
-    $("copySecretBtn").addEventListener("click", async () => {
-      const secret = $("secretText").textContent;
-
-      try {
-        await navigator.clipboard.writeText(secret);
-        showMessage(
-          "enrollmentMessage",
-          "Setup key copied. Keep it private.",
-          "success"
-        );
+        await db.auth.mfa.unenroll({ factorId: factor.id });
       } catch (_) {
-        showMessage(
-          "enrollmentMessage",
-          "Copy is unavailable in this browser. You can select the setup key and copy it manually."
-        );
-      }
-    });
-
-    $("enrollmentCode").addEventListener("input", event => {
-      event.target.value = event.target.value.replace(/\D/g, "").slice(0, 6);
-    });
-
-    $("disableCode").addEventListener("input", event => {
-      event.target.value = event.target.value.replace(/\D/g, "").slice(0, 6);
-    });
-
-    async function init() {
-      try {
-        await refreshSecurityStatus();
-      } catch (error) {
-        console.error("Security page initialization error:", error);
-        hideAllWorkflowCards();
-        $("notSupportedCard").classList.remove("hidden");
-        updateStatus(false, "We could not verify your security settings.");
-        showMessage(
-          "pageMessage",
-          error.message || "Unable to load security settings. Please sign in again."
-        );
+        /* Continue; a fresh enrollment will report any real conflict. */
       }
     }
 
-    init();
-  </script>
+    const { data, error } = await db.auth.mfa.enroll({
+      factorType: "totp",
+      friendlyName: "AITIVEST Authenticator"
+    });
+    if (error) throw error;
+
+    pendingFactorId = data.id;
+
+    if (!data.totp?.qr_code || !data.totp?.secret) {
+      throw new Error("Supabase did not return the authenticator QR code and setup key.");
+    }
+
+    const qr = $("qrWrap");
+    qr.replaceChildren();
+
+    /* Supabase returns the QR as SVG markup. Render it as an image source
+       instead of inserting SVG markup directly into the document. */
+    const qrImage = document.createElement("img");
+    qrImage.alt = "AITIVEST authenticator setup QR code";
+    qrImage.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(data.totp.qr_code);
+    qr.appendChild(qrImage);
+
+    $("secretText").textContent = data.totp.secret;
+    $("enrollmentCode").value = "";
+    clearMessage("enrollmentMessage");
+    hideAllWorkflowCards();
+    $("enrollmentCard").classList.remove("hidden");
+  } catch (error) {
+    console.error("2FA enrollment error:", error);
+    showMessage("pageMessage", error.message || "Unable to start authenticator setup. Please try again.");
+  } finally {
+    busy = false;
+    setBusy("startSetupBtn", false, "Set up authenticator");
+  }
+}
+
+async function verifyEnrollment() {
+  if (busy) return;
+  const code = $("enrollmentCode").value.replace(/\D/g, "");
+
+  if (!pendingFactorId) {
+    showMessage("enrollmentMessage", "Your setup session has expired. Cancel and start setup again.");
+    return;
+  }
+
+  if (!/^\d{6}$/.test(code)) {
+    showMessage("enrollmentMessage", "Enter the six-digit code from your authenticator app.");
+    return;
+  }
+
+  busy = true;
+  setBusy("verifyEnrollmentBtn", true, "Verifying…");
+  clearMessage("enrollmentMessage");
+
+  try {
+    const { data: challengeData, error: challengeError } = await db.auth.mfa.challenge({ factorId: pendingFactorId });
+    if (challengeError) throw challengeError;
+
+    pendingChallengeId = challengeData.id;
+
+    const { error: verifyError } = await db.auth.mfa.verify({
+      factorId: pendingFactorId,
+      challengeId: pendingChallengeId,
+      code
+    });
+    if (verifyError) throw verifyError;
+
+    pendingFactorId = null;
+    pendingChallengeId = null;
+    $("enrollmentCode").value = "";
+
+    await refreshSecurityStatus();
+    showMessage("pageMessage", "Two-factor authentication is enabled. Your account now has a verified authenticator.", "success");
+  } catch (error) {
+    console.error("2FA verification error:", error);
+    showMessage("enrollmentMessage", error.message || "Verification failed. Check the current code and try again.");
+  } finally {
+    busy = false;
+    setBusy("verifyEnrollmentBtn", false, "Verify and enable 2FA");
+  }
+}
+
+async function cancelEnrollment() {
+  if (busy) return;
+
+  if (pendingFactorId) {
+    busy = true;
+    setBusy("cancelSetupBtn", true, "Cancelling…");
+
+    try {
+      const { error } = await db.auth.mfa.unenroll({ factorId: pendingFactorId });
+      if (error) throw error;
+    } catch (error) {
+      console.error("Enrollment cancellation error:", error);
+      showMessage("enrollmentMessage", "The pending setup could not be cancelled automatically. You can try again or refresh the page.");
+      return;
+    } finally {
+      busy = false;
+      setBusy("cancelSetupBtn", false, "Cancel setup");
+    }
+  }
+
+  pendingFactorId = null;
+  pendingChallengeId = null;
+  $("secretText").textContent = "";
+  $("enrollmentCode").value = "";
+  await refreshSecurityStatus();
+}
+
+function openDisableConfirmation() {
+  $("disableCode").value = "";
+  clearMessage("disableMessage");
+  $("enabledCard").classList.add("hidden");
+  $("disableCard").classList.remove("hidden");
+}
+
+function cancelDisable() {
+  $("disableCode").value = "";
+  clearMessage("disableMessage");
+  $("disableCard").classList.add("hidden");
+  $("enabledCard").classList.remove("hidden");
+}
+
+async function disableAuthenticator() {
+  if (busy) return;
+
+  const code = $("disableCode").value.replace(/\D/g, "");
+
+  if (!/^\d{6}$/.test(code)) {
+    showMessage("disableMessage", "Enter the current six-digit code from your authenticator app.");
+    return;
+  }
+
+  if (!verifiedFactorId) {
+    showMessage("disableMessage", "No verified authenticator was found. Refresh this page and try again.");
+    return;
+  }
+
+  busy = true;
+  setBusy("confirmDisableBtn", true, "Verifying…");
+  clearMessage("disableMessage");
+
+  try {
+    const { data: challengeData, error: challengeError } = await db.auth.mfa.challenge({ factorId: verifiedFactorId });
+    if (challengeError) throw challengeError;
+
+    const { error: verifyError } = await db.auth.mfa.verify({
+      factorId: verifiedFactorId,
+      challengeId: challengeData.id,
+      code
+    });
+    if (verifyError) throw verifyError;
+
+    const { error: unenrollError } = await db.auth.mfa.unenroll({ factorId: verifiedFactorId });
+    if (unenrollError) throw unenrollError;
+
+    verifiedFactorId = null;
+    $("disableCode").value = "";
+
+    await refreshSecurityStatus();
+    showMessage("pageMessage", "The authenticator has been removed from your account.", "success");
+  } catch (error) {
+    console.error("2FA disable error:", error);
+    showMessage("disableMessage", error.message || "Unable to disable 2FA. Check your code and try again.");
+  } finally {
+    busy = false;
+    setBusy("confirmDisableBtn", false, "Verify and disable");
+  }
+}
+
+$("startSetupBtn").addEventListener("click", startEnrollment);
+$("verifyEnrollmentBtn").addEventListener("click", verifyEnrollment);
+$("cancelSetupBtn").addEventListener("click", cancelEnrollment);
+$("showDisableBtn").addEventListener("click", openDisableConfirmation);
+$("cancelDisableBtn").addEventListener("click", cancelDisable);
+$("confirmDisableBtn").addEventListener("click", disableAuthenticator);
+
+$("copySecretBtn").addEventListener("click", async () => {
+  const secret = $("secretText").textContent;
+
+  try {
+    await navigator.clipboard.writeText(secret);
+    showMessage("enrollmentMessage", "Setup key copied. Keep it private.", "success");
+  } catch (_) {
+    showMessage("enrollmentMessage", "Copy is unavailable in this browser. You can select the setup key and copy it manually.");
+  }
+});
+
+$("enrollmentCode").addEventListener("input", event => {
+  event.target.value = event.target.value.replace(/\D/g, "").slice(0, 6);
+});
+
+$("disableCode").addEventListener("input", event => {
+  event.target.value = event.target.value.replace(/\D/g, "").slice(0, 6);
+});
+
+async function init() {
+  try {
+    await refreshSecurityStatus();
+    loadHeaderAvatar();
+  } catch (error) {
+    console.error("Security page initialization error:", error);
+    hideAllWorkflowCards();
+    $("notSupportedCard").classList.remove("hidden");
+    updateStatus(false, "We could not verify your security settings.");
+    showMessage("pageMessage", error.message || "Unable to load security settings. Please sign in again.");
+  } finally {
+    $("loadingScreen").style.display = "none";
+  }
+}
+
+init();
+</script>
 </body>
 </html>
