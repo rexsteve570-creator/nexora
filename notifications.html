@@ -3,743 +3,170 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#07111f">
-
+<meta name="theme-color" content="#050b1a">
 <title>Notifications | AITIVEST</title>
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <style>
 :root{
-    --bg:#07111f;
-    --card:#0d1b2d;
-    --card2:#102238;
-    --border:rgba(255,255,255,.08);
-    --text:#f5f7fa;
-    --muted:#8e9bad;
-    --gold:#d7a83f;
-    --gold2:#f0c766;
-    --danger:#ef4444;
-    --success:#22c55e;
-    --nav:#081423;
-}
-
-*{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
-}
-
-body{
-    min-height:100vh;
-    background:var(--bg);
-    color:var(--text);
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
-}
-
-button,a{
-    font:inherit;
-}
-
-button{
-    cursor:pointer;
-}
-
-button:disabled{
-    opacity:.5;
-    cursor:not-allowed;
-}
-
-a{
-    color:inherit;
-    text-decoration:none;
-}
-
-button:focus-visible,
-a:focus-visible{
-    outline:2px solid var(--gold2);
-    outline-offset:3px;
-}
-
-/* TOPBAR */
-
-.topbar{
-    position:fixed;
-    top:0;
-    left:0;
-    right:0;
-    height:68px;
-    background:rgba(7,17,31,.96);
-    border-bottom:1px solid var(--border);
-    z-index:1000;
-    backdrop-filter:blur(14px);
-}
-
-.topbar-inner{
-    width:100%;
-    max-width:760px;
-    height:68px;
-    margin:auto;
-    padding:0 18px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    position:relative;
-}
-
-.menu-btn{
-    width:42px;
-    height:42px;
-    border:0;
-    background:transparent;
-    color:#fff;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:25px;
-}
-
-.logo{
-    position:absolute;
-    left:50%;
-    transform:translateX(-50%);
-    display:flex;
-    align-items:center;
-    gap:7px;
-    font-size:20px;
-    font-weight:900;
-    letter-spacing:1.2px;
-    white-space:nowrap;
-}
-
-.logo-icon{
-    width:28px;
-    height:28px;
-    border:2px solid var(--gold);
-    border-radius:8px 8px 8px 2px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:var(--gold);
-    font-size:16px;
-}
-
-.logo .aiti{
-    color:#fff;
-}
-
-.logo .vest{
-    color:var(--gold);
-}
-
-.profile-mini{
-    width:38px;
-    height:38px;
-    border-radius:50%;
-    background:linear-gradient(135deg,#f0c766,#a87924);
-    color:#101010;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:12px;
-    font-weight:800;
-    cursor:pointer;
-    border:0;
-}
-
-/* DRAWER */
-
-.overlay{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.58);
-    opacity:0;
-    pointer-events:none;
-    transition:.25s;
-    z-index:1100;
-}
-
-.overlay.show{
-    opacity:1;
-    pointer-events:auto;
-}
-
-.drawer{
-    position:fixed;
-    top:0;
-    left:0;
-    bottom:0;
-    width:285px;
-    max-width:86%;
-    background:#091625;
-    border-right:1px solid var(--border);
-    transform:translateX(-100%);
-    transition:.28s ease;
-    z-index:1200;
-    padding:20px 15px;
-    overflow-y:auto;
-}
-
-.drawer.open{
-    transform:translateX(0);
-}
-
-.drawer-head{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:8px 7px 24px;
-    border-bottom:1px solid var(--border);
-}
-
-.drawer-logo{
-    display:flex;
-    align-items:center;
-    gap:7px;
-    font-size:19px;
-    font-weight:900;
-    letter-spacing:1px;
-}
-
-.drawer-logo .aiti{
-    color:#fff;
-}
-
-.drawer-logo .vest{
-    color:var(--gold);
-}
-
-.close-btn{
-    border:0;
-    background:transparent;
-    color:#fff;
-    font-size:25px;
-}
-
-.drawer-links{
-    padding-top:15px;
-}
-
-.drawer-link{
-    display:flex;
-    align-items:center;
-    gap:13px;
-    padding:14px 12px;
-    border-radius:11px;
-    color:#dce3ec;
-    font-size:14px;
-    margin-bottom:4px;
-}
-
-.drawer-link:hover{
-    background:rgba(255,255,255,.05);
-}
-
-.drawer-link.active{
-    background:rgba(215,168,63,.12);
-    color:var(--gold2);
-}
-
-.drawer-icon{
-    width:22px;
-    text-align:center;
-    font-size:18px;
-}
-
-.logout{
-    margin-top:18px;
-    color:#ff8b8b;
-}
-
-/* PAGE */
-
-.page{
-    width:100%;
-    max-width:760px;
-    margin:auto;
-    padding:92px 18px 100px;
-}
-
-.eyebrow{
-    color:var(--gold);
-    font-size:10px;
-    text-transform:uppercase;
-    letter-spacing:2px;
-    font-weight:800;
-    margin-bottom:7px;
-}
-
-.page-title{
-    font-size:25px;
-    font-weight:800;
-    margin-bottom:7px;
-}
-
-.page-subtitle{
-    color:var(--muted);
-    font-size:13px;
-    line-height:1.6;
-    margin-bottom:22px;
-}
-
-/* ACTION BAR */
-
-.action-bar{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:12px;
-    margin-bottom:14px;
-}
-
-.unread-count{
-    color:var(--muted);
-    font-size:12px;
-}
-
-.unread-count strong{
-    color:var(--gold2);
-}
-
-.mark-all{
-    border:1px solid rgba(215,168,63,.3);
-    background:rgba(215,168,63,.08);
-    color:var(--gold2);
-    border-radius:9px;
-    padding:9px 13px;
-    font-size:11px;
-    font-weight:700;
-}
-
-.mark-all:disabled{
-    opacity:.45;
-    cursor:not-allowed;
-}
-
-/* NOTIFICATIONS */
-
-.notifications{
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-}
-
-.notification{
-    position:relative;
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:15px;
-    padding:16px;
-    display:flex;
-    gap:13px;
-    transition:background .2s,border-color .2s;
-}
-
-.notification.unread{
-    border-color:rgba(215,168,63,.25);
-    background:linear-gradient(
-        135deg,
-        rgba(215,168,63,.08),
-        var(--card)
-    );
-}
-
-.notification.unread::before{
-    content:"";
-    position:absolute;
-    left:0;
-    top:14px;
-    bottom:14px;
-    width:3px;
-    background:var(--gold);
-    border-radius:0 4px 4px 0;
-}
-
-.notification-icon{
-    width:42px;
-    height:42px;
-    min-width:42px;
-    border-radius:12px;
-    background:rgba(215,168,63,.1);
-    border:1px solid rgba(215,168,63,.16);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:var(--gold2);
-    font-size:18px;
-}
-
-.notification-content{
-    flex:1;
-    min-width:0;
-}
-
-.notification-top{
-    display:flex;
-    align-items:flex-start;
-    justify-content:space-between;
-    gap:10px;
-}
-
-.notification-title{
-    font-size:13px;
-    font-weight:750;
-    line-height:1.5;
-    overflow-wrap:anywhere;
-}
-
-.notification-time{
-    color:#8491a3;
-    font-size:10px;
-    white-space:nowrap;
-}
-
-.notification-message{
-    color:#9ca9b9;
-    font-size:12px;
-    line-height:1.65;
-    margin-top:6px;
-    overflow-wrap:anywhere;
-    white-space:pre-wrap;
-}
-
-.notification-actions{
-    margin-top:11px;
-}
-
-.read-btn{
-    border:0;
-    background:transparent;
-    padding:0;
-    color:var(--gold2);
-    font-size:11px;
-    font-weight:700;
-}
-
-.read-label{
-    color:#627083;
-    font-size:11px;
-}
-
-/* EMPTY AND ERROR */
-
-.empty{
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:16px;
-    padding:40px 20px;
-    text-align:center;
-}
-
-.empty-icon{
-    width:55px;
-    height:55px;
-    margin:0 auto 14px;
-    border-radius:50%;
-    background:rgba(215,168,63,.08);
-    color:var(--gold2);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:24px;
-}
-
-.empty-title{
-    font-size:15px;
-    font-weight:750;
-    margin-bottom:7px;
-}
-
-.empty-text{
-    color:var(--muted);
-    font-size:12px;
-    line-height:1.7;
-}
-
-.retry-btn{
-    margin-top:16px;
-    border:1px solid rgba(215,168,63,.3);
-    background:rgba(215,168,63,.08);
-    color:var(--gold2);
-    padding:10px 14px;
-    border-radius:9px;
-    font-size:12px;
-    font-weight:700;
-}
-
-.loading{
-    padding:40px 20px;
-    text-align:center;
-    color:var(--muted);
-    font-size:13px;
-}
-
-/* TOAST */
-
-.toast{
-    position:fixed;
-    left:50%;
-    bottom:88px;
-    transform:translate(-50%,20px);
-    background:#142238;
-    border:1px solid var(--border);
-    color:#fff;
-    padding:11px 15px;
-    border-radius:10px;
-    font-size:12px;
-    opacity:0;
-    pointer-events:none;
-    transition:.25s;
-    z-index:2000;
-    box-shadow:0 10px 30px rgba(0,0,0,.3);
-    width:max-content;
-    max-width:calc(100% - 30px);
-    text-align:center;
-}
-
-.toast.show{
-    opacity:1;
-    transform:translate(-50%,0);
-}
-
-/* BOTTOM NAV */
-
-.bottom-nav{
-    position:fixed;
-    left:0;
-    right:0;
-    bottom:0;
-    height:70px;
-    background:rgba(8,20,35,.98);
-    border-top:1px solid var(--border);
-    z-index:1000;
-}
-
-.bottom-inner{
-    max-width:760px;
-    height:70px;
-    margin:auto;
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-}
-
-.bottom-item{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    gap:4px;
-    color:#718096;
-    font-size:10px;
-}
-
-.bottom-item span:first-child{
-    font-size:19px;
-    line-height:1;
-}
-
-.bottom-item.active{
-    color:var(--gold2);
-}
-
-@media(max-width:430px){
-    .page{
-        padding-left:14px;
-        padding-right:14px;
-    }
-
-    .notification{
-        padding:14px;
-    }
-
-    .notification-time{
-        font-size:9px;
-    }
-
-    .notification-top{
-        flex-wrap:wrap;
-    }
-}
-
-@media(prefers-reduced-motion:reduce){
-    *,*::before,*::after{
-        transition:none!important;
-        scroll-behavior:auto!important;
-    }
-}
+  --bg:#050b1a;--card:#0b1733;--line:#1c2c52;
+  --text:#e8edf7;--muted:#9aa7c0;
+  --gold:#f2b84b;--gold2:#ffd982;--gold3:#c98f1d;
+  --green:#22d37a;--red:#ef6b73;--blue:#2f8cff;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{min-height:100vh;background:#02050d;color:var(--text);font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;display:flex;justify-content:center}
+button{font:inherit;color:inherit;cursor:pointer}
+button:disabled{opacity:.5;cursor:not-allowed}
+button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
+
+.brand-logo{display:flex;align-items:center;gap:9px}
+.brand-mark{width:30px;height:30px;border:2px solid var(--gold);border-radius:9px 9px 9px 2px;display:flex;align-items:center;justify-content:center;color:var(--gold2);font-size:16px;font-weight:900;transform:rotate(-3deg)}
+.brand-name{font-size:24px;font-weight:700;letter-spacing:2px;background:linear-gradient(180deg,#ffd982,#d89a24);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+.app{width:100%;max-width:480px;min-height:100vh;background:radial-gradient(120% 60% at 50% 0%,#0f2350 0%,var(--bg) 60%);padding:18px 16px 100px;position:relative}
+
+/* Header */
+.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
+.top-actions{display:flex;gap:14px;align-items:center}
+.bell{background:none;border:0;color:var(--gold);display:flex;filter:drop-shadow(0 0 6px rgba(242,184,75,.6))}
+.avatar{width:36px;height:36px;border-radius:50%;background:#16264d;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--gold2);font-size:12px;font-weight:800;cursor:pointer}
+.page-head{margin-bottom:16px}
+.page-head small{font-size:15px;color:#cfd8ec;display:block}
+.page-head h1{font-size:26px;font-weight:700;color:var(--gold)}
+.page-subtitle{color:var(--muted);font-size:12.5px;line-height:1.7;margin:6px 0 18px}
+
+/* Action bar */
+.action-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.unread-count{color:var(--muted);font-size:12.5px}
+.unread-count strong{color:var(--gold)}
+.mark-all{border:1.5px solid var(--gold3);background:transparent;color:var(--gold);border-radius:12px;padding:9px 14px;font-size:12px;font-weight:700}
+
+/* Notifications */
+.notifications{display:flex;flex-direction:column;gap:12px}
+.notification{position:relative;background:linear-gradient(180deg,rgba(18,34,72,.75),rgba(9,20,45,.9));border:1px solid var(--line);border-radius:16px;padding:14px;display:flex;gap:13px}
+.notification.unread{border-color:var(--gold3);background:linear-gradient(135deg,rgba(242,184,75,.12),rgba(9,20,45,.9));box-shadow:0 0 14px rgba(242,184,75,.12)}
+.notification.unread::before{content:"";position:absolute;left:0;top:14px;bottom:14px;width:3px;background:var(--gold);border-radius:0 4px 4px 0}
+.notification-icon{width:42px;height:42px;min-width:42px;border-radius:50%;background:rgba(242,184,75,.12);border:1px solid rgba(242,184,75,.3);display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:18px}
+.notification-content{flex:1;min-width:0}
+.notification-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.notification-title{font-size:13.5px;font-weight:700;line-height:1.5;overflow-wrap:anywhere}
+.notification-time{color:#8491a3;font-size:10px;white-space:nowrap}
+.notification-message{color:#b4c0d6;font-size:12px;line-height:1.7;margin-top:6px;overflow-wrap:anywhere;white-space:pre-wrap}
+.notification-actions{margin-top:10px}
+.read-btn{border:0;background:transparent;padding:0;color:var(--gold);font-size:11.5px;font-weight:700}
+.read-label{color:#627083;font-size:11px}
+
+/* Empty / loading */
+.empty{background:linear-gradient(180deg,rgba(18,34,72,.75),rgba(9,20,45,.9));border:1px solid var(--line);border-radius:16px;padding:40px 20px;text-align:center}
+.empty-icon{width:55px;height:55px;margin:0 auto 14px;border-radius:50%;background:rgba(242,184,75,.12);border:1px solid rgba(242,184,75,.3);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:24px}
+.empty-title{font-size:15px;font-weight:700;margin-bottom:7px}
+.empty-text{color:var(--muted);font-size:12px;line-height:1.7}
+.retry-btn{margin-top:16px;height:44px;padding:0 20px;border:0;border-radius:14px;background:linear-gradient(180deg,#f7c75a,#cf9420);color:#1a1200;font-size:13px;font-weight:700}
+.loading{padding:40px 20px;text-align:center;color:var(--muted);font-size:13px}
+
+/* Bottom nav */
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;min-height:72px;padding-bottom:env(safe-area-inset-bottom);background:rgba(6,13,30,.96);backdrop-filter:blur(10px);border-top:1px solid var(--line);z-index:120;display:grid;grid-template-columns:repeat(5,1fr)}
+.bottom-link{background:none;border:0;color:#aab5cc;font-size:11px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px}
+
+/* Drawer */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:190;display:none}
+.overlay.show{display:block}
+.drawer{position:fixed;left:-320px;top:0;width:290px;max-width:86%;height:100vh;height:100dvh;background:#081225;border-right:1px solid var(--line);z-index:200;transition:left .25s ease;padding:22px 15px;overflow-y:auto}
+.drawer.open{left:0}
+.drawer-head{display:flex;align-items:center;justify-content:space-between;padding:8px 7px 25px;border-bottom:1px solid var(--line)}
+.drawer-head .brand-name{font-size:19px}
+.close-drawer{border:0;background:none;color:#fff;font-size:27px}
+.drawer-nav{padding-top:18px}
+.drawer-link{width:100%;border:0;background:transparent;color:#d7dce4;padding:14px 13px;border-radius:11px;display:flex;align-items:center;gap:13px;text-align:left;margin-bottom:4px}
+.drawer-link:hover,.drawer-link.active{background:rgba(242,184,75,.08);color:var(--gold2)}
+.drawer-icon{width:22px;text-align:center;color:var(--gold)}
+.drawer-link.logout{margin-top:15px;color:#ef8990}
+
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%) translateY(15px);background:#12244c;border:1px solid var(--gold3);color:#fff;padding:12px 16px;border-radius:12px;font-size:12px;opacity:0;pointer-events:none;transition:.25s;z-index:500;width:max-content;max-width:90%;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
-
 <body>
 
-<header class="topbar">
-    <div class="topbar-inner">
-
-        <button
-            class="menu-btn"
-            id="menuBtn"
-            type="button"
-            aria-label="Open navigation menu"
-            aria-expanded="false"
-            aria-controls="drawer"
-        >☰</button>
-
-        <a href="dashboard.html" class="logo" aria-label="AITIVEST home">
-            <span class="logo-icon">A</span>
-            <span><span class="aiti">AITI</span><span class="vest">VEST</span></span>
-        </a>
-
-        <button
-            class="profile-mini"
-            id="profileMini"
-            type="button"
-            aria-label="Open profile"
-        >--</button>
-
-    </div>
-</header>
-
 <div class="overlay" id="overlay"></div>
-
 <aside class="drawer" id="drawer" aria-label="Main navigation">
-
-    <div class="drawer-head">
-        <div class="drawer-logo">
-            <span class="logo-icon">A</span>
-            <span><span class="aiti">AITI</span><span class="vest">VEST</span></span>
-        </div>
-
-        <button class="close-btn" id="closeBtn" type="button" aria-label="Close menu">×</button>
-    </div>
-
-    <nav class="drawer-links">
-
-        <a href="dashboard.html" class="drawer-link">
-            <span class="drawer-icon">⌂</span>
-            <span>Portfolio</span>
-        </a>
-
-        <a href="deposit.html" class="drawer-link">
-            <span class="drawer-icon">＋</span>
-            <span>Deposit</span>
-        </a>
-
-        <a href="withdraw.html" class="drawer-link">
-            <span class="drawer-icon">↗</span>
-            <span>Withdraw</span>
-        </a>
-
-        <a href="transactions.html" class="drawer-link">
-            <span class="drawer-icon">≡</span>
-            <span>Transactions</span>
-        </a>
-
-        <a href="referrals.html" class="drawer-link">
-            <span class="drawer-icon">♧</span>
-            <span>Referrals</span>
-        </a>
-
-        <a href="profile.html" class="drawer-link">
-            <span class="drawer-icon">○</span>
-            <span>Profile</span>
-        </a>
-
-        <a href="support.html" class="drawer-link">
-            <span class="drawer-icon">?</span>
-            <span>Support</span>
-        </a>
-
-        <a href="notifications.html" class="drawer-link active" aria-current="page">
-            <span class="drawer-icon">♢</span>
-            <span>Notifications</span>
-        </a>
-
-        <a href="#" class="drawer-link logout" id="logoutBtn">
-            <span class="drawer-icon">↪</span>
-            <span>Logout</span>
-        </a>
-
-    </nav>
+  <div class="drawer-head">
+    <div class="brand-logo"><div class="brand-mark">A</div><div class="brand-name">AITIVEST</div></div>
+    <button class="close-drawer" id="closeBtn" type="button" aria-label="Close menu">×</button>
+  </div>
+  <nav class="drawer-nav">
+    <button class="drawer-link" onclick="location.href='dashboard.html'"><span class="drawer-icon">⌂</span>Portfolio</button>
+    <button class="drawer-link" onclick="location.href='deposit.html'"><span class="drawer-icon">＋</span>Deposit</button>
+    <button class="drawer-link" onclick="location.href='withdraw.html'"><span class="drawer-icon">↗</span>Withdraw</button>
+    <button class="drawer-link" onclick="location.href='transactions.html'"><span class="drawer-icon">≡</span>Transactions</button>
+    <button class="drawer-link" onclick="location.href='referrals.html'"><span class="drawer-icon">♧</span>Referrals</button>
+    <button class="drawer-link" onclick="location.href='profile.html'"><span class="drawer-icon">○</span>Profile</button>
+    <button class="drawer-link" onclick="location.href='security.html'"><span class="drawer-icon">♙</span>Security Settings</button>
+    <button class="drawer-link" onclick="location.href='support.html'"><span class="drawer-icon">?</span>Support</button>
+    <button class="drawer-link active" aria-current="page"><span class="drawer-icon">♢</span>Notifications</button>
+    <button class="drawer-link logout" id="logoutBtn" type="button"><span class="drawer-icon">↪</span>Logout</button>
+  </nav>
 </aside>
 
-<main class="page">
-
-    <div class="eyebrow">Account updates</div>
-
-    <h1 class="page-title">Notifications</h1>
-
-    <p class="page-subtitle">
-        Stay updated with your AITIVEST account, transactions, security,
-        and other important activity.
-    </p>
-
-    <div class="action-bar">
-        <div class="unread-count" id="unreadCount">Unread: <strong>—</strong></div>
-
-        <button class="mark-all" id="markAllBtn" type="button" disabled>
-            Mark all as read
-        </button>
+<div class="app">
+  <header class="top">
+    <a href="dashboard.html" class="brand-logo" aria-label="AITIVEST home" style="text-decoration:none"><div class="brand-mark">A</div><div class="brand-name">AITIVEST</div></a>
+    <div class="top-actions">
+      <button class="bell" aria-label="Notifications" aria-current="page" type="button">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+      </button>
+      <div class="avatar" id="profileMini" role="button" aria-label="Open profile">--</div>
     </div>
+  </header>
 
-    <section id="notificationsContainer" aria-live="polite">
-        <div class="loading">Loading notifications…</div>
-    </section>
+  <div class="page-head">
+    <small>Account updates</small>
+    <h1>Notifications</h1>
+  </div>
+  <p class="page-subtitle">Stay updated with your AITIVEST account, transactions, security, and other important activity.</p>
 
-</main>
+  <div class="action-bar">
+    <div class="unread-count" id="unreadCount">Unread: <strong>—</strong></div>
+    <button class="mark-all" id="markAllBtn" type="button" disabled>Mark all as read</button>
+  </div>
 
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <section id="notificationsContainer" aria-live="polite">
+    <div class="loading">Loading notifications…</div>
+  </section>
+</div>
 
 <nav class="bottom-nav" aria-label="Bottom navigation">
-    <div class="bottom-inner">
-
-        <a href="dashboard.html" class="bottom-item">
-            <span>⌂</span>
-            <span>Portfolio</span>
-        </a>
-
-        <a href="deposit.html" class="bottom-item">
-            <span>＋</span>
-            <span>Deposit</span>
-        </a>
-
-        <a href="transactions.html" class="bottom-item">
-            <span>≡</span>
-            <span>History</span>
-        </a>
-
-        <a href="profile.html" class="bottom-item">
-            <span>○</span>
-            <span>Account</span>
-        </a>
-
-    </div>
+  <button class="bottom-link" onclick="location.href='dashboard.html'">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l9 8h-3v9h-5v-6h-2v6H6v-9H3z"/></svg>Home
+  </button>
+  <button class="bottom-link" onclick="location.href='transactions.html'">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 13h18"/></svg>Portfolio
+  </button>
+  <button class="bottom-link" onclick="location.href='deposit.html'">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="5"/><path d="M12 6v6M9.5 9h5"/><path d="M4 20c2-2 5-3 8-3s6 1 8 3"/></svg>Deposit
+  </button>
+  <button class="bottom-link" onclick="location.href='withdraw.html'">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h13l-3-3M20 16H7l3 3"/></svg>Withdraw
+  </button>
+  <button class="bottom-link" id="menuBtn" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="drawer">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>More
+  </button>
 </nav>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
 "use strict";
 
-/* ================================================
-   SUPABASE CONFIGURATION
-================================================ */
+/* SUPABASE */
+const SUPABASE_URL = "https://rihvvwktvgytbqzazage.supabase.co";
+const SUPABASE_KEY = "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-const SUPABASE_URL =
-    "https://rihvvwktvgytbqzazage.supabase.co";
-
-const SUPABASE_KEY =
-    "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
-
-const db = window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-);
-
-/*
-Expected notifications columns:
-id, user_id, type, title, message, is_read, created_at
-
-This page assumes is_read is a boolean.
-Database RLS must enforce user ownership.
-*/
+/* Expected notifications columns: id, user_id, type, title, message, is_read, created_at.
+   is_read is a boolean. Database RLS must enforce user ownership. */
 
 const $ = id => document.getElementById(id);
 
@@ -761,548 +188,324 @@ let loadingNotifications = false;
 let updatingAll = false;
 const updatingIds = new Set();
 
-/* ================================================
-   DRAWER
-================================================ */
-
+/* DRAWER */
 function openDrawer() {
-    drawer.classList.add("open");
-    overlay.classList.add("show");
-    menuBtn.setAttribute("aria-expanded", "true");
+  drawer.classList.add("open");
+  overlay.classList.add("show");
+  menuBtn.setAttribute("aria-expanded", "true");
 }
-
 function closeDrawer() {
-    drawer.classList.remove("open");
-    overlay.classList.remove("show");
-    menuBtn.setAttribute("aria-expanded", "false");
+  drawer.classList.remove("open");
+  overlay.classList.remove("show");
+  menuBtn.setAttribute("aria-expanded", "false");
 }
-
 menuBtn.addEventListener("click", openDrawer);
 closeBtn.addEventListener("click", closeDrawer);
 overlay.addEventListener("click", closeDrawer);
+document.addEventListener("keydown", event => { if (event.key === "Escape") closeDrawer(); });
 
-document.addEventListener("keydown", event => {
-    if (event.key === "Escape") closeDrawer();
-});
-
-/* ================================================
-   TOAST
-================================================ */
-
+/* TOAST */
 function showToast(message) {
-    clearTimeout(toastTimer);
-
-    toast.textContent = message;
-    toast.classList.add("show");
-
-    toastTimer = setTimeout(() => {
-        toast.classList.remove("show");
-    }, 2800);
+  clearTimeout(toastTimer);
+  toast.textContent = message;
+  toast.classList.add("show");
+  toastTimer = setTimeout(() => toast.classList.remove("show"), 2800);
 }
 
-/* ================================================
-   HTML ESCAPING
-================================================ */
-
+/* HTML ESCAPING */
 function escapeHtml(value) {
-    return String(value ?? "").replace(/[&<>"']/g, character => ({
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#39;"
-    }[character]));
+  return String(value ?? "").replace(/[&<>"']/g, character => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+  }[character]));
 }
 
-/* ================================================
-   TIME FORMATTING
-================================================ */
-
+/* TIME FORMATTING */
 function formatTime(dateString) {
-    if (!dateString) return "Date unavailable";
+  if (!dateString) return "Date unavailable";
+  const date = new Date(dateString);
+  if (Number.isNaN(date.getTime())) return "Date unavailable";
 
-    const date = new Date(dateString);
+  const seconds = Math.max(0, Math.floor((new Date() - date) / 1000));
+  if (seconds < 60) return "Just now";
+  if (seconds < 3600) return Math.floor(seconds / 60) + "m ago";
+  if (seconds < 86400) return Math.floor(seconds / 3600) + "h ago";
+  if (seconds < 604800) return Math.floor(seconds / 86400) + "d ago";
 
-    if (Number.isNaN(date.getTime())) {
-        return "Date unavailable";
-    }
-
-    const now = new Date();
-    const seconds = Math.max(0, Math.floor((now - date) / 1000));
-
-    if (seconds < 60) return "Just now";
-
-    if (seconds < 3600) {
-        return Math.floor(seconds / 60) + "m ago";
-    }
-
-    if (seconds < 86400) {
-        return Math.floor(seconds / 3600) + "h ago";
-    }
-
-    if (seconds < 604800) {
-        return Math.floor(seconds / 86400) + "d ago";
-    }
-
-    return date.toLocaleDateString(undefined, {
-        day: "numeric",
-        month: "short",
-        year: "numeric"
-    });
+  return date.toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" });
 }
 
-/* ================================================
-   NOTIFICATION ICONS
-================================================ */
-
+/* ICONS */
 function notificationIcon(type) {
-    switch (String(type || "").toUpperCase()) {
-        case "WELCOME":
-            return "✦";
-        case "DEPOSIT":
-            return "＋";
-        case "EARNING":
-            return "↗";
-        case "WITHDRAWAL":
-            return "↙";
-        case "KYC":
-            return "✓";
-        case "REFERRAL":
-            return "♧";
-        case "SECURITY":
-            return "⌁";
-        case "SYSTEM":
-            return "◆";
-        default:
-            return "•";
-    }
+  switch (String(type || "").toUpperCase()) {
+    case "WELCOME": return "✦";
+    case "DEPOSIT": return "＋";
+    case "EARNING": return "↗";
+    case "WITHDRAWAL": return "↙";
+    case "KYC": return "✓";
+    case "REFERRAL": return "♧";
+    case "SECURITY": return "⌁";
+    case "SYSTEM": return "◆";
+    default: return "•";
+  }
 }
 
-/* ================================================
-   AUTHENTICATION
-================================================ */
-
+/* AUTHENTICATION */
 async function loadUser() {
-    const { data, error } = await db.auth.getSession();
-
-    if (error) {
-        throw new Error("Unable to verify your session. Please sign in again.");
-    }
-
-    if (!data.session) {
-        location.replace("signin.html");
-        return false;
-    }
-
-    currentUser = data.session.user;
-    return true;
+  const { data, error } = await db.auth.getSession();
+  if (error) throw new Error("Unable to verify your session. Please sign in again.");
+  if (!data.session) {
+    location.replace("signin.html");
+    return false;
+  }
+  currentUser = data.session.user;
+  return true;
 }
 
-/* ================================================
-   PROFILE INITIALS
-================================================ */
-
+/* PROFILE INITIALS */
 async function loadProfile() {
-    if (!currentUser) return;
+  if (!currentUser) return;
 
-    let name = "";
+  let name = "";
+  const { data, error } = await db
+    .from("profiles")
+    .select("full_name")
+    .eq("id", currentUser.id)
+    .maybeSingle();
 
-    const { data, error } = await db
-        .from("profiles")
-        .select("full_name")
-        .eq("id", currentUser.id)
-        .maybeSingle();
+  if (!error && data?.full_name) name = data.full_name;
+  if (!name) name = currentUser.user_metadata?.full_name || currentUser.email || "";
 
-    if (!error && data?.full_name) {
-        name = data.full_name;
-    }
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  let initials = "AV";
+  if (parts.length >= 2) initials = parts[0][0] + parts[parts.length - 1][0];
+  else if (parts.length === 1) initials = parts[0].slice(0, 2);
 
-    if (!name) {
-        name =
-            currentUser.user_metadata?.full_name ||
-            currentUser.email ||
-            "";
-    }
-
-    const parts = name.trim().split(/\s+/).filter(Boolean);
-
-    let initials = "AV";
-
-    if (parts.length >= 2) {
-        initials = parts[0][0] + parts[parts.length - 1][0];
-    } else if (parts.length === 1) {
-        initials = parts[0].slice(0, 2);
-    }
-
-    profileMini.textContent = initials.toUpperCase();
+  profileMini.textContent = initials.toUpperCase();
 }
 
-/* ================================================
-   EMPTY / ERROR STATES
-================================================ */
-
+/* EMPTY / ERROR STATES */
 function showEmpty() {
-    notificationsContainer.innerHTML = `
-        <div class="empty">
-            <div class="empty-icon">♢</div>
-            <div class="empty-title">No notifications yet</div>
-            <div class="empty-text">
-                You're all caught up. New account updates will appear here.
-            </div>
-        </div>
-    `;
+  notificationsContainer.innerHTML = `
+    <div class="empty">
+      <div class="empty-icon">♢</div>
+      <div class="empty-title">No notifications yet</div>
+      <div class="empty-text">You're all caught up. New account updates will appear here.</div>
+    </div>`;
 }
 
 function showLoadError() {
-    notificationsContainer.innerHTML = `
-        <div class="empty">
-            <div class="empty-icon">!</div>
-            <div class="empty-title">Unable to load notifications</div>
-            <div class="empty-text">
-                Check your connection and try again. If the problem continues,
-                check your Supabase notifications table and access policies.
-            </div>
-            <button class="retry-btn" id="retryBtn" type="button">
-                Try Again
-            </button>
-        </div>
-    `;
-
-    $("retryBtn").addEventListener("click", loadNotifications);
+  notificationsContainer.innerHTML = `
+    <div class="empty">
+      <div class="empty-icon">!</div>
+      <div class="empty-title">Unable to load notifications</div>
+      <div class="empty-text">Check your connection and try again. If the problem continues, check your Supabase notifications table and access policies.</div>
+      <button class="retry-btn" id="retryBtn" type="button">Try Again</button>
+    </div>`;
+  $("retryBtn").addEventListener("click", loadNotifications);
 }
 
-/* ================================================
-   LOAD NOTIFICATIONS
-================================================ */
-
+/* LOAD NOTIFICATIONS */
 async function loadNotifications() {
-    if (!currentUser || loadingNotifications) return;
+  if (!currentUser || loadingNotifications) return;
+  loadingNotifications = true;
 
-    loadingNotifications = true;
+  notificationsContainer.innerHTML = '<div class="loading">Loading notifications…</div>';
+  markAllBtn.disabled = true;
 
-    notificationsContainer.innerHTML = `
-        <div class="loading">Loading notifications…</div>
-    `;
+  try {
+    const { data, error } = await db
+      .from("notifications")
+      .select("id,type,title,message,is_read,created_at")
+      .eq("user_id", currentUser.id)
+      .order("created_at", { ascending: false })
+      .limit(100);
 
-    markAllBtn.disabled = true;
+    if (error) throw error;
 
-    try {
-        const { data, error } = await db
-            .from("notifications")
-            .select("id,type,title,message,is_read,created_at")
-            .eq("user_id", currentUser.id)
-            .order("created_at", { ascending: false })
-            .limit(100);
-
-        if (error) throw error;
-
-        notifications = data || [];
-
-        renderNotifications();
-
-    } catch (error) {
-        console.error("Could not load notifications.");
-
-        notifications = [];
-        unreadCountElement.innerHTML = "Unread: <strong>—</strong>";
-
-        showLoadError();
-
-    } finally {
-        loadingNotifications = false;
-    }
-}
-
-/* ================================================
-   RENDER NOTIFICATIONS
-================================================ */
-
-function renderNotifications() {
-    const unreadCount = notifications.filter(
-        notification => notification.is_read === false
-    ).length;
-
-    unreadCountElement.innerHTML =
-        "Unread: <strong>" + unreadCount + "</strong>";
-
-    markAllBtn.disabled = unreadCount === 0 || updatingAll;
-
-    if (!notifications.length) {
-        showEmpty();
-        return;
-    }
-
-    notificationsContainer.innerHTML = `
-        <div class="notifications">
-            ${notifications.map(notification => {
-                const unread = notification.is_read === false;
-                const id = String(notification.id);
-
-                return `
-                    <article class="notification ${unread ? "unread" : ""}">
-                        <div class="notification-icon">
-                            ${escapeHtml(notificationIcon(notification.type))}
-                        </div>
-
-                        <div class="notification-content">
-                            <div class="notification-top">
-                                <div class="notification-title">
-                                    ${escapeHtml(notification.title || "Account update")}
-                                </div>
-
-                                <div class="notification-time">
-                                    ${escapeHtml(formatTime(notification.created_at))}
-                                </div>
-                            </div>
-
-                            <div class="notification-message">${escapeHtml(
-                                notification.message || ""
-                            )}</div>
-
-                            <div class="notification-actions">
-                                ${
-                                    unread
-                                    ? `
-                                        <button
-                                            class="read-btn"
-                                            type="button"
-                                            data-read-id="${escapeHtml(id)}"
-                                            ${updatingIds.has(id) ? "disabled" : ""}
-                                        >
-                                            ${updatingIds.has(id) ? "Updating…" : "Mark as read"}
-                                        </button>
-                                    `
-                                    : `
-                                        <span class="read-label">✓ Read</span>
-                                    `
-                                }
-                            </div>
-                        </div>
-                    </article>
-                `;
-            }).join("")}
-        </div>
-    `;
-
-    notificationsContainer
-        .querySelectorAll("[data-read-id]")
-        .forEach(button => {
-            button.addEventListener("click", () => {
-                markAsRead(button.dataset.readId);
-            });
-        });
-}
-
-/* ================================================
-   MARK ONE AS READ
-================================================ */
-
-async function markAsRead(id) {
-    if (!currentUser || updatingIds.has(String(id))) return;
-
-    const key = String(id);
-
-    const notification = notifications.find(
-        item => String(item.id) === key
-    );
-
-    if (!notification || notification.is_read === true) return;
-
-    updatingIds.add(key);
+    notifications = data || [];
     renderNotifications();
-
-    try {
-        const { data, error } = await db
-            .from("notifications")
-            .update({ is_read: true })
-            .eq("id", notification.id)
-            .eq("user_id", currentUser.id)
-            .eq("is_read", false)
-            .select("id,is_read");
-
-        if (error) throw error;
-
-        /*
-         * If RLS prevents the update, Supabase may return no rows
-         * instead of a clear error. Do not claim success then.
-         */
-        if (!data || data.length === 0) {
-            throw new Error("The notification was not updated. Please refresh.");
-        }
-
-        notification.is_read = true;
-
-        showToast("Notification marked as read.");
-
-    } catch (error) {
-        console.error("Notification update failed.");
-
-        showToast(error.message || "Unable to update notification.");
-
-    } finally {
-        updatingIds.delete(key);
-        renderNotifications();
-    }
+  } catch (error) {
+    console.error("Could not load notifications.");
+    notifications = [];
+    unreadCountElement.innerHTML = "Unread: <strong>—</strong>";
+    showLoadError();
+  } finally {
+    loadingNotifications = false;
+  }
 }
 
-/* ================================================
-   MARK ALL AS READ
-================================================ */
+/* RENDER NOTIFICATIONS */
+function renderNotifications() {
+  const unreadCount = notifications.filter(n => n.is_read === false).length;
+
+  unreadCountElement.innerHTML = "Unread: <strong>" + unreadCount + "</strong>";
+  markAllBtn.disabled = unreadCount === 0 || updatingAll;
+
+  if (!notifications.length) {
+    showEmpty();
+    return;
+  }
+
+  notificationsContainer.innerHTML = `
+    <div class="notifications">
+      ${notifications.map(notification => {
+        const unread = notification.is_read === false;
+        const id = String(notification.id);
+
+        return `
+          <article class="notification ${unread ? "unread" : ""}">
+            <div class="notification-icon">${escapeHtml(notificationIcon(notification.type))}</div>
+            <div class="notification-content">
+              <div class="notification-top">
+                <div class="notification-title">${escapeHtml(notification.title || "Account update")}</div>
+                <div class="notification-time">${escapeHtml(formatTime(notification.created_at))}</div>
+              </div>
+              <div class="notification-message">${escapeHtml(notification.message || "")}</div>
+              <div class="notification-actions">
+                ${unread
+                  ? `<button class="read-btn" type="button" data-read-id="${escapeHtml(id)}" ${updatingIds.has(id) ? "disabled" : ""}>${updatingIds.has(id) ? "Updating…" : "Mark as read"}</button>`
+                  : `<span class="read-label">✓ Read</span>`}
+              </div>
+            </div>
+          </article>`;
+      }).join("")}
+    </div>`;
+
+  notificationsContainer.querySelectorAll("[data-read-id]").forEach(button => {
+    button.addEventListener("click", () => markAsRead(button.dataset.readId));
+  });
+}
+
+/* MARK ONE AS READ */
+async function markAsRead(id) {
+  if (!currentUser || updatingIds.has(String(id))) return;
+
+  const key = String(id);
+  const notification = notifications.find(item => String(item.id) === key);
+  if (!notification || notification.is_read === true) return;
+
+  updatingIds.add(key);
+  renderNotifications();
+
+  try {
+    const { data, error } = await db
+      .from("notifications")
+      .update({ is_read: true })
+      .eq("id", notification.id)
+      .eq("user_id", currentUser.id)
+      .eq("is_read", false)
+      .select("id,is_read");
+
+    if (error) throw error;
+
+    /* If RLS blocks the update, Supabase may return no rows instead of an error. */
+    if (!data || data.length === 0) throw new Error("The notification was not updated. Please refresh.");
+
+    notification.is_read = true;
+    showToast("Notification marked as read.");
+  } catch (error) {
+    console.error("Notification update failed.");
+    showToast(error.message || "Unable to update notification.");
+  } finally {
+    updatingIds.delete(key);
+    renderNotifications();
+  }
+}
+
+/* MARK ALL AS READ */
+async function fetchAllNotifications() {
+  return db
+    .from("notifications")
+    .select("id,type,title,message,is_read,created_at")
+    .eq("user_id", currentUser.id)
+    .order("created_at", { ascending: false })
+    .limit(100);
+}
 
 markAllBtn.addEventListener("click", async () => {
-    if (!currentUser || updatingAll) return;
+  if (!currentUser || updatingAll) return;
+  if (!notifications.some(n => n.is_read === false)) return;
 
-    const unread = notifications.filter(
-        notification => notification.is_read === false
-    );
+  updatingAll = true;
+  markAllBtn.textContent = "Updating…";
+  renderNotifications();
 
-    if (!unread.length) return;
+  try {
+    const { error } = await db
+      .from("notifications")
+      .update({ is_read: true })
+      .eq("user_id", currentUser.id)
+      .eq("is_read", false);
 
-    updatingAll = true;
-    markAllBtn.textContent = "Updating…";
+    if (error) throw error;
+
+    /* Reload so the UI reflects the saved state. */
+    const { data, error: reloadError } = await fetchAllNotifications();
+    if (reloadError) throw reloadError;
+
+    notifications = data || [];
+    showToast("All notifications marked as read.");
+  } catch (error) {
+    console.error("Mark-all operation failed.");
+    showToast(error.message || "Unable to mark all notifications as read.");
+
+    try {
+      const { data, error: reloadError } = await fetchAllNotifications();
+      if (!reloadError) notifications = data || [];
+    } catch (_) {}
+  } finally {
+    updatingAll = false;
+    markAllBtn.textContent = "Mark all as read";
     renderNotifications();
-
-    try {
-        const { error } = await db
-            .from("notifications")
-            .update({ is_read: true })
-            .eq("user_id", currentUser.id)
-            .eq("is_read", false);
-
-        if (error) throw error;
-
-        /*
-         * Reload from the database so the interface reflects
-         * the saved state, rather than assuming every row updated.
-         */
-        const { data, error: reloadError } = await db
-            .from("notifications")
-            .select("id,type,title,message,is_read,created_at")
-            .eq("user_id", currentUser.id)
-            .order("created_at", { ascending: false })
-            .limit(100);
-
-        if (reloadError) throw reloadError;
-
-        notifications = data || [];
-
-        showToast("All notifications marked as read.");
-
-    } catch (error) {
-        console.error("Mark-all operation failed.");
-
-        showToast(
-            error.message || "Unable to mark all notifications as read."
-        );
-
-        /*
-         * Reload the current state instead of falsely marking
-         * the local notifications as read.
-         */
-        try {
-            const { data, error: reloadError } = await db
-                .from("notifications")
-                .select("id,type,title,message,is_read,created_at")
-                .eq("user_id", currentUser.id)
-                .order("created_at", { ascending: false })
-                .limit(100);
-
-            if (!reloadError) notifications = data || [];
-
-        } catch (_) {}
-
-    } finally {
-        updatingAll = false;
-        markAllBtn.textContent = "Mark all as read";
-        renderNotifications();
-    }
+  }
 });
 
-/* ================================================
-   LOGOUT
-================================================ */
-
+/* LOGOUT */
 logoutBtn.addEventListener("click", async event => {
-    event.preventDefault();
+  event.preventDefault();
+  logoutBtn.style.pointerEvents = "none";
 
-    logoutBtn.style.pointerEvents = "none";
-
-    try {
-        const { error } = await db.auth.signOut();
-
-        if (error) throw error;
-
-        location.replace("signin.html");
-
-    } catch (error) {
-        console.error("Logout failed.");
-
-        showToast("Unable to log out. Please try again.");
-        logoutBtn.style.pointerEvents = "";
-    }
+  try {
+    const { error } = await db.auth.signOut();
+    if (error) throw error;
+    location.replace("signin.html");
+  } catch (error) {
+    console.error("Logout failed.");
+    showToast("Unable to log out. Please try again.");
+    logoutBtn.style.pointerEvents = "";
+  }
 });
 
-/* ================================================
-   PROFILE BUTTON
-================================================ */
+/* PROFILE BUTTON */
+profileMini.addEventListener("click", () => { location.href = "profile.html"; });
 
-profileMini.addEventListener("click", () => {
-    location.href = "profile.html";
+/* AUTH STATE */
+db.auth.onAuthStateChange(event => {
+  if (event === "SIGNED_OUT") location.replace("signin.html");
 });
 
-/* ================================================
-   AUTH STATE
-================================================ */
-
-db.auth.onAuthStateChange((event) => {
-    if (event === "SIGNED_OUT") {
-        location.replace("signin.html");
-    }
-});
-
-/* ================================================
-   INITIALIZE
-================================================ */
-
+/* INITIALIZE */
 async function init() {
-    try {
-        const loggedIn = await loadUser();
+  try {
+    const loggedIn = await loadUser();
+    if (!loggedIn) return;
 
-        if (!loggedIn) return;
+    await Promise.all([loadProfile(), loadNotifications()]);
+  } catch (error) {
+    console.error("Notifications initialization failed.");
+    showToast(error.message || "Unable to open notifications.");
 
-        await Promise.all([
-            loadProfile(),
-            loadNotifications()
-        ]);
-
-    } catch (error) {
-        console.error("Notifications initialization failed.");
-
-        showToast(
-            error.message || "Unable to open notifications."
-        );
-
-        notificationsContainer.innerHTML = `
-            <div class="empty">
-                <div class="empty-icon">!</div>
-                <div class="empty-title">Unable to open notifications</div>
-                <div class="empty-text">
-                    Please sign in again or refresh the page.
-                </div>
-                <button
-                    class="retry-btn"
-                    type="button"
-                    onclick="location.reload()"
-                >
-                    Refresh Page
-                </button>
-            </div>
-        `;
-    }
+    notificationsContainer.innerHTML = `
+      <div class="empty">
+        <div class="empty-icon">!</div>
+        <div class="empty-title">Unable to open notifications</div>
+        <div class="empty-text">Please sign in again or refresh the page.</div>
+        <button class="retry-btn" type="button" onclick="location.reload()">Refresh Page</button>
+      </div>`;
+  }
 }
 
 init();
 </script>
-
 </body>
 </html>
