@@ -3,174 +3,166 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#07111f">
+<meta name="theme-color" content="#050b1a">
 <title>AITIVEST — Deposit</title>
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
-
 <style>
 :root{
-  --bg:#07111f;--bg2:#091626;--card:#0d1b2d;--card2:#112238;
-  --border:rgba(255,255,255,.08);--text:#f5f7fa;--muted:#9aa7b8;
-  --gold:#d9a441;--gold2:#f0c866;--green:#32c48d;--red:#ef6b73;
-  --blue:#5b8def;--purple:#a78bfa;--shadow:0 18px 50px rgba(0,0,0,.25);
+  --bg:#050b1a;--card:#0b1733;--line:#1c2c52;
+  --text:#e8edf7;--muted:#9aa7c0;
+  --gold:#f2b84b;--gold2:#ffd982;--gold3:#c98f1d;--cream:#f5e6b8;
+  --green:#22d37a;--red:#ef6b73;--blue:#2f8cff;
 }
-*{box-sizing:border-box;margin:0;padding:0}
-body{
-  min-height:100vh;
-  background:radial-gradient(circle at 90% 0%,rgba(217,164,65,.09),transparent 30%),linear-gradient(180deg,#07111f,#050c15);
-  color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-}
-button,input,select{font:inherit}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{min-height:100vh;background:#02050d;color:var(--text);font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;display:flex;justify-content:center}
+button,input,select{font:inherit;color:inherit}
 button{cursor:pointer}
 button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
-.app{width:100%;max-width:760px;min-height:100vh;margin:auto;padding-bottom:95px}
-.loading-screen{position:fixed;inset:0;background:#07111f;display:flex;align-items:center;justify-content:center;z-index:9999}
+[hidden]{display:none!important}
+
+/* Loading */
+.loading-screen{position:fixed;inset:0;background:#050b1a;display:flex;align-items:center;justify-content:center;z-index:9999}
 .loading-box{text-align:center}
-.brand-logo{display:flex;align-items:center;justify-content:center;gap:10px}
-.brand-mark{width:38px;height:38px;border:2px solid var(--gold);border-radius:12px 12px 12px 3px;display:flex;align-items:center;justify-content:center;color:var(--gold2);font-size:20px;font-weight:900;transform:rotate(-3deg)}
-.brand-name{font-size:22px;font-weight:900;letter-spacing:2px;white-space:nowrap}
-.brand-name span{color:var(--gold)}
-.loading-logo .brand-name{font-size:29px}
-.spinner{width:28px;height:28px;border:3px solid rgba(217,164,65,.18);border-top-color:var(--gold);border-radius:50%;margin:20px auto 0;animation:spin .8s linear infinite}
+.spinner{width:28px;height:28px;border:3px solid rgba(242,184,75,.18);border-top-color:var(--gold);border-radius:50%;margin:20px auto 0;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.topbar{height:68px;position:sticky;top:0;z-index:100;background:rgba(7,17,31,.96);backdrop-filter:blur(18px);border-bottom:1px solid var(--border)}
-.topbar-inner{height:100%;padding:0 18px;display:flex;align-items:center;justify-content:space-between;position:relative}
-.menu-btn{width:42px;height:42px;border:0;background:transparent;color:#fff;font-size:25px}
-.topbar .brand-logo{position:absolute;left:50%;transform:translateX(-50%)}
-.topbar .brand-mark{width:31px;height:31px;border-radius:9px 9px 9px 2px;font-size:16px}
-.topbar .brand-name{font-size:18px;letter-spacing:1.5px}
-.profile-initial{width:38px;height:38px;border-radius:50%;background:linear-gradient(145deg,#efc25e,#987021);color:#07111f;font-size:12px;font-weight:850;display:flex;align-items:center;justify-content:center}
+
+/* Brand */
+.brand-logo{display:flex;align-items:center;gap:9px}
+.brand-mark{width:30px;height:30px;border:2px solid var(--gold);border-radius:9px 9px 9px 2px;display:flex;align-items:center;justify-content:center;color:var(--gold2);font-size:16px;font-weight:900;transform:rotate(-3deg)}
+.brand-name{font-size:24px;font-weight:700;letter-spacing:2px;background:linear-gradient(180deg,#ffd982,#d89a24);-webkit-background-clip:text;background-clip:text;color:transparent}
+.loading-box .brand-logo{justify-content:center}
+.loading-box .brand-name{font-size:29px}
+
+.app{width:100%;max-width:480px;min-height:100vh;background:radial-gradient(120% 60% at 50% 0%,#0f2350 0%,var(--bg) 60%);padding:18px 16px 100px;position:relative}
+
+/* Header */
+.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
+.top-actions{display:flex;gap:14px;align-items:center}
+.bell{background:none;border:0;color:var(--gold);display:flex}
+.avatar{width:36px;height:36px;border-radius:50%;background:#16264d;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--gold2);font-size:12px;font-weight:800;cursor:pointer}
+.page-head{margin-bottom:16px}
+.page-head small{font-size:15px;color:#cfd8ec;display:block}
+.page-head h1{font-size:26px;font-weight:700;color:var(--gold)}
+
+/* Cards */
+.card{background:linear-gradient(180deg,rgba(18,34,72,.75),rgba(9,20,45,.9));border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px}
+.section-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+.section-title h2{font-size:15px;font-weight:700}
+.panel-intro{font-size:12px;line-height:1.8;color:var(--muted);margin-bottom:14px}
+.step-label{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:700;margin-bottom:8px}
+.step-number{width:30px;height:30px;border-radius:10px;background:rgba(242,184,75,.12);border:1px solid rgba(242,184,75,.3);display:grid;place-items:center;color:var(--gold);font-size:12px}
+
+/* Assets */
+.asset-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.asset-button{border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.04);min-width:0;padding:12px 6px 10px;display:flex;flex-direction:column;align-items:center;gap:7px;transition:border-color .15s}
+.asset-button:hover,.asset-button.active{border-color:var(--gold3);background:rgba(242,184,75,.08)}
+.coin-logo{width:36px;height:36px;object-fit:contain}
+.coin-symbol{font-size:12px;font-weight:800}
+.coin-name{font-size:10px;color:var(--muted);text-align:center;overflow-wrap:anywhere}
+.asset-button.unavailable{opacity:.55}
+.asset-step-note{color:var(--muted);font-size:11px;line-height:1.7;margin-top:12px}
+
+.step-panel{display:none}
+.step-panel.show{display:block;animation:appear .22s ease}
+@keyframes appear{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+
+/* Forms */
+.field{margin-top:15px}
+label{display:block;font-size:12px;font-weight:700;margin-bottom:8px;color:#dfe6f0}
+input,select{width:100%;background:rgba(5,11,26,.8);border:1px solid var(--line);border-radius:12px;padding:14px 13px;font-size:13px;outline:none}
+input:focus,select:focus{border-color:var(--gold3);box-shadow:0 0 0 3px rgba(242,184,75,.1)}
+.hint{font-size:11px;color:var(--muted);line-height:1.7;margin-top:7px}
+.primary-btn{width:100%;height:50px;border:0;border-radius:14px;background:linear-gradient(180deg,#f7c75a,#cf9420);color:#1a1200;font-size:15px;font-weight:700;margin-top:16px;box-shadow:0 4px 16px rgba(242,184,75,.3);transition:transform .1s}
+.primary-btn:active{transform:scale(.98)}
+.primary-btn:disabled{opacity:.55;cursor:not-allowed}
+.secondary-btn{border:1px solid var(--line);background:rgba(255,255,255,.05);padding:9px 12px;border-radius:11px;font-size:11px;font-weight:700}
+.back-btn{background:transparent;color:var(--gold);border:1.5px solid var(--gold3);height:50px;padding:0 14px;border-radius:14px;font-size:13px;font-weight:700}
+.button-row{display:flex;gap:10px;margin-top:15px}
+.button-row .back-btn{flex:0 0 auto}
+.button-row .primary-btn{flex:1;margin-top:0}
+
+.network-option{width:100%;padding:14px 13px;margin-top:9px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.04);display:flex;align-items:center;justify-content:space-between;gap:12px;text-align:left}
+.network-option:hover,.network-option.active{border-color:var(--gold3);background:rgba(242,184,75,.08)}
+.network-name{font-size:13px;font-weight:700}
+.network-caption{font-size:10px;color:var(--muted);margin-top:4px}
+.network-arrow{font-size:19px;color:var(--gold)}
+
+.address-box{border:1px solid rgba(242,184,75,.28);border-radius:14px;padding:14px;background:rgba(242,184,75,.04);margin-top:12px}
+.address-heading{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}
+.address-heading strong{font-size:12px}
+.network-pill{padding:6px 10px;border-radius:20px;background:rgba(242,184,75,.12);color:var(--gold);font-size:10px;font-weight:700}
+.address-value{font-size:12px;line-height:1.8;overflow-wrap:anywhere;word-break:break-word;color:var(--cream)}
+.copy-row{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:11px}
+.copy-btn{background:rgba(242,184,75,.1);border:1px solid rgba(242,184,75,.3);color:var(--gold);padding:9px 12px;border-radius:10px;font-size:11px;font-weight:700}
+.qr-box{width:174px;height:174px;margin:17px auto 9px;padding:10px;background:#fff;border-radius:13px;display:grid;place-items:center}
+.qr-box canvas{max-width:100%;height:auto!important}
+.qr-caption{text-align:center;color:var(--muted);font-size:10px;line-height:1.7}
+.memo-box{padding:12px;border:1px solid rgba(47,140,255,.35);background:rgba(47,140,255,.08);border-radius:12px;margin-top:12px}
+.memo-label{color:#9cc4ff;font-size:11px;font-weight:700;margin-bottom:7px}
+.notice{padding:13px;border:1px solid rgba(242,184,75,.22);background:rgba(242,184,75,.06);border-radius:12px;color:#d7c9a8;font-size:11px;line-height:1.8;margin-top:15px}
+.notice.danger{background:rgba(239,107,115,.07);border-color:rgba(239,107,115,.3);color:#ffb5ba}
+.message{display:none;padding:13px;border-radius:12px;font-size:12px;line-height:1.7;margin-top:14px;overflow-wrap:anywhere}
+.message.show{display:block}
+.message.success{background:rgba(34,211,122,.09);border:1px solid rgba(34,211,122,.28);color:#9cf0ce}
+.message.error{background:rgba(239,107,115,.09);border:1px solid rgba(239,107,115,.28);color:#ffb5ba}
+.message.info{background:rgba(47,140,255,.09);border:1px solid rgba(47,140,255,.28);color:#c1d5ff}
+
+/* History */
+.history-item{padding:14px 0;border-bottom:1px solid var(--line)}
+.history-item:first-child{padding-top:0}
+.history-item:last-child{border-bottom:0;padding-bottom:0}
+.history-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.history-amount{font-size:14px;font-weight:700;overflow-wrap:anywhere}
+.history-network{font-size:11px;color:var(--muted);margin-top:5px}
+.status{display:inline-flex;padding:6px 10px;border-radius:20px;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.3px;flex:none}
+.status.pending{color:#f3d18b;background:rgba(242,184,75,.13)}
+.status.confirmed,.status.approved,.status.completed,.status.credited{color:#8be7c0;background:rgba(34,211,122,.12)}
+.status.rejected,.status.failed,.status.cancelled{color:#ffabb0;background:rgba(239,107,115,.12)}
+.status.other{color:#b9ccf7;background:rgba(47,140,255,.12)}
+.history-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:9px;font-size:10px;color:var(--muted);overflow-wrap:anywhere}
+.empty-state{text-align:center;padding:20px 9px;color:var(--muted);font-size:12px;line-height:1.8}
+
+/* Bottom nav */
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;min-height:72px;padding-bottom:env(safe-area-inset-bottom);background:rgba(6,13,30,.96);backdrop-filter:blur(10px);border-top:1px solid var(--line);z-index:120;display:grid;grid-template-columns:repeat(5,1fr)}
+.bottom-link{background:none;border:0;color:#aab5cc;font-size:11px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px}
+.bottom-link.active{color:var(--gold);background:linear-gradient(180deg,rgba(242,184,75,.16),transparent)}
+.bottom-link.active svg{filter:drop-shadow(0 0 6px rgba(242,184,75,.7))}
+
+/* Drawer */
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:190;display:none}
 .overlay.show{display:block}
-.drawer{position:fixed;left:-320px;top:0;width:290px;max-width:86%;height:100vh;height:100dvh;background:#091625;border-right:1px solid var(--border);z-index:200;transition:left .25s ease;padding:22px 15px;overflow-y:auto}
+.drawer{position:fixed;left:-320px;top:0;width:290px;max-width:86%;height:100vh;height:100dvh;background:#081225;border-right:1px solid var(--line);z-index:200;transition:left .25s ease;padding:22px 15px;overflow-y:auto}
 .drawer.open{left:0}
-.drawer-head{display:flex;align-items:center;justify-content:space-between;padding:8px 7px 25px;border-bottom:1px solid var(--border)}
+.drawer-head{display:flex;align-items:center;justify-content:space-between;padding:8px 7px 25px;border-bottom:1px solid var(--line)}
 .drawer-head .brand-name{font-size:19px}
 .close-drawer{border:0;background:none;color:#fff;font-size:27px}
 .drawer-nav{padding-top:18px}
 .drawer-link{width:100%;border:0;background:transparent;color:#d7dce4;padding:14px 13px;border-radius:11px;display:flex;align-items:center;gap:13px;text-align:left;margin-bottom:4px}
-.drawer-link:hover,.drawer-link.active{background:rgba(217,164,65,.08);color:var(--gold2)}
+.drawer-link:hover,.drawer-link.active{background:rgba(242,184,75,.08);color:var(--gold2)}
 .drawer-icon{width:22px;text-align:center;color:var(--gold)}
 .drawer-link.logout{margin-top:15px;color:#ef8990}
-.content{padding:23px 18px 0}
-.greeting{margin-bottom:20px}
-.greeting small{color:var(--muted);font-size:13px}
-.greeting h1{margin-top:4px;font-size:24px;font-weight:760;overflow-wrap:anywhere}
-.section{margin-top:22px}
-.section-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
-.section-title h2{font-size:16px;font-weight:750}
-.section-title span{color:var(--muted);font-size:11px}
-.panel{background:linear-gradient(145deg,#102238,#0b1829);border:1px solid var(--border);border-radius:18px;padding:19px;box-shadow:var(--shadow)}
-.panel-intro{font-size:12px;line-height:1.8;color:var(--muted);margin-bottom:16px}
-.step-label{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:800;margin-bottom:8px}
-.step-number{width:30px;height:30px;border-radius:10px;background:rgba(217,164,65,.12);border:1px solid rgba(217,164,65,.25);display:grid;place-items:center;color:var(--gold2);font-size:12px}
-.asset-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
-.asset-button{border:1px solid var(--border);border-radius:14px;background:var(--card);color:white;min-width:0;padding:13px 7px;display:flex;flex-direction:column;align-items:center;gap:8px;transition:.2s}
-.asset-button:hover,.asset-button.active{border-color:var(--gold);background:rgba(217,164,65,.09)}
-.asset-button.active{box-shadow:inset 0 0 0 1px rgba(217,164,65,.15)}
-.coin-logo{width:37px;height:37px;object-fit:contain}
-.coin-symbol{font-size:12px;font-weight:850}
-.coin-name{font-size:10px;color:var(--muted);text-align:center;overflow-wrap:anywhere}
-.asset-button.unavailable{opacity:.55}
-.asset-button.unavailable .coin-symbol::after{content:"";display:block}
-.asset-step-note{color:var(--muted);font-size:11px;line-height:1.7;margin-top:13px}
-.step-panel{display:none}
-.step-panel.show{display:block;animation:appear .22s ease}
-@keyframes appear{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
-.field{margin-top:15px}
-label{display:block;font-size:12px;font-weight:750;margin-bottom:8px;color:#dfe6f0}
-input,select{width:100%;background:#071321;color:#fff;border:1px solid rgba(255,255,255,.11);border-radius:12px;padding:14px 13px;font-size:13px;outline:none}
-input:focus,select:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(217,164,65,.08)}
-select option{background:#0d1b2d;color:white}
-.hint{font-size:11px;color:var(--muted);line-height:1.7;margin-top:7px}
-.primary-btn{width:100%;padding:15px;border:0;border-radius:12px;background:linear-gradient(135deg,#d9a441,#f0c866);color:#17130a;font-size:13px;font-weight:900;margin-top:17px}
-.primary-btn:disabled{opacity:.55;cursor:not-allowed}
-.secondary-btn{border:1px solid var(--border);background:var(--card2);color:#fff;padding:11px 13px;border-radius:11px;font-size:11px;font-weight:800}
-.back-btn{background:transparent;color:var(--gold2);border:1px solid rgba(217,164,65,.25);padding:10px 13px;border-radius:11px;font-size:11px;font-weight:800}
-.button-row{display:flex;gap:9px;margin-top:15px}
-.button-row button{flex:1}
-.network-option{width:100%;padding:15px 13px;margin-top:9px;border-radius:13px;border:1px solid var(--border);background:var(--card);color:#fff;display:flex;align-items:center;justify-content:space-between;gap:12px;text-align:left}
-.network-option:hover,.network-option.active{border-color:var(--gold);background:rgba(217,164,65,.08)}
-.network-name{font-size:13px;font-weight:800}
-.network-caption{font-size:10px;color:var(--muted);margin-top:4px}
-.network-arrow{font-size:19px;color:var(--gold2)}
-.address-box{border:1px solid rgba(217,164,65,.22);border-radius:15px;padding:15px;background:rgba(217,164,65,.035);margin-top:14px}
-.address-heading{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}
-.address-heading strong{font-size:12px}
-.network-pill{padding:6px 9px;border-radius:20px;background:rgba(217,164,65,.12);color:var(--gold2);font-size:10px;font-weight:800}
-.address-value{font-size:12px;line-height:1.8;overflow-wrap:anywhere;word-break:break-word;color:#f8e6bd}
-.copy-row{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:11px}
-.copy-btn{background:rgba(217,164,65,.1);border:1px solid rgba(217,164,65,.28);color:var(--gold2);padding:9px 12px;border-radius:9px;font-size:11px;font-weight:800}
-.qr-box{width:174px;height:174px;margin:17px auto 9px;padding:10px;background:white;border-radius:13px;display:grid;place-items:center}
-.qr-box canvas{max-width:100%;height:auto!important}
-.qr-caption{text-align:center;color:var(--muted);font-size:10px;line-height:1.7}
-.memo-box{padding:12px;border:1px solid rgba(91,141,239,.24);background:rgba(91,141,239,.07);border-radius:12px;margin-top:12px}
-.memo-label{color:#a9c5ff;font-size:11px;font-weight:850;margin-bottom:7px}
-.notice{padding:13px;border:1px solid rgba(217,164,65,.18);background:rgba(217,164,65,.055);border-radius:12px;color:#d7c9a8;font-size:11px;line-height:1.8;margin-top:15px}
-.notice.danger{background:rgba(239,107,115,.06);border-color:rgba(239,107,115,.2);color:#ffb5ba}
-.message{display:none;padding:13px;border-radius:12px;font-size:12px;line-height:1.7;margin-top:14px;overflow-wrap:anywhere}
-.message.show{display:block}
-.message.success{background:rgba(50,196,141,.09);border:1px solid rgba(50,196,141,.22);color:#9cf0ce}
-.message.error{background:rgba(239,107,115,.09);border:1px solid rgba(239,107,115,.22);color:#ffb5ba}
-.message.info{background:rgba(91,141,239,.09);border:1px solid rgba(91,141,239,.22);color:#c1d5ff}
-.history-item{padding:15px 0;border-bottom:1px solid var(--border)}
-.history-item:last-child{border-bottom:0}
-.history-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
-.history-amount{font-size:14px;font-weight:850;overflow-wrap:anywhere}
-.history-network{font-size:11px;color:var(--muted);margin-top:5px}
-.status{display:inline-flex;padding:6px 9px;border-radius:20px;font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.3px}
-.status.pending{color:#f3d18b;background:rgba(217,164,65,.12)}
-.status.confirmed,.status.approved,.status.completed,.status.credited{color:#8be7c0;background:rgba(50,196,141,.11)}
-.status.rejected,.status.failed,.status.cancelled{color:#ffabb0;background:rgba(239,107,115,.11)}
-.status.other{color:#b9ccf7;background:rgba(91,141,239,.11)}
-.history-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:9px;font-size:10px;color:var(--muted)}
-.empty-state{text-align:center;padding:23px 9px;color:var(--muted);font-size:12px;line-height:1.8}
-.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:760px;min-height:70px;padding-bottom:env(safe-area-inset-bottom);background:rgba(8,18,31,.98);backdrop-filter:blur(18px);border-top:1px solid var(--border);z-index:120;display:grid;grid-template-columns:repeat(4,1fr)}
-.bottom-link{border:0;background:transparent;color:#7e8998;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;font-size:10px}
-.bottom-link.active{color:var(--gold2)}
-.bottom-icon{font-size:20px}
-.toast{position:fixed;left:50%;bottom:85px;transform:translateX(-50%) translateY(15px);background:#142337;border:1px solid var(--border);color:#fff;padding:12px 16px;border-radius:10px;font-size:12px;opacity:0;pointer-events:none;transition:.25s;z-index:500;width:max-content;max-width:90%;text-align:center}
+
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%) translateY(15px);background:#12244c;border:1px solid var(--gold3);color:#fff;padding:12px 16px;border-radius:12px;font-size:12px;opacity:0;pointer-events:none;transition:.25s;z-index:500;width:max-content;max-width:90%;text-align:center}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-@media(min-width:560px){.asset-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
-@media(max-width:400px){.content{padding-left:14px;padding-right:14px}.topbar .brand-name{font-size:15px}.topbar .brand-mark{width:27px;height:27px}.asset-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+@media(min-width:420px){.asset-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
 </head>
-
 <body>
 
 <div id="loadingScreen" class="loading-screen">
   <div class="loading-box">
-    <div class="brand-logo loading-logo">
-      <div class="brand-mark">A</div>
-      <div class="brand-name">AITI<span>VEST</span></div>
-    </div>
+    <div class="brand-logo"><div class="brand-mark">A</div><div class="brand-name">AITIVEST</div></div>
     <div class="spinner"></div>
   </div>
 </div>
 
-<div class="app">
-
-<header class="topbar">
-  <div class="topbar-inner">
-    <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
-    <div class="brand-logo">
-      <div class="brand-mark">A</div>
-      <div class="brand-name">AITI<span>VEST</span></div>
-    </div>
-    <div class="profile-initial" id="profileInitial">AV</div>
-  </div>
-</header>
-
 <div class="overlay" id="overlay"></div>
-
 <aside class="drawer" id="drawer" aria-label="Main navigation">
   <div class="drawer-head">
-    <div class="brand-logo">
-      <div class="brand-mark">A</div>
-      <div class="brand-name">AITI<span>VEST</span></div>
-    </div>
+    <div class="brand-logo"><div class="brand-mark">A</div><div class="brand-name">AITIVEST</div></div>
     <button class="close-drawer" id="closeDrawer" aria-label="Close menu">×</button>
   </div>
   <nav class="drawer-nav">
@@ -180,33 +172,39 @@ select option{background:#0d1b2d;color:white}
     <button class="drawer-link" onclick="go('transactions.html')"><span class="drawer-icon">≡</span>Transactions</button>
     <button class="drawer-link" onclick="go('referrals.html')"><span class="drawer-icon">♧</span>Referrals</button>
     <button class="drawer-link" onclick="go('profile.html')"><span class="drawer-icon">○</span>Profile</button>
+    <button class="drawer-link" onclick="go('security.html')"><span class="drawer-icon">♙</span>Security Settings</button>
     <button class="drawer-link" onclick="go('support.html')"><span class="drawer-icon">?</span>Support</button>
     <button class="drawer-link" onclick="go('notifications.html')"><span class="drawer-icon">♢</span>Notifications</button>
     <button class="drawer-link logout" id="logoutBtn"><span class="drawer-icon">↪</span>Logout</button>
   </nav>
 </aside>
 
-<main class="content">
+<div class="app">
+  <header class="top">
+    <div class="brand-logo" aria-label="AITIVEST"><div class="brand-mark">A</div><div class="brand-name">AITIVEST</div></div>
+    <div class="top-actions">
+      <button class="bell" aria-label="Notifications" onclick="go('notifications.html')">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+      </button>
+      <div class="avatar" id="profileInitial" role="button" aria-label="Profile" onclick="go('profile.html')">AV</div>
+    </div>
+  </header>
 
-  <div class="greeting">
+  <div class="page-head">
     <small id="greetingText">Account funding</small>
     <h1>Deposit Funds</h1>
   </div>
 
-  <section class="panel">
-    <div class="section-title">
-      <h2>Make a Deposit</h2>
-      <span>Secure deposit</span>
-    </div>
+  <section class="card">
+    <div class="section-title"><h2>Make a Deposit</h2></div>
     <p class="panel-intro">Choose your cryptocurrency, select one of its available networks, then view the correct address or scan its QR code.</p>
-
     <div class="step-label"><span class="step-number">01</span> Choose cryptocurrency</div>
     <div class="asset-grid" id="assetGrid"></div>
     <div class="asset-step-note">Tap a coin logo to continue to its available deposit networks.</div>
   </section>
 
-  <section class="section step-panel" id="networkPanel">
-    <div class="panel">
+  <section class="step-panel" id="networkPanel">
+    <div class="card">
       <div class="step-label"><span class="step-number">02</span> Choose network</div>
       <p class="panel-intro" id="networkIntro">Select the network you will use to send your funds.</p>
       <div id="networkList"></div>
@@ -215,8 +213,8 @@ select option{background:#0d1b2d;color:white}
     </div>
   </section>
 
-  <section class="section step-panel" id="addressPanel">
-    <div class="panel">
+  <section class="step-panel" id="addressPanel">
+    <div class="card">
       <div class="step-label"><span class="step-number">03</span> Deposit address</div>
       <p class="panel-intro">Send only the selected asset over the selected network. Verify the details before transferring.</p>
 
@@ -226,17 +224,12 @@ select option{background:#0d1b2d;color:white}
           <span class="network-pill" id="networkPill">NETWORK</span>
         </div>
         <div class="address-value" id="depositAddress"></div>
-
         <div class="copy-row">
           <span class="hint" style="margin:0">Wallet address</span>
           <button type="button" class="copy-btn" id="copyAddressBtn">Copy address</button>
         </div>
-
-        <div class="qr-box" id="qrBox">
-          <canvas id="qrCanvas" aria-label="Deposit QR code"></canvas>
-        </div>
+        <div class="qr-box" id="qrBox"><canvas id="qrCanvas" aria-label="Deposit QR code"></canvas></div>
         <div class="qr-caption">Open your sending wallet and scan this QR code if supported.</div>
-
         <div class="memo-box" id="memoBox" hidden>
           <div class="memo-label">MEMO / DESTINATION TAG</div>
           <div class="address-value" id="memoValue"></div>
@@ -250,14 +243,14 @@ select option{background:#0d1b2d;color:white}
       <div class="notice danger"><strong>Important:</strong> Sending the wrong asset or using the wrong network may result in permanent loss. Check any minimum deposit requirements. Never share your wallet recovery phrase or private keys.</div>
 
       <div class="button-row">
-        <button type="button" class="back-btn" id="backToNetworks">← Change network</button>
-        <button type="button" class="primary-btn" id="continueToForm" style="margin-top:0">Continue →</button>
+        <button type="button" class="back-btn" id="backToNetworks">← Network</button>
+        <button type="button" class="primary-btn" id="continueToForm">Continue →</button>
       </div>
     </div>
   </section>
 
-  <section class="section step-panel" id="formPanel">
-    <div class="panel">
+  <section class="step-panel" id="formPanel">
+    <div class="card">
       <div class="step-label"><span class="step-number">04</span> Transaction details</div>
       <p class="panel-intro">After sending the crypto, enter the amount sent and the transaction hash from your wallet.</p>
 
@@ -275,7 +268,6 @@ select option{background:#0d1b2d;color:white}
           <input id="amountInput" type="number" min="0" step="any" inputmode="decimal" placeholder="Enter amount" required>
           <div class="hint">Enter the amount you actually sent in the selected cryptocurrency.</div>
         </div>
-
         <div class="field">
           <label for="txHashInput">Transaction hash / TXID</label>
           <input id="txHashInput" type="text" minlength="8" maxlength="200" autocomplete="off" placeholder="Paste transaction hash" required>
@@ -291,26 +283,32 @@ select option{background:#0d1b2d;color:white}
     </div>
   </section>
 
-  <section class="section">
+  <section class="card" style="margin-top:22px">
     <div class="section-title">
       <h2>Deposit History</h2>
       <button type="button" class="secondary-btn" id="refreshHistoryBtn">Refresh ↻</button>
     </div>
-    <div class="panel" id="depositHistory">
-      <div class="empty-state">Loading deposit history...</div>
-    </div>
+    <div id="depositHistory"><div class="empty-state">Loading deposit history...</div></div>
   </section>
-
-</main>
+</div>
 
 <nav class="bottom-nav" aria-label="Bottom navigation">
-  <button class="bottom-link" onclick="go('dashboard.html')"><span class="bottom-icon">⌂</span><span>Portfolio</span></button>
-  <button class="bottom-link active" onclick="go('deposit.html')"><span class="bottom-icon">＋</span><span>Deposit</span></button>
-  <button class="bottom-link" onclick="go('transactions.html')"><span class="bottom-icon">≡</span><span>History</span></button>
-  <button class="bottom-link" onclick="go('profile.html')"><span class="bottom-icon">○</span><span>Account</span></button>
+  <button class="bottom-link" onclick="go('dashboard.html')">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l9 8h-3v9h-5v-6h-2v6H6v-9H3z"/></svg>Home
+  </button>
+  <button class="bottom-link" onclick="go('transactions.html')">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 13h18"/></svg>Portfolio
+  </button>
+  <button class="bottom-link active" onclick="go('deposit.html')">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="5"/><path d="M12 6v6M9.5 9h5"/><path d="M4 20c2-2 5-3 8-3s6 1 8 3"/></svg>Deposit
+  </button>
+  <button class="bottom-link" onclick="go('withdraw.html')">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h13l-3-3M20 16H7l3 3"/></svg>Withdraw
+  </button>
+  <button class="bottom-link" id="menuBtn" aria-label="Open menu">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>More
+  </button>
 </nav>
-
-</div>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
@@ -324,30 +322,12 @@ const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const LOGO_BASE = "https://cdn.jsdelivr.net/gh/madenix/Crypto-logo-cdn@main/Logos/";
 
 const assets = [
-  ["BTC","Bitcoin","BTC.svg"],
-  ["ETH","Ethereum","ETH.svg"],
-  ["USDT","Tether","USDT.svg"],
-  ["USDC","USD Coin","USDC.svg"],
-  ["BNB","BNB","BNB.svg"],
-  ["SOL","Solana","SOL.svg"],
-  ["XRP","XRP","XRP.svg"],
-  ["TON","Toncoin","TON.svg"],
-  ["DOGE","Dogecoin","DOGE.svg"],
-  ["ADA","Cardano","ADA.svg"],
-  ["TRX","TRON","TRON.svg"],
-  ["LTC","Litecoin","LTC.svg"],
-  ["AVAX","Avalanche","AVAX.svg"],
-  ["DOT","Polkadot","DOT.svg"],
-  ["LINK","Chainlink","LINK.svg"],
-  ["POL","Polygon","MATIC.svg"],
-  ["SHIB","Shiba Inu","SHIB.svg"],
-  ["BCH","Bitcoin Cash","BCH.svg"],
-  ["XLM","Stellar","XLM.svg"],
-  ["ATOM","Cosmos","ATOM.svg"],
-  ["NEAR","NEAR Protocol","NEAR.svg"],
-  ["APT","Aptos","APT.svg"],
-  ["ARB","Arbitrum","ARB.svg"],
-  ["OP","Optimism","OP.svg"]
+  ["BTC","Bitcoin","BTC.svg"],["ETH","Ethereum","ETH.svg"],["USDT","Tether","USDT.svg"],["USDC","USD Coin","USDC.svg"],
+  ["BNB","BNB","BNB.svg"],["SOL","Solana","SOL.svg"],["XRP","XRP","XRP.svg"],["TON","Toncoin","TON.svg"],
+  ["DOGE","Dogecoin","DOGE.svg"],["ADA","Cardano","ADA.svg"],["TRX","TRON","TRON.svg"],["LTC","Litecoin","LTC.svg"],
+  ["AVAX","Avalanche","AVAX.svg"],["DOT","Polkadot","DOT.svg"],["LINK","Chainlink","LINK.svg"],["POL","Polygon","MATIC.svg"],
+  ["SHIB","Shiba Inu","SHIB.svg"],["BCH","Bitcoin Cash","BCH.svg"],["XLM","Stellar","XLM.svg"],["ATOM","Cosmos","ATOM.svg"],
+  ["NEAR","NEAR Protocol","NEAR.svg"],["APT","Aptos","APT.svg"],["ARB","Arbitrum","ARB.svg"],["OP","Optimism","OP.svg"]
 ];
 
 const $ = id => document.getElementById(id);
@@ -399,28 +379,15 @@ function clearMessage(id){
   el.className = "message";
 }
 
-function hideLoading(){
-  $("loadingScreen").style.display = "none";
-}
+function hideLoading(){ $("loadingScreen").style.display = "none"; }
 
-/* EXACT DASHBOARD DRAWER BEHAVIOUR */
-
-function openDrawer(){
-  $("drawer").classList.add("open");
-  $("overlay").classList.add("show");
-}
-function closeDrawer(){
-  $("drawer").classList.remove("open");
-  $("overlay").classList.remove("show");
-}
-
+/* DRAWER */
+function openDrawer(){ $("drawer").classList.add("open"); $("overlay").classList.add("show"); }
+function closeDrawer(){ $("drawer").classList.remove("open"); $("overlay").classList.remove("show"); }
 $("menuBtn").addEventListener("click",openDrawer);
 $("closeDrawer").addEventListener("click",closeDrawer);
 $("overlay").addEventListener("click",closeDrawer);
-
-document.addEventListener("keydown",e=>{
-  if(e.key === "Escape") closeDrawer();
-});
+document.addEventListener("keydown",e=>{ if(e.key === "Escape") closeDrawer(); });
 
 $("logoutBtn").addEventListener("click",async()=>{
   const {error} = await db.auth.signOut();
@@ -428,14 +395,12 @@ $("logoutBtn").addEventListener("click",async()=>{
   location.replace("signin.html");
 });
 
-/* CRYPTO COIN SELECTION */
-
+/* COIN SELECTION */
 function renderAssets(){
   $("assetGrid").innerHTML = assets.map(([symbol,name,logo])=>{
     const available = depositAddresses.some(a=>
       String(a.asset || "").toUpperCase() === symbol && a.is_active === true
     );
-
     return `
       <button type="button" class="asset-button ${available ? "" : "unavailable"}"
         data-asset="${symbol}" aria-label="Choose ${name}">
@@ -455,7 +420,6 @@ function showStep(step){
   ["networkPanel","addressPanel","formPanel"].forEach(id=>{
     $(id).classList.toggle("show",id === step);
   });
-
   const target = step ? $(step) : $("assetGrid");
   if(target){
     setTimeout(()=>target.scrollIntoView({behavior:"smooth",block:"start"}),40);
@@ -500,7 +464,6 @@ function selectAsset(symbol){
       const caption = document.createElement("div");
       caption.className = "network-caption";
       caption.textContent = "Tap to view deposit address and QR code";
-
       left.append(name,caption);
 
       const arrow = document.createElement("span");
@@ -518,17 +481,14 @@ function selectAsset(symbol){
 
 function selectNetwork(address,button){
   selectedAddress = address;
-
   document.querySelectorAll(".network-option").forEach(item=>
     item.classList.toggle("active",item === button)
   );
-
   renderAddress();
   showStep("addressPanel");
 }
 
 /* ADDRESS AND QR */
-
 function renderAddress(){
   const address = selectedAddress;
   if(!address) return;
@@ -555,7 +515,7 @@ function renderAddress(){
         size:154,
         level:"H",
         background:"#ffffff",
-        foreground:"#07111f"
+        foreground:"#050b1a"
       });
     }catch(error){
       console.error("QR generation failed:",error);
@@ -572,7 +532,6 @@ function renderAddress(){
 
 async function copyText(value,label){
   if(!value){toast("Nothing to copy.");return;}
-
   try{
     if(navigator.clipboard && window.isSecureContext){
       await navigator.clipboard.writeText(value);
@@ -593,42 +552,24 @@ async function copyText(value,label){
   }
 }
 
-$("copyAddressBtn").addEventListener("click",()=>{
-  if(selectedAddress) copyText(selectedAddress.address,"Address");
-});
-
-$("copyMemoBtn").addEventListener("click",()=>{
-  if(selectedAddress) copyText(String(selectedAddress.memo_tag ?? ""),"Memo/tag");
-});
+$("copyAddressBtn").addEventListener("click",()=>{ if(selectedAddress) copyText(selectedAddress.address,"Address"); });
+$("copyMemoBtn").addEventListener("click",()=>{ if(selectedAddress) copyText(String(selectedAddress.memo_tag ?? ""),"Memo/tag"); });
 
 /* STEP NAVIGATION */
-
-$("backToCoins").addEventListener("click",()=>{
-  showStep(null);
-});
-
-$("backToNetworks").addEventListener("click",()=>{
-  showStep("networkPanel");
-});
-
+$("backToCoins").addEventListener("click",()=>showStep(null));
+$("backToNetworks").addEventListener("click",()=>showStep("networkPanel"));
 $("continueToForm").addEventListener("click",()=>{
   if(!selectedAddress || !selectedAddress.address){
     toast("This network has no deposit address configured.");
     return;
   }
-
   showStep("formPanel");
 });
-
-$("backToAddress").addEventListener("click",()=>{
-  showStep("addressPanel");
-});
+$("backToAddress").addEventListener("click",()=>showStep("addressPanel"));
 
 /* DEPOSIT HISTORY */
-
 function statusClass(status){
   const s = String(status || "").toLowerCase();
-
   if(["confirmed","approved","completed","credited","success"].includes(s)) return s === "confirmed" ? "confirmed" : "completed";
   if(["rejected","failed","cancelled","canceled"].includes(s)) return s === "cancelled" || s === "canceled" ? "cancelled" : "rejected";
   if(["pending","under_review","processing","awaiting_confirmation"].includes(s)) return "pending";
@@ -639,10 +580,7 @@ function formatDate(value){
   if(!value) return "Date unavailable";
   const d = new Date(value);
   if(Number.isNaN(d.getTime())) return "Date unavailable";
-  return d.toLocaleString(undefined,{
-    year:"numeric",month:"short",day:"numeric",
-    hour:"2-digit",minute:"2-digit"
-  });
+  return d.toLocaleString(undefined,{year:"numeric",month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"});
 }
 
 async function loadHistory(){
@@ -692,8 +630,7 @@ async function loadHistory(){
 
 $("refreshHistoryBtn").addEventListener("click",loadHistory);
 
-/* SUBMIT DEPOSIT REQUEST — EXISTING RPC */
-
+/* SUBMIT DEPOSIT REQUEST */
 $("depositForm").addEventListener("submit",async event=>{
   event.preventDefault();
   clearMessage("formMessage");
@@ -712,7 +649,6 @@ $("depositForm").addEventListener("submit",async event=>{
     showMessage("formMessage","Enter an amount greater than zero.","error");
     return;
   }
-
   if(txHash.length < 8 || txHash.length > 200){
     showMessage("formMessage","Enter a transaction hash between 8 and 200 characters.","error");
     return;
@@ -729,26 +665,15 @@ $("depositForm").addEventListener("submit",async event=>{
       p_amount:amount,
       p_tx_hash:txHash
     });
-
     if(error) throw error;
 
-    showMessage(
-      "formMessage",
-      "Your deposit request has been submitted successfully. The transaction will be reviewed for confirmation.",
-      "success"
-    );
-
+    showMessage("formMessage","Your deposit request has been submitted successfully. The transaction will be reviewed for confirmation.","success");
     $("amountInput").value = "";
     $("txHashInput").value = "";
-
     await loadHistory();
   }catch(error){
     console.error("Deposit submission error:",error);
-    showMessage(
-      "formMessage",
-      error.message || "Unable to submit the deposit request. Please check the details and try again.",
-      "error"
-    );
+    showMessage("formMessage",error.message || "Unable to submit the deposit request. Please check the details and try again.","error");
   }finally{
     submitting = false;
     button.disabled = false;
@@ -756,16 +681,13 @@ $("depositForm").addEventListener("submit",async event=>{
   }
 });
 
-/* LOAD ACCOUNT AND DEPOSIT ADDRESSES */
-
+/* INITIALIZE */
 async function initialize(){
   try{
     const {data:sessionData,error:sessionError} = await db.auth.getSession();
-
     if(sessionError) throw sessionError;
 
     currentUser = sessionData?.session?.user;
-
     if(!currentUser){
       location.replace("signin.html");
       return;
@@ -776,7 +698,6 @@ async function initialize(){
       .select("full_name")
       .eq("id",currentUser.id)
       .maybeSingle();
-
     if(profileError) console.warn("Profile lookup:",profileError);
 
     const name = profile?.full_name || currentUser.user_metadata?.full_name || "";
@@ -791,14 +712,13 @@ async function initialize(){
     if(addressError){
       console.error("Deposit address loading error:",addressError);
       depositAddresses = [];
-      showMessage("networkMessage","Unable to load your deposit networks. Please contact support if this continues.","error");
+      toast("Unable to load your deposit networks. Contact support if this continues.");
     }else{
       depositAddresses = addresses || [];
     }
 
     renderAssets();
     await loadHistory();
-
   }catch(error){
     console.error("Deposit initialization error:",error);
     toast("Unable to load the deposit page. Please refresh.");
