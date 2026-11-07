@@ -3,164 +3,155 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#07111f">
+<meta name="theme-color" content="#050b1a">
 <title>AITIVEST — Identity Verification</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{
-  --bg:#07111f;--card:#0d1b2d;--card2:#112238;
-  --border:rgba(255,255,255,.08);--text:#f5f7fa;--muted:#9aa7b8;--hint:#6b7a90;
-  --gold:#d9a441;--gold2:#f0c866;--green:#32c48d;--red:#ef6b73;--blue:#5b8def;
-  --shadow:0 18px 50px rgba(0,0,0,.25);
+  --bg:#050b1a;--card:#0b1733;--line:#1c2c52;
+  --text:#e8edf7;--muted:#9aa7c0;--hint:#6b7a90;
+  --gold:#f2b84b;--gold2:#ffd982;--gold3:#c98f1d;
+  --green:#22d37a;--red:#ef6b73;--blue:#2f8cff;
 }
-*{box-sizing:border-box;margin:0;padding:0}
-body{
-  min-height:100vh;
-  background:radial-gradient(circle at 90% 0%,rgba(217,164,65,.09),transparent 30%),linear-gradient(180deg,#07111f,#050c15);
-  color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{min-height:100vh;background:#02050d;color:var(--text);font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;display:flex;justify-content:center}
 button,input,select{font:inherit;color:inherit}
 button{cursor:pointer}
 a{color:inherit;text-decoration:none}
 button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
-.app{width:100%;max-width:760px;min-height:100vh;margin:auto;padding-bottom:95px}
 .hidden{display:none!important}
 
-/* ---------- Shared shell (same as dashboard / withdraw) ---------- */
-.loading-screen{position:fixed;inset:0;background:#07111f;display:flex;align-items:center;justify-content:center;z-index:9999}
+/* Loading */
+.loading-screen{position:fixed;inset:0;background:#050b1a;display:flex;align-items:center;justify-content:center;z-index:9999}
 .loading-box{text-align:center}
-.brand-logo{display:flex;align-items:center;justify-content:center;gap:10px}
-.brand-mark{width:38px;height:38px;border:2px solid var(--gold);border-radius:12px 12px 12px 3px;display:flex;align-items:center;justify-content:center;color:var(--gold2);font-size:20px;font-weight:900;transform:rotate(-3deg)}
-.brand-name{font-size:22px;font-weight:900;letter-spacing:2px;white-space:nowrap}
-.brand-name span{color:var(--gold)}
-.loading-logo .brand-name{font-size:29px}
-.spinner{width:28px;height:28px;border:3px solid rgba(217,164,65,.18);border-top-color:var(--gold);border-radius:50%;margin:20px auto 0;animation:spin .8s linear infinite}
+.spinner{width:28px;height:28px;border:3px solid rgba(242,184,75,.18);border-top-color:var(--gold);border-radius:50%;margin:20px auto 0;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.topbar{height:68px;position:sticky;top:0;z-index:100;background:rgba(7,17,31,.96);backdrop-filter:blur(18px);border-bottom:1px solid var(--border)}
-.topbar-inner{height:100%;padding:0 18px;display:flex;align-items:center;justify-content:space-between;position:relative}
-.menu-btn{width:42px;height:42px;border:0;background:transparent;color:#fff;font-size:25px}
-.topbar .brand-logo{position:absolute;left:50%;transform:translateX(-50%)}
-.topbar .brand-mark{width:31px;height:31px;border-radius:9px 9px 9px 2px;font-size:16px}
-.topbar .brand-name{font-size:18px;letter-spacing:1.5px}
-.profile-initial{width:38px;height:38px;border-radius:50%;background:linear-gradient(145deg,#efc25e,#987021);color:#07111f;font-size:12px;font-weight:850;display:flex;align-items:center;justify-content:center}
+
+/* Brand */
+.brand-logo{display:flex;align-items:center;gap:9px}
+.brand-mark{width:30px;height:30px;border:2px solid var(--gold);border-radius:9px 9px 9px 2px;display:flex;align-items:center;justify-content:center;color:var(--gold2);font-size:16px;font-weight:900;transform:rotate(-3deg)}
+.brand-name{font-size:24px;font-weight:700;letter-spacing:2px;background:linear-gradient(180deg,#ffd982,#d89a24);-webkit-background-clip:text;background-clip:text;color:transparent}
+.loading-box .brand-logo{justify-content:center}
+.loading-box .brand-name{font-size:29px}
+
+.app{width:100%;max-width:480px;min-height:100vh;background:radial-gradient(120% 60% at 50% 0%,#0f2350 0%,var(--bg) 60%);padding:18px 16px 100px;position:relative}
+
+/* Header */
+.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
+.top-actions{display:flex;gap:14px;align-items:center}
+.bell{background:none;border:0;color:var(--gold);display:flex}
+.avatar{width:36px;height:36px;border-radius:50%;background:#16264d;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--gold2);font-size:12px;font-weight:800;cursor:pointer;overflow:hidden}
+.avatar img{width:100%;height:100%;object-fit:cover;display:block}
+
+.page-head{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.back-btn{width:38px;height:38px;border:1px solid var(--line);border-radius:50%;background:rgba(255,255,255,.05);color:var(--gold);display:flex;align-items:center;justify-content:center;flex:none}
+.page-head small{font-size:13px;color:#cfd8ec;display:block}
+.page-head h1{font-size:24px;font-weight:700;color:var(--gold);line-height:1.2}
+.subtitle{color:var(--muted);font-size:12.5px;line-height:1.7;margin-bottom:16px}
+
+/* Cards */
+.card{background:linear-gradient(180deg,rgba(18,34,72,.75),rgba(9,20,45,.9));border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px}
+.card-title{font-size:15px;font-weight:700;margin-bottom:5px}
+.card-subtitle{color:var(--muted);font-size:12px;margin-bottom:16px;line-height:1.6}
+
+/* Status */
+.status-card{border-color:var(--blue);background:linear-gradient(135deg,rgba(18,60,130,.7),rgba(8,22,56,.9));box-shadow:0 0 16px rgba(47,140,255,.2)}
+.status-row{display:flex;align-items:center;gap:14px}
+.status-icon{width:46px;height:46px;flex:none;border-radius:50%;border:2px solid var(--blue);display:grid;place-items:center;color:var(--blue);font-size:20px;font-weight:700}
+.status-label{font-weight:700;font-size:15px}
+.status-description{color:#c3d3f0;font-size:12px;margin-top:3px;line-height:1.6}
+.badge{display:inline-flex;align-items:center;padding:5px 10px;border-radius:20px;font-size:10px;font-weight:800;letter-spacing:.6px;margin-top:8px;text-transform:uppercase}
+.badge.pending{color:#f3d18b;background:rgba(242,184,75,.15)}
+.badge.approved{color:#8be7c0;background:rgba(34,211,122,.14)}
+.badge.rejected{color:#ffabb0;background:rgba(239,107,115,.14)}
+.badge.unknown{color:#b9ccf7;background:rgba(47,140,255,.14)}
+.rejection-box{margin-top:14px;padding:13px;border-radius:12px;background:rgba(239,107,115,.08);border:1px solid rgba(239,107,115,.3);color:#ffb5ba;font-size:12px;line-height:1.6;overflow-wrap:anywhere}
+
+/* Notices */
+.notice{padding:13px;border-radius:14px;display:flex;gap:11px;align-items:flex-start;margin-bottom:14px;border:1px solid rgba(242,184,75,.25);background:rgba(242,184,75,.06);color:#d7c9a8;font-size:12px;line-height:1.7}
+.notice strong{color:var(--gold2)}
+.notice.error{background:rgba(239,107,115,.07);border-color:rgba(239,107,115,.35);color:#ffb5ba}
+.notice-icon{font-size:17px;line-height:1.2;color:var(--gold)}
+.notice.error .notice-icon{color:#ff8f96}
+
+/* Form */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.field{min-width:0}
+.field.full{grid-column:1/-1}
+label{display:block;color:#dfe6f0;font-size:12px;font-weight:700;margin-bottom:8px}
+input,select{width:100%;min-height:50px;background:rgba(5,11,26,.8);color:var(--text);border:1px solid var(--line);border-radius:12px;padding:12px 13px;outline:none;font-size:14px}
+input:focus,select:focus{border-color:var(--gold3);box-shadow:0 0 0 3px rgba(242,184,75,.1)}
+input::placeholder{color:var(--hint)}
+select{appearance:none;-webkit-appearance:none;cursor:pointer}
+select option{background:#0b1733;color:#fff}
+input:disabled,select:disabled{opacity:.6;cursor:not-allowed}
+input[type=date]{color-scheme:dark}
+.help{font-size:11px;color:var(--muted);margin-top:7px}
+
+/* Upload */
+.upload-box{min-height:140px;border:1.5px dashed rgba(242,184,75,.4);border-radius:14px;background:rgba(242,184,75,.04);padding:18px 12px;text-align:center;transition:border-color .2s}
+.upload-box:hover{border-color:var(--gold)}
+.upload-icon{width:44px;height:44px;margin:0 auto 8px;border-radius:50%;background:rgba(242,184,75,.12);border:1px solid rgba(242,184,75,.3);display:grid;place-items:center;color:var(--gold);font-size:20px}
+.upload-title{font-size:13px;font-weight:700;margin-bottom:5px}
+.upload-description{font-size:11px;color:var(--muted)}
+.upload-box input[type=file]{margin-top:12px;min-height:auto;padding:8px;font-size:11px;border:0;background:transparent;color:var(--muted)}
+.upload-box input[type=file]::file-selector-button{margin-right:10px;border:1.5px solid var(--gold3);background:transparent;color:var(--gold);border-radius:10px;padding:8px 12px;font-weight:700;font-size:11px;cursor:pointer}
+.file-name{color:#8be7c0;font-size:11px;margin-top:8px;overflow-wrap:anywhere}
+
+.check-row{display:flex;gap:10px;align-items:flex-start;margin:18px 0;color:var(--muted);font-size:12px;line-height:1.7}
+.check-row input{width:18px;min-height:18px;margin:3px 0 0;accent-color:var(--gold);flex-shrink:0;padding:0}
+.check-row label{margin:0;font-weight:400;color:var(--muted)}
+
+/* Buttons */
+.primary-btn{width:100%;height:50px;border:0;border-radius:14px;background:linear-gradient(180deg,#f7c75a,#cf9420);color:#1a1200;font-size:15px;font-weight:700;box-shadow:0 4px 16px rgba(242,184,75,.3);transition:transform .1s}
+.primary-btn:active:not(:disabled){transform:scale(.98)}
+.primary-btn:disabled{opacity:.55;cursor:not-allowed}
+.secondary-btn{width:100%;height:48px;border:1.5px solid var(--gold3);border-radius:14px;background:transparent;color:var(--gold);font-weight:700;margin-top:10px}
+.secondary-btn:disabled{opacity:.6;cursor:wait}
+.footer-note{text-align:center;color:var(--muted);font-size:11px;line-height:1.7;padding:12px 8px 0}
+
+/* Bottom nav */
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;min-height:72px;padding-bottom:env(safe-area-inset-bottom);background:rgba(6,13,30,.96);backdrop-filter:blur(10px);border-top:1px solid var(--line);z-index:120;display:grid;grid-template-columns:repeat(5,1fr)}
+.bottom-link{background:none;border:0;color:#aab5cc;font-size:11px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px}
+
+/* Drawer */
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:190;display:none}
 .overlay.show{display:block}
-.drawer{position:fixed;left:-320px;top:0;width:290px;max-width:86%;height:100vh;height:100dvh;background:#091625;border-right:1px solid var(--border);z-index:200;transition:left .25s ease;padding:22px 15px;overflow-y:auto}
+.drawer{position:fixed;left:-320px;top:0;width:290px;max-width:86%;height:100vh;height:100dvh;background:#081225;border-right:1px solid var(--line);z-index:200;transition:left .25s ease;padding:22px 15px;overflow-y:auto}
 .drawer.open{left:0}
-.drawer-head{display:flex;align-items:center;justify-content:space-between;padding:8px 7px 25px;border-bottom:1px solid var(--border)}
+.drawer-head{display:flex;align-items:center;justify-content:space-between;padding:8px 7px 25px;border-bottom:1px solid var(--line)}
 .drawer-head .brand-name{font-size:19px}
 .close-drawer{border:0;background:none;color:#fff;font-size:27px}
 .drawer-nav{padding-top:18px}
 .drawer-link{width:100%;border:0;background:transparent;color:#d7dce4;padding:14px 13px;border-radius:11px;display:flex;align-items:center;gap:13px;text-align:left;margin-bottom:4px}
-.drawer-link:hover,.drawer-link.active{background:rgba(217,164,65,.08);color:var(--gold2)}
+.drawer-link:hover,.drawer-link.active{background:rgba(242,184,75,.08);color:var(--gold2)}
 .drawer-icon{width:22px;text-align:center;color:var(--gold)}
 .drawer-link.logout{margin-top:15px;color:#ef8990}
-.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:760px;min-height:70px;padding-bottom:env(safe-area-inset-bottom);background:rgba(8,18,31,.98);backdrop-filter:blur(18px);border-top:1px solid var(--border);z-index:120;display:grid;grid-template-columns:repeat(4,1fr)}
-.bottom-link{border:0;background:transparent;color:#7e8998;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;font-size:10px}
-.bottom-link.active{color:var(--gold2)}
-.bottom-icon{font-size:20px}
-.toast{position:fixed;left:50%;bottom:85px;transform:translateX(-50%) translateY(15px);background:#142337;border:1px solid var(--border);color:#fff;padding:12px 16px;border-radius:10px;font-size:12px;opacity:0;pointer-events:none;transition:.25s;z-index:500;width:max-content;max-width:90%;text-align:center}
+
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%) translateY(15px);background:#12244c;border:1px solid var(--gold3);color:#fff;padding:12px 16px;border-radius:12px;font-size:12px;opacity:0;pointer-events:none;transition:.25s;z-index:500;width:max-content;max-width:90%;text-align:center}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
-/* ---------- Page ---------- */
-.content{padding:23px 18px 0}
-.page-head{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-.back-btn{width:38px;height:38px;border:1px solid var(--border);border-radius:11px;background:var(--card);color:#fff;font-size:18px;display:flex;align-items:center;justify-content:center;flex:none}
-.page-head h1{font-size:24px;font-weight:760}
-.subtitle{color:var(--muted);font-size:13px;line-height:1.7;margin-bottom:20px}
-
-.card{
-  background:radial-gradient(circle at top right,rgba(217,164,65,.12),transparent 42%),linear-gradient(145deg,#102238,#0b1829);
-  border:1px solid rgba(217,164,65,.18);border-radius:20px;padding:20px;margin-bottom:17px;box-shadow:var(--shadow)
-}
-.card-title{font-size:16px;font-weight:750;margin-bottom:5px}
-.card-subtitle{color:var(--muted);font-size:12px;margin-bottom:18px;line-height:1.6}
-
-.status-row{display:flex;align-items:center;gap:14px}
-.status-icon{width:47px;height:47px;flex-shrink:0;border-radius:14px;display:grid;place-items:center;background:rgba(217,164,65,.12);color:var(--gold2);font-size:22px}
-.status-label{font-weight:800;font-size:15px}
-.status-description{color:var(--muted);font-size:12px;margin-top:3px;line-height:1.6}
-.badge{display:inline-flex;align-items:center;padding:5px 10px;border-radius:20px;font-size:10px;font-weight:800;letter-spacing:.6px;margin-top:8px;text-transform:uppercase}
-.badge.pending{color:var(--gold2);background:rgba(217,164,65,.14)}
-.badge.approved{color:var(--green);background:rgba(50,196,141,.14)}
-.badge.rejected{color:var(--red);background:rgba(239,107,115,.14)}
-.badge.unknown{color:var(--muted);background:rgba(155,168,189,.14)}
-.rejection-box{margin-top:15px;padding:13px;border-radius:12px;background:rgba(239,107,115,.07);border:1px solid rgba(239,107,115,.25);color:#ffb4bb;font-size:12px;line-height:1.6;overflow-wrap:anywhere}
-
-.notice{padding:14px;border-radius:14px;display:flex;gap:11px;align-items:flex-start;margin-bottom:17px;border:1px solid rgba(217,164,65,.28);background:rgba(217,164,65,.07);color:var(--muted);font-size:12px;line-height:1.7}
-.notice strong{color:var(--gold2)}
-.notice.error{background:rgba(239,107,115,.07);border-color:rgba(239,107,115,.3);color:#ffb4bb}
-.notice-icon{font-size:17px;line-height:1.2;color:var(--gold2)}
-.notice.error .notice-icon{color:#ffb4bb}
-
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.field{min-width:0}
-.field.full{grid-column:1/-1}
-label{display:block;color:#dce4f2;font-size:12px;font-weight:700;margin-bottom:8px}
-input,select{width:100%;min-height:50px;background:var(--card);color:var(--text);border:1px solid rgba(255,255,255,.1);border-radius:13px;padding:12px 13px;outline:none;font-size:15px}
-input:focus,select:focus{border-color:rgba(217,164,65,.55)}
-input::placeholder{color:var(--hint)}
-select{appearance:none;-webkit-appearance:none;cursor:pointer}
-select option{background:#0d1b2d;color:#fff}
-input:disabled,select:disabled{opacity:.6;cursor:not-allowed}
-.help{font-size:11px;color:var(--muted);margin-top:7px}
-
-.upload-box{min-height:145px;border:1px dashed rgba(255,255,255,.22);border-radius:14px;background:rgba(13,27,45,.6);padding:18px 12px;text-align:center;transition:border-color .2s}
-.upload-box:hover{border-color:var(--gold)}
-.upload-icon{font-size:25px;color:var(--gold2);margin-bottom:7px}
-.upload-title{font-size:13px;font-weight:800;margin-bottom:5px}
-.upload-description{font-size:11px;color:var(--muted)}
-.upload-box input[type=file]{margin-top:12px;min-height:auto;padding:8px;font-size:11px;border:0;background:transparent}
-.file-name{color:var(--green);font-size:11px;margin-top:8px;overflow-wrap:anywhere}
-
-.check-row{display:flex;gap:10px;align-items:flex-start;margin:19px 0;color:var(--muted);font-size:12px;line-height:1.7}
-.check-row input{width:17px;min-height:17px;margin:3px 0 0;accent-color:var(--gold);flex-shrink:0;padding:0}
-.check-row label{margin:0;font-weight:400;color:var(--muted)}
-
-.primary-btn{width:100%;min-height:52px;border:0;border-radius:14px;background:var(--gold);color:#07111f;font-size:16px;font-weight:800;transition:filter .2s}
-.primary-btn:hover{filter:brightness(1.08)}
-.primary-btn:disabled{opacity:.55;cursor:not-allowed}
-.secondary-btn{width:100%;min-height:46px;border:1px solid rgba(217,164,65,.35);border-radius:14px;background:transparent;color:var(--gold2);font-weight:800;margin-top:10px}
-.secondary-btn:disabled{opacity:.6;cursor:wait}
-.footer-note{text-align:center;color:var(--muted);font-size:11px;line-height:1.7;padding:15px 8px 0}
-
-@media(max-width:520px){
-  .content{padding-left:14px;padding-right:14px}
-  .card{padding:16px}
+@media(max-width:420px){
   .form-grid{grid-template-columns:1fr}
   .field.full{grid-column:auto}
-  .page-head h1{font-size:22px}
-  .topbar .brand-name{font-size:15px}
-  .topbar .brand-mark{width:27px;height:27px}
   .upload-box{min-height:130px}
 }
-@media(prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
-}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
 </head>
 <body>
 
 <div id="loadingScreen" class="loading-screen">
   <div class="loading-box">
-    <div class="brand-logo loading-logo"><div class="brand-mark">A</div><div class="brand-name">AITI<span>VEST</span></div></div>
+    <div class="brand-logo"><div class="brand-mark">A</div><div class="brand-name">AITIVEST</div></div>
     <div class="spinner"></div>
   </div>
 </div>
 
-<div class="app">
-<header class="topbar">
-  <div class="topbar-inner">
-    <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
-    <div class="brand-logo" aria-label="AITIVEST"><div class="brand-mark">A</div><div class="brand-name">AITI<span>VEST</span></div></div>
-    <div class="profile-initial" id="avatar">AV</div>
-  </div>
-</header>
-
 <div class="overlay" id="overlay"></div>
 <aside class="drawer" id="drawer" aria-label="Main navigation">
   <div class="drawer-head">
-    <div class="brand-logo"><div class="brand-mark">A</div><div class="brand-name">AITI<span>VEST</span></div></div>
+    <div class="brand-logo"><div class="brand-mark">A</div><div class="brand-name">AITIVEST</div></div>
     <button class="close-drawer" id="closeDrawer" aria-label="Close menu">×</button>
   </div>
   <nav class="drawer-nav">
@@ -169,22 +160,37 @@ input:disabled,select:disabled{opacity:.6;cursor:not-allowed}
     <button class="drawer-link" onclick="go('withdraw.html')"><span class="drawer-icon">↗</span>Withdraw</button>
     <button class="drawer-link" onclick="go('transactions.html')"><span class="drawer-icon">≡</span>Transactions</button>
     <button class="drawer-link" onclick="go('referrals.html')"><span class="drawer-icon">♧</span>Referrals</button>
-    <button class="drawer-link" onclick="go('profile.html')"><span class="drawer-icon">○</span>Profile</button>
+    <button class="drawer-link active" onclick="go('profile.html')"><span class="drawer-icon">○</span>Profile</button>
+    <button class="drawer-link" onclick="go('security.html')"><span class="drawer-icon">♙</span>Security Settings</button>
     <button class="drawer-link" onclick="go('support.html')"><span class="drawer-icon">?</span>Support</button>
     <button class="drawer-link" onclick="go('notifications.html')"><span class="drawer-icon">♢</span>Notifications</button>
     <button class="drawer-link logout" id="logoutBtn"><span class="drawer-icon">↪</span>Logout</button>
   </nav>
 </aside>
 
-<main class="content">
+<div class="app">
+  <header class="top">
+    <a href="dashboard.html" class="brand-logo" aria-label="AITIVEST home"><div class="brand-mark">A</div><div class="brand-name">AITIVEST</div></a>
+    <div class="top-actions">
+      <button class="bell" aria-label="Notifications" type="button" onclick="go('notifications.html')">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+      </button>
+      <a class="avatar" id="avatar" href="profile.html" aria-label="Open profile">AV</a>
+    </div>
+  </header>
 
   <div class="page-head">
-    <button class="back-btn" onclick="go('profile.html')" aria-label="Back to profile">←</button>
-    <h1>Identity Verification</h1>
+    <button class="back-btn" onclick="go('profile.html')" aria-label="Back to profile">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <div>
+      <small>Account</small>
+      <h1>Identity Verification</h1>
+    </div>
   </div>
   <p class="subtitle">Verify your identity to help protect your account and meet applicable verification requirements.</p>
 
-  <section class="card">
+  <section class="card status-card">
     <div class="status-row">
       <div class="status-icon" id="statusIcon">◈</div>
       <div style="flex:1;min-width:0">
@@ -293,9 +299,9 @@ input:disabled,select:disabled{opacity:.6;cursor:not-allowed}
     </form>
   </section>
 
-  <section class="card hidden" id="approvedCard">
+  <section class="card hidden" id="approvedCard" style="border-color:#1fbf6f;background:linear-gradient(135deg,rgba(14,70,56,.75),rgba(8,26,40,.9));box-shadow:0 0 18px rgba(34,211,122,.18)">
     <div class="status-row">
-      <div class="status-icon" style="color:var(--green);background:rgba(50,196,141,.12)">✓</div>
+      <div class="status-icon" style="color:var(--green);border-color:var(--green)">✓</div>
       <div>
         <h2 class="card-title">Identity Verified</h2>
         <p class="card-subtitle" style="margin:4px 0 0">Your identity verification has been marked as approved.</p>
@@ -305,16 +311,25 @@ input:disabled,select:disabled{opacity:.6;cursor:not-allowed}
   </section>
 
   <div class="footer-note">AITIVEST · Protect your account information. Never share your password or authentication codes with anyone.</div>
-
-</main>
+</div>
 
 <nav class="bottom-nav" aria-label="Bottom navigation">
-  <button class="bottom-link" onclick="go('dashboard.html')"><span class="bottom-icon">⌂</span><span>Portfolio</span></button>
-  <button class="bottom-link" onclick="go('deposit.html')"><span class="bottom-icon">＋</span><span>Deposit</span></button>
-  <button class="bottom-link" onclick="go('transactions.html')"><span class="bottom-icon">≡</span><span>History</span></button>
-  <button class="bottom-link active" onclick="go('profile.html')"><span class="bottom-icon">○</span><span>Account</span></button>
+  <button class="bottom-link" onclick="go('dashboard.html')">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l9 8h-3v9h-5v-6h-2v6H6v-9H3z"/></svg>Home
+  </button>
+  <button class="bottom-link" onclick="go('transactions.html')">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 13h18"/></svg>Portfolio
+  </button>
+  <button class="bottom-link" onclick="go('deposit.html')">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="5"/><path d="M12 6v6M9.5 9h5"/><path d="M4 20c2-2 5-3 8-3s6 1 8 3"/></svg>Deposit
+  </button>
+  <button class="bottom-link" onclick="go('withdraw.html')">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h13l-3-3M20 16H7l3 3"/></svg>Withdraw
+  </button>
+  <button class="bottom-link" id="menuBtn" aria-label="Open menu">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>More
+  </button>
 </nav>
-</div>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
@@ -382,8 +397,7 @@ function renderStatus(record) {
   if (!record) {
     $("statusIcon").textContent = "◈";
     $("statusTitle").textContent = "Verification not submitted";
-    $("statusDescription").textContent =
-      "Complete the form below to submit your identity documents.";
+    $("statusDescription").textContent = "Complete the form below to submit your identity documents.";
     setBadge("unknown", "Not submitted");
     enableForm(true);
     $("submitBtn").textContent = "Submit for Verification";
@@ -395,8 +409,7 @@ function renderStatus(record) {
   if (status === "APPROVED") {
     $("statusIcon").textContent = "✓";
     $("statusTitle").textContent = "Identity verified";
-    $("statusDescription").textContent =
-      "Your KYC submission has been approved.";
+    $("statusDescription").textContent = "Your KYC submission has been approved.";
     setBadge("approved", "Approved");
     $("formCard").classList.add("hidden");
     $("approvedCard").classList.remove("hidden");
@@ -407,8 +420,7 @@ function renderStatus(record) {
   if (status === "PENDING" || status === "UNDER_REVIEW") {
     $("statusIcon").textContent = "◷";
     $("statusTitle").textContent = "Verification under review";
-    $("statusDescription").textContent =
-      "Your documents have been submitted and are awaiting review.";
+    $("statusDescription").textContent = "Your documents have been submitted and are awaiting review.";
     setBadge("pending", "Pending review");
     enableForm(false);
     $("submitBtn").textContent = "Submission Under Review";
@@ -418,13 +430,11 @@ function renderStatus(record) {
   if (status === "REJECTED") {
     $("statusIcon").textContent = "!";
     $("statusTitle").textContent = "Verification rejected";
-    $("statusDescription").textContent =
-      "Review the feedback below and submit corrected information.";
+    $("statusDescription").textContent = "Review the feedback below and submit corrected information.";
     setBadge("rejected", "Rejected");
 
     if (record.rejection_reason) {
-      $("rejectionBox").textContent =
-        "Reviewer feedback: " + String(record.rejection_reason);
+      $("rejectionBox").textContent = "Reviewer feedback: " + String(record.rejection_reason);
       $("rejectionBox").classList.remove("hidden");
     }
 
@@ -435,16 +445,13 @@ function renderStatus(record) {
 
   $("statusIcon").textContent = "?";
   $("statusTitle").textContent = "Status unavailable";
-  $("statusDescription").textContent =
-    "The saved verification status is not recognized. Contact support.";
+  $("statusDescription").textContent = "The saved verification status is not recognized. Contact support.";
   setBadge("unknown", "Unknown status");
   enableForm(false);
 }
 
 function enableForm(enabled) {
-  const fields = $("kycForm").querySelectorAll(
-    "input,select,button[type=submit]"
-  );
+  const fields = $("kycForm").querySelectorAll("input,select,button[type=submit]");
 
   fields.forEach(el => {
     if (el.id === "retryBtn") return;
@@ -461,10 +468,7 @@ function getAge(dateString) {
 
   const monthDifference = today.getMonth() - dob.getMonth();
 
-  if (
-    monthDifference < 0 ||
-    (monthDifference === 0 && today.getDate() < dob.getDate())
-  ) {
+  if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < dob.getDate())) {
     age--;
   }
 
@@ -472,12 +476,8 @@ function getAge(dateString) {
 }
 
 function randomToken() {
-  if (window.crypto && crypto.randomUUID) {
-    return crypto.randomUUID();
-  }
-
-  return Date.now().toString(36) +
-    "-" + Math.random().toString(36).slice(2);
+  if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+  return Date.now().toString(36) + "-" + Math.random().toString(36).slice(2);
 }
 
 function safeExtension(file) {
@@ -495,10 +495,7 @@ function safeExtension(file) {
     throw new Error("The file extension does not match its type.");
   }
 
-  if (
-    file.type === "image/jpeg" &&
-    !["jpg", "jpeg"].includes(ext)
-  ) {
+  if (file.type === "image/jpeg" && !["jpg", "jpeg"].includes(ext)) {
     throw new Error("The file extension does not match its type.");
   }
 
@@ -511,20 +508,11 @@ function safeExtension(file) {
 
 function validateFile(file, kind) {
   if (!file) {
-    throw new Error(
-      kind === "id"
-        ? "Please select your identity document."
-        : "Please select your selfie."
-    );
+    throw new Error(kind === "id" ? "Please select your identity document." : "Please select your selfie.");
   }
 
-  if (file.size <= 0) {
-    throw new Error("The selected file is empty.");
-  }
-
-  if (file.size > MAX_FILE_SIZE) {
-    throw new Error("Each file must be 10 MB or smaller.");
-  }
+  if (file.size <= 0) throw new Error("The selected file is empty.");
+  if (file.size > MAX_FILE_SIZE) throw new Error("Each file must be 10 MB or smaller.");
 
   const ext = safeExtension(file);
 
@@ -532,27 +520,55 @@ function validateFile(file, kind) {
     ? ["image/jpeg", "image/png", "application/pdf"]
     : ["image/jpeg", "image/png"];
 
-  const allowedExt = kind === "id"
-    ? ["jpg", "jpeg", "png", "pdf"]
-    : ["jpg", "jpeg", "png"];
+  const allowedExt = kind === "id" ? ["jpg", "jpeg", "png", "pdf"] : ["jpg", "jpeg", "png"];
 
-  if (!allowedExt.includes(ext)) {
-    throw new Error("Unsupported file format.");
-  }
+  if (!allowedExt.includes(ext)) throw new Error("Unsupported file format.");
+  if (file.type && !allowedMime.includes(file.type)) throw new Error("Unsupported file type.");
+}
 
-  if (file.type && !allowedMime.includes(file.type)) {
-    throw new Error("Unsupported file type.");
+/* Header avatar: profile photo if set, otherwise initials */
+function initials(name) {
+  const parts = String(name || "").trim().split(/\s+/).filter(Boolean);
+  if (!parts.length) return "A";
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+
+async function loadHeaderAvatar() {
+  let name = currentUser.user_metadata?.full_name || currentUser.email || "";
+  let photo = null;
+
+  try {
+    const { data, error } = await db.from("profiles").select("full_name,avatar_url").eq("id", currentUser.id).maybeSingle();
+    if (!error && data) {
+      if (data.full_name) name = data.full_name;
+      photo = data.avatar_url || null;
+    } else if (error) {
+      /* avatar_url column may not exist yet: fall back to the name only */
+      const { data: basic } = await db.from("profiles").select("full_name").eq("id", currentUser.id).maybeSingle();
+      if (basic?.full_name) name = basic.full_name;
+    }
+  } catch (_) {}
+
+  const el = $("avatar");
+  const text = initials(name);
+  el.replaceChildren();
+  if (photo) {
+    const img = document.createElement("img");
+    img.alt = "";
+    img.src = photo;
+    img.onerror = () => { el.replaceChildren(document.createTextNode(text)); };
+    el.appendChild(img);
+  } else {
+    el.textContent = text;
   }
 }
 
 async function loadKyc() {
   hideSchemaError();
 
-  /*
-   * Start with the common fields. If the table or columns are not
-   * configured, show an explicit error instead of pretending no
-   * KYC submission exists.
-   */
+  /* Start with the common fields. If the table or columns are not configured,
+     show an explicit error instead of pretending no KYC submission exists. */
   let result = await db
     .from(KYC_TABLE)
     .select("id,user_id,status,rejection_reason")
@@ -560,9 +576,7 @@ async function loadKyc() {
     .order("created_at", { ascending: false })
     .limit(1);
 
-  /*
-   * Some installations may not have created_at. Try without ordering.
-   */
+  /* Some installations may not have created_at. Try without ordering. */
   if (result.error) {
     result = await db
       .from(KYC_TABLE)
@@ -583,8 +597,7 @@ async function loadKyc() {
     );
 
     $("statusTitle").textContent = "Verification status unavailable";
-    $("statusDescription").textContent =
-      "The verification database could not be accessed.";
+    $("statusDescription").textContent = "The verification database could not be accessed.";
     setBadge("unknown", "Unavailable");
     return false;
   }
@@ -594,13 +607,8 @@ async function loadKyc() {
   const rows = result.data || [];
 
   if (rows.length > 1) {
-    showSchemaError(
-      "Multiple KYC records were found for your account. Contact support " +
-      "before submitting another verification request."
-    );
-    renderStatus({
-      status: "UNKNOWN"
-    });
+    showSchemaError("Multiple KYC records were found for your account. Contact support before submitting another verification request.");
+    renderStatus({ status: "UNKNOWN" });
     enableForm(false);
     return false;
   }
@@ -608,10 +616,8 @@ async function loadKyc() {
   const record = rows[0] || null;
   renderStatus(record);
 
-  /*
-   * Load previously saved form fields only if those columns exist.
-   * This is separate so a missing optional column does not break status.
-   */
+  /* Load previously saved form fields only if those columns exist.
+     Separate query so a missing optional column does not break status. */
   if (record) {
     const details = await db
       .from(KYC_TABLE)
@@ -634,8 +640,7 @@ async function loadKyc() {
 
 async function uploadPrivateFile(file, kind, uploadedPaths) {
   const ext = safeExtension(file);
-  const path = currentUser.id + "/" + kind + "-" +
-    randomToken() + "." + ext;
+  const path = currentUser.id + "/" + kind + "-" + randomToken() + "." + ext;
 
   const { data, error } = await db.storage
     .from(KYC_BUCKET)
@@ -663,7 +668,7 @@ async function cleanupUploads(paths) {
   try {
     await db.storage.from(KYC_BUCKET).remove(paths);
   } catch (e) {
-    // Best-effort cleanup only. Storage policies must permit it.
+    /* Best-effort cleanup only. Storage policies must permit it. */
   }
 }
 
@@ -702,30 +707,11 @@ async function submitKyc(event) {
   const idFile = $("idFile").files[0];
   const selfieFile = $("selfieFile").files[0];
 
-  if (fullName.length < 3) {
-    toast("Enter your full legal name.");
-    return;
-  }
-
-  if (!dob || getAge(dob) < 18) {
-    toast("You must be at least 18 years old.");
-    return;
-  }
-
-  if (getAge(dob) > 120) {
-    toast("Please check your date of birth.");
-    return;
-  }
-
-  if (!country || !idType || idNumber.length < 3) {
-    toast("Complete all identity information.");
-    return;
-  }
-
-  if (!$("declaration").checked) {
-    toast("Please confirm the declaration.");
-    return;
-  }
+  if (fullName.length < 3) { toast("Enter your full legal name."); return; }
+  if (!dob || getAge(dob) < 18) { toast("You must be at least 18 years old."); return; }
+  if (getAge(dob) > 120) { toast("Please check your date of birth."); return; }
+  if (!country || !idType || idNumber.length < 3) { toast("Complete all identity information."); return; }
+  if (!$("declaration").checked) { toast("Please confirm the declaration."); return; }
 
   try {
     validateFile(idFile, "id");
@@ -742,11 +728,8 @@ async function submitKyc(event) {
   const uploadedPaths = [];
 
   try {
-    /*
-     * Re-check status immediately before uploading to reduce the
-     * chance of submitting over an already-approved record.
-     * Server-side policies must still enforce this securely.
-     */
+    /* Re-check status immediately before uploading to reduce the chance of submitting
+       over an already-approved record. Server-side policies must still enforce this. */
     const check = await db
       .from(KYC_TABLE)
       .select("id,user_id,status")
@@ -754,17 +737,13 @@ async function submitKyc(event) {
       .limit(2);
 
     if (check.error) {
-      throw new Error(
-        "Could not verify your current KYC status. Please try again later."
-      );
+      throw new Error("Could not verify your current KYC status. Please try again later.");
     }
 
     const rows = check.data || [];
 
     if (rows.length > 1) {
-      throw new Error(
-        "Multiple KYC records exist. Contact support before resubmitting."
-      );
+      throw new Error("Multiple KYC records exist. Contact support before resubmitting.");
     }
 
     const freshRecord = rows[0] || null;
@@ -782,13 +761,8 @@ async function submitKyc(event) {
       throw new Error("Your verification is already under review.");
     }
 
-    const documentPath = await uploadPrivateFile(
-      idFile, "identity", uploadedPaths
-    );
-
-    const selfiePath = await uploadPrivateFile(
-      selfieFile, "selfie", uploadedPaths
-    );
+    const documentPath = await uploadPrivateFile(idFile, "identity", uploadedPaths);
+    const selfiePath = await uploadPrivateFile(selfieFile, "selfie", uploadedPaths);
 
     const submission = {
       user_id: currentUser.id,
@@ -808,10 +782,8 @@ async function submitKyc(event) {
     let saveResult;
 
     if (freshRecord && freshStatus === "REJECTED") {
-      /*
-       * Update only the rejected record belonging to this user.
-       * RLS must also prevent changing approval status from the browser.
-       */
+      /* Update only the rejected record belonging to this user.
+         RLS must also prevent changing approval status from the browser. */
       saveResult = await db
         .from(KYC_TABLE)
         .update(submission)
@@ -836,9 +808,7 @@ async function submitKyc(event) {
     }
 
     if (!saveResult.data) {
-      throw new Error(
-        "The submission was not confirmed. Refresh your status before trying again."
-      );
+      throw new Error("The submission was not confirmed. Refresh your status before trying again.");
     }
 
     uploadedPaths.length = 0;
@@ -857,9 +827,7 @@ async function submitKyc(event) {
 
     if (
       !existingKyc ||
-      !["APPROVED", "PENDING", "UNDER_REVIEW"].includes(
-        normalizeStatus(existingKyc.status)
-      )
+      !["APPROVED", "PENDING", "UNDER_REVIEW"].includes(normalizeStatus(existingKyc.status))
     ) {
       $("submitBtn").disabled = false;
       $("submitBtn").textContent =
@@ -881,18 +849,9 @@ async function init() {
 
     currentUser = data.session.user;
 
-    const initials = (
-      currentUser.user_metadata?.full_name ||
-      currentUser.email ||
-      "A"
-    ).trim().charAt(0).toUpperCase();
+    loadHeaderAvatar();
 
-    $("avatar").textContent = initials;
-
-    /*
-     * Prefill the name from profiles when available.
-     * This does not assume optional profile columns exist.
-     */
+    /* Prefill the name from profiles when available. */
     const profile = await db
       .from("profiles")
       .select("id,full_name")
@@ -928,16 +887,14 @@ $("retryBtn").addEventListener("click", async () => {
 });
 
 $("idFile").addEventListener("change", () => {
-  $("idFileName").textContent =
-    $("idFile").files[0]?.name || "";
+  $("idFileName").textContent = $("idFile").files[0]?.name || "";
 });
 
 $("selfieFile").addEventListener("change", () => {
-  $("selfieFileName").textContent =
-    $("selfieFile").files[0]?.name || "";
+  $("selfieFileName").textContent = $("selfieFile").files[0]?.name || "";
 });
 
-/* Side drawer (same behavior as dashboard and withdraw) */
+/* Side drawer */
 function openDrawer() {
   $("drawer").classList.add("open");
   $("overlay").classList.add("show");
@@ -973,6 +930,5 @@ $("logoutBtn").addEventListener("click", async () => {
 
 init();
 </script>
-
 </body>
 </html>
