@@ -73,6 +73,8 @@ label{display:block;font-size:12px;font-weight:700;margin-bottom:8px;color:#dfe6
 input,select{width:100%;background:rgba(5,11,26,.8);border:1px solid var(--line);border-radius:12px;padding:14px 13px;font-size:13px;outline:none}
 input:focus,select:focus{border-color:var(--gold3);box-shadow:0 0 0 3px rgba(242,184,75,.1)}
 .hint{font-size:11px;color:var(--muted);line-height:1.7;margin-top:7px}
+.usd-estimate:empty{display:none}
+.usd-estimate{color:var(--gold2);font-weight:600}
 .primary-btn{width:100%;height:50px;border:0;border-radius:14px;background:linear-gradient(180deg,#f7c75a,#cf9420);color:#1a1200;font-size:15px;font-weight:700;margin-top:16px;box-shadow:0 4px 16px rgba(242,184,75,.3);transition:transform .1s}
 .primary-btn:active{transform:scale(.98)}
 .primary-btn:disabled{opacity:.55;cursor:not-allowed}
@@ -267,6 +269,7 @@ input:focus,select:focus{border-color:var(--gold3);box-shadow:0 0 0 3px rgba(242
           <label for="amountInput">Amount sent</label>
           <input id="amountInput" type="number" min="0" step="any" inputmode="decimal" placeholder="Enter amount" required>
           <div class="hint">Enter the amount you actually sent in the selected cryptocurrency.</div>
+          <div class="hint usd-estimate" id="usdEstimate" aria-live="polite"></div>
         </div>
         <div class="field">
           <label for="txHashInput">Transaction hash / TXID</label>
@@ -670,6 +673,7 @@ $("depositForm").addEventListener("submit",async event=>{
     showMessage("formMessage","Your deposit request has been submitted successfully. The transaction will be reviewed for confirmation.","success");
     $("amountInput").value = "";
     $("txHashInput").value = "";
+    $("usdEstimate").textContent = "";
     await loadHistory();
   }catch(error){
     console.error("Deposit submission error:",error);
@@ -680,6 +684,71 @@ $("depositForm").addEventListener("submit",async event=>{
     button.textContent = "Submit deposit request";
   }
 });
+
+/* LIVE USD ESTIMATE (deposit page only) */
+const COIN_IDS={
+  BTC:"bitcoin",ETH:"ethereum",USDT:"tether",USDC:"usd-coin",BNB:"binancecoin",
+  SOL:"solana",XRP:"ripple",TON:"the-open-network",DOGE:"dogecoin",ADA:"cardano",
+  TRX:"tron",LTC:"litecoin",AVAX:"avalanche-2",DOT:"polkadot",LINK:"chainlink",
+  POL:"polygon-ecosystem-token",SHIB:"shiba-inu",BCH:"bitcoin-cash",XLM:"stellar",
+  ATOM:"cosmos",NEAR:"near",APT:"aptos",ARB:"arbitrum",OP:"optimism"
+};
+const priceCache = {};
+
+async function getUsdPrice(symbol){
+  const cached = priceCache[symbol];
+  if(cached && Date.now() - cached.time < 60000) return cached.price;
+
+  const id = COIN_IDS[symbol];
+  if(!id) return null;
+
+  try{
+    const response = await fetch(
+      "https://api.coingecko.com/api/v3/simple/price?ids=" + encodeURIComponent(id) + "&vs_currencies=usd",
+      {headers:{Accept:"application/json"},cache:"no-store",signal:AbortSignal.timeout(10000)}
+    );
+    if(!response.ok) throw new Error("HTTP " + response.status);
+    const data = await response.json();
+    const price = Number(data?.[id]?.usd);
+    if(!Number.isFinite(price) || price <= 0) return null;
+    priceCache[symbol] = {price,time:Date.now()};
+    return price;
+  }catch(error){
+    console.warn("USD price lookup failed:",error);
+    return cached ? cached.price : null;
+  }
+}
+
+let usdTimer = null;
+function scheduleUsdEstimate(){
+  clearTimeout(usdTimer);
+  usdTimer = setTimeout(updateUsdEstimate,300);
+}
+
+async function updateUsdEstimate(){
+  const el = $("usdEstimate");
+  const symbol = String(selectedAddress?.asset || selectedAsset || "").toUpperCase();
+  const typed = $("amountInput").value;
+  const amount = Number(typed);
+
+  if(!symbol || !typed || !Number.isFinite(amount) || amount <= 0){
+    el.textContent = "";
+    return;
+  }
+
+  const price = await getUsdPrice(symbol);
+  if($("amountInput").value !== typed) return; /* input changed while loading */
+
+  if(price === null){
+    el.textContent = "USD estimate unavailable right now.";
+    return;
+  }
+
+  el.textContent = "≈ $" + (amount * price).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2}) +
+    " USD at today's price. The USD value is fixed when your deposit is confirmed.";
+}
+
+$("amountInput").addEventListener("input",scheduleUsdEstimate);
 
 /* INITIALIZE */
 async function initialize(){
