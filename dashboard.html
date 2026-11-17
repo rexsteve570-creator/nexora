@@ -59,7 +59,7 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
 .bal-body{flex:1;min-width:0}
 .bal-label{font-size:12.5px;letter-spacing:.6px;color:#d6e6df;display:flex;align-items:center;gap:8px}
 .eye{background:none;border:0;color:var(--green);display:flex}
-.bal-amount{font-size:28px;font-weight:700;color:var(--green);margin-top:2px;overflow-wrap:anywhere;--s:1.75}
+.bal-amount{font-size:23px;font-weight:700;color:var(--green);margin-top:2px;overflow-wrap:anywhere;--s:1.75}
 
 /* Crypto picker */
 .crypto-card{border-color:var(--gold3);box-shadow:0 0 14px rgba(242,184,75,.15);padding:0;z-index:20}
@@ -339,7 +339,7 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
     <button type="button" class="security-action" id="securityAction" onclick="go('security.html')">Checking...</button>
   </section>
 
-  <div class="info-note">Balance shows the USD-equivalent value of confirmed deposits. Pending deposits are excluded. Cryptocurrency balances are displayed separately by asset. The countdown is a time indicator and does not itself credit earnings. * Income is taken into account in dollars at the exchange rate at the time of accrual of profit.</div>
+  <div class="info-note">Balances are shown in USDT. USDT and USDC deposits count 1:1. Other coins use the USDT value recorded when they were converted, so the figure does not move with the live market. Pending deposits are excluded. Cryptocurrency balances are displayed separately by asset. The countdown is a time indicator and does not itself credit earnings. * Income is recorded in dollars at the exchange rate at the time of accrual of profit.</div>
 </div>
 
 <nav class="bottom-nav" aria-label="Bottom navigation">
@@ -682,67 +682,46 @@ function renderSelectedAsset(){
   });
 }
 
-/* LIVE CRYPTOCURRENCY USD PRICES */
-const COIN_IDS={
-  BTC:"bitcoin",ETH:"ethereum",USDT:"tether",USDC:"usd-coin",BNB:"binancecoin",
-  SOL:"solana",XRP:"ripple",TON:"the-open-network",DOGE:"dogecoin",ADA:"cardano",
-  TRX:"tron",LTC:"litecoin",AVAX:"avalanche-2",DOT:"polkadot",LINK:"chainlink",
-  POL:"polygon-ecosystem-token",SHIB:"shiba-inu",BCH:"bitcoin-cash",XLM:"stellar",
-  ATOM:"cosmos",NEAR:"near",APT:"aptos",ARB:"arbitrum",OP:"optimism"
-};
+/* USDT VALUES
+   No live market prices are used on this page. Stablecoin amounts (USDT, USDC)
+   count 1:1. Any other coin uses the USDT value saved on the record (column
+   "usd_value") when it was converted. Everything is displayed in USDT. */
+const USD_COL="usd_value";
+const STABLE_ASSETS=["USDT","USDC"];
+const TRAILING_PLUS_NOTE="A trailing + means some records are still waiting for their USDT value to be recorded.";
 
-let cryptoUsdPrices={};
-let pricesUpdatedAt=0;
-let priceRefreshPromise=null;
-const PRICE_CACHE_DURATION=60*1000;
-
-async function loadCryptoUsdPrices(force=false){
-  if(!force&&Date.now()-pricesUpdatedAt<PRICE_CACHE_DURATION&&Object.keys(cryptoUsdPrices).length){
-    return cryptoUsdPrices;
-  }
-  if(priceRefreshPromise)return priceRefreshPromise;
-
-  priceRefreshPromise=(async()=>{
-    const ids=[...new Set(Object.values(COIN_IDS))];
-    const url="https://api.coingecko.com/api/v3/simple/price?ids="+encodeURIComponent(ids.join(","))+"&vs_currencies=usd";
-
-    try{
-      const response=await fetch(url,{
-        method:"GET",headers:{Accept:"application/json"},cache:"no-store",
-        signal:AbortSignal.timeout(12000)
-      });
-      if(!response.ok)throw new Error("Price provider returned HTTP "+response.status);
-
-      const data=await response.json();
-      const nextPrices={};
-
-      for(const [symbol,coinId] of Object.entries(COIN_IDS)){
-        const price=Number(data?.[coinId]?.usd);
-        if(Number.isFinite(price)&&price>0)nextPrices[symbol]=price;
-      }
-
-      if(!Object.keys(nextPrices).length)throw new Error("No valid cryptocurrency prices returned.");
-      cryptoUsdPrices=nextPrices;
-      pricesUpdatedAt=Date.now();
-      return cryptoUsdPrices;
-    }catch(error){
-      console.error("Cryptocurrency price loading failed:",error);
-      return cryptoUsdPrices;
-    }finally{
-      priceRefreshPromise=null;
-    }
-  })();
-
-  return priceRefreshPromise;
+function formatUsdt(value){
+  const n=Number(value);
+  if(!Number.isFinite(n))return "—";
+  return n.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2})+" USDT";
 }
 
-function cryptoAmountToUsd(amount,symbol){
-  const quantity=Number(amount);
-  const asset=String(symbol||"").toUpperCase();
-  if(!Number.isFinite(quantity)||quantity<0)return null;
-  const price=cryptoUsdPrices[asset];
-  if(!Number.isFinite(price)||price<=0)return null;
-  return quantity*price;
+function usdtValue(row,qtyKeys){
+  let qty=0;
+  for(const key of qtyKeys){
+    const n=Number(row[key]);
+    if(Number.isFinite(n)&&n>0){qty=n;break;}
+  }
+  if(qty<=0)return {value:0,missing:false};
+
+  const asset=String(row.asset||"").toUpperCase();
+  if(STABLE_ASSETS.includes(asset))return {value:qty,missing:false};
+
+  const raw=row[USD_COL];
+  const stored=Number(raw);
+  if(raw!==null&&raw!==undefined&&Number.isFinite(stored)&&stored>=0)return {value:stored,missing:false};
+
+  return {value:0,missing:true};
+}
+
+function sumUsdt(rows,qtyKeys){
+  let total=0,missing=false;
+  for(const row of rows||[]){
+    const r=usdtValue(row,qtyKeys);
+    total+=r.value;
+    if(r.missing)missing=true;
+  }
+  return {total,missing};
 }
 
 /* FIRST-TIME WELCOME NOTIFICATION */
@@ -859,10 +838,10 @@ async function loadWallets(){
   return true;
 }
 
-/* FIAT PORTFOLIO */
+/* FIAT PORTFOLIO (confirmed deposits, shown in USDT) */
 async function renderPortfolio(){
   const {data,error}=await db.from("deposits")
-    .select("asset,amount,credited_amount,status")
+    .select("asset,amount,credited_amount,usd_value,status")
     .eq("user_id",currentUser.id)
     .eq("status","CONFIRMED");
 
@@ -872,35 +851,10 @@ async function renderPortfolio(){
     return null;
   }
 
-  await loadCryptoUsdPrices();
-
-  let totalUsd=0;
-  const missingPrices=[];
-
-  for(const deposit of data||[]){
-    const asset=String(deposit.asset||"").toUpperCase();
-    const credited=Number(deposit.credited_amount);
-    const submitted=Number(deposit.amount);
-    const quantity=Number.isFinite(credited)&&credited>0?credited:submitted;
-
-    if(!Number.isFinite(quantity)||quantity<=0)continue;
-    const usdValue=cryptoAmountToUsd(quantity,asset);
-
-    if(usdValue===null){
-      if(!missingPrices.includes(asset))missingPrices.push(asset);
-      continue;
-    }
-    totalUsd+=usdValue;
-  }
-
-  if(missingPrices.length){
-    setText("portfolioValue",formatMoney(totalUsd)+" +");
-    setText("statisticsNote","Some deposit valuations are unavailable because market prices could not be retrieved for: "+missingPrices.join(", ")+". Displayed totals exclude those deposits.");
-    return totalUsd;
-  }
-
-  setText("portfolioValue",formatMoney(totalUsd));
-  return totalUsd;
+  const {total,missing}=sumUsdt(data,["credited_amount","amount"]);
+  setText("portfolioValue",formatUsdt(total)+(missing?" +":""));
+  if(missing)setText("statisticsNote",TRAILING_PLUS_NOTE);
+  return total;
 }
 
 /* ACTIVE CONFIRMED DEPOSITS */
@@ -1005,10 +959,12 @@ async function loadPartnerStatistics(){
   setText("partnerCount",String(count??0));
 }
 
-/* PAYMENT STATISTICS */
+/* PAYMENT STATISTICS (shown in USDT) */
 async function loadPaymentStatistics(){
+  let incomplete=false;
+
   const depositsResult=await db.from("deposits")
-    .select("asset,amount,credited_amount,status")
+    .select("asset,amount,credited_amount,usd_value,status")
     .eq("user_id",currentUser.id)
     .eq("status","CONFIRMED");
 
@@ -1016,117 +972,70 @@ async function loadPaymentStatistics(){
     console.error("Incoming payment statistics error:",depositsResult.error);
     setText("incomingPayments","Unavailable");
   }else{
-    await loadCryptoUsdPrices();
-    let incomingUsd=0;
-    const missingIncomingAssets=[];
-
-    for(const deposit of depositsResult.data||[]){
-      const asset=String(deposit.asset||"").toUpperCase();
-      const credited=Number(deposit.credited_amount);
-      const submitted=Number(deposit.amount);
-      const quantity=Number.isFinite(credited)&&credited>0?credited:submitted;
-      if(!Number.isFinite(quantity)||quantity<=0)continue;
-
-      const usdValue=cryptoAmountToUsd(quantity,asset);
-      if(usdValue===null){
-        if(!missingIncomingAssets.includes(asset))missingIncomingAssets.push(asset);
-        continue;
-      }
-      incomingUsd+=usdValue;
-    }
-
-    setText("incomingPayments",missingIncomingAssets.length?formatMoney(incomingUsd)+" +":formatMoney(incomingUsd));
+    const {total,missing}=sumUsdt(depositsResult.data,["credited_amount","amount"]);
+    incomplete=incomplete||missing;
+    setText("incomingPayments",formatUsdt(total)+(missing?" +":""));
   }
 
+  /* Withdrawals that have been approved or completed count as paid out */
   const withdrawalsResult=await db.from("withdrawals")
-    .select("asset,amount,net_amount,status")
+    .select("asset,amount,net_amount,usd_value,status")
     .eq("user_id",currentUser.id)
-    .eq("status","COMPLETED");
+    .in("status",["APPROVED","COMPLETED"]);
 
   if(withdrawalsResult.error){
     console.error("Outgoing payment statistics error:",withdrawalsResult.error);
     setText("outgoingPayments","Unavailable");
-    return;
+  }else{
+    const {total,missing}=sumUsdt(withdrawalsResult.data,["net_amount","amount"]);
+    incomplete=incomplete||missing;
+    setText("outgoingPayments",formatUsdt(total)+(missing?" +":""));
   }
 
-  await loadCryptoUsdPrices();
-  let outgoingUsd=0;
-  const missingOutgoingAssets=[];
-
-  for(const withdrawal of withdrawalsResult.data||[]){
-    const asset=String(withdrawal.asset||"").toUpperCase();
-    const netAmount=Number(withdrawal.net_amount);
-    const requestedAmount=Number(withdrawal.amount);
-    const quantity=Number.isFinite(netAmount)&&netAmount>0?netAmount:requestedAmount;
-    if(!Number.isFinite(quantity)||quantity<=0)continue;
-
-    const usdValue=cryptoAmountToUsd(quantity,asset);
-    if(usdValue===null){
-      if(!missingOutgoingAssets.includes(asset))missingOutgoingAssets.push(asset);
-      continue;
-    }
-    outgoingUsd+=usdValue;
-  }
-
-  setText("outgoingPayments",missingOutgoingAssets.length?formatMoney(outgoingUsd)+" +":formatMoney(outgoingUsd));
+  if(incomplete)setText("statisticsNote",TRAILING_PLUS_NOTE);
 }
 
-/* EARNINGS STATISTICS */
+/* EARNINGS STATISTICS (shown in USDT) */
 async function loadEarningsStatistics(){
-  await loadCryptoUsdPrices();
-
-  let mainProfitUsd=0;
-  let partnersProfitUsd=0;
-  let mainProfitIncomplete=false;
-  let partnersProfitIncomplete=false;
+  let mainProfit=0;
+  let partnersProfit=0;
+  let mainIncomplete=false;
+  let partnersIncomplete=false;
 
   const earningsResult=await db.from("earning_records")
-    .select("earning_amount,asset,status")
+    .select("asset,earning_amount,usd_value,status")
     .eq("user_id",currentUser.id)
     .eq("status","CREDITED");
 
   if(earningsResult.error){
     console.error("Earnings statistics error:",earningsResult.error);
-    mainProfitIncomplete=true;
+    mainIncomplete=true;
   }else{
-    for(const record of earningsResult.data||[]){
-      const amount=Number(record.earning_amount);
-      const asset=String(record.asset||"").toUpperCase();
-      if(!Number.isFinite(amount)||amount<=0)continue;
-
-      const usdValue=cryptoAmountToUsd(amount,asset);
-      if(usdValue===null){mainProfitIncomplete=true;continue}
-      mainProfitUsd+=usdValue;
-    }
+    const r=sumUsdt(earningsResult.data,["earning_amount"]);
+    mainProfit=r.total;
+    mainIncomplete=r.missing;
   }
 
   const commissionsResult=await db.from("referral_commission_records")
-    .select("commission_amount,asset,referrer_id")
+    .select("asset,commission_amount,usd_value,referrer_id")
     .eq("referrer_id",currentUser.id);
 
   if(commissionsResult.error){
     console.error("Referral commission statistics error:",commissionsResult.error);
-    partnersProfitIncomplete=true;
+    partnersIncomplete=true;
   }else{
-    for(const record of commissionsResult.data||[]){
-      const amount=Number(record.commission_amount);
-      const asset=String(record.asset||"").toUpperCase();
-      if(!Number.isFinite(amount)||amount<=0)continue;
-
-      const usdValue=cryptoAmountToUsd(amount,asset);
-      if(usdValue===null){partnersProfitIncomplete=true;continue}
-      partnersProfitUsd+=usdValue;
-    }
+    const r=sumUsdt(commissionsResult.data,["commission_amount"]);
+    partnersProfit=r.total;
+    partnersIncomplete=r.missing;
   }
 
-  const partnersText=formatMoney(partnersProfitUsd)+(partnersProfitIncomplete?" +":"");
-  const incomplete=mainProfitIncomplete||partnersProfitIncomplete;
+  const incomplete=mainIncomplete||partnersIncomplete;
 
-  setText("partnersProfit",partnersText);
-  setText("allAccruals",formatMoney(mainProfitUsd+partnersProfitUsd)+(incomplete?" +":""));
+  setText("partnersProfit",formatUsdt(partnersProfit)+(partnersIncomplete?" +":""));
+  setText("allAccruals",formatUsdt(mainProfit+partnersProfit)+(incomplete?" +":""));
 
   if(incomplete){
-    setText("statisticsNote","A trailing + means some records could not be valued or verified. USD values use available market prices and can change.");
+    setText("statisticsNote",TRAILING_PLUS_NOTE);
   }else if($("statisticsNote").textContent.indexOf("trailing +")!==-1){
     setText("statisticsNote","");
   }
