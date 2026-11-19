@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#050b1a">
 <title>AITIVEST — Deposit</title>
 
@@ -13,101 +13,104 @@
 :root{
 --bg:#050b1a;--card:#0b1733;--line:#1c2c52;
 --text:#e8edf7;--muted:#9aa7c0;
---gold:#f2b84b;--gold2:#ffd982;--cream:#f5e6b8;
---green:#22d37a;--red:#ef6b73;--blue:#2f8cff
+--gold:#f2b84b;--gold2:#ffd982;--gold3:#c98f1d;
+--cream:#f5e6b8;--green:#22d37a;--red:#ef6b73;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-body{min-height:100vh;background:#02050d;color:var(--text);font-family:Segoe UI,system-ui,Arial;display:flex;justify-content:center}
+body{min-height:100vh;background:#02050d;color:var(--text);font-family:"Segoe UI",system-ui,Arial,sans-serif;display:flex;justify-content:center}
 button,input,select{font:inherit;color:inherit}
 button{cursor:pointer}
 [hidden]{display:none!important}
+.app{width:100%;max-width:480px;min-height:100vh;background:radial-gradient(120% 60% at 50% 0%,#0f2350 0%,var(--bg) 60%);padding:18px 16px 105px;position:relative}
 .loading-screen{position:fixed;inset:0;background:#050b1a;display:flex;align-items:center;justify-content:center;z-index:9999}
 .loading-box{text-align:center}
-.spinner{width:28px;height:28px;border:3px solid #ffffff20;border-top-color:var(--gold);border-radius:50%;margin:20px auto;animation:spin .8s linear infinite}
+.spinner{width:28px;height:28px;border:3px solid rgba(242,184,75,.18);border-top-color:var(--gold);border-radius:50%;margin:20px auto;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .brand-logo{display:flex;align-items:center;gap:9px}
-.brand-mark{width:30px;height:30px;border:2px solid var(--gold);border-radius:9px 9px 9px 2px;display:grid;place-items:center;color:var(--gold2);font-weight:900}
-.brand-name{font-size:24px;font-weight:700;letter-spacing:2px;background:linear-gradient(#ffd982,#d89a24);-webkit-background-clip:text;background-clip:text;color:transparent}
+.brand-mark{width:30px;height:30px;border:2px solid var(--gold);border-radius:9px 9px 9px 2px;display:flex;align-items:center;justify-content:center;color:var(--gold2);font-size:16px;font-weight:900;transform:rotate(-3deg)}
+.brand-name{font-size:24px;font-weight:700;letter-spacing:2px;background:linear-gradient(180deg,#ffd982,#d89a24);-webkit-background-clip:text;background-clip:text;color:transparent}
 .loading-box .brand-logo{justify-content:center}
-.app{width:100%;max-width:480px;min-height:100vh;background:radial-gradient(120% 60% at 50% 0%,#0f2350 0%,var(--bg) 60%);padding:18px 16px 100px}
 .top{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
 .top-actions{display:flex;gap:14px;align-items:center}
-.bell{background:none;border:0;color:var(--gold)}
-.avatar{width:36px;height:36px;border-radius:50%;background:#16264d;border:1px solid var(--line);display:grid;place-items:center;color:var(--gold2);font-size:12px;font-weight:800}
+.bell{background:none;border:0;color:var(--gold);display:flex}
+.avatar{width:36px;height:36px;border-radius:50%;background:#16264d;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--gold2);font-size:12px;font-weight:800;cursor:pointer}
 .page-head{margin-bottom:16px}
-.page-head small{font-size:14px;color:#cfd8ec}
+.page-head small{font-size:15px;color:#cfd8ec;display:block}
 .page-head h1{font-size:26px;color:var(--gold)}
 .card{background:linear-gradient(180deg,rgba(18,34,72,.75),rgba(9,20,45,.9));border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px}
 .section-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
 .section-title h2{font-size:15px}
 .panel-intro{font-size:12px;line-height:1.8;color:var(--muted);margin-bottom:14px}
-.step-label{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:700;margin-bottom:12px}
-.step-number{width:30px;height:30px;border-radius:10px;background:#f2b84b20;border:1px solid #f2b84b50;display:grid;place-items:center;color:var(--gold)}
+.step-label{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:700;margin-bottom:8px}
+.step-number{width:30px;height:30px;border-radius:10px;background:rgba(242,184,75,.12);border:1px solid rgba(242,184,75,.3);display:grid;place-items:center;color:var(--gold);font-size:12px}
 .asset-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
-.asset-button{border:1px solid var(--line);border-radius:12px;background:#ffffff08;padding:12px 6px;display:flex;flex-direction:column;align-items:center;gap:7px}
-.asset-button.active,.asset-button:hover{border-color:var(--gold);background:#f2b84b12}
-.coin-logo{width:34px;height:34px;object-fit:contain}
+.asset-button{border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.04);padding:12px 6px 10px;display:flex;flex-direction:column;align-items:center;gap:7px}
+.asset-button.active,.asset-button:hover{border-color:var(--gold3);background:rgba(242,184,75,.08)}
+.coin-logo{width:36px;height:36px;object-fit:contain}
 .coin-symbol{font-size:12px;font-weight:800}
 .coin-name{font-size:10px;color:var(--muted);text-align:center}
+.asset-step-note,.hint{color:var(--muted);font-size:11px;line-height:1.7;margin-top:8px}
 .step-panel{display:none}
-.step-panel.show{display:block;animation:appear .2s ease}
+.step-panel.show{display:block;animation:appear .22s ease}
 @keyframes appear{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
 .field{margin-top:15px}
-label{display:block;font-size:12px;font-weight:700;margin-bottom:8px}
-input,select{width:100%;background:#050b1acc;border:1px solid var(--line);border-radius:12px;padding:14px;font-size:13px;outline:none}
-input:focus,select:focus{border-color:var(--gold)}
-.hint{font-size:11px;color:var(--muted);line-height:1.7;margin-top:7px}
-.primary-btn{width:100%;height:50px;border:0;border-radius:14px;background:linear-gradient(#f7c75a,#cf9420);color:#1a1200;font-size:14px;font-weight:800;margin-top:16px}
+label{display:block;font-size:12px;font-weight:700;margin-bottom:8px;color:#dfe6f0}
+input,select{width:100%;background:rgba(5,11,26,.8);border:1px solid var(--line);border-radius:12px;padding:14px 13px;font-size:13px;outline:none}
+input:focus,select:focus{border-color:var(--gold3)}
+.primary-btn{width:100%;height:50px;border:0;border-radius:14px;background:linear-gradient(180deg,#f7c75a,#cf9420);color:#1a1200;font-size:15px;font-weight:700;margin-top:16px}
 .primary-btn:disabled{opacity:.55}
-.secondary-btn,.copy-btn{border:1px solid #f2b84b55;background:#f2b84b12;color:var(--gold);padding:10px 12px;border-radius:10px;font-size:11px;font-weight:700}
-.back-btn{background:transparent;color:var(--gold);border:1px solid var(--gold);padding:12px;border-radius:12px;font-size:12px;font-weight:700;margin-top:12px}
-.network-option{width:100%;padding:14px;margin-top:9px;border-radius:12px;border:1px solid var(--line);background:#ffffff08;display:flex;align-items:center;justify-content:space-between;text-align:left}
-.network-option.active,.network-option:hover{border-color:var(--gold);background:#f2b84b12}
+.secondary-btn{border:1px solid var(--line);background:rgba(255,255,255,.05);padding:9px 12px;border-radius:11px;font-size:11px;font-weight:700}
+.back-btn{background:transparent;color:var(--gold);border:1.5px solid var(--gold3);height:45px;padding:0 14px;border-radius:14px;font-size:13px;font-weight:700;margin-top:12px}
+.network-option{width:100%;padding:14px 13px;margin-top:9px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.04);display:flex;align-items:center;justify-content:space-between;gap:12px;text-align:left}
+.network-option.active,.network-option:hover{border-color:var(--gold3);background:rgba(242,184,75,.08)}
 .network-name{font-size:13px;font-weight:700}
 .network-caption{font-size:10px;color:var(--muted);margin-top:4px}
-.address-box{border:1px solid #f2b84b45;border-radius:14px;padding:14px;background:#f2b84b08;margin-top:12px}
+.network-arrow{font-size:19px;color:var(--gold)}
+.address-box{border:1px solid rgba(242,184,75,.28);border-radius:14px;padding:14px;background:rgba(242,184,75,.04);margin-top:12px}
 .address-heading{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}
 .address-heading strong{font-size:12px}
-.network-pill{padding:6px 10px;border-radius:20px;background:#f2b84b20;color:var(--gold);font-size:10px;font-weight:700}
-.address-value{font-size:12px;line-height:1.8;overflow-wrap:anywhere;word-break:break-word;color:var(--cream)}
-.copy-row{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:10px}
+.network-pill{padding:6px 10px;border-radius:20px;background:rgba(242,184,75,.12);color:var(--gold);font-size:10px;font-weight:700}
+.address-value{font-size:12px;line-height:1.8;overflow-wrap:anywhere;color:var(--cream)}
+.copy-row{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:11px}
+.copy-btn{background:rgba(242,184,75,.1);border:1px solid rgba(242,184,75,.3);color:var(--gold);padding:9px 12px;border-radius:10px;font-size:11px;font-weight:700}
 .qr-box{width:174px;height:174px;margin:17px auto 9px;padding:10px;background:#fff;border-radius:13px;display:grid;place-items:center}
 .qr-box canvas{max-width:100%;height:auto!important}
 .qr-caption{text-align:center;color:var(--muted);font-size:10px;line-height:1.7}
-.notice{padding:13px;border:1px solid #f2b84b35;background:#f2b84b0d;border-radius:12px;color:#d7c9a8;font-size:11px;line-height:1.8;margin-top:15px}
+.notice{padding:13px;border:1px solid rgba(242,184,75,.22);background:rgba(242,184,75,.06);border-radius:12px;color:#d7c9a8;font-size:11px;line-height:1.8;margin-top:15px}
+.notice.danger{background:rgba(239,107,115,.07);border-color:rgba(239,107,115,.3);color:#ffb5ba}
 .message{display:none;padding:13px;border-radius:12px;font-size:12px;line-height:1.7;margin-top:14px;overflow-wrap:anywhere}
 .message.show{display:block}
-.message.success{background:#22d37a15;border:1px solid #22d37a55;color:#9cf0ce}
-.message.error{background:#ef6b7315;border:1px solid #ef6b7355;color:#ffb5ba}
-.message.info{background:#2f8cff15;border:1px solid #2f8cff55;color:#c1d5ff}
+.message.success{background:rgba(34,211,122,.09);border:1px solid rgba(34,211,122,.28);color:#9cf0ce}
+.message.error{background:rgba(239,107,115,.09);border:1px solid rgba(239,107,115,.28);color:#ffb5ba}
+.message.info{background:rgba(47,140,255,.09);border:1px solid rgba(47,140,255,.28);color:#c1d5ff}
 .history-item{padding:14px 0;border-bottom:1px solid var(--line)}
 .history-item:last-child{border-bottom:0}
 .history-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
-.history-amount{font-size:14px;font-weight:700;overflow-wrap:anywhere}
+.history-amount{font-size:14px;font-weight:700}
 .history-network{font-size:11px;color:var(--muted);margin-top:5px}
 .status{display:inline-flex;padding:6px 10px;border-radius:20px;font-size:9px;font-weight:800;text-transform:uppercase}
-.status.pending{color:#f3d18b;background:#f2b84b20}
-.status.confirmed,.status.finished,.status.completed{color:#8be7c0;background:#22d37a20}
-.status.failed,.status.expired,.status.refunded{color:#ffabb0;background:#ef6b7320}
-.status.other{color:#b9ccf7;background:#2f8cff20}
+.status.pending,.status.waiting,.status.confirming,.status.partially_paid{color:#f3d18b;background:rgba(242,184,75,.13)}
+.status.confirmed,.status.finished,.status.completed,.status.credited{color:#8be7c0;background:rgba(34,211,122,.12)}
+.status.failed,.status.expired,.status.refunded,.status.rejected{color:#ffabb0;background:rgba(239,107,115,.12)}
+.status.other{color:#b9ccf7;background:rgba(47,140,255,.12)}
 .history-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:9px;font-size:10px;color:var(--muted);overflow-wrap:anywhere}
 .empty-state{text-align:center;padding:20px 9px;color:var(--muted);font-size:12px;line-height:1.8}
-.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;min-height:72px;padding-bottom:env(safe-area-inset-bottom);background:#060d1ef5;backdrop-filter:blur(10px);border-top:1px solid var(--line);z-index:120;display:grid;grid-template-columns:repeat(5,1fr)}
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;min-height:72px;padding-bottom:env(safe-area-inset-bottom);background:rgba(6,13,30,.96);backdrop-filter:blur(10px);border-top:1px solid var(--line);z-index:120;display:grid;grid-template-columns:repeat(5,1fr)}
 .bottom-link{background:none;border:0;color:#aab5cc;font-size:11px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px}
-.bottom-link.active{color:var(--gold)}
-.overlay{position:fixed;inset:0;background:#000a;z-index:190;display:none}
+.bottom-link.active{color:var(--gold);background:linear-gradient(180deg,rgba(242,184,75,.16),transparent)}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:190;display:none}
 .overlay.show{display:block}
-.drawer{position:fixed;left:-320px;top:0;width:290px;max-width:86%;height:100dvh;background:#081225;border-right:1px solid var(--line);z-index:200;transition:left .25s;padding:22px 15px;overflow-y:auto}
+.drawer{position:fixed;left:-320px;top:0;width:290px;max-width:86%;height:100dvh;background:#081225;border-right:1px solid var(--line);z-index:200;transition:left .25s ease;padding:22px 15px;overflow-y:auto}
 .drawer.open{left:0}
 .drawer-head{display:flex;align-items:center;justify-content:space-between;padding:8px 7px 25px;border-bottom:1px solid var(--line)}
 .drawer-head .brand-name{font-size:19px}
-.close-drawer{border:0;background:none;color:white;font-size:27px}
+.close-drawer{border:0;background:none;color:#fff;font-size:27px}
 .drawer-nav{padding-top:18px}
 .drawer-link{width:100%;border:0;background:transparent;color:#d7dce4;padding:14px 13px;border-radius:11px;display:flex;align-items:center;gap:13px;text-align:left;margin-bottom:4px}
-.drawer-link.active{background:#f2b84b12;color:var(--gold2)}
+.drawer-link.active,.drawer-link:hover{background:rgba(242,184,75,.08);color:var(--gold2)}
 .drawer-icon{width:22px;text-align:center;color:var(--gold)}
 .drawer-link.logout{margin-top:15px;color:#ef8990}
-.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:#12244c;border:1px solid var(--gold);color:white;padding:12px 16px;border-radius:12px;font-size:12px;opacity:0;pointer-events:none;transition:.25s;z-index:500;max-width:90%;text-align:center}
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:#12244c;border:1px solid var(--gold3);color:#fff;padding:12px 16px;border-radius:12px;font-size:12px;opacity:0;pointer-events:none;transition:.25s;z-index:500;max-width:90%;text-align:center}
 .toast.show{opacity:1}
 @media(min-width:420px){.asset-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
 </style>
@@ -116,143 +119,157 @@ input:focus,select:focus{border-color:var(--gold)}
 <body>
 
 <div id="loadingScreen" class="loading-screen">
-  <div class="loading-box">
-    <div class="brand-logo"><div class="brand-mark">A</div><div class="brand-name">AITIVEST</div></div>
-    <div class="spinner"></div>
-  </div>
+ <div class="loading-box">
+  <div class="brand-logo"><div class="brand-mark">A</div><div class="brand-name">AITIVEST</div></div>
+  <div class="spinner"></div>
+ </div>
 </div>
 
 <div class="overlay" id="overlay"></div>
 
 <aside class="drawer" id="drawer">
-  <div class="drawer-head">
-    <div class="brand-logo"><div class="brand-mark">A</div><div class="brand-name">AITIVEST</div></div>
-    <button class="close-drawer" id="closeDrawer">×</button>
-  </div>
-  <nav class="drawer-nav">
-    <button class="drawer-link" onclick="go('dashboard.html')"><span class="drawer-icon">⌂</span>Portfolio</button>
-    <button class="drawer-link active" onclick="go('deposit.html')"><span class="drawer-icon">＋</span>Deposit</button>
-    <button class="drawer-link" onclick="go('withdraw.html')"><span class="drawer-icon">↗</span>Withdraw</button>
-    <button class="drawer-link" onclick="go('transactions.html')"><span class="drawer-icon">≡</span>Transactions</button>
-    <button class="drawer-link" onclick="go('referrals.html')"><span class="drawer-icon">♧</span>Referrals</button>
-    <button class="drawer-link" onclick="go('profile.html')"><span class="drawer-icon">○</span>Profile</button>
-    <button class="drawer-link" onclick="go('security.html')"><span class="drawer-icon">♙</span>Security Settings</button>
-    <button class="drawer-link" onclick="go('support.html')"><span class="drawer-icon">?</span>Support</button>
-    <button class="drawer-link" onclick="go('notifications.html')"><span class="drawer-icon">♢</span>Notifications</button>
-    <button class="drawer-link logout" id="logoutBtn"><span class="drawer-icon">↪</span>Logout</button>
-  </nav>
+ <div class="drawer-head">
+  <div class="brand-logo"><div class="brand-mark">A</div><div class="brand-name">AITIVEST</div></div>
+  <button class="close-drawer" id="closeDrawer">×</button>
+ </div>
+ <nav class="drawer-nav">
+  <button class="drawer-link" onclick="go('dashboard.html')"><span class="drawer-icon">⌂</span>Portfolio</button>
+  <button class="drawer-link active" onclick="go('deposit.html')"><span class="drawer-icon">＋</span>Deposit</button>
+  <button class="drawer-link" onclick="go('withdraw.html')"><span class="drawer-icon">↗</span>Withdraw</button>
+  <button class="drawer-link" onclick="go('transactions.html')"><span class="drawer-icon">≡</span>Transactions</button>
+  <button class="drawer-link" onclick="go('referrals.html')"><span class="drawer-icon">♧</span>Referrals</button>
+  <button class="drawer-link" onclick="go('profile.html')"><span class="drawer-icon">○</span>Profile</button>
+  <button class="drawer-link" onclick="go('security.html')"><span class="drawer-icon">♙</span>Security Settings</button>
+  <button class="drawer-link" onclick="go('support.html')"><span class="drawer-icon">?</span>Support</button>
+  <button class="drawer-link" onclick="go('notifications.html')"><span class="drawer-icon">♢</span>Notifications</button>
+  <button class="drawer-link logout" id="logoutBtn"><span class="drawer-icon">↪</span>Logout</button>
+ </nav>
 </aside>
 
 <div class="app">
+
 <header class="top">
-  <div class="brand-logo"><div class="brand-mark">A</div><div class="brand-name">AITIVEST</div></div>
-  <div class="top-actions">
-    <button class="bell" onclick="go('notifications.html')" aria-label="Notifications">♧</button>
-    <div class="avatar" id="profileInitial" onclick="go('profile.html')">AV</div>
-  </div>
+ <div class="brand-logo"><div class="brand-mark">A</div><div class="brand-name">AITIVEST</div></div>
+ <div class="top-actions">
+  <button class="bell" onclick="go('notifications.html')" aria-label="Notifications">
+   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+  </button>
+  <div class="avatar" id="profileInitial" onclick="go('profile.html')">AV</div>
+ </div>
 </header>
 
 <div class="page-head">
-  <small>Account funding</small>
-  <h1>Deposit Funds</h1>
+ <small>Account funding</small>
+ <h1>Deposit Funds</h1>
 </div>
 
 <section class="card">
-  <div class="section-title"><h2>Make a Deposit</h2></div>
-  <p class="panel-intro">Choose a cryptocurrency, select its network and enter the amount you want to deposit in USD. A payment address will be generated for you.</p>
-  <div class="step-label"><span class="step-number">01</span> Choose cryptocurrency</div>
-  <div class="asset-grid" id="assetGrid"></div>
+ <div class="section-title"><h2>Make a Deposit</h2></div>
+ <p class="panel-intro">Choose your cryptocurrency and network, enter your deposit amount, and generate your payment details.</p>
+ <div class="step-label"><span class="step-number">01</span> Choose cryptocurrency</div>
+ <div class="asset-grid" id="assetGrid"></div>
+ <div class="asset-step-note">Select the cryptocurrency you want to deposit.</div>
 </section>
 
 <section class="step-panel" id="networkPanel">
-  <div class="card">
-    <div class="step-label"><span class="step-number">02</span> Choose network</div>
-    <p class="panel-intro" id="networkIntro">Select the network you want to use.</p>
-    <div id="networkList"></div>
-    <button class="back-btn" id="backToCoins">← Back to coins</button>
-  </div>
+ <div class="card">
+  <div class="step-label"><span class="step-number">02</span> Choose network</div>
+  <p class="panel-intro" id="networkIntro">Select your preferred network.</p>
+  <div id="networkList"></div>
+  <div class="message" id="networkMessage"></div>
+  <button class="back-btn" id="backToCoins">← Back to coins</button>
+ </div>
 </section>
 
 <section class="step-panel" id="amountPanel">
-  <div class="card">
-    <div class="step-label"><span class="step-number">03</span> Enter deposit amount</div>
-    <p class="panel-intro">Enter the amount in US dollars. NOWPayments will calculate the cryptocurrency amount required.</p>
+ <div class="card">
+  <div class="step-label"><span class="step-number">03</span> Deposit amount</div>
+  <p class="panel-intro">Enter the amount you want to deposit in US dollars.</p>
 
-    <div class="address-box">
-      <div class="address-heading">
-        <strong id="selectedAssetTitle">Selected cryptocurrency</strong>
-        <span class="network-pill" id="selectedNetworkPill">NETWORK</span>
-      </div>
-    </div>
-
-    <div class="field">
-      <label for="amountUsd">Deposit amount (USD)</label>
-      <input type="number" id="amountUsd" min="1" max="100000" step="0.01" inputmode="decimal" placeholder="Enter USD amount">
-      <div class="hint">Minimum: $1 USD. Maximum: $100,000 USD.</div>
-    </div>
-
-    <div class="notice">Only send the cryptocurrency and network shown on the payment screen. Sending funds to an incorrect address or network can result in permanent loss.</div>
-    <div class="message" id="createMessage"></div>
-
-    <button class="primary-btn" id="createPaymentBtn">Create Payment</button>
-    <button class="back-btn" id="backToNetworks">← Back to networks</button>
+  <div class="address-box">
+   <div class="address-heading">
+    <strong id="selectedAssetTitle">Selected cryptocurrency</strong>
+    <span class="network-pill" id="selectedNetworkPill">NETWORK</span>
+   </div>
   </div>
+
+  <div class="field">
+   <label for="amountInput">Amount in USD</label>
+   <input type="number" id="amountInput" min="1" max="100000" step="0.01" inputmode="decimal" placeholder="Enter USD amount">
+   <div class="hint">Minimum deposit: $1 USD.</div>
+  </div>
+
+  <div class="message" id="amountMessage"></div>
+  <button class="primary-btn" id="createPaymentBtn">Continue to payment</button>
+  <button class="back-btn" id="backToNetworks" style="width:100%">← Back to networks</button>
+ </div>
 </section>
 
 <section class="step-panel" id="paymentPanel">
-  <div class="card">
-    <div class="step-label"><span class="step-number">04</span> Complete your payment</div>
-    <p class="panel-intro">Send the exact amount displayed below to the generated address. Your payment status will update when NOWPayments notifies AITIVEST.</p>
+ <div class="card">
+  <div class="step-label"><span class="step-number">04</span> Complete your deposit</div>
+  <p class="panel-intro">Send the exact amount shown below to the generated address.</p>
 
-    <div class="address-box">
-      <div class="address-heading">
-        <strong>Payment amount</strong>
-        <span class="network-pill" id="paymentNetwork">NETWORK</span>
-      </div>
-      <div class="address-value" style="font-size:20px;font-weight:800" id="paymentAmount">—</div>
-      <div class="hint" id="paymentUsd"></div>
+  <div class="address-box">
+   <div class="address-heading">
+    <strong id="paymentAssetTitle">Payment details</strong>
+    <span class="network-pill" id="paymentNetworkPill">NETWORK</span>
+   </div>
 
-      <div style="margin-top:18px">
-        <div class="hint">PAYMENT ADDRESS</div>
-        <div class="address-value" id="paymentAddress"></div>
-        <div class="copy-row">
-          <span class="hint">Copy the address</span>
-          <button class="copy-btn" id="copyPaymentAddress">Copy address</button>
-        </div>
-      </div>
+   <div class="hint">Amount to send</div>
+   <div class="address-value" id="paymentAmount" style="font-size:19px;font-weight:800;margin-top:5px"></div>
 
-      <div class="qr-box" id="qrBox">
-        <canvas id="qrCanvas"></canvas>
-      </div>
-      <div class="qr-caption">Scan this QR code with your sending wallet.</div>
-    </div>
+   <div class="hint" style="margin-top:15px">Payment address</div>
+   <div class="address-value" id="paymentAddress" style="margin-top:5px"></div>
 
-    <div class="notice">
-      <strong>Important:</strong> Send the exact amount to the address above using the selected network. Do not send a different cryptocurrency. Do not send funds after the payment expires.
-    </div>
+   <div class="copy-row">
+    <span class="hint" style="margin:0">Copy payment address</span>
+    <button class="copy-btn" id="copyAddressBtn">Copy address</button>
+   </div>
 
-    <div class="message info show" id="paymentStatusMessage">Waiting for your payment. This page does not need to remain open for NOWPayments to notify AITIVEST.</div>
+   <div class="qr-box"><canvas id="qrCanvas"></canvas></div>
+   <div class="qr-caption">Scan this QR code using your sending wallet.</div>
 
-    <button class="primary-btn" id="refreshHistoryFromPayment">Refresh payment status</button>
-    <button class="back-btn" id="newPaymentBtn">Create another payment</button>
+   <div class="notice danger">
+    <strong>Important:</strong> Send only the selected cryptocurrency through the selected network. Sending the wrong asset or using another network may result in permanent loss.
+   </div>
   </div>
+
+  <div class="notice">
+   Your payment status will update in your deposit history after the network processes your transaction. Do not send more than the amount displayed.
+  </div>
+
+  <div class="message" id="paymentMessage"></div>
+  <button class="primary-btn" id="newDepositBtn">Make another deposit</button>
+ </div>
 </section>
 
 <section class="card" style="margin-top:22px">
-  <div class="section-title">
-    <h2>Deposit History</h2>
-    <button class="secondary-btn" id="refreshHistoryBtn">Refresh ↻</button>
-  </div>
-  <div id="depositHistory"><div class="empty-state">Loading deposit history...</div></div>
+ <div class="section-title">
+  <h2>Deposit History</h2>
+  <button class="secondary-btn" id="refreshHistoryBtn">Refresh ↻</button>
+ </div>
+ <div id="depositHistory"><div class="empty-state">Loading deposit history...</div></div>
 </section>
+
 </div>
 
-<nav class="bottom-nav">
-  <button class="bottom-link" onclick="go('dashboard.html')">⌂<span>Home</span></button>
-  <button class="bottom-link" onclick="go('transactions.html')">▤<span>Portfolio</span></button>
-  <button class="bottom-link active" onclick="go('deposit.html')">＋<span>Deposit</span></button>
-  <button class="bottom-link" onclick="go('withdraw.html')">↗<span>Withdraw</span></button>
-  <button class="bottom-link" id="menuBtn">☰<span>More</span></button>
+<nav class="bottom-nav" aria-label="Bottom navigation">
+ <button class="bottom-link" onclick="go('dashboard.html')">
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l9 8h-3v9h-5v-6h-2v6H6v-9H3z"/></svg>Home
+ </button>
+ <button class="bottom-link" onclick="go('transactions.html')">
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Portfolio
+ </button>
+ <button class="bottom-link active" onclick="go('deposit.html')">
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="9" r="5"/><path d="M12 6v6M9.5 9h5"/><path d="M4 20c2-2 5-3 8-3s6 1 8 3"/></svg>Deposit
+ </button>
+ <button class="bottom-link" onclick="go('withdraw.html')">
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8h13l-3-3M20 16H7l3 3"/></svg>Withdraw
+ </button>
+ <button class="bottom-link" id="menuBtn">
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>More
+ </button>
 </nav>
 
 <div class="toast" id="toast"></div>
@@ -260,77 +277,98 @@ input:focus,select:focus{border-color:var(--gold)}
 <script>
 "use strict";
 
-const SUPABASE_URL = "https://rihvvwktvgytbqzazage.supabase.co";
-const SUPABASE_KEY = "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
-const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const SUPABASE_URL="https://rihvvwktvgytbqzazage.supabase.co";
+const SUPABASE_KEY="sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
+const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const LOGO_BASE="https://cdn.jsdelivr.net/gh/madenix/Crypto-logo-cdn@main/Logos/";
 
-const LOGO_BASE = "https://cdn.jsdelivr.net/gh/madenix/Crypto-logo-cdn@main/Logos/";
-
-const assets = [
-["BTC","Bitcoin","BTC.svg",[["Bitcoin","btc"]]],
-["ETH","Ethereum","ETH.svg",[["Ethereum","eth"]]],
-["USDT","Tether","USDT.svg",[["TRC20","usdttrc20"],["BEP20","usdtbsc"],["ERC20","usdterc20"]]],
-["USDC","USD Coin","USDC.svg",[["BEP20","usdc"],["ERC20","usdc"]]],
-["BNB","BNB","BNB.svg",[["BNB Smart Chain (BEP20)","bnbbsc"]]],
-["SOL","Solana","SOL.svg",[["Solana","sol"]]],
-["XRP","XRP","XRP.svg",[["XRP Ledger","xrp"]]],
-["TON","Toncoin","TON.svg",[["TON","ton"]]],
-["DOGE","Dogecoin","DOGE.svg",[["Dogecoin","doge"]]],
-["ADA","Cardano","ADA.svg",[["Cardano","ada"]]],
-["TRX","TRON","TRON.svg",[["Tron","trx"]]],
-["LTC","Litecoin","LTC.svg",[["Litecoin","ltc"]]],
-["AVAX","Avalanche","AVAX.svg",[["Avalanche C-Chain","avax"]]],
-["DOT","Polkadot","DOT.svg",[["Polkadot","dot"]]],
-["LINK","Chainlink","LINK.svg",[["ERC20","link"]]],
-["POL","Polygon","MATIC.svg",[["Polygon","pol"]]],
-["SHIB","Shiba Inu","SHIB.svg",[["ERC20","shib"]]],
-["BCH","Bitcoin Cash","BCH.svg",[["Bitcoin Cash","bch"]]],
-["XLM","Stellar","XLM.svg",[["Stellar","xlm"]]],
-["ATOM","Cosmos","ATOM.svg",[["Cosmos Hub","atom"]]],
-["NEAR","NEAR Protocol","NEAR.svg",[["NEAR","near"]]],
-["APT","Aptos","APT.svg",[["Aptos","apt"]]],
-["ARB","Arbitrum","ARB.svg",[["Arbitrum One","arb"]]],
-["OP","Optimism","OP.svg",[["Optimism","op"]]]
+const assets=[
+["BTC","Bitcoin","BTC.svg"],
+["ETH","Ethereum","ETH.svg"],
+["USDT","Tether","USDT.svg"],
+["USDC","USD Coin","USDC.svg"],
+["BNB","BNB","BNB.svg"],
+["SOL","Solana","SOL.svg"],
+["XRP","XRP","XRP.svg"],
+["TON","Toncoin","TON.svg"],
+["DOGE","Dogecoin","DOGE.svg"],
+["ADA","Cardano","ADA.svg"],
+["TRX","TRON","TRON.svg"],
+["LTC","Litecoin","LTC.svg"],
+["AVAX","Avalanche","AVAX.svg"],
+["DOT","Polkadot","DOT.svg"],
+["LINK","Chainlink","LINK.svg"],
+["POL","Polygon","MATIC.svg"],
+["SHIB","Shiba Inu","SHIB.svg"],
+["BCH","Bitcoin Cash","BCH.svg"],
+["XLM","Stellar","XLM.svg"],
+["ATOM","Cosmos","ATOM.svg"],
+["NEAR","NEAR Protocol","NEAR.svg"],
+["APT","Aptos","APT.svg"],
+["ARB","Arbitrum","ARB.svg"],
+["OP","Optimism","OP.svg"]
 ];
 
-const $ = id => document.getElementById(id);
-let currentUser = null;
-let selectedAsset = null;
-let selectedNetwork = null;
-let selectedCurrency = null;
-let currentPayment = null;
-let creating = false;
+/* Network identifiers must match the server-side configuration. */
+const networks={
+BTC:[["Bitcoin","btc"]],
+ETH:[["Ethereum","eth"]],
+USDT:[
+["TRON (TRC20)","usdttrc20"],
+["BNB Smart Chain (BEP20)","usdtbsc"],
+["Ethereum (ERC20)","usdterc20"]
+],
+USDC:[
+["BNB Smart Chain (BEP20)","usdc"],
+["Ethereum (ERC20)","usdc"]
+],
+BNB:[["BNB Smart Chain (BEP20)","bnbbsc"]],
+SOL:[["Solana","sol"]],
+XRP:[["XRP Ledger","xrp"]],
+TON:[["TON","ton"]],
+DOGE:[["Dogecoin","doge"]],
+ADA:[["Cardano","ada"]],
+TRX:[["TRON","trx"]],
+LTC:[["Litecoin","ltc"]],
+AVAX:[["Avalanche C-Chain","avax"]],
+DOT:[["Polkadot","dot"]],
+LINK:[["Ethereum (ERC20)","link"]],
+POL:[["Polygon","pol"]],
+SHIB:[["Ethereum (ERC20)","shib"]],
+BCH:[["Bitcoin Cash","bch"]],
+XLM:[["Stellar","xlm"]],
+ATOM:[["Cosmos Hub","atom"]],
+NEAR:[["NEAR","near"]],
+APT:[["Aptos","apt"]],
+ARB:[["Arbitrum One","arb"]],
+OP:[["Optimism","op"]]
+};
+
+const $=id=>document.getElementById(id);
+let currentUser=null;
+let selectedAsset=null;
+let selectedNetwork=null;
+let paymentInProgress=false;
+let activePayment=null;
 
 function go(page){location.href=page}
-
-function escapeHTML(value){
- return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-}
-
+function escapeHTML(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function toast(message){
- const el=$("toast");
- el.textContent=message;
- el.classList.add("show");
- clearTimeout(toast.timer);
- toast.timer=setTimeout(()=>el.classList.remove("show"),2800);
+ const el=$("toast");el.textContent=message;el.classList.add("show");
+ clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.classList.remove("show"),2800);
 }
-
+function initials(name){
+ const p=String(name||"").trim().split(/\s+/).filter(Boolean);
+ return !p.length?"AV":p.length===1?p[0].slice(0,2).toUpperCase():(p[0][0]+p[p.length-1][0]).toUpperCase();
+}
 function message(id,text,type="info"){
- const el=$(id);
- el.textContent=text;
- el.className="message show "+type;
+ const el=$(id);el.textContent=text;el.className="message show "+type;
 }
-
-function clearMessage(id){
- $(id).textContent="";
- $(id).className="message";
-}
-
+function clearMessage(id){$(id).textContent="";$(id).className="message"}
 function hideLoading(){$("loadingScreen").style.display="none"}
 
 function openDrawer(){$("drawer").classList.add("open");$("overlay").classList.add("show")}
 function closeDrawer(){$("drawer").classList.remove("open");$("overlay").classList.remove("show")}
-
 $("menuBtn").addEventListener("click",openDrawer);
 $("closeDrawer").addEventListener("click",closeDrawer);
 $("overlay").addEventListener("click",closeDrawer);
@@ -342,12 +380,18 @@ $("logoutBtn").addEventListener("click",async()=>{
  location.replace("signin.html");
 });
 
+function showStep(id){
+ ["networkPanel","amountPanel","paymentPanel"].forEach(x=>$(x).classList.toggle("show",x===id));
+ const target=id?$(id):$("assetGrid");
+ setTimeout(()=>target.scrollIntoView({behavior:"smooth",block:"start"}),50);
+}
+
 function renderAssets(){
- $("assetGrid").innerHTML=assets.map(a=>`
- <button type="button" class="asset-button" data-asset="${a[0]}">
- <img class="coin-logo" src="${LOGO_BASE+encodeURIComponent(a[2])}" alt="" onerror="this.style.visibility='hidden'">
- <span class="coin-symbol">${a[0]}</span>
- <span class="coin-name">${escapeHTML(a[1])}</span>
+ $("assetGrid").innerHTML=assets.map(([symbol,name,logo])=>`
+ <button type="button" class="asset-button" data-asset="${symbol}">
+ <img class="coin-logo" src="${LOGO_BASE+encodeURIComponent(logo)}" alt="" loading="lazy" onerror="this.style.visibility='hidden'">
+ <span class="coin-symbol">${symbol}</span>
+ <span class="coin-name">${name}</span>
  </button>`).join("");
 
  $("assetGrid").querySelectorAll("[data-asset]").forEach(button=>{
@@ -355,46 +399,29 @@ function renderAssets(){
  });
 }
 
-function showStep(id){
- ["networkPanel","amountPanel","paymentPanel"].forEach(panel=>{
-  $(panel).classList.toggle("show",panel===id);
- });
- const target=id?$(id):$("assetGrid");
- setTimeout(()=>target.scrollIntoView({behavior:"smooth",block:"start"}),40);
-}
-
 function selectAsset(symbol){
  selectedAsset=symbol;
  selectedNetwork=null;
- selectedCurrency=null;
- currentPayment=null;
 
- $("assetGrid").querySelectorAll("[data-asset]").forEach(button=>{
-  button.classList.toggle("active",button.dataset.asset===symbol);
- });
+ $("assetGrid").querySelectorAll("[data-asset]").forEach(b=>b.classList.toggle("active",b.dataset.asset===symbol));
 
  const asset=assets.find(a=>a[0]===symbol);
- $("networkIntro").textContent="Choose the network for "+asset[1]+" ("+symbol+").";
+ $("networkIntro").textContent="Choose a network for "+asset[1]+" ("+symbol+").";
 
- $("networkList").innerHTML=asset[3].map((network,index)=>`
- <button type="button" class="network-option" data-network-index="${index}">
- <div><div class="network-name">${escapeHTML(network[0])}</div>
- <div class="network-caption">Payment currency: ${escapeHTML(network[1])}</div></div>
- <span style="color:var(--gold);font-size:20px">›</span>
+ $("networkList").innerHTML=(networks[symbol]||[]).map(([name,value])=>`
+ <button class="network-option" type="button" data-network="${escapeHTML(value)}">
+  <div><div class="network-name">${escapeHTML(name)}</div><div class="network-caption">Select this network</div></div>
+  <span class="network-arrow">›</span>
  </button>`).join("");
 
- $("networkList").querySelectorAll("[data-network-index]").forEach(button=>{
+ $("networkList").querySelectorAll("[data-network]").forEach(button=>{
   button.addEventListener("click",()=>{
-   const choice=asset[3][Number(button.dataset.networkIndex)];
-   selectedNetwork=choice[0];
-   selectedCurrency=choice[1];
-   $("networkList").querySelectorAll(".network-option").forEach(b=>{
-    b.classList.toggle("active",b===button);
-   });
+   selectedNetwork=button.dataset.network;
+   $("networkList").querySelectorAll(".network-option").forEach(b=>b.classList.toggle("active",b===button));
    $("selectedAssetTitle").textContent=asset[1]+" ("+symbol+")";
-   $("selectedNetworkPill").textContent=selectedNetwork;
-   $("amountUsd").value="";
-   clearMessage("createMessage");
+   $("selectedNetworkPill").textContent=button.querySelector(".network-name").textContent;
+   $("amountInput").value="";
+   clearMessage("amountMessage");
    showStep("amountPanel");
   });
  });
@@ -402,22 +429,25 @@ function selectAsset(symbol){
  showStep("networkPanel");
 }
 
-async function createPayment(){
- if(creating)return;
+$("backToCoins").addEventListener("click",()=>showStep(null));
+$("backToNetworks").addEventListener("click",()=>showStep("networkPanel"));
 
- const amount=Number($("amountUsd").value);
- if(!selectedAsset||!selectedNetwork||!selectedCurrency){
-  toast("Choose a cryptocurrency and network first.");return;
+async function createPayment(){
+ if(paymentInProgress)return;
+
+ const amount=Number($("amountInput").value);
+ if(!selectedAsset||!selectedNetwork){
+  message("amountMessage","Please select a cryptocurrency and network.","error");return;
  }
  if(!Number.isFinite(amount)||amount<1||amount>100000){
-  message("createMessage","Enter an amount between $1 and $100,000 USD.","error");return;
+  message("amountMessage","Enter an amount between $1 and $100,000 USD.","error");return;
  }
 
- creating=true;
+ paymentInProgress=true;
  const button=$("createPaymentBtn");
  button.disabled=true;
- button.textContent="Creating payment...";
- clearMessage("createMessage");
+ button.textContent="Generating payment details...";
+ clearMessage("amountMessage");
 
  try{
   const {data,error}=await db.functions.invoke("nowpayments-create-payment",{
@@ -428,108 +458,83 @@ async function createPayment(){
    }
   });
 
-  if(error){
-   let detail=error.message||"Payment creation failed.";
-   try{
-    const context=error.context;
-    if(context&&typeof context.json==="function"){
-     const body=await context.json();
-     if(body.error)detail=body.error;
-    }
-   }catch(_){}
-   throw new Error(detail);
-  }
-
+  if(error)throw error;
   if(!data||!data.success||!data.pay_address||!data.pay_amount){
-   throw new Error(data?.error||"The payment provider returned incomplete details.");
+   throw new Error(data?.error||"Unable to generate payment details.");
   }
 
-  currentPayment=data;
-  renderPayment(data);
-  await loadHistory();
+  activePayment=data;
+
+  $("paymentAssetTitle").textContent=selectedAsset;
+  $("paymentNetworkPill").textContent=selectedNetwork.toUpperCase();
+  $("paymentAmount").textContent=String(data.pay_amount)+" "+String(data.pay_currency||selectedNetwork).toUpperCase();
+  $("paymentAddress").textContent=data.pay_address;
+
+  if(window.QRious){
+   new QRious({
+    element:$("qrCanvas"),
+    value:data.pay_address,
+    size:154,
+    level:"H",
+    background:"#ffffff",
+    foreground:"#050b1a"
+   });
+  }
+
+  clearMessage("paymentMessage");
+  message("paymentMessage","Your payment details are ready. Complete the transfer using the exact amount and address shown above.","success");
   showStep("paymentPanel");
+  await loadHistory();
+
  }catch(error){
-  console.error("Create payment error:",error);
-  message("createMessage",error.message||"Unable to create payment. Please try again.","error");
+  console.error("Payment creation error:",error);
+  message("amountMessage",error.message||"Unable to create payment. Please try again.","error");
  }finally{
-  creating=false;
+  paymentInProgress=false;
   button.disabled=false;
-  button.textContent="Create Payment";
+  button.textContent="Continue to payment";
  }
 }
 
-function renderPayment(payment){
- $("paymentNetwork").textContent=selectedNetwork;
- $("paymentAmount").textContent=
-  Number(payment.pay_amount).toLocaleString(undefined,{maximumFractionDigits:12})+
-  " "+String(payment.pay_currency||selectedCurrency).toUpperCase();
-
- $("paymentUsd").textContent="Deposit value: $"+
-  Number(payment.price_amount).toFixed(2)+" USD";
-
- $("paymentAddress").textContent=payment.pay_address;
-
- if(window.QRious){
-  new QRious({
-   element:$("qrCanvas"),
-   value:payment.pay_address,
-   size:154,
-   level:"H",
-   background:"#ffffff",
-   foreground:"#050b1a"
-  });
- }
-
- $("paymentStatusMessage").textContent=
-  "Payment created. Waiting for payment. Your deposit history will show provider status updates.";
-}
-
-async function copyText(value,label){
- try{
-  if(navigator.clipboard&&window.isSecureContext){
-   await navigator.clipboard.writeText(value);
-  }else{
-   const input=document.createElement("textarea");
-   input.value=value;
-   input.style.position="fixed";
-   input.style.opacity="0";
-   document.body.appendChild(input);
-   input.select();
-   const ok=document.execCommand("copy");
-   input.remove();
-   if(!ok)throw new Error("Copy failed");
-  }
-  toast(label+" copied.");
- }catch(_){toast("Copy failed. Please copy manually.")}
-}
-
-$("copyPaymentAddress").addEventListener("click",()=>{
- if(currentPayment)copyText(currentPayment.pay_address,"Payment address");
-});
-
-$("backToCoins").addEventListener("click",()=>showStep(null));
-$("backToNetworks").addEventListener("click",()=>showStep("networkPanel"));
 $("createPaymentBtn").addEventListener("click",createPayment);
 
-$("newPaymentBtn").addEventListener("click",()=>{
- currentPayment=null;
+$("copyAddressBtn").addEventListener("click",async()=>{
+ if(!activePayment?.pay_address)return;
+ try{
+  await navigator.clipboard.writeText(activePayment.pay_address);
+  toast("Payment address copied.");
+ }catch(e){
+  const t=document.createElement("textarea");
+  t.value=activePayment.pay_address;
+  document.body.appendChild(t);t.select();
+  document.execCommand("copy");t.remove();
+  toast("Payment address copied.");
+ }
+});
+
+$("newDepositBtn").addEventListener("click",()=>{
+ selectedAsset=null;
  selectedNetwork=null;
- selectedCurrency=null;
+ activePayment=null;
+ $("amountInput").value="";
  showStep(null);
 });
 
 function statusClass(status){
  const s=String(status||"").toLowerCase();
- if(["waiting","confirming","confirmed","sending","partially_paid","pending"].includes(s))return "pending";
- if(["finished","completed","approved","credited"].includes(s))return "finished";
+ if(["confirmed","finished","completed","credited"].includes(s))return "confirmed";
+ if(["waiting","pending","confirming","partially_paid"].includes(s))return s;
  if(["failed","expired","refunded","rejected"].includes(s))return s;
  return "other";
 }
-
 function formatDate(value){
- const date=new Date(value);
- return Number.isNaN(date.getTime())?"Date unavailable":
- date.toLocaleString(undefined,{dateStyle:"medium",timeStyle:"short"});
+ if(!value)return "Date unavailable";
+ const d=new Date(value);
+ return Number.isNaN(d.getTime())?"Date unavailable":d.toLocaleString();
+}
+function formatAmount(value){
+ const n=Number(value);
+ return Number.isFinite(n)?n.toLocaleString(undefined,{maximumFractionDigits:8}):"—";
 }
 
 async function loadHistory(){
@@ -537,52 +542,45 @@ async function loadHistory(){
  container.innerHTML='<div class="empty-state">Loading deposit history...</div>';
 
  const {data,error}=await db.from("deposits")
-  .select("id,asset,network,amount,credited_amount,status,created_at,external_reference,provider_payment_id,provider_status,provider_amount_paid,provider_currency")
-  .eq("user_id",currentUser.id)
-  .order("created_at",{ascending:false})
-  .limit(20);
+ .select("id,asset,network,amount,credited_amount,status,created_at,external_reference,provider_status,provider_currency,provider_amount_paid")
+ .eq("user_id",currentUser.id)
+ .order("created_at",{ascending:false})
+ .limit(20);
 
  if(error){
   console.error("History error:",error);
-  container.innerHTML='<div class="empty-state">Unable to load deposit history. Please refresh.</div>';
+  container.innerHTML='<div class="empty-state">Unable to load deposit history. Tap Refresh to try again.</div>';
   return;
  }
 
- if(!data||!data.length){
-  container.innerHTML='<div class="empty-state">No deposits yet. Your payment history will appear here.</div>';
+ if(!data?.length){
+  container.innerHTML='<div class="empty-state">No deposits yet.<br>Your deposit history will appear here.</div>';
   return;
  }
 
  container.innerHTML=data.map(item=>{
-  const providerStatus=item.provider_status||item.status||"unknown";
-  const displayStatus=String(providerStatus).replace(/_/g," ");
-  const amount=Number(item.amount);
-  const amountText=Number.isFinite(amount)?amount.toLocaleString(undefined,{maximumFractionDigits:10}):"—";
-  const currency=item.provider_currency||item.asset||"";
-  const credited=item.credited_amount==null?"":Number(item.credited_amount).toLocaleString(undefined,{maximumFractionDigits:10});
+  const status=String(item.provider_status||item.status||"pending").toLowerCase();
+  const amount=formatAmount(item.amount);
+  const credited=item.credited_amount==null?null:formatAmount(item.credited_amount);
 
   return `<div class="history-item">
    <div class="history-top">
     <div>
-     <div class="history-amount">${escapeHTML(amountText)} ${escapeHTML(currency)}</div>
-     <div class="history-network">${escapeHTML(item.asset||"")} · ${escapeHTML(item.network||"")}</div>
+     <div class="history-amount">${escapeHTML(amount)} ${escapeHTML(item.asset||"")}</div>
+     <div class="history-network">${escapeHTML(item.network||"Network not specified")}</div>
     </div>
-    <span class="status ${statusClass(providerStatus)}">${escapeHTML(displayStatus)}</span>
+    <span class="status ${statusClass(status)}">${escapeHTML(status.replace(/_/g," "))}</span>
    </div>
    <div class="history-meta">
     <span>${escapeHTML(formatDate(item.created_at))}</span>
-    ${credited?`<span>Credited: ${escapeHTML(credited)} ${escapeHTML(item.asset||"")}</span>`:""}
+    ${credited!==null?`<span>Credited: ${escapeHTML(credited)} ${escapeHTML(item.asset||"")}</span>`:""}
    </div>
-   ${item.provider_payment_id?`<div class="history-meta"><span>Payment ID: ${escapeHTML(item.provider_payment_id)}</span></div>`:""}
+   ${item.external_reference?`<div class="history-meta"><span>Reference: ${escapeHTML(item.external_reference)}</span></div>`:""}
   </div>`;
  }).join("");
 }
 
 $("refreshHistoryBtn").addEventListener("click",loadHistory);
-$("refreshHistoryFromPayment").addEventListener("click",async()=>{
- await loadHistory();
- toast("Deposit history refreshed.");
-});
 
 async function initialize(){
  try{
@@ -596,21 +594,18 @@ async function initialize(){
   }
 
   const {data:profile}=await db.from("profiles")
-   .select("full_name")
-   .eq("id",currentUser.id)
-   .maybeSingle();
+   .select("full_name").eq("id",currentUser.id).maybeSingle();
 
-  const name=profile?.full_name||currentUser.user_metadata?.full_name||"";
-  const parts=name.trim().split(/\s+/).filter(Boolean);
-  $("profileInitial").textContent=parts.length>1?
-   (parts[0][0]+parts[parts.length-1][0]).toUpperCase():
-   (parts[0]?.slice(0,2).toUpperCase()||"AV");
+  $("profileInitial").textContent=initials(
+   profile?.full_name||currentUser.user_metadata?.full_name
+  );
 
   renderAssets();
   await loadHistory();
+
  }catch(error){
-  console.error("Deposit initialization error:",error);
-  toast("Unable to load the deposit page. Refresh and try again.");
+  console.error("Initialization error:",error);
+  toast("Unable to load deposit page. Please refresh.");
  }finally{
   hideLoading();
  }
