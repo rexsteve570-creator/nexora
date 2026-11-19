@@ -196,7 +196,7 @@ input:focus,select:focus{border-color:var(--gold3)}
   <div class="field">
    <label for="amountInput">Amount in USD</label>
    <input type="number" id="amountInput" min="1" max="100000" step="0.01" inputmode="decimal" placeholder="Enter USD amount">
-   <div class="hint">Minimum deposit: $1 USD.</div>
+   <div class="hint">Minimum deposit: $1 USD. Some coins have a higher minimum set by the payment provider.</div>
   </div>
 
   <div class="message" id="amountMessage"></div>
@@ -319,7 +319,7 @@ USDT:[
 ["Ethereum (ERC20)","usdterc20"]
 ],
 USDC:[
-["BNB Smart Chain (BEP20)","usdc"],
+["BNB Smart Chain (BEP20)","usdcbsc"],
 ["Ethereum (ERC20)","usdc"]
 ],
 BNB:[["BNB Smart Chain (BEP20)","bnbbsc"]],
@@ -458,7 +458,14 @@ async function createPayment(){
    }
   });
 
-  if(error)throw error;
+  if(error){
+   let msg=error.message;
+   try{
+    const b=await error.context.json();
+    msg=b.error||b.message||msg;
+   }catch(e){}
+   throw new Error(msg);
+  }
   if(!data||!data.success||!data.pay_address||!data.pay_amount){
    throw new Error(data?.error||"Unable to generate payment details.");
   }
@@ -466,7 +473,7 @@ async function createPayment(){
   activePayment=data;
 
   $("paymentAssetTitle").textContent=selectedAsset;
-  $("paymentNetworkPill").textContent=selectedNetwork.toUpperCase();
+  $("paymentNetworkPill").textContent=$("selectedNetworkPill").textContent;
   $("paymentAmount").textContent=String(data.pay_amount)+" "+String(data.pay_currency||selectedNetwork).toUpperCase();
   $("paymentAddress").textContent=data.pay_address;
 
