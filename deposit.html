@@ -243,9 +243,10 @@ input:focus,select:focus{border-color:var(--gold3);box-shadow:0 0 0 3px rgba(242
           <span class="network-pill" id="networkPill">NETWORK</span>
         </div>
 
-        <div class="hint" style="margin-top:0">Your deposit</div>
-        <div class="address-value" id="usdSummary" style="font-size:19px;font-weight:800;margin-top:4px"></div>
-        <div class="hint usd-estimate" id="coinEstimate" aria-live="polite"></div>
+        <div class="hint" style="margin-top:0">Amount to send</div>
+        <div class="address-value" id="coinEstimate" style="font-size:19px;font-weight:800;margin-top:4px" aria-live="polite"></div>
+        <div class="hint usd-estimate" id="usdSummary"></div>
+        <div class="hint">Estimated at today's price. Network fees may apply, so enter the exact amount you sent below.</div>
 
         <div class="hint" style="margin-top:15px">Payment address</div>
         <div class="address-value" id="depositAddress" style="margin-top:5px"></div>
@@ -560,7 +561,7 @@ function renderAddress(){
 
   $("addressAssetTitle").textContent = name + " (" + symbol + ")";
   $("networkPill").textContent = address.network || "NETWORK";
-  $("usdSummary").textContent = "$" + Number(selectedUsd).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2}) + " USD";
+  $("usdSummary").textContent = "≈ $" + Number(selectedUsd).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2}) + " USD";
   $("depositAddress").textContent = address.address || "Address unavailable";
 
   const memo = String(address.memo_tag ?? "").trim();
@@ -658,21 +659,21 @@ async function getUsdPrice(symbol){
 
 async function updateCoinEstimate(){
   const el = $("coinEstimate");
-  el.textContent = "";
   const symbol = String(selectedAddress?.asset || selectedAsset || "").toUpperCase();
-  if(!symbol || !selectedUsd) return;
+  if(!symbol || !selectedUsd){ el.textContent = ""; return; }
+
+  el.textContent = "Calculating...";
 
   const usdAtRequest = selectedUsd;
   const price = await getUsdPrice(symbol);
   if(usdAtRequest !== selectedUsd) return;
 
   if(price === null){
-    el.textContent = "Coin estimate unavailable right now.";
+    el.textContent = "Estimate unavailable right now";
     return;
   }
 
-  el.textContent = "≈ " + formatAmount(selectedUsd / price) + " " + symbol +
-    " at today's price. Network fees may apply, so send from your wallet and enter the exact amount below.";
+  el.textContent = "≈ " + formatAmount(selectedUsd / price) + " " + symbol;
 }
 
 /* DEPOSIT HISTORY */
