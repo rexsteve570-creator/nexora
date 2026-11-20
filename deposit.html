@@ -21,13 +21,11 @@ button{cursor:pointer}
 button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
 [hidden]{display:none!important}
 
-/* Loading */
 .loading-screen{position:fixed;inset:0;background:#050b1a;display:flex;align-items:center;justify-content:center;z-index:9999}
 .loading-box{text-align:center}
 .spinner{width:28px;height:28px;border:3px solid rgba(242,184,75,.18);border-top-color:var(--gold);border-radius:50%;margin:20px auto 0;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* Brand */
 .brand-logo{display:flex;align-items:center;gap:9px}
 .brand-mark{width:30px;height:30px;border:2px solid var(--gold);border-radius:9px 9px 9px 2px;display:flex;align-items:center;justify-content:center;color:var(--gold2);font-size:16px;font-weight:900;transform:rotate(-3deg)}
 .brand-name{font-size:24px;font-weight:700;letter-spacing:2px;background:linear-gradient(180deg,#ffd982,#d89a24);-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -36,7 +34,6 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
 
 .app{width:100%;max-width:480px;min-height:100vh;background:radial-gradient(120% 60% at 50% 0%,#0f2350 0%,var(--bg) 60%);padding:18px 16px 100px;position:relative}
 
-/* Header */
 .top{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
 .top-actions{display:flex;gap:14px;align-items:center}
 .bell{background:none;border:0;color:var(--gold);display:flex}
@@ -45,7 +42,6 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
 .page-head small{font-size:15px;color:#cfd8ec;display:block}
 .page-head h1{font-size:26px;font-weight:700;color:var(--gold)}
 
-/* Cards */
 .card{background:linear-gradient(180deg,rgba(18,34,72,.75),rgba(9,20,45,.9));border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px}
 .section-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
 .section-title h2{font-size:15px;font-weight:700}
@@ -53,7 +49,6 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
 .step-label{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:700;margin-bottom:8px}
 .step-number{width:30px;height:30px;border-radius:10px;background:rgba(242,184,75,.12);border:1px solid rgba(242,184,75,.3);display:grid;place-items:center;color:var(--gold);font-size:12px}
 
-/* Assets */
 .asset-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
 .asset-button{border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.04);min-width:0;padding:12px 6px 10px;display:flex;flex-direction:column;align-items:center;gap:7px;transition:border-color .15s}
 .asset-button:hover,.asset-button.active{border-color:var(--gold3);background:rgba(242,184,75,.08)}
@@ -67,7 +62,6 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
 .step-panel.show{display:block;animation:appear .22s ease}
 @keyframes appear{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
 
-/* Forms */
 .field{margin-top:15px}
 label{display:block;font-size:12px;font-weight:700;margin-bottom:8px;color:#dfe6f0}
 input,select{width:100%;background:rgba(5,11,26,.8);border:1px solid var(--line);border-radius:12px;padding:14px 13px;font-size:13px;outline:none}
@@ -79,10 +73,7 @@ input:focus,select:focus{border-color:var(--gold3);box-shadow:0 0 0 3px rgba(242
 .primary-btn:active{transform:scale(.98)}
 .primary-btn:disabled{opacity:.55;cursor:not-allowed}
 .secondary-btn{border:1px solid var(--line);background:rgba(255,255,255,.05);padding:9px 12px;border-radius:11px;font-size:11px;font-weight:700}
-.back-btn{background:transparent;color:var(--gold);border:1.5px solid var(--gold3);height:50px;padding:0 14px;border-radius:14px;font-size:13px;font-weight:700}
-.button-row{display:flex;gap:10px;margin-top:15px}
-.button-row .back-btn{flex:0 0 auto}
-.button-row .primary-btn{flex:1;margin-top:0}
+.back-btn{background:transparent;color:var(--gold);border:1.5px solid var(--gold3);height:48px;padding:0 14px;border-radius:14px;font-size:13px;font-weight:700}
 
 .network-option{width:100%;padding:14px 13px;margin-top:9px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.04);display:flex;align-items:center;justify-content:space-between;gap:12px;text-align:left}
 .network-option:hover,.network-option.active{border-color:var(--gold3);background:rgba(242,184,75,.08)}
@@ -104,13 +95,13 @@ input:focus,select:focus{border-color:var(--gold3);box-shadow:0 0 0 3px rgba(242
 .memo-label{color:#9cc4ff;font-size:11px;font-weight:700;margin-bottom:7px}
 .notice{padding:13px;border:1px solid rgba(242,184,75,.22);background:rgba(242,184,75,.06);border-radius:12px;color:#d7c9a8;font-size:11px;line-height:1.8;margin-top:15px}
 .notice.danger{background:rgba(239,107,115,.07);border-color:rgba(239,107,115,.3);color:#ffb5ba}
+.divider{height:1px;background:var(--line);margin:20px 0 4px}
 .message{display:none;padding:13px;border-radius:12px;font-size:12px;line-height:1.7;margin-top:14px;overflow-wrap:anywhere}
 .message.show{display:block}
 .message.success{background:rgba(34,211,122,.09);border:1px solid rgba(34,211,122,.28);color:#9cf0ce}
 .message.error{background:rgba(239,107,115,.09);border:1px solid rgba(239,107,115,.28);color:#ffb5ba}
 .message.info{background:rgba(47,140,255,.09);border:1px solid rgba(47,140,255,.28);color:#c1d5ff}
 
-/* History */
 .history-item{padding:14px 0;border-bottom:1px solid var(--line)}
 .history-item:first-child{padding-top:0}
 .history-item:last-child{border-bottom:0;padding-bottom:0}
@@ -125,13 +116,11 @@ input:focus,select:focus{border-color:var(--gold3);box-shadow:0 0 0 3px rgba(242
 .history-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:9px;font-size:10px;color:var(--muted);overflow-wrap:anywhere}
 .empty-state{text-align:center;padding:20px 9px;color:var(--muted);font-size:12px;line-height:1.8}
 
-/* Bottom nav */
 .bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;min-height:72px;padding-bottom:env(safe-area-inset-bottom);background:rgba(6,13,30,.96);backdrop-filter:blur(10px);border-top:1px solid var(--line);z-index:120;display:grid;grid-template-columns:repeat(5,1fr)}
 .bottom-link{background:none;border:0;color:#aab5cc;font-size:11px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px}
 .bottom-link.active{color:var(--gold);background:linear-gradient(180deg,rgba(242,184,75,.16),transparent)}
 .bottom-link.active svg{filter:drop-shadow(0 0 6px rgba(242,184,75,.7))}
 
-/* Drawer */
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:190;display:none}
 .overlay.show{display:block}
 .drawer{position:fixed;left:-320px;top:0;width:290px;max-width:86%;height:100vh;height:100dvh;background:#081225;border-right:1px solid var(--line);z-index:200;transition:left .25s ease;padding:22px 15px;overflow-y:auto}
@@ -193,18 +182,20 @@ input:focus,select:focus{border-color:var(--gold3);box-shadow:0 0 0 3px rgba(242
   </header>
 
   <div class="page-head">
-    <small id="greetingText">Account funding</small>
+    <small>Account funding</small>
     <h1>Deposit Funds</h1>
   </div>
 
+  <!-- STEP 1 -->
   <section class="card">
     <div class="section-title"><h2>Make a Deposit</h2></div>
-    <p class="panel-intro">Choose your cryptocurrency, select one of its available networks, then view the correct address or scan its QR code.</p>
+    <p class="panel-intro">Choose your cryptocurrency and network, enter your deposit amount, and generate your payment details.</p>
     <div class="step-label"><span class="step-number">01</span> Choose cryptocurrency</div>
     <div class="asset-grid" id="assetGrid"></div>
-    <div class="asset-step-note">Tap a coin logo to continue to its available deposit networks.</div>
+    <div class="asset-step-note">Tap a coin logo to continue to its available networks.</div>
   </section>
 
+  <!-- STEP 2 -->
   <section class="step-panel" id="networkPanel">
     <div class="card">
       <div class="step-label"><span class="step-number">02</span> Choose network</div>
@@ -215,23 +206,57 @@ input:focus,select:focus{border-color:var(--gold3);box-shadow:0 0 0 3px rgba(242
     </div>
   </section>
 
+  <!-- STEP 3 -->
+  <section class="step-panel" id="amountPanel">
+    <div class="card">
+      <div class="step-label"><span class="step-number">03</span> Deposit amount</div>
+      <p class="panel-intro">Enter the amount you want to deposit in US dollars.</p>
+
+      <div class="address-box">
+        <div class="address-heading">
+          <strong id="selectedAssetTitle">Selected cryptocurrency</strong>
+          <span class="network-pill" id="selectedNetworkPill">NETWORK</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="usdInput">Amount in USD</label>
+        <input id="usdInput" type="number" min="1" max="100000" step="0.01" inputmode="decimal" placeholder="Enter USD amount">
+        <div class="hint">Minimum deposit: $1 USD.</div>
+      </div>
+
+      <div class="message" id="amountMessage" role="status" aria-live="polite"></div>
+      <button class="primary-btn" type="button" id="createPaymentBtn">Continue to payment</button>
+      <button class="back-btn" type="button" id="backToNetworks" style="width:100%;margin-top:10px">← Back to networks</button>
+    </div>
+  </section>
+
+  <!-- STEP 4 -->
   <section class="step-panel" id="addressPanel">
     <div class="card">
-      <div class="step-label"><span class="step-number">03</span> Deposit address</div>
-      <p class="panel-intro">Send only the selected asset over the selected network. Verify the details before transferring.</p>
+      <div class="step-label"><span class="step-number">04</span> Complete your deposit</div>
+      <p class="panel-intro">Send your payment to the address below, then enter the amount sent and the transaction hash to confirm.</p>
 
       <div class="address-box">
         <div class="address-heading">
           <strong id="addressAssetTitle">Deposit address</strong>
           <span class="network-pill" id="networkPill">NETWORK</span>
         </div>
-        <div class="address-value" id="depositAddress"></div>
+
+        <div class="hint" style="margin-top:0">Your deposit</div>
+        <div class="address-value" id="usdSummary" style="font-size:19px;font-weight:800;margin-top:4px"></div>
+        <div class="hint usd-estimate" id="coinEstimate" aria-live="polite"></div>
+
+        <div class="hint" style="margin-top:15px">Payment address</div>
+        <div class="address-value" id="depositAddress" style="margin-top:5px"></div>
         <div class="copy-row">
-          <span class="hint" style="margin:0">Wallet address</span>
+          <span class="hint" style="margin:0">Copy payment address</span>
           <button type="button" class="copy-btn" id="copyAddressBtn">Copy address</button>
         </div>
+
         <div class="qr-box" id="qrBox"><canvas id="qrCanvas" aria-label="Deposit QR code"></canvas></div>
         <div class="qr-caption">Open your sending wallet and scan this QR code if supported.</div>
+
         <div class="memo-box" id="memoBox" hidden>
           <div class="memo-label">MEMO / DESTINATION TAG</div>
           <div class="address-value" id="memoValue"></div>
@@ -242,46 +267,28 @@ input:focus,select:focus{border-color:var(--gold3);box-shadow:0 0 0 3px rgba(242
         </div>
       </div>
 
-      <div class="notice danger"><strong>Important:</strong> Sending the wrong asset or using the wrong network may result in permanent loss. Check any minimum deposit requirements. Never share your wallet recovery phrase or private keys.</div>
+      <div class="notice danger"><strong>Important:</strong> Send only the selected asset over the selected network. Sending the wrong asset or using the wrong network may result in permanent loss. Never share your wallet recovery phrase or private keys.</div>
 
-      <div class="button-row">
-        <button type="button" class="back-btn" id="backToNetworks">← Network</button>
-        <button type="button" class="primary-btn" id="continueToForm">Continue →</button>
-      </div>
-    </div>
-  </section>
-
-  <section class="step-panel" id="formPanel">
-    <div class="card">
-      <div class="step-label"><span class="step-number">04</span> Transaction details</div>
-      <p class="panel-intro">After sending the crypto, enter the amount sent and the transaction hash from your wallet.</p>
-
-      <div class="address-box" style="margin-bottom:15px">
-        <div class="address-heading">
-          <strong id="formAssetTitle">Selected asset</strong>
-          <span class="network-pill" id="formNetworkPill">NETWORK</span>
-        </div>
-        <div class="address-value" id="formAddressPreview"></div>
-      </div>
+      <div class="divider"></div>
 
       <form id="depositForm">
+        <div class="step-label" style="margin-top:16px"><span class="step-number">✓</span> After you send</div>
         <div class="field">
-          <label for="amountInput">Amount sent</label>
-          <input id="amountInput" type="number" min="0" step="any" inputmode="decimal" placeholder="Enter amount" required>
-          <div class="hint">Enter the amount you actually sent in the selected cryptocurrency.</div>
-          <div class="hint usd-estimate" id="usdEstimate" aria-live="polite"></div>
+          <label for="amountInput">Amount sent (in coin)</label>
+          <input id="amountInput" type="number" min="0" step="any" inputmode="decimal" placeholder="Exact amount you sent" required>
+          <div class="hint">Enter the exact amount you sent in the selected cryptocurrency.</div>
         </div>
         <div class="field">
           <label for="txHashInput">Transaction hash / TXID</label>
           <input id="txHashInput" type="text" minlength="8" maxlength="200" autocomplete="off" placeholder="Paste transaction hash" required>
-          <div class="hint">Find the transaction hash in your sending wallet or blockchain explorer.</div>
+          <div class="hint">Find it in your sending wallet or a blockchain explorer.</div>
         </div>
 
-        <div class="notice">Submitting a request does not automatically confirm a blockchain payment. Your deposit is subject to the platform's verification process.</div>
+        <div class="notice">Submitting does not automatically confirm a blockchain payment. Your deposit is reviewed and credited after verification.</div>
         <div class="message" id="formMessage" role="status" aria-live="polite"></div>
 
         <button class="primary-btn" type="submit" id="submitDepositBtn">Submit deposit request</button>
-        <button class="back-btn" type="button" id="backToAddress" style="width:100%;margin-top:10px">← Back to address</button>
+        <button class="back-btn" type="button" id="backToAmount" style="width:100%;margin-top:10px">← Change amount</button>
       </form>
     </div>
   </section>
@@ -339,6 +346,8 @@ let currentUser = null;
 let depositAddresses = [];
 let selectedAsset = null;
 let selectedAddress = null;
+let selectedUsd = null;
+let creating = false;
 let submitting = false;
 
 function go(page){ location.href = page; }
@@ -398,7 +407,18 @@ $("logoutBtn").addEventListener("click",async()=>{
   location.replace("signin.html");
 });
 
-/* COIN SELECTION */
+/* STEPS */
+function showStep(step){
+  ["networkPanel","amountPanel","addressPanel"].forEach(id=>{
+    $(id).classList.toggle("show",id === step);
+  });
+  const target = step ? $(step) : $("assetGrid");
+  if(target){
+    setTimeout(()=>target.scrollIntoView({behavior:"smooth",block:"start"}),40);
+  }
+}
+
+/* STEP 1: COINS */
 function renderAssets(){
   $("assetGrid").innerHTML = assets.map(([symbol,name,logo])=>{
     const available = depositAddresses.some(a=>
@@ -406,7 +426,7 @@ function renderAssets(){
     );
     return `
       <button type="button" class="asset-button ${available ? "" : "unavailable"}"
-        data-asset="${symbol}" aria-label="Choose ${name}">
+        data-asset="${symbol}" aria-label="Choose ${escapeHTML(name)}">
         <img class="coin-logo" src="${LOGO_BASE + encodeURIComponent(logo)}"
           alt="" loading="lazy" onerror="this.style.visibility='hidden'">
         <span class="coin-symbol">${symbol}</span>
@@ -419,19 +439,11 @@ function renderAssets(){
   });
 }
 
-function showStep(step){
-  ["networkPanel","addressPanel","formPanel"].forEach(id=>{
-    $(id).classList.toggle("show",id === step);
-  });
-  const target = step ? $(step) : $("assetGrid");
-  if(target){
-    setTimeout(()=>target.scrollIntoView({behavior:"smooth",block:"start"}),40);
-  }
-}
-
+/* STEP 2: NETWORKS */
 function selectAsset(symbol){
   selectedAsset = symbol;
   selectedAddress = null;
+  selectedUsd = null;
 
   $("assetGrid").querySelectorAll("[data-asset]").forEach(button=>{
     button.classList.toggle("active",button.dataset.asset === symbol);
@@ -466,7 +478,7 @@ function selectAsset(symbol){
 
       const caption = document.createElement("div");
       caption.className = "network-caption";
-      caption.textContent = "Tap to view deposit address and QR code";
+      caption.textContent = "Select this network";
       left.append(name,caption);
 
       const arrow = document.createElement("span");
@@ -487,9 +499,55 @@ function selectNetwork(address,button){
   document.querySelectorAll(".network-option").forEach(item=>
     item.classList.toggle("active",item === button)
   );
-  renderAddress();
-  showStep("addressPanel");
+
+  const symbol = String(address.asset || selectedAsset).toUpperCase();
+  const asset = assets.find(a=>a[0] === symbol);
+  const name = asset ? asset[1] : symbol;
+
+  $("selectedAssetTitle").textContent = name + " (" + symbol + ")";
+  $("selectedNetworkPill").textContent = address.network || "NETWORK";
+  $("usdInput").value = "";
+  clearMessage("amountMessage");
+  showStep("amountPanel");
 }
+
+/* STEP 3 -> 4: CREATE PAYMENT (shows address + QR) */
+async function createPayment(){
+  if(creating) return;
+  clearMessage("amountMessage");
+
+  if(!selectedAddress){
+    showMessage("amountMessage","Please select a cryptocurrency and network.","error");
+    return;
+  }
+  if(!selectedAddress.address){
+    showMessage("amountMessage","This network has no deposit address configured. Please contact support.","error");
+    return;
+  }
+
+  const usd = Number($("usdInput").value);
+  if(!Number.isFinite(usd) || usd < 1 || usd > 100000){
+    showMessage("amountMessage","Enter an amount between $1 and $100,000 USD.","error");
+    return;
+  }
+
+  creating = true;
+  const button = $("createPaymentBtn");
+  button.disabled = true;
+  button.textContent = "Generating payment details...";
+
+  try{
+    selectedUsd = usd;
+    renderAddress();
+    showStep("addressPanel");
+  }finally{
+    creating = false;
+    button.disabled = false;
+    button.textContent = "Continue to payment";
+  }
+}
+
+$("createPaymentBtn").addEventListener("click",createPayment);
 
 /* ADDRESS AND QR */
 function renderAddress(){
@@ -502,6 +560,7 @@ function renderAddress(){
 
   $("addressAssetTitle").textContent = name + " (" + symbol + ")";
   $("networkPill").textContent = address.network || "NETWORK";
+  $("usdSummary").textContent = "$" + Number(selectedUsd).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2}) + " USD";
   $("depositAddress").textContent = address.address || "Address unavailable";
 
   const memo = String(address.memo_tag ?? "").trim();
@@ -509,7 +568,6 @@ function renderAddress(){
   $("memoValue").textContent = memo;
 
   $("qrBox").hidden = !address.address;
-
   if(address.address && window.QRious){
     try{
       new QRious({
@@ -528,9 +586,10 @@ function renderAddress(){
     $("qrBox").hidden = true;
   }
 
-  $("formAssetTitle").textContent = name + " (" + symbol + ")";
-  $("formNetworkPill").textContent = address.network || "NETWORK";
-  $("formAddressPreview").textContent = address.address || "";
+  $("amountInput").value = "";
+  $("txHashInput").value = "";
+  clearMessage("formMessage");
+  updateCoinEstimate();
 }
 
 async function copyText(value,label){
@@ -558,17 +617,63 @@ async function copyText(value,label){
 $("copyAddressBtn").addEventListener("click",()=>{ if(selectedAddress) copyText(selectedAddress.address,"Address"); });
 $("copyMemoBtn").addEventListener("click",()=>{ if(selectedAddress) copyText(String(selectedAddress.memo_tag ?? ""),"Memo/tag"); });
 
-/* STEP NAVIGATION */
+/* NAVIGATION */
 $("backToCoins").addEventListener("click",()=>showStep(null));
 $("backToNetworks").addEventListener("click",()=>showStep("networkPanel"));
-$("continueToForm").addEventListener("click",()=>{
-  if(!selectedAddress || !selectedAddress.address){
-    toast("This network has no deposit address configured.");
+$("backToAmount").addEventListener("click",()=>showStep("amountPanel"));
+
+/* COIN ESTIMATE FROM USD (helper only) */
+const COIN_IDS={
+  BTC:"bitcoin",ETH:"ethereum",USDT:"tether",USDC:"usd-coin",BNB:"binancecoin",
+  SOL:"solana",XRP:"ripple",TON:"the-open-network",DOGE:"dogecoin",ADA:"cardano",
+  TRX:"tron",LTC:"litecoin",AVAX:"avalanche-2",DOT:"polkadot",LINK:"chainlink",
+  POL:"polygon-ecosystem-token",SHIB:"shiba-inu",BCH:"bitcoin-cash",XLM:"stellar",
+  ATOM:"cosmos",NEAR:"near",APT:"aptos",ARB:"arbitrum",OP:"optimism"
+};
+const priceCache = {};
+
+async function getUsdPrice(symbol){
+  const cached = priceCache[symbol];
+  if(cached && Date.now() - cached.time < 60000) return cached.price;
+
+  const id = COIN_IDS[symbol];
+  if(!id) return null;
+
+  try{
+    const response = await fetch(
+      "https://api.coingecko.com/api/v3/simple/price?ids=" + encodeURIComponent(id) + "&vs_currencies=usd",
+      {headers:{Accept:"application/json"},cache:"no-store",signal:AbortSignal.timeout(10000)}
+    );
+    if(!response.ok) throw new Error("HTTP " + response.status);
+    const data = await response.json();
+    const price = Number(data?.[id]?.usd);
+    if(!Number.isFinite(price) || price <= 0) return null;
+    priceCache[symbol] = {price,time:Date.now()};
+    return price;
+  }catch(error){
+    console.warn("USD price lookup failed:",error);
+    return cached ? cached.price : null;
+  }
+}
+
+async function updateCoinEstimate(){
+  const el = $("coinEstimate");
+  el.textContent = "";
+  const symbol = String(selectedAddress?.asset || selectedAsset || "").toUpperCase();
+  if(!symbol || !selectedUsd) return;
+
+  const usdAtRequest = selectedUsd;
+  const price = await getUsdPrice(symbol);
+  if(usdAtRequest !== selectedUsd) return;
+
+  if(price === null){
+    el.textContent = "Coin estimate unavailable right now.";
     return;
   }
-  showStep("formPanel");
-});
-$("backToAddress").addEventListener("click",()=>showStep("addressPanel"));
+
+  el.textContent = "≈ " + formatAmount(selectedUsd / price) + " " + symbol +
+    " at today's price. Network fees may apply, so send from your wallet and enter the exact amount below.";
+}
 
 /* DEPOSIT HISTORY */
 function statusClass(status){
@@ -649,7 +754,7 @@ $("depositForm").addEventListener("submit",async event=>{
   const txHash = $("txHashInput").value.trim();
 
   if(!Number.isFinite(amount) || amount <= 0){
-    showMessage("formMessage","Enter an amount greater than zero.","error");
+    showMessage("formMessage","Enter the amount you sent (greater than zero).","error");
     return;
   }
   if(txHash.length < 8 || txHash.length > 200){
@@ -673,7 +778,6 @@ $("depositForm").addEventListener("submit",async event=>{
     showMessage("formMessage","Your deposit request has been submitted successfully. The transaction will be reviewed for confirmation.","success");
     $("amountInput").value = "";
     $("txHashInput").value = "";
-    $("usdEstimate").textContent = "";
     await loadHistory();
   }catch(error){
     console.error("Deposit submission error:",error);
@@ -684,71 +788,6 @@ $("depositForm").addEventListener("submit",async event=>{
     button.textContent = "Submit deposit request";
   }
 });
-
-/* LIVE USD ESTIMATE (deposit page only) */
-const COIN_IDS={
-  BTC:"bitcoin",ETH:"ethereum",USDT:"tether",USDC:"usd-coin",BNB:"binancecoin",
-  SOL:"solana",XRP:"ripple",TON:"the-open-network",DOGE:"dogecoin",ADA:"cardano",
-  TRX:"tron",LTC:"litecoin",AVAX:"avalanche-2",DOT:"polkadot",LINK:"chainlink",
-  POL:"polygon-ecosystem-token",SHIB:"shiba-inu",BCH:"bitcoin-cash",XLM:"stellar",
-  ATOM:"cosmos",NEAR:"near",APT:"aptos",ARB:"arbitrum",OP:"optimism"
-};
-const priceCache = {};
-
-async function getUsdPrice(symbol){
-  const cached = priceCache[symbol];
-  if(cached && Date.now() - cached.time < 60000) return cached.price;
-
-  const id = COIN_IDS[symbol];
-  if(!id) return null;
-
-  try{
-    const response = await fetch(
-      "https://api.coingecko.com/api/v3/simple/price?ids=" + encodeURIComponent(id) + "&vs_currencies=usd",
-      {headers:{Accept:"application/json"},cache:"no-store",signal:AbortSignal.timeout(10000)}
-    );
-    if(!response.ok) throw new Error("HTTP " + response.status);
-    const data = await response.json();
-    const price = Number(data?.[id]?.usd);
-    if(!Number.isFinite(price) || price <= 0) return null;
-    priceCache[symbol] = {price,time:Date.now()};
-    return price;
-  }catch(error){
-    console.warn("USD price lookup failed:",error);
-    return cached ? cached.price : null;
-  }
-}
-
-let usdTimer = null;
-function scheduleUsdEstimate(){
-  clearTimeout(usdTimer);
-  usdTimer = setTimeout(updateUsdEstimate,300);
-}
-
-async function updateUsdEstimate(){
-  const el = $("usdEstimate");
-  const symbol = String(selectedAddress?.asset || selectedAsset || "").toUpperCase();
-  const typed = $("amountInput").value;
-  const amount = Number(typed);
-
-  if(!symbol || !typed || !Number.isFinite(amount) || amount <= 0){
-    el.textContent = "";
-    return;
-  }
-
-  const price = await getUsdPrice(symbol);
-  if($("amountInput").value !== typed) return; /* input changed while loading */
-
-  if(price === null){
-    el.textContent = "USD estimate unavailable right now.";
-    return;
-  }
-
-  el.textContent = "≈ $" + (amount * price).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2}) +
-    " USD at today's price. The USD value is fixed when your deposit is confirmed.";
-}
-
-$("amountInput").addEventListener("input",scheduleUsdEstimate);
 
 /* INITIALIZE */
 async function initialize(){
