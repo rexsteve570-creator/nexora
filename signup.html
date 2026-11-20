@@ -3,1054 +3,662 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#07111f">
+<meta name="theme-color" content="#050b1a">
 <title>AITIVEST — Create Account</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-:root {
-    --bg: #07111f;
-    --panel: #0d1b2e;
-    --panel2: #10223a;
-    --gold: #d9a441;
-    --gold-light: #f2cf78;
-    --text: #f4f7fb;
-    --muted: #a6b4c8;
-    --border: rgba(255,255,255,.10);
-    --green: #32c48d;
-    --red: #ef6b73;
+:root{
+  --bg:#050b1a;--card:#0b1733;--line:#1c2c52;
+  --text:#e8edf7;--muted:#9aa7c0;
+  --gold:#f2b84b;--gold2:#ffd982;--gold3:#c98f1d;--cream:#f5e6b8;
+  --green:#22d37a;--red:#ef6b73;--blue:#2f8cff;
 }
-
-* {
-    box-sizing: border-box;
-}
-
-body {
-    margin: 0;
-    min-height: 100vh;
-    background:
-        radial-gradient(circle at top, rgba(217,164,65,.09), transparent 38%),
-        var(--bg);
-    color: var(--text);
-    font-family: Arial, Helvetica, sans-serif;
-    padding: 20px 14px 35px;
-}
-
-a {
-    color: var(--gold-light);
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
-.topbar {
-    width: 100%;
-    max-width: 480px;
-    margin: 0 auto 28px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-}
-
-.brand {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 19px;
-    font-weight: 800;
-    letter-spacing: 1px;
-}
-
-.brand-mark {
-    width: 39px;
-    height: 39px;
-    border-radius: 12px;
-    display: grid;
-    place-items: center;
-    color: #07111f;
-    background: linear-gradient(135deg, var(--gold-light), var(--gold));
-    font-size: 22px;
-    font-weight: 900;
-}
-
-.header-actions {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.language,
-.menu {
-    border: 1px solid var(--border);
-    background: var(--panel);
-    color: var(--text);
-    border-radius: 9px;
-    min-height: 38px;
-    padding: 8px 10px;
-}
-
-.menu {
-    cursor: pointer;
-    font-size: 18px;
-}
-
-.card {
-    width: 100%;
-    max-width: 480px;
-    margin: 0 auto;
-    background: linear-gradient(160deg, var(--panel), #091626);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 26px 21px;
-    box-shadow: 0 18px 55px rgba(0,0,0,.22);
-}
-
-h1 {
-    margin: 0 0 10px;
-    font-size: 27px;
-    line-height: 1.25;
-    letter-spacing: -.5px;
-}
-
-.subtitle {
-    margin: 0;
-    color: var(--muted);
-    font-size: 14px;
-    line-height: 1.7;
-}
-
-.divider {
-    height: 1px;
-    background: var(--border);
-    margin: 22px 0;
-}
-
-.message {
-    display: none;
-    padding: 12px 13px;
-    margin-bottom: 16px;
-    border-radius: 10px;
-    font-size: 13px;
-    line-height: 1.6;
-    overflow-wrap: anywhere;
-}
-
-.message.error-message {
-    display: block;
-    color: #ffd5d8;
-    background: rgba(239,107,115,.10);
-    border: 1px solid rgba(239,107,115,.30);
-}
-
-.message.success-message {
-    display: block;
-    color: #c5ffe8;
-    background: rgba(50,196,141,.10);
-    border: 1px solid rgba(50,196,141,.30);
-}
-
-.field {
-    margin-bottom: 17px;
-}
-
-.field label {
-    display: block;
-    margin-bottom: 8px;
-    font-size: 13px;
-    font-weight: 700;
-}
-
-input[type="text"],
-input[type="email"],
-input[type="password"] {
-    width: 100%;
-    min-width: 0;
-    padding: 13px 14px;
-    border-radius: 10px;
-    border: 1px solid rgba(255,255,255,.13);
-    outline: none;
-    background: #081423;
-    color: var(--text);
-    font-size: 14px;
-}
-
-input:focus {
-    border-color: var(--gold);
-    box-shadow: 0 0 0 3px rgba(217,164,65,.10);
-}
-
-input::placeholder {
-    color: #718197;
-}
-
-.input-wrap {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding-right: 10px;
-    background: #081423;
-    border: 1px solid rgba(255,255,255,.13);
-    border-radius: 10px;
-}
-
-.input-wrap:focus-within {
-    border-color: var(--gold);
-    box-shadow: 0 0 0 3px rgba(217,164,65,.10);
-}
-
-.input-wrap input {
-    border: 0;
-    box-shadow: none;
-    background: transparent;
-    flex: 1;
-    width: 0;
-}
-
-.input-wrap input:focus {
-    box-shadow: none;
-}
-
-.toggle {
-    border: 0;
-    background: transparent;
-    color: var(--gold-light);
-    cursor: pointer;
-    font-size: 12px;
-    font-weight: 700;
-    padding: 8px 2px;
-}
-
-.strength {
-    width: 100%;
-    height: 5px;
-    border-radius: 10px;
-    margin-top: 10px;
-    overflow: hidden;
-    background: #24344a;
-}
-
-.strength-bar {
-    width: 0;
-    height: 100%;
-    background: var(--red);
-    transition: width .2s, background .2s;
-}
-
-.strength-text {
-    margin-top: 6px;
-    color: var(--muted);
-    font-size: 11px;
-}
-
-.error {
-    color: #ff9da4;
-    font-size: 12px;
-    margin-top: 6px;
-    line-height: 1.5;
-}
-
-.terms {
-    display: flex;
-    align-items: flex-start;
-    gap: 9px;
-    margin: 19px 0 8px;
-}
-
-.terms input {
-    margin-top: 4px;
-    accent-color: var(--gold);
-    flex-shrink: 0;
-}
-
-.terms label {
-    font-size: 12px;
-    line-height: 1.7;
-    color: var(--muted);
-}
-
-.submit {
-    display: block;
-    width: 100%;
-    border: 0;
-    border-radius: 11px;
-    padding: 15px;
-    margin-top: 18px;
-    background: linear-gradient(135deg, var(--gold-light), var(--gold));
-    color: #101725;
-    font-size: 14px;
-    font-weight: 900;
-    letter-spacing: .5px;
-    cursor: pointer;
-}
-
-.submit:hover {
-    filter: brightness(1.05);
-}
-
-.submit:disabled {
-    opacity: .65;
-    cursor: not-allowed;
-}
-
-.bottom {
-    margin-top: 23px;
-    text-align: center;
-    font-size: 13px;
-    color: var(--muted);
-    line-height: 1.8;
-}
-
-.bottom a {
-    font-weight: 800;
-}
-
-.back {
-    margin-top: 18px;
-    text-align: center;
-    font-size: 12px;
-    color: var(--muted);
-}
-
-.captcha {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 11px;
-}
-
-.captcha-code {
-    min-width: 125px;
-    min-height: 48px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
-    border: 1px solid rgba(217,164,65,.35);
-    border-radius: 10px;
-    background:
-        repeating-linear-gradient(
-            -25deg,
-            transparent,
-            transparent 8px,
-            rgba(217,164,65,.08) 9px,
-            transparent 11px
-        ),
-        #081423;
-    color: var(--gold-light);
-    font-size: 24px;
-    font-weight: 900;
-    letter-spacing: 9px;
-    padding-left: 9px;
-    user-select: none;
-}
-
-.refresh-btn {
-    height: 42px;
-    width: 42px;
-    border-radius: 9px;
-    border: 1px solid var(--border);
-    color: var(--gold-light);
-    background: var(--panel2);
-    font-size: 23px;
-    cursor: pointer;
-}
-
-.captcha-input {
-    letter-spacing: 5px;
-    text-align: center;
-    font-weight: 800;
-}
-
-.captcha-help {
-    margin: 8px 0 0;
-    color: var(--muted);
-    font-size: 11px;
-    line-height: 1.6;
-}
-
-/* EMAIL CONFIRMATION SCREEN */
-
-.email-notice {
-    text-align: center;
-}
-
-.email-notice[hidden] {
-    display: none !important;
-}
-
-.notice-icon {
-    width: 76px;
-    height: 76px;
-    border-radius: 50%;
-    margin: 4px auto 19px;
-    display: grid;
-    place-items: center;
-    font-size: 34px;
-    background: rgba(217,164,65,.12);
-    border: 1px solid rgba(217,164,65,.30);
-}
-
-.email-notice h2 {
-    color: var(--gold-light);
-    font-size: 27px;
-    margin: 0 0 17px;
-}
-
-.email-notice p {
-    color: #c2cede;
-    font-size: 14px;
-    line-height: 1.85;
-    margin: 14px 0;
-}
-
-.email-notice strong {
-    color: #fff;
-}
-
-.spam-tip {
-    text-align: left;
-    padding: 15px;
-    margin: 19px 0;
-    border: 1px solid rgba(217,164,65,.30);
-    background: rgba(217,164,65,.08);
-    border-radius: 12px;
-    color: #d6deea;
-    font-size: 13px;
-    line-height: 1.9;
-}
-
-.spam-tip strong:first-child {
-    color: var(--gold-light);
-}
-
-.notice-footer {
-    margin-top: 18px;
-    color: var(--muted);
-    font-size: 12px;
-    line-height: 1.8;
-}
-
-.confirmation-actions {
-    border-top: 1px solid var(--border);
-    margin-top: 24px;
-    padding-top: 20px;
-}
-
-.confirmation-actions p {
-    margin: 0 0 13px;
-    font-size: 13px;
-}
-
-.signin-link {
-    display: block;
-    width: 100%;
-    padding: 15px 12px;
-    border-radius: 11px;
-    background: linear-gradient(135deg, var(--gold-light), var(--gold));
-    color: #101725;
-    font-size: 14px;
-    font-weight: 900;
-    text-align: center;
-    letter-spacing: .2px;
-}
-
-.signin-link:hover {
-    text-decoration: none;
-    filter: brightness(1.06);
-}
-
-.confirmation-back {
-    margin-top: 20px;
-    font-size: 12px;
-}
-
-.footer {
-    max-width: 480px;
-    margin: 25px auto 0;
-    text-align: center;
-    font-size: 11px;
-    color: #77869b;
-    letter-spacing: .3px;
-}
-
-@media (max-width: 380px) {
-    .card {
-        padding: 22px 16px;
-    }
-
-    h1 {
-        font-size: 24px;
-    }
-
-    .brand {
-        font-size: 17px;
-    }
-}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{min-height:100vh;background:#02050d;color:var(--text);font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;display:flex;justify-content:center}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+a{color:inherit;text-decoration:none}
+button:focus-visible,a:focus-visible,canvas:focus-visible,input:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
+[hidden]{display:none!important}
+
+.app{width:100%;max-width:480px;min-height:100vh;background:radial-gradient(120% 60% at 50% 0%,#0f2350 0%,var(--bg) 60%);padding:22px 16px 40px;position:relative;display:flex;flex-direction:column}
+
+.brand-logo{display:flex;align-items:center;gap:9px}
+.brand-mark{width:30px;height:30px;border:2px solid var(--gold);border-radius:9px 9px 9px 2px;display:flex;align-items:center;justify-content:center;color:var(--gold2);font-size:16px;font-weight:900;transform:rotate(-3deg)}
+.brand-name{font-size:24px;font-weight:700;letter-spacing:2px;background:linear-gradient(180deg,#ffd982,#d89a24);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:26px}
+.home-link{font-size:12px;color:var(--muted)}
+.home-link:hover{color:var(--gold2)}
+
+.page-head{margin-bottom:16px}
+.page-head small{font-size:15px;color:#cfd8ec;display:block}
+.page-head h1{font-size:26px;font-weight:700;color:var(--gold)}
+
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:5px;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:14px;margin-bottom:14px}
+.tab{text-align:center;padding:11px 8px;border-radius:10px;font-size:13px;font-weight:700;color:var(--muted)}
+.tab.active{background:linear-gradient(180deg,rgba(242,184,75,.18),rgba(242,184,75,.06));color:var(--gold);border:1px solid rgba(242,184,75,.3)}
+
+.card{background:linear-gradient(180deg,rgba(18,34,72,.75),rgba(9,20,45,.9));border:1px solid var(--line);border-radius:16px;padding:18px 16px;margin-bottom:14px}
+
+.field{margin-top:15px}
+.field:first-of-type{margin-top:0}
+label{display:block;font-size:12px;font-weight:700;margin-bottom:8px;color:#dfe6f0}
+input[type="text"],input[type="email"],input[type="password"]{width:100%;background:rgba(5,11,26,.8);border:1px solid var(--line);border-radius:12px;padding:14px 13px;font-size:14px;outline:none}
+input::placeholder{color:#5f6f8c}
+input[type="text"]:focus,input[type="email"]:focus,input[type="password"]:focus{border-color:var(--gold3);box-shadow:0 0 0 3px rgba(242,184,75,.1)}
+.input-wrap{position:relative}
+.password-input{padding-right:68px!important}
+.toggle{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:0;color:var(--gold);font-size:12px;font-weight:700;padding:6px}
+.error{min-height:16px;margin-top:6px;color:#ffb5ba;font-size:11px;line-height:1.5}
+.hint{font-size:11px;color:var(--muted);line-height:1.7;margin-top:7px}
+
+.strength{width:100%;height:5px;border-radius:10px;margin-top:10px;overflow:hidden;background:#1c2c52}
+.strength-bar{width:0;height:100%;background:var(--red);transition:width .2s,background .2s}
+.strength-text{margin-top:6px;color:var(--muted);font-size:11px}
+
+.captcha-box{display:flex;align-items:center;gap:10px}
+.captcha-box canvas{display:block;width:170px;height:54px;flex-shrink:0;border:1px solid var(--line);border-radius:10px;background:#f4f5f7;cursor:pointer;touch-action:manipulation}
+.captcha-refresh{flex:none;width:44px;height:54px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--gold);font-size:18px}
+.captcha-input{text-align:center;letter-spacing:4px;font-weight:700;text-transform:uppercase;margin-top:10px}
+
+.terms{display:flex;align-items:flex-start;gap:9px;margin:18px 0 2px}
+.terms input{margin-top:3px;accent-color:var(--gold);flex-shrink:0;width:16px;height:16px}
+.terms label{font-size:12px;line-height:1.7;color:var(--muted);font-weight:400;margin:0}
+.terms a{color:var(--gold);font-weight:600}
+
+.primary-btn{width:100%;height:50px;border:0;border-radius:14px;background:linear-gradient(180deg,#f7c75a,#cf9420);color:#1a1200;font-size:15px;font-weight:700;margin-top:16px;box-shadow:0 4px 16px rgba(242,184,75,.3);transition:transform .1s;display:flex;align-items:center;justify-content:center}
+.primary-btn:active{transform:scale(.98)}
+.primary-btn:disabled{opacity:.55;cursor:not-allowed}
+
+.message{display:none;margin-bottom:14px;padding:13px;border-radius:12px;font-size:12px;line-height:1.7;overflow-wrap:anywhere}
+.message.error-message{display:block;background:rgba(239,107,115,.09);border:1px solid rgba(239,107,115,.28);color:#ffb5ba}
+.message.success-message{display:block;background:rgba(34,211,122,.09);border:1px solid rgba(34,211,122,.28);color:#9cf0ce}
+
+.bottom{margin-top:20px;text-align:center;color:var(--muted);font-size:12px;line-height:1.8}
+.bottom a{font-size:12px;color:var(--gold);font-weight:600}
+.back{margin-top:12px;text-align:center}
+.back a{color:#8391a5;font-size:12px}
+.footer{margin-top:auto;padding-top:24px;text-align:center;color:#627187;font-size:11px}
+
+/* Email confirmation screen */
+.email-notice{text-align:center}
+.notice-icon{width:76px;height:76px;border-radius:50%;margin:4px auto 18px;display:grid;place-items:center;font-size:34px;background:rgba(242,184,75,.12);border:1px solid rgba(242,184,75,.3)}
+.email-notice h2{color:var(--gold);font-size:25px;margin-bottom:14px}
+.email-notice p{color:#c2cede;font-size:13px;line-height:1.85;margin:12px 0}
+.email-notice strong{color:#fff}
+.spam-tip{text-align:left;padding:14px;margin:18px 0;border:1px solid rgba(242,184,75,.3);background:rgba(242,184,75,.07);border-radius:12px;color:#d6deea;font-size:12px;line-height:1.9}
+.spam-tip strong:first-child{color:var(--gold2)}
+.notice-footer{margin-top:16px;color:var(--muted);font-size:12px;line-height:1.8}
+.confirmation-actions{border-top:1px solid var(--line);margin-top:22px;padding-top:18px}
+.confirmation-actions p{margin:0 0 12px;font-size:13px}
+.signin-link{display:block;width:100%;padding:15px 12px;border-radius:14px;background:linear-gradient(180deg,#f7c75a,#cf9420);color:#1a1200;font-size:14px;font-weight:700;text-align:center;box-shadow:0 4px 16px rgba(242,184,75,.3)}
+.confirmation-back{margin-top:18px}
+.confirmation-back a{color:#8391a5;font-size:12px}
+
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(26,18,0,.3);border-top-color:#1a1200;border-radius:50%;vertical-align:middle;margin-right:7px;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Honeypot: hidden from people, visible to bots */
+.hp{position:absolute!important;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;opacity:0}
+
+@media(max-width:380px){.captcha-box canvas{width:140px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
 </head>
 
 <body>
+<div class="app">
 
-<header class="topbar">
-    <a class="brand" href="index.html" aria-label="AITIVEST homepage">
-        <span class="brand-mark">A</span>
-        <span>AITIVEST</span>
+  <header class="top">
+    <a href="index.html" class="brand-logo" aria-label="AITIVEST home">
+      <div class="brand-mark">A</div><div class="brand-name">AITIVEST</div>
     </a>
+    <a href="index.html" class="home-link">← Home</a>
+  </header>
 
-    <div class="header-actions">
-        <select class="language" aria-label="Language">
-            <option value="en">EN</option>
-        </select>
-
-        <button class="menu" id="menuButton" type="button"
-                aria-label="Go to homepage">☰</button>
+  <section id="registrationSection">
+    <div class="page-head">
+      <small>Register with your email address</small>
+      <h1>Create Your Account</h1>
     </div>
-</header>
 
-<main class="card">
+    <nav class="tabs" aria-label="Account navigation">
+      <a href="signin.html" class="tab">Sign In</a>
+      <a href="signup.html" class="tab active">Registration</a>
+    </nav>
 
-    <section id="registrationSection">
-        <h1>Create Your Account</h1>
+    <div class="card">
+      <div id="message" class="message" role="status" aria-live="polite"></div>
 
-        <p class="subtitle">
-            Register for your AITIVEST account using your email address.
-        </p>
+      <form id="signupForm" novalidate>
 
-        <div class="divider"></div>
-
-        <div id="message" class="message"
-             role="status" aria-live="polite"></div>
-
-        <form id="signupForm" novalidate>
-
-            <div class="field">
-                <label for="fullName">Full Name</label>
-
-                <input type="text" id="fullName"
-                       placeholder="Enter your full name"
-                       autocomplete="name"
-                       minlength="2" maxlength="100" required>
-
-                <div class="error" id="nameError"></div>
-            </div>
-
-            <div class="field">
-                <label for="email">Email Address</label>
-
-                <input type="email" id="email"
-                       placeholder="Enter your email address"
-                       autocomplete="email"
-                       maxlength="254" required>
-
-                <div class="error" id="emailError"></div>
-            </div>
-
-            <div class="field">
-                <label for="password">Password</label>
-
-                <div class="input-wrap">
-                    <input type="password" id="password"
-                           placeholder="Create a password"
-                           autocomplete="new-password"
-                           minlength="8" maxlength="128" required>
-
-                    <button type="button" class="toggle"
-                            id="togglePassword">Show</button>
-                </div>
-
-                <div class="strength">
-                    <div id="strengthBar" class="strength-bar"></div>
-                </div>
-
-                <div id="strengthText" class="strength-text">
-                    Use at least 8 characters.
-                </div>
-
-                <div class="error" id="passwordError"></div>
-            </div>
-
-            <div class="field">
-                <label for="confirmPassword">Confirm Password</label>
-
-                <div class="input-wrap">
-                    <input type="password" id="confirmPassword"
-                           placeholder="Confirm your password"
-                           autocomplete="new-password"
-                           maxlength="128" required>
-
-                    <button type="button" class="toggle"
-                            id="toggleConfirm">Show</button>
-                </div>
-
-                <div class="error" id="confirmError"></div>
-            </div>
-
-            <div class="field">
-                <label for="captchaInput">Security Check</label>
-
-                <div class="captcha">
-                    <div id="captchaCode" class="captcha-code"
-                         role="img" aria-label="Visual security code"></div>
-
-                    <button type="button" id="refreshCaptcha"
-                            class="refresh-btn"
-                            aria-label="Refresh security code">↻</button>
-                </div>
-
-                <input type="text" id="captchaInput"
-                       class="captcha-input"
-                       placeholder="Enter code"
-                       inputmode="numeric"
-                       pattern="[0-9]{3}"
-                       maxlength="3"
-                       autocomplete="off" required>
-
-                <p class="captcha-help">
-                    Enter the three digits shown above.
-                    Tap ↻ to generate a new code.
-                </p>
-
-                <div class="error" id="captchaError"></div>
-            </div>
-
-            <div class="terms">
-                <input type="checkbox" id="terms" required>
-
-                <label for="terms">
-                    I agree to the
-                    <a href="index.html#terms">Terms</a>,
-                    <a href="index.html#privacy">Privacy Policy</a>
-                    and
-                    <a href="index.html#risk">Risk Disclosure</a>.
-                </label>
-            </div>
-
-            <div class="error" id="termsError"></div>
-
-            <button type="submit" class="submit" id="submitBtn">
-                Create Account
-            </button>
-
-        </form>
-
-        <div class="bottom">
-            Already have an account?
-            <a href="signin.html">Sign In</a>
+        <div class="field">
+          <label for="fullName">Full Name</label>
+          <input type="text" id="fullName" placeholder="Enter your full name" autocomplete="name" minlength="2" maxlength="100" required>
+          <div class="error" id="nameError"></div>
         </div>
 
-        <div class="back">
-            <a href="index.html">← Back to AITIVEST</a>
-        </div>
-    </section>
-
-    <!-- ONLY THIS SECTION WILL BE VISIBLE AFTER SUCCESSFUL SIGNUP -->
-
-    <section id="emailNotice" class="email-notice" hidden
-             aria-live="polite">
-
-        <div class="notice-icon">📩</div>
-
-        <h2>Check Your Email!</h2>
-
-        <p>
-            Your AITIVEST registration was successful.
-            Please check your email to confirm your account.
-        </p>
-
-        <p>
-            Open your email application and check your
-            <strong>Inbox</strong> for the AITIVEST confirmation email.
-        </p>
-
-        <div class="spam-tip">
-            <strong>⚠️ Can't find the email?</strong><br>
-            Please check your <strong>Spam or Junk folder</strong>.
-            Sometimes email providers mistakenly place confirmation
-            messages there.
+        <div class="field">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" placeholder="Enter your email address" autocomplete="email" maxlength="254" required>
+          <div class="error" id="emailError"></div>
         </div>
 
-        <p>
-            If you find the AITIVEST email in Spam, select
-            <strong>"Report not spam"</strong> or move it to your Inbox.
-        </p>
-
-        <p>
-            Open the email and click
-            <strong>CONFIRM MY EMAIL</strong> to complete your registration.
-        </p>
-
-        <div class="notice-footer">
-            If the email has not arrived, check that you entered the
-            correct email address and allow a few minutes for delivery.
+        <div class="field">
+          <label for="password">Password</label>
+          <div class="input-wrap">
+            <input type="password" id="password" class="password-input" placeholder="Create a password" autocomplete="new-password" minlength="8" maxlength="128" required>
+            <button type="button" class="toggle" id="togglePassword">Show</button>
+          </div>
+          <div class="strength"><div id="strengthBar" class="strength-bar"></div></div>
+          <div id="strengthText" class="strength-text">Use at least 8 characters.</div>
+          <div class="error" id="passwordError"></div>
         </div>
 
-        <div class="confirmation-actions">
-            <p>Already confirmed your email?</p>
-
-            <a href="signin.html" class="signin-link">
-                Click Here to Sign In →
-            </a>
+        <div class="field">
+          <label for="confirmPassword">Confirm Password</label>
+          <div class="input-wrap">
+            <input type="password" id="confirmPassword" class="password-input" placeholder="Confirm your password" autocomplete="new-password" maxlength="128" required>
+            <button type="button" class="toggle" id="toggleConfirm">Show</button>
+          </div>
+          <div class="error" id="confirmError"></div>
         </div>
 
-        <div class="confirmation-back">
-            <a href="index.html">← Back to AITIVEST</a>
+        <!-- Honeypot field -->
+        <div class="hp" aria-hidden="true">
+          <label for="website">Website</label>
+          <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
         </div>
 
-    </section>
+        <div class="field">
+          <label for="captchaInput">Security Check</label>
+          <div class="captcha-box">
+            <canvas id="captcha" width="340" height="108" title="Tap to refresh" role="button" tabindex="0" aria-label="Security code image. Tap to get a new code."></canvas>
+            <button type="button" class="captcha-refresh" id="refreshCaptcha" aria-label="New code">↻</button>
+          </div>
+          <input type="text" id="captchaInput" class="captcha-input" placeholder="TYPE CODE" maxlength="6" autocomplete="off" autocapitalize="characters" spellcheck="false" required aria-label="Enter the 6-character security code">
+          <div class="hint">Type the 6 characters shown. Letters are not case sensitive. The code expires after 2 minutes.</div>
+          <div class="error" id="captchaError"></div>
+        </div>
 
-</main>
+        <div class="terms">
+          <input type="checkbox" id="terms" required>
+          <label for="terms">
+            I agree to the
+            <a href="index.html#terms">Terms</a>,
+            <a href="index.html#privacy">Privacy Policy</a>
+            and
+            <a href="index.html#risk">Risk Disclosure</a>.
+          </label>
+        </div>
+        <div class="error" id="termsError"></div>
 
-<footer class="footer">
-    AITIVEST · Secure Account Registration
-</footer>
+        <button type="submit" class="primary-btn" id="submitBtn">Create Account</button>
+      </form>
+
+      <div class="bottom">
+        Already have an account? <a href="signin.html">Sign In</a>
+      </div>
+    </div>
+
+    <div class="back"><a href="index.html">← Back to AITIVEST</a></div>
+  </section>
+
+  <!-- Shown only after a successful signup -->
+  <section id="emailNotice" class="email-notice card" hidden aria-live="polite">
+    <div class="notice-icon">📩</div>
+    <h2>Check Your Email!</h2>
+
+    <p>Your AITIVEST registration was successful. Please check your email to confirm your account.</p>
+    <p>Open your email application and check your <strong>Inbox</strong> for the AITIVEST confirmation email.</p>
+
+    <div class="spam-tip">
+      <strong>⚠️ Can't find the email?</strong><br>
+      Please check your <strong>Spam or Junk folder</strong>. Sometimes email providers mistakenly place confirmation messages there.
+    </div>
+
+    <p>If you find the AITIVEST email in Spam, select <strong>"Report not spam"</strong> or move it to your Inbox.</p>
+    <p>Open the email and click <strong>CONFIRM MY EMAIL</strong> to complete your registration.</p>
+
+    <div class="notice-footer">
+      If the email has not arrived, check that you entered the correct email address and allow a few minutes for delivery.
+    </div>
+
+    <div class="confirmation-actions">
+      <p>Already confirmed your email?</p>
+      <a href="signin.html" class="signin-link">Click Here to Sign In →</a>
+    </div>
+
+    <div class="confirmation-back"><a href="index.html">← Back to AITIVEST</a></div>
+  </section>
+
+  <footer class="footer">AITIVEST · Secure Account Registration</footer>
+</div>
 
 <script>
+(() => {
 "use strict";
 
-/* SUPABASE CONFIGURATION */
-
-const SUPABASE_URL =
-    "https://rihvvwktvgytbqzazage.supabase.co";
-
-const SUPABASE_ANON_KEY =
-    "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
+/* Public/publishable key only. Never put a service-role key in browser code. */
+const SUPABASE_URL = "https://rihvvwktvgytbqzazage.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad";
 
 const supabaseClient = window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_ANON_KEY,
-    {
-        auth: {
-            autoRefreshToken: true,
-            persistSession: true,
-            detectSessionInUrl: true
-        }
-    }
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY,
+  { auth: { autoRefreshToken: true, persistSession: true, detectSessionInUrl: true } }
 );
 
-/* ELEMENTS */
+const $ = id => document.getElementById(id);
 
-const registrationSection =
-    document.getElementById("registrationSection");
+const registrationSection = $("registrationSection");
+const signupForm = $("signupForm");
+const emailNotice = $("emailNotice");
+const message = $("message");
 
-const signupForm = document.getElementById("signupForm");
-const emailNotice = document.getElementById("emailNotice");
-const message = document.getElementById("message");
+const fullNameInput = $("fullName");
+const emailInput = $("email");
+const passwordInput = $("password");
+const confirmPasswordInput = $("confirmPassword");
+const captchaInput = $("captchaInput");
+const honeypot = $("website");
+const termsInput = $("terms");
+const submitBtn = $("submitBtn");
+const canvas = $("captcha");
+const ctx = canvas.getContext("2d");
 
-const fullNameInput = document.getElementById("fullName");
-const emailInput = document.getElementById("email");
-const passwordInput = document.getElementById("password");
-const confirmPasswordInput =
-    document.getElementById("confirmPassword");
+/* ---------- Security settings ---------- */
+const CAPTCHA_LENGTH = 6;
+const CAPTCHA_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // no 0/O/1/I confusion
+const CAPTCHA_TTL_MS = 120000;     // code expires after 2 minutes
+const MIN_FILL_MS = 6000;          // a person needs longer than this to fill the form
+const FREE_ATTEMPTS = 3;           // failures allowed before lockout
+const BASE_LOCK_SECONDS = 30;      // first lockout, doubles each time
+const MAX_LOCK_SECONDS = 900;      // 15 minutes max
+const LOCK_KEY = "aitivest_signup_lock";
 
-const captchaInput = document.getElementById("captchaInput");
-const captchaCode = document.getElementById("captchaCode");
-const termsInput = document.getElementById("terms");
+const formStart = Date.now();
+let captchaValue = "";
+let captchaIssuedAt = 0;
+let submitting = false;
+let lockTimer = null;
 
-const submitBtn = document.getElementById("submitBtn");
-
-let currentCaptcha = "";
-
-/* MESSAGE HELPERS */
-
-function showMessage(text, type) {
-    message.textContent = text;
-    message.className = "message " +
-        (type === "success" ? "success-message" : "error-message");
+/* ---------- Helpers ---------- */
+function randInt(max){
+  const a = new Uint32Array(1);
+  crypto.getRandomValues(a);
+  return a[0] % max;
+}
+function randFloat(){
+  const a = new Uint32Array(1);
+  crypto.getRandomValues(a);
+  return a[0] / 4294967296;
 }
 
-function clearMessage() {
-    message.textContent = "";
-    message.className = "message";
+function showMessage(text, type){
+  message.textContent = text;
+  message.className = "message " + (type === "success" ? "success-message" : "error-message");
+}
+function clearMessage(){
+  message.textContent = "";
+  message.className = "message";
+}
+function setError(id, text){ $(id).textContent = text || ""; }
+function clearErrors(){
+  ["nameError","emailError","passwordError","confirmError","captchaError","termsError"]
+    .forEach(id => setError(id, ""));
 }
 
-function setError(id, text) {
-    document.getElementById(id).textContent = text || "";
+/* ---------- Lockout after repeated failures ---------- */
+function getLock(){
+  try{
+    const s = JSON.parse(localStorage.getItem(LOCK_KEY));
+    return { fails: Number(s?.fails) || 0, until: Number(s?.until) || 0 };
+  }catch(e){ return { fails: 0, until: 0 }; }
+}
+function saveLock(state){
+  try{ localStorage.setItem(LOCK_KEY, JSON.stringify(state)); }catch(e){}
+}
+function registerFailure(){
+  const s = getLock();
+  s.fails += 1;
+  if(s.fails >= FREE_ATTEMPTS){
+    const level = s.fails - FREE_ATTEMPTS;
+    const seconds = Math.min(BASE_LOCK_SECONDS * Math.pow(2, level), MAX_LOCK_SECONDS);
+    s.until = Date.now() + seconds * 1000;
+  }
+  saveLock(s);
+  refreshLock();
+}
+function lockRemaining(){
+  return Math.max(0, Math.ceil((getLock().until - Date.now()) / 1000));
+}
+function formatWait(seconds){
+  if(seconds >= 60) return Math.floor(seconds / 60) + "m " + String(seconds % 60).padStart(2,"0") + "s";
+  return seconds + "s";
 }
 
-function clearErrors() {
-    [
-        "nameError",
-        "emailError",
-        "passwordError",
-        "confirmError",
-        "captchaError",
-        "termsError"
-    ].forEach(function(id) {
-        setError(id, "");
-    });
+function refreshLock(){
+  clearInterval(lockTimer);
+  const remaining = lockRemaining();
+  if(remaining > 0 && !submitting){
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Locked · try again in " + formatWait(remaining);
+    lockTimer = setInterval(() => {
+      const left = lockRemaining();
+      if(left <= 0){
+        clearInterval(lockTimer);
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Create Account";
+        clearMessage();
+      }else{
+        submitBtn.textContent = "Locked · try again in " + formatWait(left);
+      }
+    }, 1000);
+  }
 }
 
-/* SHOW ONLY THE CONFIRMATION SCREEN */
-
-function showEmailConfirmation() {
-    registrationSection.hidden = true;
-    registrationSection.style.display = "none";
-
-    emailNotice.hidden = false;
-    emailNotice.style.display = "block";
-
-    document.title = "Check Your Email — AITIVEST";
-
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
+function setLoading(loading){
+  submitting = loading;
+  if(loading){
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span class="spinner"></span>Creating Account...';
+  }else{
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Create Account";
+    refreshLock();
+  }
 }
 
-/* MENU BUTTON */
+/* ---------- Stronger CAPTCHA ---------- */
+function newCaptchaText(){
+  let out = "";
+  for(let i = 0; i < CAPTCHA_LENGTH; i++){
+    out += CAPTCHA_CHARS[randInt(CAPTCHA_CHARS.length)];
+  }
+  return out;
+}
 
-document.getElementById("menuButton").addEventListener("click", function() {
-    window.location.href = "index.html";
+function drawCaptcha(){
+  captchaValue = newCaptchaText();
+  captchaIssuedAt = Date.now();
+
+  const w = canvas.width, h = canvas.height;
+  ctx.setTransform(1,0,0,1,0,0);
+  ctx.clearRect(0,0,w,h);
+
+  const bg = ctx.createLinearGradient(0,0,w,h);
+  bg.addColorStop(0,"#eef0f4");
+  bg.addColorStop(1,"#dfe3ea");
+  ctx.fillStyle = bg;
+  ctx.fillRect(0,0,w,h);
+
+  for(let i = 0; i < 9; i++){
+    ctx.strokeStyle = `hsla(${randInt(360)},35%,38%,${0.18 + randFloat() * 0.25})`;
+    ctx.lineWidth = 1 + randFloat() * 1.5;
+    ctx.beginPath();
+    ctx.moveTo(randFloat() * w, randFloat() * h);
+    ctx.bezierCurveTo(randFloat()*w, randFloat()*h, randFloat()*w, randFloat()*h, randFloat()*w, randFloat()*h);
+    ctx.stroke();
+  }
+
+  for(let i = 0; i < 110; i++){
+    ctx.fillStyle = `hsla(${randInt(360)},30%,35%,${0.15 + randFloat() * 0.35})`;
+    ctx.beginPath();
+    ctx.arc(randFloat()*w, randFloat()*h, 0.8 + randFloat()*1.8, 0, Math.PI*2);
+    ctx.fill();
+  }
+
+  const fonts = ["Georgia","Arial","Courier New","Verdana","Trebuchet MS","Times New Roman"];
+  const step = (w - 30) / CAPTCHA_LENGTH;
+  [...captchaValue].forEach((ch, i) => {
+    const size = 44 + randInt(20);
+    ctx.save();
+    ctx.translate(26 + i * step + step / 2 - 10, h / 2 + (randFloat() - .5) * 26);
+    ctx.rotate((randFloat() - .5) * 0.8);
+    ctx.transform(1, (randFloat() - .5) * 0.35, (randFloat() - .5) * 0.35, 1, 0, 0);
+    ctx.font = `${randInt(2) ? "bold" : "normal"} ${size}px ${fonts[randInt(fonts.length)]}`;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillStyle = `hsl(${randInt(360)},55%,${18 + randInt(18)}%)`;
+    ctx.fillText(ch, 0, 0);
+    ctx.restore();
+  });
+
+  for(let i = 0; i < 3; i++){
+    ctx.strokeStyle = `hsla(${randInt(360)},45%,30%,0.75)`;
+    ctx.lineWidth = 2 + randFloat() * 1.5;
+    ctx.beginPath();
+    const y0 = 22 + randFloat() * (h - 44);
+    ctx.moveTo(0, y0);
+    ctx.bezierCurveTo(w*0.3, y0 + (randFloat()-.5)*60, w*0.65, y0 + (randFloat()-.5)*60, w, y0 + (randFloat()-.5)*40);
+    ctx.stroke();
+  }
+
+  for(let i = 0; i < 40; i++){
+    ctx.fillStyle = `hsla(${randInt(360)},30%,30%,${0.25 + randFloat() * 0.4})`;
+    ctx.beginPath();
+    ctx.arc(randFloat()*w, randFloat()*h, 0.8 + randFloat()*1.4, 0, Math.PI*2);
+    ctx.fill();
+  }
+
+  captchaInput.value = "";
+}
+canvas.addEventListener("click", drawCaptcha);
+$("refreshCaptcha").addEventListener("click", drawCaptcha);
+canvas.addEventListener("keydown", e => {
+  if(e.key === "Enter" || e.key === " "){ e.preventDefault(); drawCaptcha(); }
+});
+drawCaptcha();
+
+/* Block pasting into the code box */
+captchaInput.addEventListener("paste", e => e.preventDefault());
+captchaInput.addEventListener("input", () => {
+  setError("captchaError", "");
+  captchaInput.value = captchaInput.value.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, CAPTCHA_LENGTH);
 });
 
-/* PASSWORD VISIBILITY */
-
-function setupPasswordToggle(buttonId, input) {
-    document.getElementById(buttonId).addEventListener("click", function() {
-        const visible = input.type === "text";
-
-        input.type = visible ? "password" : "text";
-        this.textContent = visible ? "Show" : "Hide";
-    });
+/* ---------- Confirmation screen ---------- */
+function showEmailConfirmation(){
+  registrationSection.hidden = true;
+  emailNotice.hidden = false;
+  document.title = "Check Your Email — AITIVEST";
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
+/* ---------- Password visibility ---------- */
+function setupPasswordToggle(buttonId, input){
+  $(buttonId).addEventListener("click", function(){
+    const visible = input.type === "text";
+    input.type = visible ? "password" : "text";
+    this.textContent = visible ? "Show" : "Hide";
+  });
+}
 setupPasswordToggle("togglePassword", passwordInput);
 setupPasswordToggle("toggleConfirm", confirmPasswordInput);
 
-/* PASSWORD STRENGTH */
+/* ---------- Password strength ---------- */
+function updatePasswordStrength(){
+  const value = passwordInput.value;
+  const bar = $("strengthBar");
+  const text = $("strengthText");
 
-function updatePasswordStrength() {
-    const value = passwordInput.value;
-    const bar = document.getElementById("strengthBar");
-    const text = document.getElementById("strengthText");
+  let score = 0;
+  if(value.length >= 8) score++;
+  if(/[a-z]/.test(value) && /[A-Z]/.test(value)) score++;
+  if(/[0-9]/.test(value)) score++;
+  if(/[^A-Za-z0-9]/.test(value)) score++;
 
-    let score = 0;
+  const widths = ["0%","25%","50%","75%","100%"];
+  const labels = ["Use at least 8 characters.","Weak password","Fair password","Good password","Strong password"];
 
-    if (value.length >= 8) score++;
-    if (/[a-z]/.test(value) && /[A-Z]/.test(value)) score++;
-    if (/[0-9]/.test(value)) score++;
-    if (/[^A-Za-z0-9]/.test(value)) score++;
-
-    const widths = ["0%", "25%", "50%", "75%", "100%"];
-    const labels = [
-        "Use at least 8 characters.",
-        "Weak password",
-        "Fair password",
-        "Good password",
-        "Strong password"
-    ];
-
-    bar.style.width = widths[score];
-    text.textContent = labels[score];
-
-    if (score <= 1) {
-        bar.style.background = "#ef6b73";
-    } else if (score <= 2) {
-        bar.style.background = "#e6a23c";
-    } else {
-        bar.style.background = "#32c48d";
-    }
+  bar.style.width = widths[score];
+  text.textContent = labels[score];
+  bar.style.background = score <= 1 ? "#ef6b73" : score <= 2 ? "#e6a23c" : "#22d37a";
 }
-
 passwordInput.addEventListener("input", updatePasswordStrength);
 
-/* CAPTCHA */
-
-function generateCaptcha() {
-    currentCaptcha = String(
-        Math.floor(100 + Math.random() * 900)
-    );
-
-    captchaCode.textContent = currentCaptcha;
-    captchaInput.value = "";
-}
-
-document.getElementById("refreshCaptcha").addEventListener(
-    "click",
-    generateCaptcha
-);
-
-generateCaptcha();
-
-/* REFERRAL CODE */
-
+/* ---------- Referral code ---------- */
 const params = new URLSearchParams(window.location.search);
 const urlReferralCode = params.get("ref");
+if(urlReferralCode && urlReferralCode.trim()){
+  sessionStorage.setItem("aitivest_referral_code", urlReferralCode.trim());
+}
+const referralCode = sessionStorage.getItem("aitivest_referral_code") || null;
 
-if (urlReferralCode && urlReferralCode.trim()) {
-    sessionStorage.setItem(
-        "aitivest_referral_code",
-        urlReferralCode.trim()
-    );
+/* ---------- Field validation (captcha checked separately) ---------- */
+function validateFields(){
+  clearErrors();
+  let valid = true;
+
+  const name = fullNameInput.value.trim();
+  const email = emailInput.value.trim();
+  const password = passwordInput.value;
+  const confirmPassword = confirmPasswordInput.value;
+
+  if(name.length < 2){
+    setError("nameError", "Please enter your full name.");
+    valid = false;
+  }
+  if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+    setError("emailError", "Please enter a valid email address.");
+    valid = false;
+  }
+  if(password.length < 8){
+    setError("passwordError", "Your password must contain at least 8 characters.");
+    valid = false;
+  }
+  if(password !== confirmPassword){
+    setError("confirmError", "Your passwords do not match.");
+    valid = false;
+  }
+  if(!captchaInput.value.trim()){
+    setError("captchaError", "Enter the security code.");
+    valid = false;
+  }
+  if(!termsInput.checked){
+    setError("termsError", "Please agree to the Terms, Privacy Policy and Risk Disclosure.");
+    valid = false;
+  }
+  return valid;
 }
 
-const referralCode =
-    sessionStorage.getItem("aitivest_referral_code") || null;
+/* ---------- Signup ---------- */
+signupForm.addEventListener("submit", async event => {
+  event.preventDefault();
+  if(submitting) return;
 
-/* FORM VALIDATION */
+  clearMessage();
 
-function validateForm() {
-    clearErrors();
+  // Locked out after too many failures
+  const remaining = lockRemaining();
+  if(remaining > 0){
+    showMessage("Too many failed attempts. Try again in " + formatWait(remaining) + ".", "error");
+    refreshLock();
+    return;
+  }
 
-    let valid = true;
+  // Honeypot: real people never fill this hidden field
+  if(honeypot.value){
+    registerFailure();
+    showMessage("Unable to register. Please try again later.", "error");
+    drawCaptcha();
+    return;
+  }
 
-    const name = fullNameInput.value.trim();
-    const email = emailInput.value.trim();
-    const password = passwordInput.value;
-    const confirmPassword = confirmPasswordInput.value;
+  if(!validateFields()) return;
 
-    if (name.length < 2) {
-        setError("nameError", "Please enter your full name.");
-        valid = false;
+  // Too fast to be a person
+  if(Date.now() - formStart < MIN_FILL_MS){
+    showMessage("Please take a moment to check your details, then try again.", "error");
+    return;
+  }
+
+  // Code expired
+  if(Date.now() - captchaIssuedAt > CAPTCHA_TTL_MS){
+    setError("captchaError", "This code expired. A new one was generated.");
+    drawCaptcha();
+    return;
+  }
+
+  // Wrong code: counts as a failed attempt and always gives a new code
+  if(captchaInput.value.trim().toUpperCase() !== captchaValue){
+    setError("captchaError", "Incorrect code. A new code was generated.");
+    drawCaptcha();
+    registerFailure();
+    return;
+  }
+
+  // A code can only be used once
+  captchaValue = "";
+
+  const fullName = fullNameInput.value.trim();
+  const email = emailInput.value.trim();
+  const password = passwordInput.value;
+
+  setLoading(true);
+
+  try{
+    const redirectUrl = new URL("signin.html", window.location.href).href;
+
+    const metadata = { full_name: fullName };
+    if(referralCode) metadata.referral_code = referralCode;
+
+    const { data, error } = await supabaseClient.auth.signUp({
+      email: email,
+      password: password,
+      options: { data: metadata, emailRedirectTo: redirectUrl }
+    });
+
+    if(error) throw error;
+
+    /* With email confirmation enabled, Supabase returns a user without a
+       session, so show the confirmation screen. If a session is returned,
+       confirmation may be off, so continue to sign in. */
+    if(data && data.session){
+      window.location.replace("signin.html");
+      return;
     }
 
-    if (
-        !email ||
-        !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
-    ) {
-        setError("emailError", "Please enter a valid email address.");
-        valid = false;
+    if(data && data.user){
+      showEmailConfirmation();
+      return;
     }
 
-    if (password.length < 8) {
-        setError(
-            "passwordError",
-            "Your password must contain at least 8 characters."
-        );
-        valid = false;
+    throw new Error("We could not verify the registration response. Please try again.");
+
+  }catch(error){
+    console.error("AITIVEST signup error:", error);
+
+    let errorText = error.message || "Registration failed. Please try again.";
+    const lower = errorText.toLowerCase();
+
+    if(lower.includes("already registered") || lower.includes("already exists")){
+      errorText = "An account may already exist with this email. Please try signing in or use the password recovery option.";
+    }else if(lower.includes("rate limit") || lower.includes("too many")){
+      errorText = "Too many attempts. Please wait a while before trying again.";
+    }else if(lower.includes("password")){
+      errorText = "Please check your password and try again. " + errorText;
+    }else if(lower.includes("fetch")){
+      errorText = "We could not connect to the registration service. Please check your internet connection and try again.";
     }
 
-    if (password !== confirmPassword) {
-        setError("confirmError", "Your passwords do not match.");
-        valid = false;
-    }
+    registerFailure();
+    showMessage(errorText, "error");
+    drawCaptcha();
 
-    if (captchaInput.value.trim() !== currentCaptcha) {
-        setError("captchaError", "Incorrect security code. Try again.");
-        valid = false;
-        generateCaptcha();
-    }
-
-    if (!termsInput.checked) {
-        setError(
-            "termsError",
-            "Please agree to the Terms, Privacy Policy and Risk Disclosure."
-        );
-        valid = false;
-    }
-
-    return valid;
-}
-
-/* SIGNUP */
-
-signupForm.addEventListener("submit", async function(event) {
-    event.preventDefault();
-
-    clearMessage();
-    clearErrors();
-
-    if (!validateForm()) {
-        return;
-    }
-
-    const fullName = fullNameInput.value.trim();
-    const email = emailInput.value.trim();
-    const password = passwordInput.value;
-
-    submitBtn.disabled = true;
-    submitBtn.textContent = "Creating Account...";
-
-    try {
-        const redirectUrl = new URL(
-            "signin.html",
-            window.location.href
-        ).href;
-
-        const metadata = {
-            full_name: fullName
-        };
-
-        if (referralCode) {
-            metadata.referral_code = referralCode;
-        }
-
-        const { data, error } = await supabaseClient.auth.signUp({
-            email: email,
-            password: password,
-            options: {
-                data: metadata,
-                emailRedirectTo: redirectUrl
-            }
-        });
-
-        if (error) {
-            throw error;
-        }
-
-        /*
-         * With email confirmation enabled, Supabase normally returns
-         * a user without an active session. Show the confirmation screen.
-         *
-         * If a session is returned, email confirmation may be disabled
-         * in Supabase. In that case, continue to the sign-in page.
-         */
-
-        if (data && data.session) {
-            window.location.replace("signin.html");
-            return;
-        }
-
-        if (data && data.user) {
-            showEmailConfirmation();
-            return;
-        }
-
-        throw new Error(
-            "We could not verify the registration response. Please try again."
-        );
-
-    } catch (error) {
-        console.error("AITIVEST signup error:", error);
-
-        let errorText = error.message ||
-            "Registration failed. Please try again.";
-
-        if (
-            errorText.toLowerCase().includes("already registered") ||
-            errorText.toLowerCase().includes("already exists")
-        ) {
-            errorText =
-                "An account may already exist with this email. " +
-                "Please try signing in or use the password recovery option.";
-        } else if (
-            errorText.toLowerCase().includes("password")
-        ) {
-            errorText =
-                "Please check your password and try again. " + errorText;
-        } else if (
-            errorText.toLowerCase().includes("fetch")
-        ) {
-            errorText =
-                "We could not connect to the registration service. " +
-                "Please check your internet connection and try again.";
-        }
-
-        showMessage(errorText, "error");
-
-        generateCaptcha();
-
-    } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = "Create Account";
-    }
+  }finally{
+    setLoading(false);
+  }
 });
-</script>
 
+// Show an existing lockout if the person reloads the page
+refreshLock();
+
+})();
+</script>
 </body>
 </html>
