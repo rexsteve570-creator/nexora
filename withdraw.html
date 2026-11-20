@@ -320,7 +320,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{ou
       </div>
 
       <div class="summary">
-        <div class="summary-row"><span>Network fee</span><span id="feeValue">0.0000 USDT</span></div>
+        <div class="summary-row"><span>Network fee (1%)</span><span id="feeValue">0.0000 USDT</span></div>
         <div class="summary-row"><span>You will receive</span><span class="gold" id="netValue">0.0000 USDT</span></div>
       </div>
 
@@ -409,6 +409,14 @@ const RULES = {
   default:{ min:0, fee:0 }
   /* example: USDT:{ min:10, fee:1 }, BTC:{ min:0.0005, fee:0.0001 } */
 };
+
+/* Network fee charged on every withdrawal, as a percent of the amount */
+const FEE_PERCENT = 1;
+function feeFor(amount,asset){
+  const d=ASSET_DECIMALS[asset]??8;
+  const f=Math.pow(10,d);
+  return Math.round(amount*FEE_PERCENT/100*f)/f;
+}
 
 /* Assets where exchanges usually need a tag or memo (field stays optional) */
 const MEMO_ASSETS = {
@@ -709,7 +717,7 @@ function parseAmount(){
 function updateSummary(){
   const r=rulesOf(selectedAsset);
   const amt=parseAmount();
-  const fee=r.fee||0;
+  const fee=amt!==null?feeFor(amt,selectedAsset):0;
   const net=amt!==null?Math.max(0,amt-fee):0;
   setText("feeValue",(fee>0?plainNumber(fee,selectedAsset):PLACEHOLDER)+" "+selectedAsset);
   setText("netValue",(amt!==null&&net>0?plainNumber(net,selectedAsset):PLACEHOLDER)+" "+selectedAsset);
@@ -752,10 +760,11 @@ function validateAll(){
   if(amount<r.min)return fail("amountField","amountError","Minimum withdrawal is "+plainNumber(r.min,asset)+" "+asset+".");
   if(availableOf(asset)<=0)return fail("amountField","amountError","No "+asset+" balance is available to withdraw yet.");
   if(amount>availableOf(asset))return fail("amountField","amountError","Amount is more than your available balance of "+plainNumber(availableOf(asset),asset)+" "+asset+".");
-  const net=amount-(r.fee||0);
-  if(net<=0)return fail("amountField","amountError","Amount must be more than the network fee.");
+  const fee=feeFor(amount,asset);
+  const net=amount-fee;
+  if(net<=0)return fail("amountField","amountError","Amount is too small after the network fee.");
 
-  return {asset,network:details.network,address:details.address,memo:details.memo,amount,fee:r.fee||0,net};
+  return {asset,network:details.network,address:details.address,memo:details.memo,amount,fee,net};
 }
 
 /* 2FA SHEET */
