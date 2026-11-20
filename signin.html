@@ -2,142 +2,173 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#07111f">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#050b1a">
 <title>Sign In — AITIVEST</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 :root{
---bar:#0a1628;--bg:#07111f;--card:#0d1b2c;
---text:#f5f7fb;--muted:#93a1b5;--gold:#d8b15a;
---border:#26384e;--input:#081522;
---error:#ff9292;--success:#8be6aa;
+  --bg:#050b1a;--card:#0b1733;--line:#1c2c52;
+  --text:#e8edf7;--muted:#9aa7c0;
+  --gold:#f2b84b;--gold2:#ffd982;--gold3:#c98f1d;--cream:#f5e6b8;
+  --green:#22d37a;--red:#ef6b73;--blue:#2f8cff;
 }
-*{box-sizing:border-box}
-body{margin:0;min-height:100vh;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{min-height:100vh;background:#02050d;color:var(--text);font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;display:flex;justify-content:center}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
 a{color:inherit;text-decoration:none}
-.topbar{min-height:43px;background:#050b15;border-bottom:1px solid #30291b;display:flex;gap:24px;padding:12px max(16px,calc((100% - 760px)/2))}
-.topbar a{font-size:13px;color:#aeb9c9}
-.topbar a.active,.topbar a:hover{color:var(--gold)}
-.header{height:68px;padding:0 18px;background:var(--bar);border-bottom:1px solid #30291b;display:flex;align-items:center}
-.header-inner{width:100%;max-width:760px;margin:auto;display:flex;align-items:center;justify-content:space-between}
-.brand{display:flex;align-items:center;gap:9px;font-size:21px;font-weight:900;letter-spacing:2px}
-.brand-mark{width:32px;height:32px;display:flex;justify-content:center;align-items:center;color:var(--gold);border:1.5px solid var(--gold);clip-path:polygon(50% 0,100% 100%,0 100%);font-size:18px;padding-top:6px}
-.brand-vest{color:var(--gold)}
-.header-actions{display:flex;gap:12px;align-items:center}
-.language,.menu{color:#e7edf6;background:#0b192b;border:1px solid var(--border);border-radius:5px;padding:8px}
-.menu{color:var(--gold);font-size:20px;cursor:pointer}
-main{min-height:calc(100vh - 111px);padding:38px 16px 32px;display:flex;justify-content:center;align-items:flex-start}
-.card{width:100%;max-width:440px;padding:27px 24px 25px;background:var(--card);border:1px solid rgba(216,177,90,.22);border-radius:7px;box-shadow:0 18px 55px #0003}
-h1{margin:0 0 9px;font-size:25px}
-.subtitle{margin:0 0 24px;font-size:13px;line-height:1.6;color:var(--muted)}
-.divider{height:1px;background:var(--border);margin-bottom:22px}
-label{display:block;font-size:13px;color:#cbd5e1;margin:17px 0 7px}
-input{display:block;width:100%;height:47px;padding:0 13px;font-size:15px;border:1px solid var(--border);border-radius:4px;background:var(--input);color:#fff;outline:none}
-input::placeholder{color:#637286}
-input:focus{border-color:var(--gold);box-shadow:0 0 0 2px #d8b15a14}
+button:focus-visible,a:focus-visible,canvas:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
+[hidden]{display:none!important}
+
+.app{width:100%;max-width:480px;min-height:100vh;background:radial-gradient(120% 60% at 50% 0%,#0f2350 0%,var(--bg) 60%);padding:22px 16px 40px;position:relative;display:flex;flex-direction:column}
+
+.brand-logo{display:flex;align-items:center;gap:9px}
+.brand-mark{width:30px;height:30px;border:2px solid var(--gold);border-radius:9px 9px 9px 2px;display:flex;align-items:center;justify-content:center;color:var(--gold2);font-size:16px;font-weight:900;transform:rotate(-3deg)}
+.brand-name{font-size:24px;font-weight:700;letter-spacing:2px;background:linear-gradient(180deg,#ffd982,#d89a24);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:26px}
+.home-link{font-size:12px;color:var(--muted)}
+.home-link:hover{color:var(--gold2)}
+
+.page-head{margin-bottom:16px}
+.page-head small{font-size:15px;color:#cfd8ec;display:block}
+.page-head h1{font-size:26px;font-weight:700;color:var(--gold)}
+
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:5px;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:14px;margin-bottom:14px}
+.tab{text-align:center;padding:11px 8px;border-radius:10px;font-size:13px;font-weight:700;color:var(--muted)}
+.tab.active{background:linear-gradient(180deg,rgba(242,184,75,.18),rgba(242,184,75,.06));color:var(--gold);border:1px solid rgba(242,184,75,.3)}
+
+.card{background:linear-gradient(180deg,rgba(18,34,72,.75),rgba(9,20,45,.9));border:1px solid var(--line);border-radius:16px;padding:18px 16px;margin-bottom:14px}
+.panel-intro{font-size:12px;line-height:1.8;color:var(--muted);margin-bottom:6px}
+
+.field{margin-top:15px}
+label{display:block;font-size:12px;font-weight:700;margin-bottom:8px;color:#dfe6f0}
+input{width:100%;background:rgba(5,11,26,.8);border:1px solid var(--line);border-radius:12px;padding:14px 13px;font-size:14px;outline:none}
+input::placeholder{color:#5f6f8c}
+input:focus{border-color:var(--gold3);box-shadow:0 0 0 3px rgba(242,184,75,.1)}
 .input-wrap{position:relative}
-.password-input{padding-right:65px}
-.toggle{position:absolute;right:11px;top:50%;transform:translateY(-50%);background:none;border:0;color:var(--gold);font-size:12px;font-weight:bold;cursor:pointer}
-.error{min-height:15px;margin-top:4px;text-align:right;color:var(--error);font-size:11px}
-.captcha{display:flex;align-items:center;gap:10px;margin-top:21px}
-.captcha canvas{display:block;width:130px;height:44px;flex-shrink:0;border:1px solid var(--border);border-radius:4px;background:#f4f5f7;cursor:pointer}
-.captcha-input{flex:1;min-width:0;text-align:center;letter-spacing:3px}
-.hint{margin-top:6px;color:var(--muted);font-size:11px}
-.forgot{display:flex;justify-content:flex-end;margin:8px 0 17px}
-.forgot a,.bottom a{font-size:12px;color:var(--gold)}
-.submit{width:100%;min-height:48px;margin-top:18px;padding:12px;border:0;border-radius:4px;background:var(--gold);color:#07111f;font-size:14px;font-weight:800;cursor:pointer}
-.submit:hover{background:#edc96f}
-.submit:disabled{opacity:.6;cursor:not-allowed}
-#msg{display:none;margin-top:15px;padding:11px;border-radius:4px;font-size:12px;line-height:1.6;text-align:center;overflow-wrap:anywhere}
-#msg.error-message{display:block;color:var(--error);border:1px solid #ff929240;background:#dc262614}
-#msg.success-message{display:block;color:var(--success);border:1px solid #8be6aa40;background:#22c55e14}
-.bottom{margin-top:23px;text-align:center;color:var(--muted);font-size:12px;line-height:1.8}
-.back{margin-top:18px;text-align:center}
+.password-input{padding-right:68px}
+.toggle{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:0;color:var(--gold);font-size:12px;font-weight:700;padding:6px}
+.error{min-height:16px;margin-top:6px;color:#ffb5ba;font-size:11px;line-height:1.5}
+.hint{font-size:11px;color:var(--muted);line-height:1.7;margin-top:7px}
+.forgot{display:flex;justify-content:flex-end;margin-top:6px}
+.forgot a,.bottom a{font-size:12px;color:var(--gold);font-weight:600}
+
+.captcha-box{display:flex;align-items:center;gap:10px}
+.captcha-box canvas{display:block;width:170px;height:54px;flex-shrink:0;border:1px solid var(--line);border-radius:10px;background:#f4f5f7;cursor:pointer;touch-action:manipulation}
+.captcha-refresh{flex:none;width:44px;height:54px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--gold);font-size:18px}
+.captcha-input{flex:1;min-width:0;text-align:center;letter-spacing:4px;font-weight:700;text-transform:uppercase}
+
+.primary-btn{width:100%;height:50px;border:0;border-radius:14px;background:linear-gradient(180deg,#f7c75a,#cf9420);color:#1a1200;font-size:15px;font-weight:700;margin-top:18px;box-shadow:0 4px 16px rgba(242,184,75,.3);transition:transform .1s}
+.primary-btn:active{transform:scale(.98)}
+.primary-btn:disabled{opacity:.55;cursor:not-allowed}
+
+#msg{display:none;margin-top:14px;padding:13px;border-radius:12px;font-size:12px;line-height:1.7;overflow-wrap:anywhere}
+#msg.error-message{display:block;background:rgba(239,107,115,.09);border:1px solid rgba(239,107,115,.28);color:#ffb5ba}
+#msg.success-message{display:block;background:rgba(34,211,122,.09);border:1px solid rgba(34,211,122,.28);color:#9cf0ce}
+
+.notice{padding:13px;border:1px solid rgba(242,184,75,.22);background:rgba(242,184,75,.06);border-radius:12px;color:#d7c9a8;font-size:11px;line-height:1.8;margin-bottom:4px}
+
+.bottom{margin-top:20px;text-align:center;color:var(--muted);font-size:12px;line-height:1.8}
+.back{margin-top:12px;text-align:center}
 .back a{color:#8391a5;font-size:12px}
-.footer{padding:15px 16px 24px;text-align:center;color:#627187;font-size:11px}
-.qr{display:block;width:210px;max-width:100%;height:auto;margin:18px auto;background:#fff;border:8px solid white;border-radius:4px}
-.secret{display:block;padding:12px;background:#081522;border:1px solid var(--border);color:var(--gold);font-size:13px;overflow-wrap:anywhere;user-select:all}
-.notice{padding:12px;border:1px solid #d8b15a40;background:#d8b15a0c;border-radius:5px;color:#d8cba9;font-size:12px;line-height:1.6;margin:15px 0}
-.spinner{display:inline-block;width:14px;height:14px;border:2px solid #07111f50;border-top-color:#07111f;border-radius:50%;vertical-align:middle;margin-right:7px;animation:spin .7s linear infinite}
+.footer{margin-top:auto;padding-top:24px;text-align:center;color:#627187;font-size:11px}
+
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(26,18,0,.3);border-top-color:#1a1200;border-radius:50%;vertical-align:middle;margin-right:7px;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-@media(max-width:380px){.card{padding:23px 17px}.brand{font-size:18px}.captcha{gap:7px}.captcha canvas{width:112px}.header{padding:0 12px}}
+
+/* Honeypot: hidden from people, visible to bots */
+.hp{position:absolute!important;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;opacity:0}
+
+@media(max-width:380px){.captcha-box canvas{width:140px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
 </head>
 
 <body>
-<nav class="topbar" aria-label="Account navigation">
-<a href="signin.html" class="active">Sign In</a>
-<a href="signup.html">Registration</a>
-</nav>
+<div class="app">
 
-<header class="header">
-<div class="header-inner">
-<a href="index.html" class="brand" aria-label="AITIVEST home">
-<span class="brand-mark">A</span>
-<span><span>AITI</span><span class="brand-vest">VEST</span></span>
-</a>
-<div class="header-actions">
-<select class="language" id="languageSelect" aria-label="Language">
-<option value="en">EN</option>
-</select>
-<button class="menu" id="menuButton" type="button" aria-label="Open navigation menu">☰</button>
+  <header class="top">
+    <a href="index.html" class="brand-logo" aria-label="AITIVEST home">
+      <div class="brand-mark">A</div><div class="brand-name">AITIVEST</div>
+    </a>
+    <a href="index.html" class="home-link">← Home</a>
+  </header>
+
+  <div class="page-head">
+    <small id="subtitle">Sign in to access your account</small>
+    <h1 id="heading">Welcome Back</h1>
+  </div>
+
+  <nav class="tabs" id="tabs" aria-label="Account navigation">
+    <a href="signin.html" class="tab active">Sign In</a>
+    <a href="signup.html" class="tab">Registration</a>
+  </nav>
+
+  <form class="card" id="loginForm" novalidate autocomplete="on">
+
+    <section id="loginPanel">
+      <div class="field" style="margin-top:0">
+        <label for="user">Email Address</label>
+        <input type="email" id="user" placeholder="Enter your email address" autocomplete="username" maxlength="254" required>
+        <div class="error" id="userErr" aria-live="polite"></div>
+      </div>
+
+      <div class="field" style="margin-top:4px">
+        <label for="pass">Password</label>
+        <div class="input-wrap">
+          <input type="password" id="pass" class="password-input" placeholder="Enter your password" autocomplete="current-password" required>
+          <button type="button" class="toggle" id="togglePassword">Show</button>
+        </div>
+        <div class="error" id="passErr" aria-live="polite"></div>
+      </div>
+
+      <div class="forgot"><a href="#" id="forgotPassword">Forgot password?</a></div>
+
+      <!-- Honeypot field -->
+      <div class="hp" aria-hidden="true">
+        <label for="website">Website</label>
+        <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+      </div>
+
+      <div class="field">
+        <label for="code">Security Check</label>
+        <div class="captcha-box">
+          <canvas id="captcha" width="340" height="108" title="Tap to refresh" role="button" tabindex="0" aria-label="Security code image. Tap to get a new code."></canvas>
+          <button type="button" class="captcha-refresh" id="captchaRefresh" aria-label="New code">↻</button>
+        </div>
+        <input type="text" id="code" class="captcha-input" placeholder="TYPE CODE" maxlength="6" autocomplete="off" autocapitalize="characters" spellcheck="false" required aria-label="Enter the 6-character security code" style="margin-top:10px">
+        <div class="hint">Type the 6 characters shown. Letters are not case sensitive. The code expires after 2 minutes.</div>
+        <div class="error" id="codeErr" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section id="mfaPanel" hidden>
+      <div class="notice" id="mfaNotice">
+        Your password has been accepted. Open your authenticator app and enter the current six-digit code to finish signing in.
+      </div>
+      <div class="field">
+        <label for="mfaCode">Authenticator verification code</label>
+        <input type="text" id="mfaCode" placeholder="Enter 6-digit code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]{6}">
+        <div class="error" id="mfaErr" aria-live="polite"></div>
+        <p class="hint">Use the code currently displayed in Google Authenticator or another compatible authenticator app.</p>
+      </div>
+    </section>
+
+    <button type="submit" class="primary-btn" id="submitBtn">Sign In</button>
+    <div id="msg" role="status" aria-live="polite"></div>
+
+    <div class="bottom" id="bottomLinks">
+      Don't have an account? <a href="signup.html">Create Account</a>
+    </div>
+  </form>
+
+  <div class="back"><a href="index.html">← Back to AITIVEST</a></div>
+  <footer class="footer">AITIVEST · Secure Account Access</footer>
 </div>
-</div>
-</header>
-
-<main>
-<form class="card" id="loginForm" novalidate>
-<h1 id="heading">Welcome Back</h1>
-<p class="subtitle" id="subtitle">Sign in to access your AITIVEST account.</p>
-<div class="divider"></div>
-
-<section id="loginPanel">
-<label for="user">Email Address</label>
-<input type="email" id="user" placeholder="Enter your email address" autocomplete="username" maxlength="254" required>
-<div class="error" id="userErr" aria-live="polite"></div>
-
-<label for="pass">Password</label>
-<div class="input-wrap">
-<input type="password" id="pass" class="password-input" placeholder="Enter your password" autocomplete="current-password" required>
-<button type="button" class="toggle" id="togglePassword">Show</button>
-</div>
-<div class="error" id="passErr" aria-live="polite"></div>
-
-<div class="forgot"><a href="#" id="forgotPassword">Forgot password?</a></div>
-
-<label for="code">Security Check</label>
-<div class="captcha">
-<canvas id="captcha" width="130" height="44" title="Tap to refresh" role="button" tabindex="0" aria-label="Security code. Tap to refresh."></canvas>
-<input type="text" id="code" class="captcha-input" placeholder="code" inputmode="numeric" pattern="[0-9]{3}" maxlength="3" autocomplete="off" required aria-label="Enter three-digit security code">
-</div>
-<div class="hint">Tap the code to refresh it.</div>
-<div class="error" id="codeErr" aria-live="polite"></div>
-</section>
-
-<section id="mfaPanel" hidden>
-<div class="notice" id="mfaNotice">
-Your password has been accepted. Open your authenticator app and enter the current six-digit code to finish signing in.
-</div>
-<label for="mfaCode">Authenticator verification code</label>
-<input type="text" id="mfaCode" placeholder="Enter 6-digit code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]{6}">
-<div class="error" id="mfaErr" aria-live="polite"></div>
-<p class="hint">Use the code currently displayed in Google Authenticator or another compatible authenticator app.</p>
-</section>
-
-<button type="submit" class="submit" id="submitBtn">Sign In</button>
-<div id="msg" role="status" aria-live="polite"></div>
-
-<div class="bottom" id="bottomLinks">
-Don't have an account? <a href="signup.html">Create Account</a>
-</div>
-<div class="back"><a href="index.html">← Back to AITIVEST</a></div>
-</form>
-</main>
-
-<footer class="footer">AITIVEST · Secure Account Access</footer>
 
 <script>
 (() => {
@@ -150,13 +181,7 @@ const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_dT0xRQmaol55DD9yB7ta6Q_Rzrurfad
 const db = window.supabase.createClient(
   SUPABASE_URL,
   SUPABASE_PUBLISHABLE_KEY,
-  {
-    auth: {
-      autoRefreshToken: true,
-      persistSession: true,
-      detectSessionInUrl: true
-    }
-  }
+  { auth: { autoRefreshToken: true, persistSession: true, detectSessionInUrl: true } }
 );
 
 const $ = id => document.getElementById(id);
@@ -164,6 +189,7 @@ const form = $("loginForm");
 const userInput = $("user");
 const passInput = $("pass");
 const codeInput = $("code");
+const honeypot = $("website");
 const mfaCodeInput = $("mfaCode");
 const canvas = $("captcha");
 const ctx = canvas.getContext("2d");
@@ -172,86 +198,211 @@ const msg = $("msg");
 const loginPanel = $("loginPanel");
 const mfaPanel = $("mfaPanel");
 
+/* ---------- Security settings ---------- */
+const CAPTCHA_LENGTH = 6;
+const CAPTCHA_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // no 0/O/1/I confusion
+const CAPTCHA_TTL_MS = 120000;     // code expires after 2 minutes
+const MIN_FILL_MS = 2500;          // faster than this is treated as a bot
+const FREE_ATTEMPTS = 3;           // failures allowed before lockout
+const BASE_LOCK_SECONDS = 30;      // first lockout, doubles each time
+const MAX_LOCK_SECONDS = 900;      // 15 minutes max
+const LOCK_KEY = "aitivest_signin_lock";
+
 let captchaValue = "";
+let captchaIssuedAt = 0;
 let submitting = false;
 let mfaMode = false;
 let activeFactorId = null;
+let lockTimer = null;
 
-/* Messages and field errors */
-function fieldError(id, text) {
-  $(id).textContent = text || "";
+/* ---------- Helpers ---------- */
+function randInt(max){
+  const a = new Uint32Array(1);
+  crypto.getRandomValues(a);
+  return a[0] % max;
 }
-function clearErrors() {
-  ["userErr","passErr","codeErr","mfaErr"].forEach(id => fieldError(id,""));
+function randFloat(){
+  const a = new Uint32Array(1);
+  crypto.getRandomValues(a);
+  return a[0] / 4294967296;
 }
-function showMessage(text, type = "error") {
+
+function fieldError(id, text){ $(id).textContent = text || ""; }
+function clearErrors(){ ["userErr","passErr","codeErr","mfaErr"].forEach(id => fieldError(id,"")); }
+function showMessage(text, type = "error"){
   msg.className = type === "success" ? "success-message" : "error-message";
   msg.textContent = text;
 }
-function clearMessage() {
-  msg.className = "";
-  msg.textContent = "";
+function clearMessage(){ msg.className = ""; msg.textContent = ""; }
+
+/* ---------- Lockout after repeated failures ---------- */
+function getLock(){
+  try{
+    const s = JSON.parse(localStorage.getItem(LOCK_KEY));
+    return { fails: Number(s?.fails) || 0, until: Number(s?.until) || 0 };
+  }catch(e){ return { fails: 0, until: 0 }; }
 }
-function setLoading(loading, text) {
+function saveLock(state){
+  try{ localStorage.setItem(LOCK_KEY, JSON.stringify(state)); }catch(e){}
+}
+function registerFailure(){
+  const s = getLock();
+  s.fails += 1;
+  if(s.fails >= FREE_ATTEMPTS){
+    const level = s.fails - FREE_ATTEMPTS;
+    const seconds = Math.min(BASE_LOCK_SECONDS * Math.pow(2, level), MAX_LOCK_SECONDS);
+    s.until = Date.now() + seconds * 1000;
+  }
+  saveLock(s);
+  refreshLock();
+}
+function registerSuccess(){ saveLock({ fails: 0, until: 0 }); }
+function lockRemaining(){
+  return Math.max(0, Math.ceil((getLock().until - Date.now()) / 1000));
+}
+function formatWait(seconds){
+  if(seconds >= 60) return Math.floor(seconds / 60) + "m " + String(seconds % 60).padStart(2,"0") + "s";
+  return seconds + "s";
+}
+function idleLabel(){ return mfaMode ? "Verify & Continue" : "Sign In"; }
+
+function refreshLock(){
+  clearInterval(lockTimer);
+  const remaining = lockRemaining();
+  if(remaining > 0 && !submitting){
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Locked · try again in " + formatWait(remaining);
+    lockTimer = setInterval(() => {
+      const left = lockRemaining();
+      if(left <= 0){
+        clearInterval(lockTimer);
+        submitBtn.disabled = false;
+        submitBtn.textContent = idleLabel();
+        clearMessage();
+      }else{
+        submitBtn.textContent = "Locked · try again in " + formatWait(left);
+      }
+    }, 1000);
+  }
+}
+
+function setLoading(loading, text){
   submitting = loading;
-  submitBtn.disabled = loading;
-  submitBtn.innerHTML = loading
-    ? '<span class="spinner"></span>' + (text || "Please wait...")
-    : (mfaMode ? "Verify & Continue" : "Sign In");
+  if(loading){
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span class="spinner"></span>' + (text || "Please wait...");
+  }else{
+    submitBtn.disabled = false;
+    submitBtn.textContent = idleLabel();
+    refreshLock();
+  }
 }
 
-/* Three-digit CAPTCHA */
-function drawCaptcha() {
-  captchaValue = String(Math.floor(100 + Math.random() * 900));
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = "#f4f5f7";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+/* ---------- Stronger CAPTCHA ---------- */
+function newCaptchaText(){
+  let out = "";
+  for(let i = 0; i < CAPTCHA_LENGTH; i++){
+    out += CAPTCHA_CHARS[randInt(CAPTCHA_CHARS.length)];
+  }
+  return out;
+}
 
-  for (let i = 0; i < 8; i++) {
-    ctx.strokeStyle = `rgba(35,45,60,${Math.random() * .25})`;
-    ctx.lineWidth = 1;
+function drawCaptcha(){
+  captchaValue = newCaptchaText();
+  captchaIssuedAt = Date.now();
+
+  const w = canvas.width, h = canvas.height;
+  ctx.setTransform(1,0,0,1,0,0);
+  ctx.clearRect(0,0,w,h);
+
+  const bg = ctx.createLinearGradient(0,0,w,h);
+  bg.addColorStop(0,"#eef0f4");
+  bg.addColorStop(1,"#dfe3ea");
+  ctx.fillStyle = bg;
+  ctx.fillRect(0,0,w,h);
+
+  // background noise lines
+  for(let i = 0; i < 9; i++){
+    ctx.strokeStyle = `hsla(${randInt(360)},35%,38%,${0.18 + randFloat() * 0.25})`;
+    ctx.lineWidth = 1 + randFloat() * 1.5;
     ctx.beginPath();
-    ctx.moveTo(Math.random() * canvas.width, Math.random() * canvas.height);
-    ctx.lineTo(Math.random() * canvas.width, Math.random() * canvas.height);
+    ctx.moveTo(randFloat() * w, randFloat() * h);
+    ctx.bezierCurveTo(randFloat()*w, randFloat()*h, randFloat()*w, randFloat()*h, randFloat()*w, randFloat()*h);
     ctx.stroke();
   }
 
-  ctx.font = "bold 27px Georgia,serif";
-  ctx.textBaseline = "middle";
-  ctx.fillStyle = "#263548";
-  [...captchaValue].forEach((digit, index) => {
+  // dots
+  for(let i = 0; i < 110; i++){
+    ctx.fillStyle = `hsla(${randInt(360)},30%,35%,${0.15 + randFloat() * 0.35})`;
+    ctx.beginPath();
+    ctx.arc(randFloat()*w, randFloat()*h, 0.8 + randFloat()*1.8, 0, Math.PI*2);
+    ctx.fill();
+  }
+
+  // characters with random font, size, tilt, skew and offset
+  const fonts = ["Georgia","Arial","Courier New","Verdana","Trebuchet MS","Times New Roman"];
+  const step = (w - 30) / CAPTCHA_LENGTH;
+  [...captchaValue].forEach((ch, i) => {
+    const size = 44 + randInt(20);
     ctx.save();
-    ctx.translate(23 + index * 32, 23);
-    ctx.rotate((Math.random() - .5) * .25);
-    ctx.fillText(digit, 0, 0);
+    ctx.translate(26 + i * step + step / 2 - 10, h / 2 + (randFloat() - .5) * 26);
+    ctx.rotate((randFloat() - .5) * 0.8);
+    ctx.transform(1, (randFloat() - .5) * 0.35, (randFloat() - .5) * 0.35, 1, 0, 0);
+    ctx.font = `${randInt(2) ? "bold" : "normal"} ${size}px ${fonts[randInt(fonts.length)]}`;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillStyle = `hsl(${randInt(360)},55%,${18 + randInt(18)}%)`;
+    ctx.fillText(ch, 0, 0);
     ctx.restore();
   });
+
+  // strike-through waves across the text
+  for(let i = 0; i < 3; i++){
+    ctx.strokeStyle = `hsla(${randInt(360)},45%,30%,0.75)`;
+    ctx.lineWidth = 2 + randFloat() * 1.5;
+    ctx.beginPath();
+    const y0 = 22 + randFloat() * (h - 44);
+    ctx.moveTo(0, y0);
+    ctx.bezierCurveTo(w*0.3, y0 + (randFloat()-.5)*60, w*0.65, y0 + (randFloat()-.5)*60, w, y0 + (randFloat()-.5)*40);
+    ctx.stroke();
+  }
+
+  // a few more dots on top
+  for(let i = 0; i < 40; i++){
+    ctx.fillStyle = `hsla(${randInt(360)},30%,30%,${0.25 + randFloat() * 0.4})`;
+    ctx.beginPath();
+    ctx.arc(randFloat()*w, randFloat()*h, 0.8 + randFloat()*1.4, 0, Math.PI*2);
+    ctx.fill();
+  }
+
   codeInput.value = "";
 }
 canvas.addEventListener("click", drawCaptcha);
-canvas.addEventListener("keydown", event => {
-  if (event.key === "Enter" || event.key === " ") {
-    event.preventDefault();
-    drawCaptcha();
-  }
+$("captchaRefresh").addEventListener("click", drawCaptcha);
+canvas.addEventListener("keydown", e => {
+  if(e.key === "Enter" || e.key === " "){ e.preventDefault(); drawCaptcha(); }
 });
 drawCaptcha();
 
-/* Password visibility */
-$("togglePassword").addEventListener("click", function() {
+/* Block pasting into the code box (bots and scripts often paste) */
+codeInput.addEventListener("paste", e => e.preventDefault());
+
+/* ---------- Password visibility ---------- */
+$("togglePassword").addEventListener("click", function(){
   const showing = passInput.type === "password";
   passInput.type = showing ? "text" : "password";
   this.textContent = showing ? "Hide" : "Show";
 });
 
-/* Move from password login to authenticator verification */
-function showMfaScreen(factorId) {
+/* ---------- MFA ---------- */
+function showMfaScreen(factorId){
   activeFactorId = factorId;
   mfaMode = true;
   loginPanel.hidden = true;
   mfaPanel.hidden = false;
+  $("tabs").hidden = true;
   $("heading").textContent = "Two-Step Verification";
-  $("subtitle").textContent = "Verify your identity using your authenticator app.";
+  $("subtitle").textContent = "Verify your identity";
   $("bottomLinks").hidden = true;
   submitBtn.textContent = "Verify & Continue";
   clearErrors();
@@ -260,86 +411,70 @@ function showMfaScreen(factorId) {
   mfaCodeInput.focus();
 }
 
-/* Find verified TOTP factors and create a challenge */
-async function beginMfaChallenge() {
-  const { data: factorsData, error: factorsError } =
-    await db.auth.mfa.listFactors();
+async function beginMfaChallenge(){
+  const { data: factorsData, error: factorsError } = await db.auth.mfa.listFactors();
+  if(factorsError) throw factorsError;
 
-  if (factorsError) throw factorsError;
-
-  const verifiedFactors = (factorsData?.totp || [])
-    .filter(factor => factor.status === "verified");
-
-  if (!verifiedFactors.length) {
-    throw new Error(
-      "Your account requires additional verification, but no verified authenticator was found. Please contact support."
-    );
+  const verifiedFactors = (factorsData?.totp || []).filter(f => f.status === "verified");
+  if(!verifiedFactors.length){
+    throw new Error("Your account requires additional verification, but no verified authenticator was found. Please contact support.");
   }
 
   const factor = verifiedFactors[0];
   const { data: challengeData, error: challengeError } =
     await db.auth.mfa.challenge({ factorId: factor.id });
 
-  if (challengeError) throw challengeError;
-  if (!challengeData?.id) {
+  if(challengeError) throw challengeError;
+  if(!challengeData?.id){
     throw new Error("Could not start authenticator verification. Please try again.");
   }
-
   showMfaScreen(factor.id);
 }
 
-/* Password login */
-async function signInWithPassword(email, password) {
-  const { data, error } = await db.auth.signInWithPassword({
-    email,
-    password
-  });
-
-  if (error) throw error;
-  if (!data.session || !data.user) {
+async function signInWithPassword(email, password){
+  const { data, error } = await db.auth.signInWithPassword({ email, password });
+  if(error) throw error;
+  if(!data.session || !data.user){
     throw new Error("Sign-in could not be completed. Please try again.");
   }
 
   const { data: assurance, error: assuranceError } =
     await db.auth.mfa.getAuthenticatorAssuranceLevel();
 
-  if (assuranceError) {
+  if(assuranceError){
     await db.auth.signOut();
     throw new Error("We couldn't check your account security status. Please try again.");
   }
 
-  if (assurance?.nextLevel === "aal2" &&
-      assurance?.currentLevel !== "aal2") {
+  if(assurance?.nextLevel === "aal2" && assurance?.currentLevel !== "aal2"){
     await beginMfaChallenge();
     showMessage("Password accepted. Enter your authenticator code to continue.", "success");
     return;
   }
 
+  registerSuccess();
   showMessage("Sign-in successful. Opening your dashboard...", "success");
   window.setTimeout(() => window.location.replace("dashboard.html"), 500);
 }
 
-/* Verify the six-digit TOTP code */
-async function verifyMfaCode() {
+async function verifyMfaCode(){
   const code = mfaCodeInput.value.trim();
 
-  if (!/^\d{6}$/.test(code)) {
+  if(!/^\d{6}$/.test(code)){
     fieldError("mfaErr", "Enter the six-digit code from your authenticator app.");
     return;
   }
-
-  if (!activeFactorId) {
+  if(!activeFactorId){
     fieldError("mfaErr", "Verification session is missing. Please sign in again.");
     return;
   }
 
   setLoading(true, "Verifying code...");
 
-  try {
+  try{
     const { data: challengeData, error: challengeError } =
       await db.auth.mfa.challenge({ factorId: activeFactorId });
-
-    if (challengeError) throw challengeError;
+    if(challengeError) throw challengeError;
 
     const { error: verifyError } = await db.auth.mfa.verify({
       factorId: activeFactorId,
@@ -347,109 +482,149 @@ async function verifyMfaCode() {
       code
     });
 
-    if (verifyError) {
+    if(verifyError){
       fieldError("mfaErr", "Incorrect or expired code. Check your authenticator and try again.");
       mfaCodeInput.value = "";
       mfaCodeInput.focus();
+      registerFailure();
       return;
     }
 
     const { data: assurance, error: assuranceError } =
       await db.auth.mfa.getAuthenticatorAssuranceLevel();
+    if(assuranceError) throw assuranceError;
 
-    if (assuranceError) throw assuranceError;
-
-    if (assurance?.currentLevel !== "aal2") {
+    if(assurance?.currentLevel !== "aal2"){
       throw new Error("Additional verification has not been completed. Please try again.");
     }
 
+    registerSuccess();
     showMessage("Verification successful. Opening your dashboard...", "success");
     window.setTimeout(() => window.location.replace("dashboard.html"), 500);
 
-  } catch (error) {
+  }catch(error){
     console.error("MFA verification error:", error);
     fieldError("mfaErr", error?.message || "Unable to verify your code. Please try again.");
-  } finally {
+  }finally{
     setLoading(false);
   }
 }
 
-/* Main form */
+/* ---------- Main form ---------- */
 form.addEventListener("submit", async event => {
   event.preventDefault();
-  if (submitting) return;
+  if(submitting) return;
 
   clearErrors();
   clearMessage();
 
-  if (mfaMode) {
+  // Locked out after too many failures
+  const remaining = lockRemaining();
+  if(remaining > 0){
+    showMessage("Too many failed attempts. Try again in " + formatWait(remaining) + ".", "error");
+    refreshLock();
+    return;
+  }
+
+  if(mfaMode){
     await verifyMfaCode();
+    return;
+  }
+
+  // Honeypot: real people never fill this hidden field
+  if(honeypot.value){
+    registerFailure();
+    showMessage("Unable to sign in. Please try again later.", "error");
+    drawCaptcha();
     return;
   }
 
   const email = userInput.value.trim().toLowerCase();
   const password = passInput.value;
-  const enteredCode = codeInput.value.trim();
+  const enteredCode = codeInput.value.trim().toUpperCase();
   let valid = true;
 
-  if (!email) {
+  if(!email){
     fieldError("userErr", "Email is required.");
     valid = false;
-  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+  }else if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
     fieldError("userErr", "Enter a valid email address.");
     valid = false;
   }
 
-  if (!password) {
+  if(!password){
     fieldError("passErr", "Password is required.");
     valid = false;
   }
 
-  if (enteredCode !== captchaValue) {
-    fieldError("codeErr", "Incorrect code. Try the new code.");
-    drawCaptcha();
+  if(!enteredCode){
+    fieldError("codeErr", "Enter the security code.");
     valid = false;
   }
 
-  if (!valid) return;
+  if(!valid) return;
+
+  // Too fast to be a person
+  if(Date.now() - captchaIssuedAt < MIN_FILL_MS){
+    showMessage("Please take a moment to check your details, then try again.", "error");
+    return;
+  }
+
+  // Code expired
+  if(Date.now() - captchaIssuedAt > CAPTCHA_TTL_MS){
+    fieldError("codeErr", "This code expired. A new one was generated.");
+    drawCaptcha();
+    return;
+  }
+
+  // Wrong code: counts as a failed attempt, always gives a new code
+  if(enteredCode !== captchaValue){
+    fieldError("codeErr", "Incorrect code. A new code was generated.");
+    drawCaptcha();
+    registerFailure();
+    return;
+  }
+
+  // A code can only be used once
+  captchaValue = "";
 
   setLoading(true, "Signing in...");
 
-  try {
+  try{
     await signInWithPassword(email, password);
-  } catch (error) {
+  }catch(error){
     console.error("Sign-in error:", error);
     const raw = String(error?.message || "").toLowerCase();
     let friendly = "Unable to sign in. Please check your details and try again.";
 
-    if (raw.includes("email not confirmed")) {
+    if(raw.includes("email not confirmed")){
       friendly = "Please confirm your email address before signing in.";
-    } else if (raw.includes("invalid login credentials")) {
+    }else if(raw.includes("invalid login credentials")){
       friendly = "Incorrect email or password.";
-    } else if (raw.includes("too many requests")) {
+      registerFailure();
+    }else if(raw.includes("too many requests") || raw.includes("rate limit")){
       friendly = "Too many attempts. Please wait before trying again.";
-    } else if (raw.includes("failed to fetch") || raw.includes("network")) {
+    }else if(raw.includes("failed to fetch") || raw.includes("network")){
       friendly = "Network error. Check your internet connection and try again.";
-    } else if (error?.message) {
+    }else if(error?.message){
       friendly = error.message;
     }
 
     showMessage(friendly, "error");
     drawCaptcha();
-  } finally {
+  }finally{
     setLoading(false);
   }
 });
 
-/* Forgot password */
+/* ---------- Forgot password ---------- */
 $("forgotPassword").addEventListener("click", async event => {
   event.preventDefault();
   clearMessage();
   clearErrors();
 
   const email = userInput.value.trim().toLowerCase();
-
-  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+  if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
     fieldError("userErr", "Enter your email address first.");
     userInput.focus();
     return;
@@ -459,43 +634,35 @@ $("forgotPassword").addEventListener("click", async event => {
   link.style.pointerEvents = "none";
   link.textContent = "Sending...";
 
-  try {
+  try{
     const redirectUrl = new URL("reset-password.html", window.location.href).href;
-    const { error } = await db.auth.resetPasswordForEmail(email, {
-      redirectTo: redirectUrl
-    });
+    const { error } = await db.auth.resetPasswordForEmail(email, { redirectTo: redirectUrl });
+    if(error) throw error;
 
-    if (error) throw error;
-
-    showMessage(
-      "If an account exists with this email, a reset link has been requested. Check your inbox.",
-      "success"
-    );
-  } catch (error) {
+    showMessage("If an account exists with this email, a reset link has been requested. Check your inbox.", "success");
+  }catch(error){
     console.error("Password reset error:", error);
     showMessage("We couldn't request a reset link right now. Please try again later.", "error");
-  } finally {
+  }finally{
     link.textContent = "Forgot password?";
     link.style.pointerEvents = "";
   }
 });
 
-/* Menu */
-$("menuButton").addEventListener("click", () => {
-  window.location.href = "index.html";
-});
-
-/* Clear field errors while typing */
+/* ---------- Clear field errors while typing ---------- */
 userInput.addEventListener("input", () => fieldError("userErr", ""));
 passInput.addEventListener("input", () => fieldError("passErr", ""));
 codeInput.addEventListener("input", () => {
   fieldError("codeErr", "");
-  codeInput.value = codeInput.value.replace(/\D/g, "").slice(0, 3);
+  codeInput.value = codeInput.value.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, CAPTCHA_LENGTH);
 });
 mfaCodeInput.addEventListener("input", () => {
   fieldError("mfaErr", "");
   mfaCodeInput.value = mfaCodeInput.value.replace(/\D/g, "").slice(0, 6);
 });
+
+// Show an existing lockout if the person reloads the page
+refreshLock();
 
 })();
 </script>
