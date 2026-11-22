@@ -173,27 +173,27 @@ input::placeholder,textarea::placeholder{color:#74839a}
     <button class="close-drawer" id="closeDrawer" type="button" aria-label="Close menu">×</button>
   </div>
   <nav class="drawer-nav">
-    <button class="drawer-link" onclick="go('dashboard.html')"><span class="drawer-icon">⌂</span>Portfolio</button>
-    <button class="drawer-link" onclick="go('deposit.html')"><span class="drawer-icon">＋</span>Deposit</button>
-    <button class="drawer-link" onclick="go('withdraw.html')"><span class="drawer-icon">↗</span>Withdraw</button>
-    <button class="drawer-link" onclick="go('transactions.html')"><span class="drawer-icon">≡</span>Transactions</button>
-    <button class="drawer-link" onclick="go('referrals.html')"><span class="drawer-icon">♧</span>Referrals</button>
-    <button class="drawer-link" onclick="go('profile.html')"><span class="drawer-icon">○</span>Profile</button>
-    <button class="drawer-link" onclick="go('security.html')"><span class="drawer-icon">♙</span>Security Settings</button>
+    <button class="drawer-link" onclick="go('dashboard')"><span class="drawer-icon">⌂</span>Portfolio</button>
+    <button class="drawer-link" onclick="go('deposit')"><span class="drawer-icon">＋</span>Deposit</button>
+    <button class="drawer-link" onclick="go('withdraw')"><span class="drawer-icon">↗</span>Withdraw</button>
+    <button class="drawer-link" onclick="go('transactions')"><span class="drawer-icon">≡</span>Transactions</button>
+    <button class="drawer-link" onclick="go('referrals')"><span class="drawer-icon">♧</span>Referrals</button>
+    <button class="drawer-link" onclick="go('profile')"><span class="drawer-icon">○</span>Profile</button>
+    <button class="drawer-link" onclick="go('security')"><span class="drawer-icon">♙</span>Security Settings</button>
     <button class="drawer-link active" aria-current="page"><span class="drawer-icon">?</span>Support</button>
-    <button class="drawer-link" onclick="go('notifications.html')"><span class="drawer-icon">♢</span>Notifications</button>
+    <button class="drawer-link" onclick="go('notifications')"><span class="drawer-icon">♢</span>Notifications</button>
     <button class="drawer-link logout" id="logoutBtn" type="button"><span class="drawer-icon">↪</span>Logout</button>
   </nav>
 </aside>
 
 <div class="app" id="listScreen">
   <header class="top">
-    <a href="dashboard.html" class="brand-logo" aria-label="AITIVEST home"><div class="brand-mark">A</div><div class="brand-name">AITIVEST</div></a>
+    <a href="dashboard" class="brand-logo" aria-label="AITIVEST home"><div class="brand-mark">A</div><div class="brand-name">AITIVEST</div></a>
     <div class="top-actions">
-      <button class="bell" aria-label="Notifications" type="button" onclick="go('notifications.html')">
+      <button class="bell" aria-label="Notifications" type="button" onclick="go('notifications')">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
       </button>
-      <a class="avatar" id="profileInitial" href="profile.html" aria-label="Open profile">A</a>
+      <a class="avatar" id="profileInitial" href="profile" aria-label="Open profile">A</a>
     </div>
   </header>
 
@@ -247,16 +247,16 @@ input::placeholder,textarea::placeholder{color:#74839a}
 </div>
 
 <nav class="bottom-nav" aria-label="Bottom navigation">
-  <button class="bottom-link" type="button" onclick="go('dashboard.html')">
+  <button class="bottom-link" type="button" onclick="go('dashboard')">
     <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l9 8h-3v9h-5v-6h-2v6H6v-9H3z"/></svg>Home
   </button>
-  <button class="bottom-link" type="button" onclick="go('transactions.html')">
-    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 13h18"/></svg>Portfolio
+  <button class="bottom-link" type="button" onclick="go('transactions')">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 13h18"/></svg>History
   </button>
-  <button class="bottom-link" type="button" onclick="go('deposit.html')">
+  <button class="bottom-link" type="button" onclick="go('deposit')">
     <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="5"/><path d="M12 6v6M9.5 9h5"/><path d="M4 20c2-2 5-3 8-3s6 1 8 3"/></svg>Deposit
   </button>
-  <button class="bottom-link" type="button" onclick="go('withdraw.html')">
+  <button class="bottom-link" type="button" onclick="go('withdraw')">
     <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h13l-3-3M20 16H7l3 3"/></svg>Withdraw
   </button>
   <button class="bottom-link" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false">
@@ -420,7 +420,7 @@ $("logoutBtn").addEventListener("click", async () => {
   try {
     const { error } = await db.auth.signOut();
     if (error) throw error;
-    window.location.replace("signin.html");
+    window.location.replace("signin");
   } catch (error) {
     console.error("Logout failed:", error);
     toast("Unable to log out. Please try again.");
@@ -470,7 +470,7 @@ async function requireLogin() {
   const { data, error } = await db.auth.getSession();
   if (error) throw new Error("Unable to verify your session. Please refresh.");
   if (!data.session) {
-    location.replace("signin.html");
+    location.replace("signin");
     return false;
   }
   currentUser = data.session.user;
