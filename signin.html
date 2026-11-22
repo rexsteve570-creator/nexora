@@ -92,10 +92,10 @@ input:focus{border-color:var(--gold3);box-shadow:0 0 0 3px rgba(242,184,75,.1)}
 <div class="app">
 
   <header class="top">
-    <a href="index.html" class="brand-logo" aria-label="AITIVEST home">
+    <a href="/" class="brand-logo" aria-label="AITIVEST home">
       <div class="brand-mark">A</div><div class="brand-name">AITIVEST</div>
     </a>
-    <a href="index.html" class="home-link">← Home</a>
+    <a href="/" class="home-link">← Home</a>
   </header>
 
   <div class="page-head">
@@ -104,8 +104,8 @@ input:focus{border-color:var(--gold3);box-shadow:0 0 0 3px rgba(242,184,75,.1)}
   </div>
 
   <nav class="tabs" id="tabs" aria-label="Account navigation">
-    <a href="signin.html" class="tab active">Sign In</a>
-    <a href="signup.html" class="tab">Registration</a>
+    <a href="signin" class="tab active">Sign In</a>
+    <a href="signup" class="tab">Registration</a>
   </nav>
 
   <form class="card" id="loginForm" novalidate autocomplete="on">
@@ -162,11 +162,11 @@ input:focus{border-color:var(--gold3);box-shadow:0 0 0 3px rgba(242,184,75,.1)}
     <div id="msg" role="status" aria-live="polite"></div>
 
     <div class="bottom" id="bottomLinks">
-      Don't have an account? <a href="signup.html">Create Account</a>
+      Don't have an account? <a href="signup">Create Account</a>
     </div>
   </form>
 
-  <div class="back"><a href="index.html">← Back to AITIVEST</a></div>
+  <div class="back"><a href="/">← Back to AITIVEST</a></div>
   <footer class="footer">AITIVEST · Secure Account Access</footer>
 </div>
 
@@ -454,7 +454,7 @@ async function signInWithPassword(email, password){
 
   registerSuccess();
   showMessage("Sign-in successful. Opening your dashboard...", "success");
-  window.setTimeout(() => window.location.replace("dashboard.html"), 500);
+  window.setTimeout(() => window.location.replace("dashboard"), 500);
 }
 
 async function verifyMfaCode(){
@@ -500,7 +500,7 @@ async function verifyMfaCode(){
 
     registerSuccess();
     showMessage("Verification successful. Opening your dashboard...", "success");
-    window.setTimeout(() => window.location.replace("dashboard.html"), 500);
+    window.setTimeout(() => window.location.replace("dashboard"), 500);
 
   }catch(error){
     console.error("MFA verification error:", error);
@@ -635,7 +635,8 @@ $("forgotPassword").addEventListener("click", async event => {
   link.textContent = "Sending...";
 
   try{
-    const redirectUrl = new URL("reset-password.html", window.location.href).href;
+    /* This address must also be listed under Supabase > Authentication > URL Configuration > Redirect URLs */
+    const redirectUrl = new URL("reset-password", window.location.href).href;
     const { error } = await db.auth.resetPasswordForEmail(email, { redirectTo: redirectUrl });
     if(error) throw error;
 
