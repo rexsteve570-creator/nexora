@@ -155,14 +155,23 @@ header{position:sticky;top:0;z-index:100;background:rgba(7,17,31,.82);backdrop-f
 .gallery figcaption{position:absolute;left:0;right:0;bottom:0;padding:40px 18px 16px;background:linear-gradient(0deg,rgba(7,17,31,.92),transparent);font-weight:750;font-size:16px;z-index:2}
 .gallery figcaption small{display:block;font-weight:400;font-size:12px;color:var(--muted);margin-top:2px}
 
-/* ---------- Assets strip ---------- */
-.assets{padding:44px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:rgba(255,255,255,.015)}
-.assets p{text-align:center;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:22px}
-.logo-row{display:flex;flex-wrap:wrap;justify-content:center;gap:14px 20px}
-.logo-row div{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:#cfd7e2;background:var(--card);border:1px solid var(--border);padding:8px 14px 8px 10px;border-radius:999px}
-.logo-row img,.logo-row .coin-badge{width:28px;height:28px;border-radius:50%;flex:none}
-.logo-row .coin-badge{display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:800}
-.logo-row div{padding:9px 16px 9px 10px}
+/* ---------- Assets: big scrolling coin rows ---------- */
+.assets{padding:54px 0 60px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:rgba(255,255,255,.015);overflow:hidden}
+.assets p{text-align:center;font-size:13px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold2);font-weight:800;margin-bottom:28px}
+.marquee{position:relative;overflow:hidden;padding:8px 0;-webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent)}
+.marquee+.marquee{margin-top:10px}
+.marquee-track{display:flex;width:max-content;will-change:transform;animation:scroll-left 55s linear infinite}
+.marquee.reverse .marquee-track{animation-name:scroll-right}
+.marquee:hover .marquee-track,.marquee:focus-within .marquee-track{animation-play-state:paused}
+@keyframes scroll-left{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes scroll-right{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+.coin-item{display:flex;align-items:center;gap:14px;flex:none;margin-right:22px;padding:12px 30px 12px 12px;background:linear-gradient(145deg,#132843,#0b1829);border:2px solid rgba(217,164,65,.4);border-radius:999px;box-shadow:0 10px 28px rgba(0,0,0,.32),0 0 0 4px rgba(217,164,65,.04)}
+.coin-item img,.coin-item .coin-badge{width:60px;height:60px;border-radius:50%;flex:none;display:block;background:#fff1}
+.coin-item .coin-badge{display:inline-flex;align-items:center;justify-content:center}
+.coin-item .coin-badge svg{width:100%;height:100%;display:block}
+.coin-text{display:flex;flex-direction:column;line-height:1.15}
+.coin-text b{font-size:22px;font-weight:900;letter-spacing:.5px;color:#fff}
+.coin-text small{font-size:12.5px;color:var(--muted);margin-top:3px;font-weight:600}
 
 /* ---------- Features ---------- */
 .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:48px}
@@ -276,11 +285,17 @@ body.modal-open{overflow:hidden}
   .nav-cta .btn{width:auto}
   .brand-name{font-size:18px}
   .hero-actions .btn{width:100%}
+  .coin-item{gap:12px;margin-right:16px;padding:10px 24px 10px 10px}
+  .coin-item img,.coin-item .coin-badge{width:50px;height:50px}
+  .coin-text b{font-size:19px}
+  .marquee-track{animation-duration:45s}
 }
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
   .reveal{opacity:1;transform:none}
+  .marquee{overflow-x:auto}
+  .marquee-track{animation:none!important}
 }
 </style>
 <script>
@@ -309,8 +324,8 @@ function imgFallback(img){
       <a href="#faq">FAQ</a>
     </nav>
     <div class="nav-cta">
-      <a href="signin.html" class="btn btn-ghost btn-sm">Sign in</a>
-      <a href="signup.html" class="btn btn-gold btn-sm">Get started</a>
+      <a href="signin" class="btn btn-ghost btn-sm">Sign in</a>
+      <a href="signup" class="btn btn-gold btn-sm">Get started</a>
       <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">☰</button>
     </div>
   </div>
@@ -320,7 +335,7 @@ function imgFallback(img){
     <a href="#assets">Assets</a>
     <a href="#security">Security</a>
     <a href="#faq">FAQ</a>
-    <a href="signin.html" class="btn btn-ghost">Sign in</a>
+    <a href="signin" class="btn btn-ghost">Sign in</a>
   </div>
 </header>
 
@@ -334,7 +349,7 @@ function imgFallback(img){
         <h1>Invest in crypto with <em>clarity</em> and control.</h1>
         <p class="lead">Aitivest brings your deposits, daily profit tracking, referrals and withdrawals into one calm, secure dashboard, with two-factor protection built in.</p>
         <div class="hero-actions">
-          <a href="signup.html" class="btn btn-gold">Create free account</a>
+          <a href="signup" class="btn btn-gold">Create free account</a>
           <a href="#how" class="btn btn-ghost">See how it works</a>
         </div>
         <div class="hero-points">
@@ -415,11 +430,14 @@ function imgFallback(img){
     </div>
   </section>
 
-  <!-- ASSETS STRIP -->
+  <!-- SUPPORTED ASSETS: two big rows that scroll in opposite directions -->
   <div class="assets" id="assets">
-    <div class="wrap">
-      <p>Supported assets</p>
-      <div class="logo-row" id="logoRow"></div>
+    <div class="wrap"><p>Supported assets</p></div>
+    <div class="marquee" aria-label="Supported cryptocurrencies, scrolling right to left">
+      <div class="marquee-track" id="trackA"></div>
+    </div>
+    <div class="marquee reverse" aria-label="More supported cryptocurrencies, scrolling left to right">
+      <div class="marquee-track" id="trackB"></div>
     </div>
   </div>
 
@@ -564,7 +582,7 @@ function imgFallback(img){
         </div>
         <div style="text-align:center">
           <div class="photo art-photo ph-flat reveal" style="aspect-ratio:360/230"><div class="ph-svg"><svg class="ph-art" viewBox="0 0 360 230" role="img" aria-label="A network of partners connected to one investor"><circle cx="180" cy="120" r="120" fill="#d9a441" opacity=".12"/><path d="M180 120L60 60" stroke="#d9a441" stroke-opacity=".55" stroke-width="2.5" stroke-dasharray="6 6"/><path d="M180 120L300 60" stroke="#d9a441" stroke-opacity=".55" stroke-width="2.5" stroke-dasharray="6 6"/><path d="M180 120L50 185" stroke="#d9a441" stroke-opacity=".55" stroke-width="2.5" stroke-dasharray="6 6"/><path d="M180 120L310 185" stroke="#d9a441" stroke-opacity=".55" stroke-width="2.5" stroke-dasharray="6 6"/><path d="M180 120L180 30" stroke="#d9a441" stroke-opacity=".55" stroke-width="2.5" stroke-dasharray="6 6"/><path d="M34.0 98.2Q34.0 70.9 60.0 70.9Q86.0 70.9 86.0 98.2Z" fill="#2c4a74"/><rect x="55.1" y="63.1" width="9.9" height="10.4" rx="3.9" fill="#c89b6d"/><circle cx="60.0" cy="54.0" r="13.0" fill="#c89b6d"/><path d="M46.7 54.6Q46.7 37.8 60.0 37.8Q73.3 37.8 73.3 54.6Q60.0 45.9 46.7 54.6Z" fill="#111"/><path d="M274.0 98.2Q274.0 70.9 300.0 70.9Q326.0 70.9 326.0 98.2Z" fill="#d9a441"/><rect x="295.1" y="63.1" width="9.9" height="10.4" rx="3.9" fill="#8d5e3c"/><circle cx="300.0" cy="54.0" r="13.0" fill="#8d5e3c"/><path d="M286.7 54.6Q286.7 37.8 300.0 37.8Q313.3 37.8 313.3 54.6Q300.0 45.9 286.7 54.6Z" fill="#111"/><path d="M24.0 223.2Q24.0 195.9 50.0 195.9Q76.0 195.9 76.0 223.2Z" fill="#3a5f93"/><rect x="45.1" y="188.1" width="9.9" height="10.4" rx="3.9" fill="#e0b48a"/><circle cx="50.0" cy="179.0" r="13.0" fill="#e0b48a"/><path d="M36.7 179.7Q36.7 162.8 50.0 162.8Q63.3 162.8 63.3 179.7Q50.0 170.9 36.7 179.7Z" fill="#6b3b17"/><path d="M284.0 223.2Q284.0 195.9 310.0 195.9Q336.0 195.9 336.0 223.2Z" fill="#d9a441"/><rect x="305.1" y="188.1" width="9.9" height="10.4" rx="3.9" fill="#a56f49"/><circle cx="310.0" cy="179.0" r="13.0" fill="#a56f49"/><path d="M296.7 179.7Q296.7 162.8 310.0 162.8Q323.3 162.8 323.3 179.7Q310.0 170.9 296.7 179.7Z" fill="#1b1b1f"/><path d="M154.0 68.2Q154.0 40.9 180.0 40.9Q206.0 40.9 206.0 68.2Z" fill="#3a5f93"/><rect x="175.1" y="33.1" width="9.9" height="10.4" rx="3.9" fill="#c89b6d"/><circle cx="180.0" cy="24.0" r="13.0" fill="#c89b6d"/><path d="M166.7 24.6Q166.7 7.8 180.0 7.8Q193.3 7.8 193.3 24.6Q180.0 15.9 166.7 24.6Z" fill="#2b1d12"/><path d="M136.0 182.8Q136.0 136.6 180.0 136.6Q224.0 136.6 224.0 182.8Z" fill="#d9a441"/><rect x="171.6" y="123.4" width="16.7" height="17.6" rx="6.6" fill="#e0b48a"/><circle cx="180.0" cy="108.0" r="22.0" fill="#e0b48a"/><path d="M157.6 109.1Q157.6 80.5 180.0 80.5Q202.4 80.5 202.4 109.1Q180.0 94.4 157.6 109.1Z" fill="#2b1d12"/></svg></div><img src="images/partners.jpg" data-fallback="https://images.pexels.com/photos/6950103/pexels-photo-6950103.jpeg?auto=compress&cs=tinysrgb&w=1200|https://images.pexels.com/photos/6950120/pexels-photo-6950120.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Diverse business professionals interacting in a bright office" loading="lazy" referrerpolicy="no-referrer" onerror="imgFallback(this)"></div>
-          <a href="signup.html" class="btn btn-gold">Join Aitivest</a>
+          <a href="signup" class="btn btn-gold">Join Aitivest</a>
         </div>
       </div>
     </div>
@@ -614,8 +632,8 @@ function imgFallback(img){
         <h2>Start investing with Aitivest today.</h2>
         <p class="lead">Create your account in minutes and secure it from the start.</p>
         <div class="hero-actions">
-          <a href="signup.html" class="btn btn-gold">Create free account</a>
-          <a href="signin.html" class="btn btn-ghost">Sign in</a>
+          <a href="signup" class="btn btn-gold">Create free account</a>
+          <a href="signin" class="btn btn-ghost">Sign in</a>
         </div>
       </div>
     </div>
@@ -638,9 +656,9 @@ function imgFallback(img){
       </div>
       <div>
         <h4>Account</h4>
-        <a href="signup.html">Create account</a>
-        <a href="signin.html">Sign in</a>
-        <a href="support.html">Support</a>
+        <a href="signup">Create account</a>
+        <a href="signin">Sign in</a>
+        <a href="support">Support</a>
       </div>
       <div>
         <h4>Legal</h4>
@@ -727,7 +745,7 @@ function drawnLogo(symbol, color) {
   const m = MARKS[symbol];
   const span = document.createElement("span");
   span.className = "coin-badge";
-  span.innerHTML = '<svg viewBox="0 0 32 32" width="28" height="28" aria-hidden="true"><circle cx="16" cy="16" r="16" fill="' + (m ? m[0] : color) + '"/>' + (m ? m[1] : "") + '</svg>';
+  span.innerHTML = '<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="16" fill="' + (m ? m[0] : color) + '"/>' + (m ? m[1] : "") + '</svg>';
   return span;
 }
 
@@ -746,8 +764,8 @@ const coins = [
   ["NEAR","NEAR Protocol",6535,"NEAR.svg","#111111"],["APT","Aptos",21794,"APT.svg","#111111"],
   ["ARB","Arbitrum",11841,"ARB.svg","#28A0F0"],["OP","Optimism",11840,"OP.svg","#FF0420"]
 ];
-const row = $("logoRow");
-coins.forEach(([symbol, name, cmcId, altFile, color]) => {
+
+function makeCoinItem([symbol, name, cmcId, altFile, color], hidden) {
   const sources = [
     CMC_BASE + cmcId + ".png",
     BACKUP_BASE + symbol.toLowerCase() + ".svg",
@@ -755,9 +773,13 @@ coins.forEach(([symbol, name, cmcId, altFile, color]) => {
   ];
   let i = 0;
   const item = document.createElement("div");
+  item.className = "coin-item";
   item.title = name;
+  if (hidden) item.setAttribute("aria-hidden", "true");
+
   const img = document.createElement("img");
-  img.alt = name + " logo"; img.width = 28; img.height = 28; img.decoding = "async";
+  img.alt = hidden ? "" : name + " logo";
+  img.width = 60; img.height = 60; img.decoding = "async";
   img.referrerPolicy = "no-referrer";
   img.src = sources[0];
   img.onerror = () => {
@@ -765,11 +787,27 @@ coins.forEach(([symbol, name, cmcId, altFile, color]) => {
     if (i < sources.length) { img.src = sources[i]; return; }
     img.replaceWith(drawnLogo(symbol, color));
   };
-  const label = document.createElement("span");
-  label.textContent = symbol;
-  item.append(img, label);
-  row.appendChild(item);
-});
+
+  const text = document.createElement("div");
+  text.className = "coin-text";
+  const b = document.createElement("b"); b.textContent = symbol;
+  const small = document.createElement("small"); small.textContent = name;
+  text.append(b, small);
+
+  item.append(img, text);
+  return item;
+}
+
+/* Two rows (first half / second half). Each set is repeated 4 times so the loop
+   never shows a gap, even on very wide screens. The track moves by half its width. */
+function fillTrack(track, list) {
+  for (let copy = 0; copy < 4; copy++) {
+    list.forEach(c => track.appendChild(makeCoinItem(c, copy > 0)));
+  }
+}
+const half = Math.ceil(coins.length / 2);
+fillTrack($("trackA"), coins.slice(0, half));
+fillTrack($("trackB"), coins.slice(half));
 
 /* Scroll reveal */
 const items = document.querySelectorAll(".reveal");
@@ -881,8 +919,8 @@ document.addEventListener("keydown", e => { if (e.key === "Escape" && modal.clas
 const STATS = {
   users_today: 60,        // shown as 60+
   users_week: 350,        // shown as 350+
-  profit_paid: 50000,     // US dollars, shown as $20,000+
-  profit_returned: 110000  // US dollars, shown as $11,000+
+  profit_paid: 50000,     // US dollars, shown as $50,000+
+  profit_returned: 110000 // US dollars, shown as $110,000+
 };
 
 (function activityLine() {
