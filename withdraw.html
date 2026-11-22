@@ -210,27 +210,27 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{ou
     <button class="close-drawer" id="closeDrawer" aria-label="Close menu">×</button>
   </div>
   <nav class="drawer-nav">
-    <button class="drawer-link" onclick="go('dashboard.html')"><span class="drawer-icon">⌂</span>Portfolio</button>
-    <button class="drawer-link" onclick="go('deposit.html')"><span class="drawer-icon">＋</span>Deposit</button>
+    <button class="drawer-link" onclick="go('dashboard')"><span class="drawer-icon">⌂</span>Portfolio</button>
+    <button class="drawer-link" onclick="go('deposit')"><span class="drawer-icon">＋</span>Deposit</button>
     <button class="drawer-link active" aria-current="page"><span class="drawer-icon">↗</span>Withdraw</button>
-    <button class="drawer-link" onclick="go('transactions.html')"><span class="drawer-icon">≡</span>Transactions</button>
-    <button class="drawer-link" onclick="go('referrals.html')"><span class="drawer-icon">♧</span>Referrals</button>
-    <button class="drawer-link" onclick="go('profile.html')"><span class="drawer-icon">○</span>Profile</button>
-    <button class="drawer-link" onclick="go('security.html')"><span class="drawer-icon">♙</span>Security Settings</button>
-    <button class="drawer-link" onclick="go('support.html')"><span class="drawer-icon">?</span>Support</button>
-    <button class="drawer-link" onclick="go('notifications.html')"><span class="drawer-icon">♢</span>Notifications</button>
+    <button class="drawer-link" onclick="go('transactions')"><span class="drawer-icon">≡</span>Transactions</button>
+    <button class="drawer-link" onclick="go('referrals')"><span class="drawer-icon">♧</span>Referrals</button>
+    <button class="drawer-link" onclick="go('profile')"><span class="drawer-icon">○</span>Profile</button>
+    <button class="drawer-link" onclick="go('security')"><span class="drawer-icon">♙</span>Security Settings</button>
+    <button class="drawer-link" onclick="go('support')"><span class="drawer-icon">?</span>Support</button>
+    <button class="drawer-link" onclick="go('notifications')"><span class="drawer-icon">♢</span>Notifications</button>
     <button class="drawer-link logout" id="logoutBtn"><span class="drawer-icon">↪</span>Logout</button>
   </nav>
 </aside>
 
 <div class="app">
   <header class="top">
-    <a href="dashboard.html" class="brand-logo" aria-label="AITIVEST home"><div class="brand-mark">A</div><div class="brand-name">AITIVEST</div></a>
+    <a href="dashboard" class="brand-logo" aria-label="AITIVEST home"><div class="brand-mark">A</div><div class="brand-name">AITIVEST</div></a>
     <div class="top-actions">
-      <button class="bell" aria-label="Notifications" type="button" onclick="go('notifications.html')">
+      <button class="bell" aria-label="Notifications" type="button" onclick="go('notifications')">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
       </button>
-      <a class="avatar" id="profileInitial" href="profile.html" aria-label="Open profile">AV</a>
+      <a class="avatar" id="profileInitial" href="profile" aria-label="Open profile">AV</a>
     </div>
   </header>
 
@@ -250,7 +250,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{ou
 
   <div class="banner warn" id="securityBanner">
     <span>Two-factor authentication is required to withdraw. Enable it in Security Settings first.</span>
-    <button type="button" onclick="go('security.html')">Enable 2FA</button>
+    <button type="button" onclick="go('security')">Enable 2FA</button>
   </div>
 
   <!-- STEP 1 -->
@@ -330,18 +330,18 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{ou
     </div>
   </section>
 
-  <div class="history-head"><h2>Recent withdrawals</h2><a href="transactions.html">View all</a></div>
+  <div class="history-head"><h2>Recent withdrawals</h2><a href="transactions">View all</a></div>
   <div id="historyBox"><div class="empty">Loading...</div></div>
 </div>
 
 <nav class="bottom-nav" aria-label="Bottom navigation">
-  <button class="bottom-link" onclick="go('dashboard.html')">
+  <button class="bottom-link" onclick="go('dashboard')">
     <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l9 8h-3v9h-5v-6h-2v6H6v-9H3z"/></svg>Home
   </button>
-  <button class="bottom-link" onclick="go('transactions.html')">
-    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 13h18"/></svg>Portfolio
+  <button class="bottom-link" onclick="go('transactions')">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 13h18"/></svg>History
   </button>
-  <button class="bottom-link" onclick="go('deposit.html')">
+  <button class="bottom-link" onclick="go('deposit')">
     <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="5"/><path d="M12 6v6M9.5 9h5"/><path d="M4 20c2-2 5-3 8-3s6 1 8 3"/></svg>Deposit
   </button>
   <button class="bottom-link active" aria-current="page">
@@ -379,7 +379,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{ou
     <div class="success-status">Under review</div>
     <div class="success-actions">
       <button type="button" id="successDone">Done</button>
-      <a href="transactions.html">View my withdrawals</a>
+      <a href="transactions">View my withdrawals</a>
     </div>
   </div>
 </div>
@@ -508,9 +508,9 @@ document.addEventListener("keydown",e=>{
 /* AUTH */
 async function checkAuth(){
   const {data,error}=await db.auth.getSession();
-  if(error){window.location.replace("signin.html");return false}
+  if(error){window.location.replace("signin");return false}
   currentUser=data?.session?.user||null;
-  if(!currentUser){window.location.replace("signin.html");return false}
+  if(!currentUser){window.location.replace("signin");return false}
   return true;
 }
 
@@ -943,7 +943,7 @@ $("logoutBtn").addEventListener("click",async()=>{
   const b=$("logoutBtn");b.disabled=true;
   const {error}=await db.auth.signOut();
   if(error){showToast("Unable to log out. Please try again.");b.disabled=false;return}
-  window.location.replace("signin.html");
+  window.location.replace("signin");
 });
 
 /* INIT */
