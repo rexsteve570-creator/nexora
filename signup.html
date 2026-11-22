@@ -113,10 +113,10 @@ input[type="text"]:focus,input[type="email"]:focus,input[type="password"]:focus{
 <div class="app">
 
   <header class="top">
-    <a href="index.html" class="brand-logo" aria-label="AITIVEST home">
+    <a href="/" class="brand-logo" aria-label="AITIVEST home">
       <div class="brand-mark">A</div><div class="brand-name">AITIVEST</div>
     </a>
-    <a href="index.html" class="home-link">← Home</a>
+    <a href="/" class="home-link">← Home</a>
   </header>
 
   <section id="registrationSection">
@@ -126,8 +126,8 @@ input[type="text"]:focus,input[type="email"]:focus,input[type="password"]:focus{
     </div>
 
     <nav class="tabs" aria-label="Account navigation">
-      <a href="signin.html" class="tab">Sign In</a>
-      <a href="signup.html" class="tab active">Registration</a>
+      <a href="signin" class="tab">Sign In</a>
+      <a href="signup" class="tab active">Registration</a>
     </nav>
 
     <div class="card">
@@ -188,10 +188,10 @@ input[type="text"]:focus,input[type="email"]:focus,input[type="password"]:focus{
           <input type="checkbox" id="terms" required>
           <label for="terms">
             I agree to the
-            <a href="index.html#terms">Terms</a>,
-            <a href="index.html#privacy">Privacy Policy</a>
+            <a href="/#terms">Terms</a>,
+            <a href="/#privacy">Privacy Policy</a>
             and
-            <a href="index.html#risk">Risk Disclosure</a>.
+            <a href="/#risk">Risk Disclosure</a>.
           </label>
         </div>
         <div class="error" id="termsError"></div>
@@ -200,11 +200,11 @@ input[type="text"]:focus,input[type="email"]:focus,input[type="password"]:focus{
       </form>
 
       <div class="bottom">
-        Already have an account? <a href="signin.html">Sign In</a>
+        Already have an account? <a href="signin">Sign In</a>
       </div>
     </div>
 
-    <div class="back"><a href="index.html">← Back to AITIVEST</a></div>
+    <div class="back"><a href="/">← Back to AITIVEST</a></div>
   </section>
 
   <!-- Shown only after a successful signup -->
@@ -229,10 +229,10 @@ input[type="text"]:focus,input[type="email"]:focus,input[type="password"]:focus{
 
     <div class="confirmation-actions">
       <p>Already confirmed your email?</p>
-      <a href="signin.html" class="signin-link">Click Here to Sign In →</a>
+      <a href="signin" class="signin-link">Click Here to Sign In →</a>
     </div>
 
-    <div class="confirmation-back"><a href="index.html">← Back to AITIVEST</a></div>
+    <div class="confirmation-back"><a href="/">← Back to AITIVEST</a></div>
   </section>
 
   <footer class="footer">AITIVEST · Secure Account Registration</footer>
@@ -602,7 +602,8 @@ signupForm.addEventListener("submit", async event => {
   setLoading(true);
 
   try{
-    const redirectUrl = new URL("signin.html", window.location.href).href;
+    /* This address must be listed under Supabase > Authentication > URL Configuration > Redirect URLs */
+    const redirectUrl = new URL("signin", window.location.href).href;
 
     const metadata = { full_name: fullName };
     if(referralCode) metadata.referral_code = referralCode;
@@ -619,7 +620,7 @@ signupForm.addEventListener("submit", async event => {
        session, so show the confirmation screen. If a session is returned,
        confirmation may be off, so continue to sign in. */
     if(data && data.session){
-      window.location.replace("signin.html");
+      window.location.replace("signin");
       return;
     }
 
