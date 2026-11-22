@@ -96,14 +96,18 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
 .timer .state:empty{display:none}
 .timer .time{font-size:27px;font-weight:700;color:#3d97ff;letter-spacing:1px;margin-top:2px;font-variant-numeric:tabular-nums}
 
-/* Assets */
+/* Assets — scrolling coin strip (right to left) */
 .assets-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
 .assets-head b{font-size:13.5px}
 .assets-head button{background:none;border:0;font-size:12.5px;color:var(--gold)}
-.assets{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.asset{background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:12px;padding:10px 0 8px;text-align:center;font-size:12px;transition:border-color .15s}
+.assets-marquee{overflow:hidden;margin:0 -4px;padding:4px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+/* Direction: right to left. For left to right, add "animation-direction:reverse" to .assets */
+.assets{display:flex;gap:10px;padding-right:10px;width:max-content;animation:coinScroll 45s linear infinite}
+.assets-marquee:hover .assets,.assets-marquee:active .assets{animation-play-state:paused}
+@keyframes coinScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.asset{flex:none;width:84px;background:rgba(255,255,255,.06);border:1.5px solid var(--line);border-radius:14px;padding:12px 0 10px;text-align:center;font-size:13px;font-weight:800;transition:border-color .15s}
 .asset:hover,.asset.active{border-color:var(--gold3)}
-.asset img{width:34px;height:34px;display:block;margin:0 auto 6px;object-fit:contain}
+.asset img{width:52px;height:52px;display:block;margin:0 auto 8px;object-fit:contain;filter:drop-shadow(0 2px 6px rgba(0,0,0,.55)) saturate(1.25)}
 
 /* Partners */
 .partners{display:flex;align-items:center;gap:14px}
@@ -186,7 +190,11 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
   .bal-amount{font-size:24px}
   .btn{font-size:14px}
 }
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+  .assets{animation:none!important}
+  .assets-marquee{overflow-x:auto}
+}
 </style>
 </head>
 <body>
@@ -204,15 +212,15 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
     <button class="close-drawer" id="closeDrawer" aria-label="Close menu">×</button>
   </div>
   <nav class="drawer-nav">
-    <button class="drawer-link" onclick="go('dashboard.html')"><span class="drawer-icon">⌂</span>Portfolio</button>
-    <button class="drawer-link" onclick="go('deposit.html')"><span class="drawer-icon">＋</span>Deposit</button>
-    <button class="drawer-link" onclick="go('withdraw.html')"><span class="drawer-icon">↗</span>Withdraw</button>
-    <button class="drawer-link" onclick="go('transactions.html')"><span class="drawer-icon">≡</span>Transactions</button>
-    <button class="drawer-link" onclick="go('referrals.html')"><span class="drawer-icon">♧</span>Referrals</button>
-    <button class="drawer-link" onclick="go('profile.html')"><span class="drawer-icon">○</span>Profile</button>
-    <button class="drawer-link" onclick="go('security.html')"><span class="drawer-icon">♙</span>Security Settings</button>
-    <button class="drawer-link" onclick="go('support.html')"><span class="drawer-icon">?</span>Support</button>
-    <button class="drawer-link" onclick="go('notifications.html')"><span class="drawer-icon">♢</span>Notifications</button>
+    <button class="drawer-link" onclick="go('dashboard')"><span class="drawer-icon">⌂</span>Portfolio</button>
+    <button class="drawer-link" onclick="go('deposit')"><span class="drawer-icon">＋</span>Deposit</button>
+    <button class="drawer-link" onclick="go('withdraw')"><span class="drawer-icon">↗</span>Withdraw</button>
+    <button class="drawer-link" onclick="go('transactions')"><span class="drawer-icon">≡</span>Transactions</button>
+    <button class="drawer-link" onclick="go('referrals')"><span class="drawer-icon">♧</span>Referrals</button>
+    <button class="drawer-link" onclick="go('profile')"><span class="drawer-icon">○</span>Profile</button>
+    <button class="drawer-link" onclick="go('security')"><span class="drawer-icon">♙</span>Security Settings</button>
+    <button class="drawer-link" onclick="go('support')"><span class="drawer-icon">?</span>Support</button>
+    <button class="drawer-link" onclick="go('notifications')"><span class="drawer-icon">♢</span>Notifications</button>
     <button class="drawer-link logout" id="logoutBtn"><span class="drawer-icon">↪</span>Logout</button>
   </nav>
 </aside>
@@ -221,10 +229,10 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
   <header class="top">
     <div class="brand-logo" aria-label="AITIVEST"><div class="brand-mark">A</div><div class="brand-name">AITIVEST</div></div>
     <div class="top-actions">
-      <button class="bell" aria-label="Notifications" onclick="go('notifications.html')">
+      <button class="bell" aria-label="Notifications" onclick="go('notifications')">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
       </button>
-      <div class="avatar" id="profileInitial" role="button" aria-label="Profile" onclick="go('profile.html')">AV</div>
+      <div class="avatar" id="profileInitial" role="button" aria-label="Profile" onclick="go('profile')">AV</div>
     </div>
   </header>
 
@@ -288,7 +296,9 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
   <!-- Crypto assets -->
   <section class="card" aria-label="Crypto assets">
     <div class="assets-head"><b>CRYPTO ASSETS</b><button type="button" id="viewAll">View all →</button></div>
-    <div class="assets" id="quickAssets"></div>
+    <div class="assets-marquee">
+      <div class="assets" id="quickAssets"></div>
+    </div>
   </section>
 
   <!-- Partners -->
@@ -321,11 +331,11 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
   <div class="statistics-note" id="statisticsNote"></div>
 
   <div class="actions">
-    <button class="btn btn-gold" onclick="go('deposit.html')">
+    <button class="btn btn-gold" onclick="go('deposit')">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 7v10M7 12h10" stroke-linecap="round"/></svg>
       Add Funds
     </button>
-    <button class="btn btn-out" onclick="go('withdraw.html')">
+    <button class="btn btn-out" onclick="go('withdraw')">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M7 12h10" stroke-linecap="round"/></svg>
       Withdraw
     </button>
@@ -336,23 +346,23 @@ button:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
       <div class="security-heading"><span class="security-indicator" aria-hidden="true"></span><span id="securityTitle">Checking account security...</span></div>
       <div class="security-message" id="securityMessage">Verifying your two-factor authentication status.</div>
     </div>
-    <button type="button" class="security-action" id="securityAction" onclick="go('security.html')">Checking...</button>
+    <button type="button" class="security-action" id="securityAction" onclick="go('security')">Checking...</button>
   </section>
 
   <div class="info-note">Balances are shown in USDT. USDT and USDC deposits count 1:1. Other coins use the USDT value recorded when they were converted, so the figure does not move with the live market. Pending deposits are excluded. Cryptocurrency balances are displayed separately by asset. The countdown is a time indicator and does not itself credit earnings. * Income is recorded in dollars at the exchange rate at the time of accrual of profit.</div>
 </div>
 
 <nav class="bottom-nav" aria-label="Bottom navigation">
-  <button class="bottom-link active" onclick="go('dashboard.html')">
+  <button class="bottom-link active" onclick="go('dashboard')">
     <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l9 8h-3v9h-5v-6h-2v6H6v-9H3z"/></svg>Home
   </button>
-  <button class="bottom-link" onclick="go('transactions.html')">
-    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 13h18"/></svg>Portfolio
+  <button class="bottom-link" onclick="go('transactions')">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 13h18"/></svg>History
   </button>
-  <button class="bottom-link" onclick="go('deposit.html')">
+  <button class="bottom-link" onclick="go('deposit')">
     <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="5"/><path d="M12 6v6M9.5 9h5"/><path d="M4 20c2-2 5-3 8-3s6 1 8 3"/></svg>Deposit
   </button>
-  <button class="bottom-link" onclick="go('withdraw.html')">
+  <button class="bottom-link" onclick="go('withdraw')">
     <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h13l-3-3M20 16H7l3 3"/></svg>Withdraw
   </button>
   <button class="bottom-link" id="menuBtn" aria-label="Open menu">
@@ -404,7 +414,8 @@ const assets = [
   ["SHIB","Shiba Inu"],["BCH","Bitcoin Cash"],["XLM","Stellar"],["ATOM","Cosmos"],
   ["NEAR","NEAR Protocol"],["APT","Aptos"],["ARB","Arbitrum"],["OP","Optimism"]
 ];
-const QUICK_ASSETS = ["BTC","USDT","ETH","BNB"];
+/* Coins shown in the scrolling strip (all assets) */
+const COIN_STRIP = assets.map(a=>a[0]);
 
 const PLACEHOLDER = "0.0000";
 
@@ -495,11 +506,11 @@ async function checkAuth(){
   const {data,error}=await db.auth.getSession();
   if(error){
     console.error("Session verification failed:",error);
-    window.location.replace("signin.html");
+    window.location.replace("signin");
     return false;
   }
   currentUser=data?.session?.user||null;
-  if(!currentUser){window.location.replace("signin.html");return false}
+  if(!currentUser){window.location.replace("signin");return false}
   return true;
 }
 
@@ -558,23 +569,27 @@ function selectAsset(symbol){
   renderSelectedAsset();
 }
 
+/* Scrolling coin strip — the list is rendered twice so the loop is seamless */
 function buildQuickAssets(){
   const box=$("quickAssets");
   box.replaceChildren();
-  QUICK_ASSETS.forEach(symbol=>{
-    const button=document.createElement("button");
-    button.type="button";
-    button.className="asset";
-    button.dataset.quick=symbol;
+  [0,1].forEach(copy=>{
+    COIN_STRIP.forEach(symbol=>{
+      const button=document.createElement("button");
+      button.type="button";
+      button.className="asset";
+      button.dataset.quick=symbol;
+      if(copy===1){button.setAttribute("aria-hidden","true");button.tabIndex=-1}
 
-    const img=document.createElement("img");
-    img.src=logoURL(symbol);
-    img.alt="";
-    img.onerror=()=>{img.style.visibility="hidden"};
+      const img=document.createElement("img");
+      img.src=logoURL(symbol);
+      img.alt="";
+      img.onerror=()=>{img.style.visibility="hidden"};
 
-    button.append(img,document.createTextNode(symbol));
-    button.addEventListener("click",()=>selectAsset(symbol));
-    box.appendChild(button);
+      button.append(img,document.createTextNode(symbol));
+      button.addEventListener("click",()=>selectAsset(symbol));
+      box.appendChild(button);
+    });
   });
 }
 
@@ -644,7 +659,7 @@ $("cryptoSelected").addEventListener("click",event=>{
   $("cryptoPicker").classList.contains("open")?closeCryptoPicker():openCryptoPicker();
 });
 $("cryptoMenu").addEventListener("click",event=>event.stopPropagation());
-$("addFundsBtn").addEventListener("click",()=>go("deposit.html"));
+$("addFundsBtn").addEventListener("click",()=>go("deposit"));
 $("viewAll").addEventListener("click",event=>{
   event.stopPropagation();
   window.scrollTo({top:0,behavior:"smooth"});
@@ -791,7 +806,7 @@ async function closeWelcomeNotification(destination){
 }
 
 $("welcomeLater").addEventListener("click",()=>closeWelcomeNotification(null));
-$("welcomeDeposit").addEventListener("click",()=>closeWelcomeNotification("deposit.html"));
+$("welcomeDeposit").addEventListener("click",()=>closeWelcomeNotification("deposit"));
 
 /* PROFILE */
 async function loadProfile(){
@@ -1077,7 +1092,7 @@ $("logoutBtn").addEventListener("click",async()=>{
     button.disabled=false;
     return;
   }
-  window.location.replace("signin.html");
+  window.location.replace("signin");
 });
 
 document.addEventListener("visibilitychange",()=>{
