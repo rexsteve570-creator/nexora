@@ -16,15 +16,5 @@
     { "source": "/kyc", "destination": "/kyc.html" },
     { "source": "/support", "destination": "/support.html" },
     { "source": "/swap", "destination": "/swap.html" },
-
-    { "source": "/admin", "destination": "/admin.html" },
-    { "source": "/admin/login", "destination": "/admin-login.html" },
-    { "source": "/admin/deposits", "destination": "/admin-deposits.html" },
-    { "source": "/admin/withdrawals", "destination": "/admin-withdrawals.html" },
-    { "source": "/admin/transactions", "destination": "/admin-transactions.html" },
-    { "source": "/admin/users", "destination": "/admin-users.html" },
-    { "source": "/admin/security", "destination": "/admin-security.html" },
-    { "source": "/admin/settings", "destination": "/admin-settings.html" },
-    { "source": "/admin/support", "destination": "/admin-support.html" }
   ]
 }
