@@ -91,6 +91,20 @@ header{position:sticky;top:0;z-index:100;background:rgba(7,17,31,.82);backdrop-f
 .float-chip span{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
 .float-chip b{font-size:28px;font-weight:850;color:var(--gold2)}
 
+/* Hero banner made of real coin logos */
+.hero-glow{position:absolute;left:50%;top:42%;width:78%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(217,164,65,.38),transparent 68%)}
+.hero-ring{position:absolute;left:50%;top:42%;width:86%;height:60%;transform:translate(-50%,-50%);border:2px dashed rgba(217,164,65,.4);border-radius:50%}
+.hero-coin{position:absolute;border-radius:50%;animation:bob 6s ease-in-out infinite;box-shadow:0 14px 34px rgba(0,0,0,.5),0 0 0 3px rgba(255,255,255,.14),inset 0 0 0 1px rgba(255,255,255,.25)}
+.hero-coin img,.hero-coin .coin-badge{display:block;width:100%;height:100%;border-radius:50%;object-fit:cover}
+.hero-coin .coin-badge svg{width:100%;height:100%;display:block}
+.hero-cap{position:absolute;left:0;right:0;bottom:15%;text-align:center;font-size:15px;font-weight:800;letter-spacing:3px;color:var(--cream)}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+/* Real photos sit on top of the drawn illustration; if a photo fails, the illustration shows */
+.photo>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .5s;z-index:1}
+.photo>img.ok{opacity:1}
+.people .photo>img{object-position:center 25%}
+
 /* Activity line */
 .live-strip{padding:30px 0;border-bottom:1px solid var(--border);background:rgba(255,255,255,.015)}
 .strip{display:flex;align-items:stretch;justify-content:space-between}
@@ -814,10 +828,73 @@ const ART = {
     return '<svg class="ph-art" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Investment company towers seen from outside"><defs><linearGradient id="skyH" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d1b2d"/><stop offset="1" stop-color="#2a4f73"/></linearGradient><pattern id="winP" width="12" height="14" patternUnits="userSpaceOnUse"><rect x="3" y="3" width="6" height="7" fill="#f0c866" opacity=".5"/></pattern></defs><rect width="400" height="300" fill="url(#skyH)"/><circle cx="330" cy="60" r="60" fill="' + GD + '" opacity=".15"/><g stroke="' + GD + '" stroke-opacity=".4"><rect x="30" y="110" width="72" height="190" fill="#16294a"/><rect x="112" y="50" width="86" height="250" fill="#122240"/><rect x="208" y="85" width="74" height="215" fill="#16294a"/><rect x="292" y="130" width="78" height="170" fill="#122240"/></g><g fill="url(#winP)"><rect x="30" y="110" width="72" height="190"/><rect x="112" y="50" width="86" height="250"/><rect x="208" y="85" width="74" height="215"/><rect x="292" y="130" width="78" height="170"/></g><path d="M155 50v-22" stroke="' + GL + '" stroke-width="3"/><circle cx="155" cy="26" r="4" fill="' + GL + '"/><rect y="282" width="400" height="18" fill="#07111f"/></svg>';
   }
 };
+/* Hero: real coin logos (CoinMarketCap -> backup CDNs -> drawn logo) */
+function heroBanner(el) {
+  const by = Object.fromEntries(coins.map(c => [c[0], c]));
+  const layout = [
+    ["BTC",240,225,88],["ETH",92,150,48],["USDT",388,140,48],["BNB",78,322,42],["SOL",402,315,48],
+    ["DOGE",240,66,34],["TON",50,236,26],["LINK",432,228,26],["XRP",165,408,40],["ADA",320,414,42],
+    ["LTC",60,500,19],["AVAX",111,500,19],["DOT",163,500,19],["TRX",214,500,19],
+    ["USDC",266,500,19],["SHIB",317,500,19],["ATOM",369,500,19],["NEAR",420,500,19]
+  ];
+  el.insertAdjacentHTML("afterbegin", '<div class="hero-glow"></div><div class="hero-ring"></div>');
+  layout.forEach((row, n) => {
+    const [s, x, y, r] = row;
+    const c = by[s];
+    const box = document.createElement("div");
+    box.className = "hero-coin";
+    box.style.cssText = "left:" + ((x - r) / 480 * 100) + "%;top:" + ((y - r) / 540 * 100) + "%;width:" + (2 * r / 480 * 100) + "%;aspect-ratio:1;animation-delay:" + (-(n * 0.7) % 6) + "s";
+    const srcs = ["https://s2.coinmarketcap.com/static/img/coins/128x128/" + c[2] + ".png", CMC_BASE + c[2] + ".png", BACKUP_BASE + s.toLowerCase() + ".svg", ALT_BASE + c[3]];
+    let i = 0;
+    const img = document.createElement("img");
+    img.alt = c[1] + " logo"; img.decoding = "async"; img.referrerPolicy = "no-referrer";
+    img.src = srcs[0];
+    img.onerror = () => { i++; if (i < srcs.length) img.src = srcs[i]; else img.replaceWith(drawnLogo(s, c[4])); };
+    box.appendChild(img);
+    el.appendChild(box);
+  });
+  el.insertAdjacentHTML("beforeend", '<div class="hero-cap">24 SUPPORTED COINS</div>');
+}
+
+/* ---------- Real photos (local file first, then online, then the drawn illustration stays) ----------
+   To use your own pictures, put files in an "images" folder next to index.html with these names. */
+const UNS = id => "https://images.unsplash.com/photo-" + id + "?auto=format&fit=crop&q=75&w=1200";
+const PEX = id => "https://images.pexels.com/photos/" + id + "/pexels-photo-" + id + ".jpeg?auto=compress&cs=tinysrgb&w=1200";
+const RU = (g, n) => "https://randomuser.me/api/portraits/" + g + "/" + n + ".jpg";
+const PHOTOS = {
+  features: ["features", UNS("1710345209036-e2406687a3f7"), "Phone showing a Bitcoin wallet"],
+  how:      ["how", UNS("1634542118071-f391e9a0cfb8"), "Person using a crypto wallet on a phone"],
+  security: ["security", UNS("1614064642261-3ccbfafa481b"), "Padlock on a keyboard, representing account security"],
+  p0:       ["person1", RU("men", 32), "Investor portrait"],
+  p1:       ["person2", RU("women", 44), "Investor portrait"],
+  p2:       ["person3", RU("men", 75), "Investor portrait"],
+  p3:       ["person4", RU("women", 65), "Investor portrait"],
+  team:     ["team", PEX(3182772), "A diverse team collaborating in a modern office"],
+  meeting:  ["investors", PEX(3183172), "Overhead view of a team meeting around a table"],
+  company:  ["company", PEX(11478169), "Skyscrapers of a financial district seen from outside"],
+  partners: ["partners", PEX(6950103), "Business partners interacting in a bright office"],
+  faq:      ["faq", PEX(6950120), "Business professionals in conversation"],
+  cta:      ["cta", UNS("1635840418906-d475bfb96a84"), "Person holding a Bitcoin coin"]
+};
+function addPhoto(el, key) {
+  const ph = PHOTOS[key];
+  if (!ph) return;
+  const list = ["images/" + ph[0] + ".jpg", ph[1]];
+  let i = 0;
+  const img = document.createElement("img");
+  img.alt = ph[2]; img.loading = "lazy"; img.decoding = "async"; img.referrerPolicy = "no-referrer";
+  img.onload = () => img.classList.add("ok");
+  img.onerror = () => { i++; if (i < list.length) img.src = list[i]; else img.remove(); };
+  img.src = list[0];
+  el.appendChild(img);
+}
+
 document.querySelectorAll("[data-art]").forEach(el => {
   const k = el.dataset.art;
+  if (k === "hero") { heroBanner(el); return; }
   const svg = /^p\d$/.test(k) ? ART.p(Number(k[1])) : ART[k]();
   el.insertAdjacentHTML("afterbegin", '<div class="ph-svg">' + svg + '</div>');
+  addPhoto(el, k);
 });
 
 /* Scroll reveal */
